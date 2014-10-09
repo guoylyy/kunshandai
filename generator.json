@@ -1,5 +1,19 @@
 {
 	"baseName": "mylife",
-	"entities": [],
+	"entities": [
+		{
+			"name": "user",
+			"attrs": [
+				{
+					"attrName": "user",
+					"attrType": "String",
+					"minLength": "100",
+					"maxLength": "150",
+					"enumValues": [],
+					"required": true
+				}
+			]
+		}
+	],
 	"resources": []
 }

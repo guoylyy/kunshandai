@@ -5,10 +5,75 @@
 			"name": "user",
 			"attrs": [
 				{
-					"attrName": "user",
+					"attrName": "account",
 					"attrType": "String",
-					"minLength": "100",
-					"maxLength": "150",
+					"minLength": "0",
+					"maxLength": "100",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "password",
+					"attrType": "String",
+					"minLength": "0",
+					"maxLength": "200",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "name",
+					"attrType": "String",
+					"minLength": "0",
+					"maxLength": "50",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "is_active",
+					"attrType": "Boolean",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "token",
+					"attrType": "String",
+					"minLength": "0",
+					"maxLength": "200",
+					"enumValues": [],
+					"required": true
+				}
+			]
+		},
+		{
+			"name": "post",
+			"attrs": [
+				{
+					"attrName": "content",
+					"attrType": "String",
+					"minLength": "0",
+					"maxLength": "64450",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "create_time",
+					"attrType": "Date",
+					"dateConstraint": "",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "update_time",
+					"attrType": "Date",
+					"dateConstraint": "",
+					"enumValues": [],
+					"required": true
+				},
+				{
+					"attrName": "title",
+					"attrType": "String",
+					"minLength": "0",
+					"maxLength": "100",
 					"enumValues": [],
 					"required": true
 				}

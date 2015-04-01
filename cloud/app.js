@@ -1,6 +1,7 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var app = express();
+var expressValidator = require('express-validator');
 var Mailgun = require('mailgun').Mailgun;
 var util = require('util');
 var expressLayouts = require('express-ejs-layouts');
@@ -11,39 +12,35 @@ var avosExpressHttpsRedirect = require('avos-express-https-redirect');
 var crypto = require('crypto');
 var avosExpressCookieSession = require('avos-express-cookie-session');
 
-
-
 var mutil = require('cloud/mutil.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
 var _s = require('underscore.string');
 
 // App 全局配置
-if (__production) {
+if (config.__production) {
     app.set('views', 'cloud/views');    
 } else {
     app.set('views', 'cloud/views');
 }
-
 app.set('view engine', 'ejs');        // 设置template引擎
-app.use(avosExpressHttpsRedirect());
 app.use(express.bodyParser());        // 读取请求body的中间件
-app.use(express.cookieParser(config.cookieParserSalt));
-app.use(avosExpressCookieSession({ 
+app.use(expressValidator);
+app.use(avosExpressHttpsRedirect());
+app.use(express.cookieParser(config.cookieParserSalt)); //还不明白是干什么的
+app.use(avosExpressCookieSession({    //设置 cookie
     cookie: { 
         maxAge: 3600000 
     }, 
     fetchUser: true
 }));
 app.use(expressLayouts);
-//app.use(account.clientTokenParser());
 app.use(app.router);
 
 
-var secret_content = 0;
 
-app.get('/',function(req, res){
-  console.log(account.isLogin());
+app.get('/home',function(req, res){
+  //console.log(account.isLogin());
   if(account.isLogin()){
     res.redirect('/index');
   }else{
@@ -62,45 +59,39 @@ app.get('/login', function(req, res){
 	res.render('login.ejs');
 });
 
+app.get('/logout', function(req, res){
+  AV.User.logOut();
+  res.redirect('/home');
+});
+
 app.post('/login', function(req, res){
-	var username = req.body.username;
-	var password = req.body.password;
-	AV.User.logIn(username, password,{
-		success:function(user){
-      //console.log('success');
-      console.log(AV.User.current());
-      console.log(account.isLogin());
-			res.redirect('/');
-		},
-		error:function(user, error){
-			res.redirect('/login');
-		}
-	});
+  var username = req.body.username;
+  var password = req.body.password;
+  AV.User.logIn(username, password,{
+    success:function(user){
+      res.redirect('/home');
+    },
+    error:function(user, error){
+      res.redirect('/login');
+    }
+  });
 });
 
-app.get('/mobilePhoneNumberVerify', function (req, res){
-  var code = req.query.code;
-  console.log(code);
-  AV.User.requestMobilePhoneVerify(code).then(function(){
-    console.log('验证码已发送');
-  },mutil.renderErrorFn(res));
-});
-
-app.get('/requestEmailVerify', function (req, res){
-  var email = req.query.email;
-  AV.User.requestEmailVerfiy(email).then(function () {
-        mutil.renderInfo(res, '邮件已发送请查收。');
-    }, mutil.renderErrorFn(res));
-});
-
-/*
-	注册用户相关
+/**
+ * 注册用户相关 
  */
 app.get('/register', function (req, res) {
 	res.render('register.ejs');
 });
 
+//注册过后会发送一条短信给该注册用户
 app.post('/register', function (req, res) {
+
+  req.assert('email', 'A valid email is required').isEmail();
+  req.assert('email', 'A valid email is required').notEmpty();
+  var errors = req.validationErrors();
+
+  console.log(errors);
   var username = req.body.username;
   var password = req.body.password;
   var email = req.body.email;
@@ -114,11 +105,28 @@ app.post('/register', function (req, res) {
       user.signUp(null).then(function(user){
         res.render('phone_verify.ejs');
       },function(error){
-        res.redirect('/register');
+        console.log(error);
+        res.json(error);
+        //res.redirect('/register');
       });
   } else {
       mutil.renderError(res, '不能为空');
   }
+});
+
+//验证用户手机收到的验证码
+app.get('/mobilePhoneNumberVerify', function (req, res){
+  var code = req.query.code;
+  AV.User.requestMobilePhoneVerify(code).then(function(){
+    res.json({result:'success'});
+  },mutil.renderErrorFn(res));
+});
+
+app.get('/requestEmailVerify', function (req, res){
+  var email = req.query.email;
+  AV.User.requestEmailVerfiy(email).then(function () {
+        mutil.renderInfo(res, '邮件已发送请查收。');
+    }, mutil.renderErrorFn(res));
 });
 
 /*

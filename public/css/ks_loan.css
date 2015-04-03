@@ -1,0 +1,45 @@
+/*******************************
+         Site Settings
+*******************************/
+/*-------------------
+       Container
+--------------------*/
+#account  .container {
+  	width: 75rem;
+  	margin: 0 auto;
+}
+
+#account .navlist{
+	padding-top: 30px;
+	float:right;
+}
+#account .navlist .item{
+	padding:0px 10px 0px 10px;
+}
+#account .header{
+	padding: 5px 0px 5px 0px;
+	min-height: 60px;
+}
+#account .main{
+	background: url("../../image/new/a_bg.png") repeat-x;
+	min-height: 550px;
+}
+#account .segment{
+	margin: 0px;
+	border-radius: 0px;
+}
+#account .middlebox{
+	margin: 60px 0px;
+	min-height: 380px;
+	background: rgba(0,0,0,0.3);
+}
+#account .maininput{
+	padding: 30px 35px 30px 10px;
+}
+#account .footer{
+	padding:30px 0px 40px 0px;
+}
+
+#account .form{
+	padding:20px 0px 0px 20px;
+}

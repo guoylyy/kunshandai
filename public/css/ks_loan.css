@@ -1,7 +1,7 @@
 /*******************************
          Site Settings
 *******************************/
- .container {
+.container {
   	width: 75rem;
   	margin: 0 auto;
 }
@@ -11,6 +11,9 @@
 .step{
 	border-radius: 0px !important;
 }
+/*input,.ui.selection{
+	border-radius: 0px !important;
+}*/
 /*-----------------------------------
        Account Page(Login  Register)
 -------------------------------------*/

@@ -132,6 +132,9 @@ app.get('/requestEmailVerify', function (req, res){
 /*
 	新建项目
  */
+app.get('/new_contract', function(req, res){
+  res.render('new_contract.ejs');
+});
 
 
 /*

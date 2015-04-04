@@ -1,14 +1,19 @@
 /*******************************
          Site Settings
 *******************************/
-/*-------------------
-       Container
---------------------*/
-#account  .container {
+ .container {
   	width: 75rem;
   	margin: 0 auto;
 }
-
+.mcolor{
+	color:#6b2347 !important;
+}
+.step{
+	border-radius: 0px !important;
+}
+/*-----------------------------------
+       Account Page(Login  Register)
+-------------------------------------*/
 #account .navlist{
 	padding-top: 30px;
 	float:right;
@@ -42,4 +47,47 @@
 
 #account .form{
 	padding:20px 0px 0px 20px;
+}
+
+/*-----------------------------------
+           Manangement Page
+-------------------------------------*/
+#management .segment{
+	margin: 0;
+	border-radius: 0px;
+}
+#management .top.segment{
+	height: 40px;
+	padding: 0.8em;
+}
+#management .top .column{
+	padding: 0 0 0 1.2em;
+}
+#management .main{
+	padding-top: 1em;
+	padding-bottom: 5em;
+}
+#management .main.segment{
+	box-shadow: 0 0 0 0px !important;
+}
+#management .main .header{
+	padding-bottom: 0.6em;
+}
+#management .form{
+	margin-top: 1.5em;
+}
+#management .form .header{
+	margin-left: 0px;
+	border-radius: 0px;
+}
+#management  .attached.header{
+	background-color: #fafafa;
+}
+#management .table{
+	border-top-style: none;
+	border-left-style: none;
+	border-right-style: none;
+}
+#management .navbuttons{
+	margin-top: 2em;
 }

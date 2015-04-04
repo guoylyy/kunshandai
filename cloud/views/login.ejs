@@ -19,40 +19,56 @@
 </div>
 -->
 
+<script type="text/javascript">
+	function submit_login_form(){
+		$("#loginForm").submit();
+	}
+
+</script>
+<div id="account">
+
 <% include login_header%>
 
 <div class="container">
-<div class="ui vertical middlebox segment">
-	<div class="ui grid">
-		<div class="ui eleven wide column">这里放图</div>
-		<div class="ui five wide maininput column">
-			<div class="ui inverted  form">
-				<h2 class="ui inverted header ">登录您的昆山贷款</h2>
-				<div class="ui left icon input field">
-					<input placeholder="用户名" type="text"> <i class="user icon"></i>
-				</div>
-				<div class="ui left icon input field">
-					<input type="password" placeholder="密码"> <i class="lock icon"></i>
-				</div>
-				<div class="fields">
-					<div class="eleven wide field">
-						<div class="ui checkbox">
-							<input type="checkbox">
-							<label>七天内免登陆</label>
+<form id="loginForm" class="search-form-middle" action="/login" method="POST">
+	<div class="ui vertical middlebox segment">
+		<div class="ui grid">
+			<div class="ui eleven wide column">这里放图</div>
+
+			
+			<div class="ui five wide maininput column">
+				<div class="ui inverted  form">
+					<h2 class="ui inverted header ">登录您的昆山贷款</h2>
+					<div class="ui left icon input field">
+						<input placeholder="用户名" type="text" name="username"> <i class="user icon"></i>
+					</div>
+					<div class="ui left icon input field">
+						<input type="password" placeholder="密码" name="password"> <i class="lock icon"></i>
+					</div>
+					<div class="fields">
+						<div class="eleven wide field">
+							<div class="ui checkbox">
+								<input type="checkbox">
+								<label>七天内免登陆</label>
+							</div>
+						</div>
+						<div class="field">
+							<div class="ui submit blue button" onclick="submit_login_form();">登录</div>
 						</div>
 					</div>
-					<div class="field">
-						<div class="ui submit blue button">登录</div>
-					</div>
+					<div class="ui horizontal divider">或</div>
+					<a href="/register">
+						<div class="fluid ui  green labeled icon button ">
+							注册账号
+							<i class="add icon"></i>
+						</div>
+					</a>
 				</div>
-				<div class="ui horizontal divider">或</div>
-				<a href="/register"><div class="fluid ui  green labeled icon button ">
-					注册账号
-					<i class="add icon"></i>
-				</div></a>
+				
 			</div>
-
 		</div>
 	</div>
+</form>
 </div>
+
 </div>

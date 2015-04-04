@@ -77,6 +77,10 @@ app.post('/login', function(req, res){
   });
 });
 
+app.get('/isLogin', function(req, res){
+  res.json(account.isLogin()); //返回用户对象
+});
+
 /**
  * 注册用户相关 
  */
@@ -86,42 +90,46 @@ app.get('/register', function (req, res) {
 
 //注册过后会发送一条短信给该注册用户
 app.post('/register', function (req, res) {
-
-  req.assert('email', 'A valid email is required').isEmail();
-  req.assert('email', 'A valid email is required').notEmpty();
-  var errors = req.validationErrors();
-
-  console.log(errors);
-  var username = req.body.username;
-  var password = req.body.password;
-  var email = req.body.email;
+  // req.assert('mobilePhoneNumber', 'A valid email is required').notEmpty();
+  // var errors = req.validationErrors();
+  //console.log(errors);
   var mobilePhoneNumber = req.body.mobilePhoneNumber;
-  if (username && password && email) {
+  var password = req.body.password;
+  console.log(mobilePhoneNumber);
+  if (password && mobilePhoneNumber) {
       var user = new AV.User();
-      user.set('username', username);
       user.set('password', password);
-      user.set('email', email);
+      user.set('username', mobilePhoneNumber);
       user.set('mobilePhoneNumber', mobilePhoneNumber);
       user.signUp(null).then(function(user){
-        res.render('phone_verify.ejs');
+        res.json(user);
       },function(error){
         console.log(error);
         res.json(error);
-        //res.redirect('/register');
       });
   } else {
       mutil.renderError(res, '不能为空');
   }
 });
 
-//验证用户手机收到的验证码
-app.get('/mobilePhoneNumberVerify', function (req, res){
-  var code = req.query.code;
-  AV.User.requestMobilePhoneVerify(code).then(function(){
+//发送手机验证码
+app.get('/requestMobilePhoneVerify', function (req, res){
+  var mobilePhoneNumber = req.query.mobilePhoneNumber;
+  AV.User.requestMobilePhoneVerify(mobilePhoneNumber).then(function(){
     res.json({result:'success'});
   },mutil.renderErrorFn(res));
 });
 
+//验证用户手机收到的验证码
+app.post('/verifyUserMobilePhoneNumber', function (req, res){
+  var code = req.body.code;
+  console.log(code);
+  AV.User.verifyMobilePhone(code).then(function(){
+    res.json({result:'success'});
+  },mutil.renderErrorFn(res));
+});
+
+//
 app.get('/requestEmailVerify', function (req, res){
   var email = req.query.email;
   AV.User.requestEmailVerfiy(email).then(function () {
@@ -135,6 +143,8 @@ app.get('/requestEmailVerify', function (req, res){
 app.get('/new_contract', function(req, res){
   res.render('new_contract.ejs');
 });
+
+
 
 
 /*

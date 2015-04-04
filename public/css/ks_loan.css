@@ -11,6 +11,13 @@
 .step{
 	border-radius: 0px !important;
 }
+.table{
+	border-radius: 0px !important;
+}
+.table thead th{
+	border-radius: 0px !important;
+	/*background-color: #fafafa !important;*/
+}
 /*input,.ui.selection{
 	border-radius: 0px !important;
 }*/
@@ -76,21 +83,47 @@
 #management .main .header{
 	padding-bottom: 0.6em;
 }
+
+#m
 #management .form{
 	margin-top: 1.5em;
 }
-#management .form .header{
+#management .header{
 	margin-left: 0px;
 	border-radius: 0px;
 }
-#management  .attached.header{
-	background-color: #fafafa;
+#management .attached.header{
+	background-color: #f0f0f0;
 }
-#management .table{
+#management .segment.table{
 	border-top-style: none;
 	border-left-style: none;
 	border-right-style: none;
 }
 #management .navbuttons{
 	margin-top: 2em;
+}
+#management .content{
+	width: 75em;
+	min-height: 60em;
+	/*left: 20em;*/
+	padding: 5 0 10 0em;
+	position: relative;
+}
+#management .container{
+	/*background-color: white;*/
+}
+#management .mnav.menu{
+	border-radius: 0px;
+	background-color: #fafafa;
+}
+#management .mnav.menu .item{
+	height: 3em !important;
+	line-height: 1.5;
+	
+}
+
+#management .project.view{
+	margin-top: 2em;
+
 }

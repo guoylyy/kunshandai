@@ -26,8 +26,39 @@
 	padding:30px 0px 40px 0px !important;
 }
 
-.label,.header,input,.button,.menu{
+.label,.header,input,.button,.menu,.segment,.ui.modal .actions{
 	border-radius: 0px !important;
+}
+/*-----------------------------------
+       Modal
+-------------------------------------*/
+.ui.modal>.header{
+	font-size: 1.3em;
+	padding: 0.7rem 2rem;
+	color: #ffffff !important;
+	background-color: #6b2347 !important;
+}
+.ui.modal>.content{
+	padding: 0px;
+}
+.ui.modal .content .segment{
+	padding: 1.5rem 2rem 1.5rem 2rem;
+}
+.ui.modal .ui.segment{
+	margin:0px !important;
+}
+.ui.modal table{
+	margin:0px;
+	border-left-style: none;
+	border-right-style: none;
+}
+.ui.modal table th:first-child,.ui.modal table td:first-child{
+	padding-left: 2rem;
+
+}
+.ui.modal>.close{
+	top: 0.5rem;
+	right: 0.5rem;
 }
 /*input,.ui.selection{
 	border-radius: 0px !important;

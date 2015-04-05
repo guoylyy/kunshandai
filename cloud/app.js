@@ -38,7 +38,6 @@ app.use(expressLayouts);
 app.use(app.router);
 
 
-
 app.get('/home',function(req, res){
   //console.log(account.isLogin());
   if(account.isLogin()){
@@ -49,7 +48,7 @@ app.get('/home',function(req, res){
 });
 
 app.get('/index',function(req, res){
-  res.render('index.ejs');
+  res.render('loan_search.ejs');
 });
 
 /*
@@ -140,10 +139,13 @@ app.get('/requestEmailVerify', function (req, res){
 /*
 	新建项目
  */
-app.get('/new_contract', function(req, res){
-  res.render('new_contract.ejs');
+app.get('/loan/create_contract', function(req, res){
+  res.render('create_contract.ejs');
 });
 
+app.get('/loan/create_loan', function (req, res){
+  res.render('create_loan.ejs');
+});
 
 
 

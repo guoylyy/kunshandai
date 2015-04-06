@@ -1,0 +1,27 @@
+{
+  "name": "y",
+  "version": "1",
+  "homepage": "https://github.com/guoylyy/kunshandai",
+  "authors": [
+    "ethansure <jianxupan@foxmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-ui": "^1.9",
+    "font-awesome": "~4.2.0",
+    "semantic-ui": "~1.11.6",
+    "requirejs": "~2.1.17",
+    "underscore": "~1.8.3",
+    "backbone": "~1.1.2",
+    "requirejs-text": "~2.0.14",
+    "backbone-validation": "~0.11.3"
+  }
+}

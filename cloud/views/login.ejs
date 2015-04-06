@@ -1,33 +1,6 @@
-<!-- <div class="container  text-center ">
-
-<form id="loginForm" class="search-form-middle" action="/login" method="POST">
-	<p>
-		用户名：
-		<input id="usernameInput" name="username" type="text"/>
-	</p>
-
-	<p>
-		密码&nbsp;&nbsp;&nbsp;&nbsp;：
-		<input id="passwordInput" name="password" type="password"/>
-	</p>
-
-	<div >
-		<input class="btn btn-default login-btn-width" name="go" type="submit" value="登录">
-		<a class="btn btn-default login-btn-width" href="/register">注册</a>
-	</div>
-</form>
-</div>
--->
-
-<script type="text/javascript">
-	function submit_login_form(){
-		$("#loginForm").submit();
-	}
-
-</script>
 <div id="account">
 
-<% include login_header%>
+<% include account/guest_body %>
 
 <div class="container">
 <form id="loginForm" class="search-form-middle" action="/login" method="POST">
@@ -53,7 +26,7 @@
 							</div>
 						</div>
 						<div class="field">
-							<div class="ui submit blue button" onclick="submit_login_form();">登录</div>
+							<div class="ui submit blue button" id="user-login">登录</div>
 						</div>
 					</div>
 					<div class="ui horizontal divider">或</div>

@@ -24,7 +24,8 @@ define([
 
 
         url: function(){
-            return accountApp.API + '/auth';
+            // return accountApp.API + '/auth';
+            return "/v1/account";
         },
 
         updateSessionUser: function( userData ){
@@ -60,7 +61,7 @@ define([
             if(DEBUG) console.log(postData);
             
             $.ajax({
-                url: this.url() + '/' + opts.method,
+                url: this.url()+"/"+opts.method,
                 contentType: 'application/json',
                 dataType: 'json',
                 type: 'POST',
@@ -105,8 +106,8 @@ define([
             this.postAuth(_.extend(opts, { method: 'logout' }), callback);
         },
 
-        signup: function(opts, callback, args){
-            this.postAuth(_.extend(opts, { method: 'signup' }), callback);
+        register: function(opts, callback, args){
+            this.postAuth(_.extend(opts, { method: 'register' }), callback);
         },
 
         removeAccount: function(opts, callback, args){

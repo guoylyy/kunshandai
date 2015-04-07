@@ -1,59 +1,52 @@
-<!--
+	<div class="ui main segment">
+		<div class="container">
+			<div class="ui vertical middlebox segment">
+				<div class="ui grid">
+					<div class="ui six wide maininput column">
+						<div class="ui inverted  form">
+							<h2 class="ui inverted header ">注册您的昆山贷款账号</h2>
+							<div class="field">
+								<label>手机号</label>
+								<input type="text" placeholder="手机号" name="mobilePhone" >
+							</div>
+							<div class="field">
+								<label>密码</label>
+								<input type="password" placeholder"密码" name="password">
+							</div>
+							<div class="field">
+								<label>密码确认</label>
+								<input type="password" placeholder"密码确认" name="pwConfirmation">
+							</div>
+							<div class=" fields">
+								<div class="ten wide field">
+									<label>手机验证码</label>
+									<input type="password" placeholder"密码" name="mpCaptcha">
+								</div>
+								<div class="field">
+									<label>&nbsp</label>
+									<div id="send-captcha" class="fluid ui  button">发送验证码</div>
+								</div>
+							</div>
 
-<form id="loginForm" class="search-form-middle text-center" action="/register" method="POST">
-<p>
-	用户名：
-	<input id="usernameInput" name="username" type="text"/>
-</p>
+						<!-- 	<div class=" field">
+								<div class="ui checkbox">
+									<input type="checkbox" id="agreement">
+									<label>同意服务条款</label>
+								</div>							    
+							</div> -->
+							<div class="fluid ui green button ">
+								立即注册
+							</div>
+							<div class="ui horizontal divider">或</div>
 
-<p>
-	密码&nbsp;&nbsp;&nbsp;&nbsp;：
-	<input id="passwordInput" name="password" type="password"/>
-</p>
+							<div class="field">
+								<div class="fluid ui submit blue labeled icon button">登录<i class="home icon"></i></div>
+							</div>
+						</div>
+					</div>
+					<div class="ui ten wide column">这里放图</div>
 
-<p>
-	手机&nbsp;&nbsp;&nbsp;&nbsp;：
-	<input id="emailInput" name="mobilePhoneNumber" type="text"/>
-</p>
-
-<p>
-	邮箱&nbsp;&nbsp;&nbsp;&nbsp;：
-	<input id="passwordInput" name="email" type="email"/>
-</p>
-
-<p>
-	<input class="btn btn-default" name="go" type="submit" value="注册">
-	<a href="/login">登录</a>
-</p>
-</form>
--->
-
-<script type="text/javascript">
-function	pre_register(){
-	var mobilePhoneNumber = $('#mobilePhoneNumber').val();
-	var password = $('#password').val();
-	if(password != $('#password_verify').val()){
-		//error 
-		console.log('密码不一致');
-		return;
-	}else if(mobilePhoneNumber=='' || password==''){
-		console.log('有未填的选项');
-		return;
-	}
-
-	$.post('/register',{
-		mobilePhoneNumber : mobilePhoneNumber,
-		password :password
-	},
-	function(data, status){
-		console.log(data);
-	});
-};
-
-function verify_mobile_phone_number(){
-	alert('fadfa');
-	$('#verify_form').submit();
-};
-
-</script>
-
+				</div>
+			</div>
+		</div>
+	</div>

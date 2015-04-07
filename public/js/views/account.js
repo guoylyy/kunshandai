@@ -17,7 +17,7 @@ define([
 			events:{
 				'click #user-login':		'userLogin', 
 				'click #user-register':     'userRegiter',
-				'click #phone-validate':	'phoneValidate',
+				'click #send-captcha':	    'sendCaptcha',
 				'click #remember-me':		'rememberMe'
 			},
 
@@ -32,7 +32,7 @@ define([
 				this.initializeInputBox('login');
 				$('.pointing').remove();
 				this.input = {
-					telephone: this.inputBoxes[0].val(),
+					mobilephone: this.inputBoxes[0].val(),
 					password: this.inputBoxes[1].val()
 				}
 				this.user.set(this.input);
@@ -52,6 +52,23 @@ define([
 					return false;
 				}
 				
+			},
+			useRegister:function(evt) {
+				evt.preventDefault();
+				this.initializeInputBox('register');
+				$('.pointing').remove();
+				this.input = {
+					mobilephone: this.inputBoxes[0].val(),
+					password : this.inputBoxes[1].val(),
+					pwConfirmation: this.inputBoxes[2].val(),
+					mpCaptcha: this.inputBoxes[3].val()
+				}
+				this.user.set(this.input);
+				if( this.user.isValid(Common.registerFormAttr) ){
+					accountApp.session.register()
+				}else{
+					return false;
+				}
 			},
 
  			render: function () {

@@ -12,7 +12,7 @@ define([
                     msg:'请填写手机号'
             },
             {
-                    pattern: /^d{11}$/,
+                    pattern: /^\d{11}$/,
                     msg:'请填写11位手机号'
             }],
             password:{
@@ -23,9 +23,9 @@ define([
                 equalTo:'password',
                 msg:'两次密码不一致'
             },
-            telephone_verifycode:{
+            mpCaptcha:{
                 required:true,
-                msg:'验证码错误'
+                msg:'请输入验证码'
             }
         },
 

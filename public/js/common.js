@@ -3,8 +3,8 @@
 define([],function(){
 	return {
 
-		loginFormAttr	:	['telephone','password'],
-		registerFormAttr:   ['telephone','password','pwConfirmation','telVerifycode','agreement'],
+		loginFormAttr	:	['mobilePhone','password'],
+		registerFormAttr:   ['mobilePhone','password','pwConfirmation','mpCaptcha','agreement'],
 
 		ENTER_KEY		:	13,
 		ESCAPE_KEY		:	27

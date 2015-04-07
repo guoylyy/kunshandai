@@ -24,6 +24,7 @@ if (config.__production) {
 } else {
     app.set('views', 'cloud/views');
 }
+app.set('view engine', 'ejs'); 
 app.use(express.bodyParser());        // 读取请求body的中间件
 app.use(expressValidator);
 app.use(avosExpressHttpsRedirect());

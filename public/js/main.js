@@ -8,7 +8,8 @@ require.config({
 	    underscore: '../lib/underscore/underscore-min',
 	    backbone: '../lib/backbone/backbone',
 	    semantic:'../lib/semantic-ui/dist/semantic.min',
-	    text:'../lib/requirejs-text/text'
+	    text:'../lib/requirejs-text/text',
+	    backboneValidation:'../lib/backbone-validation/dist/backbone-validation-amd'
 	}
 
 });

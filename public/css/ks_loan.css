@@ -78,7 +78,7 @@
 	min-height: 60px;
 }
 #account .main{
-	background: url("../../image/new/a_bg.png") repeat-x;
+	background: url("../images/a_bg.png") repeat-x;
 	min-height: 550px;
 }
 #account .segment{

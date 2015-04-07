@@ -1,6 +1,7 @@
 // 在 Cloud code 里初始化 Express 框架
 var express = require('express');
 var app = express();
+var ejs = require('ejs');
 var expressValidator = require('express-validator');
 var Mailgun = require('mailgun').Mailgun;
 var util = require('util');
@@ -23,7 +24,6 @@ if (config.__production) {
 } else {
     app.set('views', 'cloud/views');
 }
-app.set('view engine', 'ejs');        // 设置template引擎
 app.use(express.bodyParser());        // 读取请求body的中间件
 app.use(expressValidator);
 app.use(avosExpressHttpsRedirect());
@@ -36,7 +36,6 @@ app.use(avosExpressCookieSession({    //设置 cookie
 }));
 app.use(expressLayouts);
 app.use(app.router);
-
 
 app.get('/home',function(req, res){
   //console.log(account.isLogin());

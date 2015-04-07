@@ -19,7 +19,7 @@ define([
             // _.bindAll(this);
 
             // Singleton user object
-            this.user = new User({});
+            this.user = new User();
         },
 
 

@@ -1,7 +1,62 @@
 #%RAML 0.8
 
-title: Kunshan Dai APIs
+title: Kunshan Dai
 baseUri: http://kunshandai.avosapps.com/{version}
 version: v1
+traits:
+  - paged:
+      queryParameters:
+        pages:
+          description: The number of pages to return
+          type: number
 
+/account:        
+  /login:
+    get:
+      description: render login page
+    post:
+      queryParameters:
+        mobilePhoneNumber:
+          description: |
+            mobilePhoneNumber
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                	"username":"18516171260",
+                	"create_time":"fdsafsad"
+                }
+      description: login system with mobilePhoneNumber & password
+  /logout:
+    get:
+      description: logout current user
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":"success"
+                }
+  /isLogin:
+    get:
+      description: check is current login or not
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                	"username":"18516171260",
+                	"create_time":"fdsafsad"
+                }
+  /register:
+    get:
+      description: render to register page
+    post:
+      description: |
+        
 

@@ -138,7 +138,12 @@ traits:
                   "code":200
                 }
   /verifyUserMobilePhoneNumber:
-    get:
+    post:
+      queryParameters:
+        code:
+          description: |
+            code
+          type: integer
       description: |
         rt
       responses:

@@ -95,6 +95,9 @@ app.get(config.baseUrl + '/account/isLogin', function(req, res){
   account.isLogin() ? res.json(account.isLogin()):mutil.renderResult(res, false, 210);
 });
 app.post(config.baseUrl + '/account/register', function (req, res) {
+  if(account.isLogin()){
+    AV.User.logOut();
+  }
   var mobilePhoneNumber = req.body.mobilePhoneNumber;
   var password = req.body.password;
   var user = new AV.User();
@@ -111,7 +114,7 @@ app.post(config.baseUrl + '/account/register', function (req, res) {
 app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res){
   var mobilePhoneNumber = req.query.mobilePhoneNumber;
   AV.User.requestMobilePhoneVerify(mobilePhoneNumber).then(function(){
-    mutil.renderSuccess();
+    mutil.renderSuccess(res);
   }, function(error){
       mutil.renderError(res, error);
   });
@@ -121,7 +124,7 @@ app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req,
   var code = req.body.code;
   console.log(code);
   AV.User.verifyMobilePhone(code).then(function(){
-    mutil.renderSuccess();
+    mutil.renderSuccess(res);
   },function(error){
     mutil.renderError(res, error);
   });
@@ -130,7 +133,7 @@ app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req,
 app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
   var email = req.query.email;
   AV.User.requestEmailVerfiy(email).then(function () {
-      mutil.renderSuccess();
+      mutil.renderSuccess(res);
     }, function(error){
       mutil.renderError(res, error);
   });

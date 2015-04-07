@@ -7,7 +7,7 @@ define([
     var User = Backbone.Model.extend({
 
         validation:{
-            telephone:[{
+            mobilePhone:[{
                     required: true,
                     msg:'请填写手机号'
             },
@@ -19,7 +19,7 @@ define([
                 required:true,
                 msg:'请填写密码'
             },
-            passwordConfirmation:{
+            pwConfirmation:{
                 equalTo:'password',
                 msg:'两次密码不一致'
             },

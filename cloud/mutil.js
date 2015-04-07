@@ -9,18 +9,19 @@ function doErr(err){
 }
 
 function renderError(res, error) {
+  console.log(error.code);
   if (error == null) {
-    error = "Unknown error";
-  }
-  if (typeof error != 'string')
-    error = util.inspect(error);
-  res.render('500', {error: error});
+    error = {
+      message: "Unknown error",
+      code: 500
+    };
+  };
+  res.status(error.code).json(error);
 }
 
-function renderErrorFn(res) {
-  return function (err) {
-    renderError(res, err);
-  };
+
+function renderSuccess(res){
+  return renderResult(res,'success', 200);
 }
 
 function rejectFn(promise){
@@ -40,14 +41,14 @@ function renderForbidden(res) {
   renderError(res, "Forbidden area.");
 }
 
-function renderInfo(res, info, backLink) {
-  res.render('info', {info: info, backLink: backLink});
+function renderResult(res, result, code, backLink) {
+  res.status(code).json({result: result, backLink: backLink, code:code});
 }
 
 exports.doErr=doErr;
-exports.renderErrorFn=renderErrorFn;
+exports.renderSuccess=renderSuccess;
 exports.renderError=renderError;
 exports.rejectFn=rejectFn;
 exports.renderForbidden=renderForbidden;
 exports.logErrorFn=logErrorFn;
-exports.renderInfo=renderInfo;
+exports.renderResult=renderResult;

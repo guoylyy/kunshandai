@@ -1,4 +1,9 @@
-// 在 Cloud code 里初始化 Express 框架
+/**
+ * [express description]
+ * @author globit
+ * @email  yiliangg@foxmail.com
+ * @version [v1]
+ */
 var express = require('express');
 var app = express();
 var expressValidator = require('express-validator');
@@ -18,7 +23,7 @@ var config = require('cloud/config.js');
 var _s = require('underscore.string');
 
 // App 全局配置
-if (config.__production) {
+if (__production) {
     app.set('views', 'cloud/views');    
 } else {
     app.set('views', 'cloud/views');
@@ -38,8 +43,10 @@ app.use(expressLayouts);
 app.use(app.router);
 
 
+/**
+ * 主页路由器,用于渲染前端框架入口页面
+ */
 app.get('/home',function(req, res){
-  //console.log(account.isLogin());
   if(account.isLogin()){
     res.redirect('/index');
   }else{
@@ -50,90 +57,83 @@ app.get('/home',function(req, res){
 app.get('/index',function(req, res){
   res.render('loan_search.ejs');
 });
-
-/*
-	登录相关 routes
- */
 app.get('/login', function(req, res){
-	res.render('login.ejs');
+  res.render('login.ejs');
 });
 
-app.get('/logout', function(req, res){
+/***************************************************
+ * 账号相关的操作
+ * 已完成
+ * 1. 登录 登出 是否登录
+ * 2. 注册 手机验证码 邮箱验证
+ * TODO:
+ * 1. 完善用户资料
+ * 2. 获取用户资料
+ * 3. 头像更新
+ * 4. 修改密码
+ **************************************************/
+app.get(config.baseUrl +'/account/logout', function(req, res){
   AV.User.logOut();
-  res.redirect('/home');
+  mutil.renderSuccess(res);
 });
-
-app.post('/login', function(req, res){
+app.post(config.baseUrl +'/account/login', function(req, res){
   var username = req.body.username;
   var password = req.body.password;
+  if(account.isLogin()){
+    AV.User.logOut();
+  }
   AV.User.logIn(username, password,{
-    success:function(user){
-      res.redirect('/home');
-    },
-    error:function(user, error){
-      res.redirect('/login');
-    }
+      success:function(user){
+        res.json(user);
+      },
+      error:function(user, error){
+        mutil.renderError(res, error);
+      }
   });
 });
-
-app.get('/isLogin', function(req, res){
-  res.json(account.isLogin()); //返回用户对象
+app.get(config.baseUrl + '/account/isLogin', function(req, res){
+  account.isLogin() ? res.json(account.isLogin()):mutil.renderResult(res, false, 210);
 });
-
-/**
- * 注册用户相关 
- */
-app.get('/register', function (req, res) {
-	res.render('register.ejs');
-});
-
-//注册过后会发送一条短信给该注册用户
-app.post('/register', function (req, res) {
-  // req.assert('mobilePhoneNumber', 'A valid email is required').notEmpty();
-  // var errors = req.validationErrors();
-  //console.log(errors);
+app.post(config.baseUrl + '/account/register', function (req, res) {
   var mobilePhoneNumber = req.body.mobilePhoneNumber;
   var password = req.body.password;
-  console.log(mobilePhoneNumber);
-  if (password && mobilePhoneNumber) {
-      var user = new AV.User();
-      user.set('password', password);
-      user.set('username', mobilePhoneNumber);
-      user.set('mobilePhoneNumber', mobilePhoneNumber);
-      user.signUp(null).then(function(user){
-        res.json(user);
-      },function(error){
-        console.log(error);
-        res.json(error);
-      });
-  } else {
-      mutil.renderError(res, '不能为空');
-  }
+  var user = new AV.User();
+  user.set('password', password);
+  user.set('username', mobilePhoneNumber);
+  user.set('mobilePhoneNumber', mobilePhoneNumber);
+  user.signUp(null).then(function(user){
+    res.json(user); //注册过后会发送一条短信给该注册用户, leancloud 后台配置
+  },function(error){
+    mutil.renderError(res, error);
+  });
 });
-
 //发送手机验证码
-app.get('/requestMobilePhoneVerify', function (req, res){
+app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res){
   var mobilePhoneNumber = req.query.mobilePhoneNumber;
   AV.User.requestMobilePhoneVerify(mobilePhoneNumber).then(function(){
-    res.json({result:'success'});
-  },mutil.renderErrorFn(res));
+    mutil.renderSuccess();
+  }, function(error){
+      mutil.renderError(res, error);
+  });
 });
-
 //验证用户手机收到的验证码
-app.post('/verifyUserMobilePhoneNumber', function (req, res){
+app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req, res){
   var code = req.body.code;
   console.log(code);
   AV.User.verifyMobilePhone(code).then(function(){
-    res.json({result:'success'});
-  },mutil.renderErrorFn(res));
+    mutil.renderSuccess();
+  },function(error){
+    mutil.renderError(res, error);
+  });
 });
-
-//
-app.get('/requestEmailVerify', function (req, res){
+//发送验证邮件
+app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
   var email = req.query.email;
   AV.User.requestEmailVerfiy(email).then(function () {
-        mutil.renderInfo(res, '邮件已发送请查收。');
-    }, mutil.renderErrorFn(res));
+      mutil.renderSuccess();
+    }, function(error){
+      mutil.renderError(res, error);
+  });
 });
 
 /*
@@ -147,13 +147,9 @@ app.get('/loan/create_loan', function (req, res){
   res.render('create_loan.ejs');
 });
 
-
-
 /*
 	分条件查看项目列表
  */
-
-
 
 /*
 	查看联系人列表
@@ -163,7 +159,6 @@ app.get('/loan/create_loan', function (req, res){
 /*
 	查看个人主页
  */
-
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
 app.listen({"static": {maxAge: 604800000}});

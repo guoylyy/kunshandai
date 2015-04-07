@@ -1,7 +1,170 @@
 #%RAML 0.8
 
-title: Kunshan Dai APIs
+title: Kunshan Dai
 baseUri: http://kunshandai.avosapps.com/{version}
 version: v1
+traits:
+  - paged:
+      queryParameters:
+        pages:
+          description: The number of pages to return
+          type: number
+
+/account:        
+  /login:
+    get:
+      description: render login page.
+    post:
+      queryParameters:
+        mobilePhoneNumber:
+          description: |
+            mobilePhoneNumber
+          type: string
+        password:
+          description: |
+            password
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "username": "18516171260",
+                    "emailVerified": false,
+                    "mobilePhoneNumber": "18516171260",
+                    "mobilePhoneVerified": true,
+                    "objectId": "551fea47e4b02dd0ab568b85",
+                    "createdAt": "2015-04-04T13:42:31.367Z",
+                    "updatedAt": "2015-04-04T13:42:59.487Z"
+                }
+        210:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 210,
+                  "message": "The username and password mismatch."
+                }
+        211:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 211,
+                  "message": "Could not find user"
+                }
+      description: login system with mobilePhoneNumber & password
+  /logout:
+    get:
+      description: logout current user
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "username": "18516171260",
+                    "emailVerified": false,
+                    "mobilePhoneNumber": "18516171260",
+                    "mobilePhoneVerified": true,
+                    "objectId": "551fea47e4b02dd0ab568b85",
+                    "createdAt": "2015-04-04T13:42:31.367Z",
+                    "updatedAt": "2015-04-04T13:42:59.487Z"
+                }
+  /isLogin:
+    get:
+      description: check is current login or not
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "username": "18516171260",
+                    "emailVerified": false,
+                    "mobilePhoneNumber": "18516171260",
+                    "mobilePhoneVerified": true,
+                    "objectId": "551fea47e4b02dd0ab568b85",
+                    "createdAt": "2015-04-04T13:42:31.367Z",
+                    "updatedAt": "2015-04-04T13:42:59.487Z"
+                }
+        210:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":false,
+                  "code":210
+                }
+  /register:
+    post:
+      description: |
+        Register a new user and verify mobilePhoneNumber (close verify in leancloud if necessary)
+      queryParameters:
+        mobilePhoneNumber:
+          description: |
+            mobilePhoneNumber
+          type: string
+        password:
+          description: |
+            password
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "username": "18516171260",
+                    "emailVerified": false,
+                    "mobilePhoneNumber": "18516171260",
+                    "mobilePhoneVerified": true,
+                    "objectId": "551fea47e4b02dd0ab568b85",
+                    "createdAt": "2015-04-04T13:42:31.367Z",
+                    "updatedAt": "2015-04-04T13:42:59.487Z"
+                }
+  /requestMobilePhoneVerif:
+    get:
+      description: |
+        rt
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":"success",
+                  "code":200
+                }
+  /verifyUserMobilePhoneNumber:
+    get:
+      description: |
+        rt
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":"success",
+                  "code":200
+                }
+  /requestEmailVerify:
+    get:
+      description: |
+        rt
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":"success",
+                  "code":200
+                }
+
+
+
 
 

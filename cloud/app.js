@@ -29,7 +29,9 @@ if (__production) {
 } else {
     app.set('views', 'cloud/views');
 }
-app.set('view engine', 'ejs'); 
+// app.set('views', __dirname + '/views');
+// app.engine('.html', ejs.renderFile);
+app.set('view engine', 'ejs');        //将渲染引擎设为ejs
 app.use(express.bodyParser());        // 读取请求body的中间件
 app.use(expressValidator);
 app.use(avosExpressHttpsRedirect());
@@ -42,7 +44,7 @@ app.use(avosExpressCookieSession({    //设置 cookie
 }));
 app.use(expressLayouts);
 app.use(app.router);
-
+app.use(express.static('app'));        //设置app为静态目录
 /**
  * 主页路由器,用于渲染前端框架入口页面
  */

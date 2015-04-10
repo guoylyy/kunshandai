@@ -2,9 +2,9 @@
  * @author: Ethansure
  */
 
-define(['angular'],function(angular){
+define(['angular','angularRoute'],function(angular){
 	
-	return angular.module('app',[]);
+	return angular.module('app',['ngRoute']);
 
 })
 

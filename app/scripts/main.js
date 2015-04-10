@@ -8,12 +8,12 @@
 require.config({
 
 	paths:{
-		jquery:'../lib/jquery/dist/jquery.min',
-		underscore:'../lib/underscore-min',
-		angular:'../lib/angular.min',
-		angularResource:'../lib/angular-resource/angular-resource',
+		
+		underscore:'../lib/underscore',
+		angular:'../lib/angular/angular',
+		angularRoute:'../lib/angular-route/angular-route',
 		text:'../lib/requirejs-text/text',
-		semantic:'../lib/semantic-ui/dist/semantic.min'
+		semantic:'../lib/semantic-ui/dist/semantic'
 	},
 	shim:{
 		'angular':{exports:'angular'},
@@ -23,10 +23,13 @@ require.config({
 
 require(['angular',
 		 'app',
-		 'jquery',
-		 'controllers/layout',
-		 'controllers/login',
+		
 		 'routes'
 ],function(angular) {
-	angular.bootstrap(document,['app']);
+	// angular.bootstrap(document,['app']);
+	var $html = angular.element(document.getElementsByTagName('html')[0]);
+	angular.element().ready(function() {
+			// bootstrap the app manually
+			angular.bootstrap(document, ['app']);
+		});
 });

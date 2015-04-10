@@ -5,7 +5,7 @@
  * Time		: 23:40
  */
 
-define(['app','controllers/login','controllers/logout','controllers/signup'],
+define(['app','controllers/login','controllers/signup'],
 	function(app,login,logout,signup){
 		return app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider) {
 			$routeProvider.

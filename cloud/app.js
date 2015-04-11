@@ -19,6 +19,7 @@ var crypto = require('crypto');
 var avosExpressCookieSession = require('avos-express-cookie-session');
 
 var mutil = require('cloud/mutil.js');
+var mproject = require('cloud/mproject.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
 var _s = require('underscore.string');
@@ -44,7 +45,7 @@ app.use(avosExpressCookieSession({    //设置 cookie
 }));
 app.use(expressLayouts);
 app.use(app.router);
-app.use(express.static('app'));        //设置app为静态目录
+app.use(express.static('app'));  //设置app为静态目录
 /**
  * 主页路由器,用于渲染前端框架入口页面
  */
@@ -147,14 +148,26 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
 /*
 	新建项目
  */
+app.get('/loan/create_loan', function (req, res){
+  //TODO: get required data from request
+  //var project = mproject.createBasicProject(res, null, null);
+  var project = new AV.Project();
+  project.set('name',name);
+  project.save().then(function(project){
+    console.log(project);
+  }, function(error){
+    mutil.renderError(res, error);
+  });
+});
+
+//存储借款人和贷款人信息
 app.get('/loan/create_contract', function (req, res){
+  var loan_contract = {};
+  var assure_contract = {};
   //res.render('create_contract.ejs');
 });
 
-app.get('/loan/create_loan', function (req, res){
-  //res.render('create_loan.ejs');
-});
-
+//完善一个项目并生成还款记录
 app.get('/loan/generate_project', function (req, res){
 
 });

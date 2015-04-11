@@ -1,5 +1,5 @@
 /**
- * Created by lzw on 14-8-8.
+ * @author globit allen
  */
 var util = require('util');
 var mlog=require('cloud/mlog.js');

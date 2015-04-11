@@ -1,5 +1,4 @@
 /**
- * Created by lzw on 14-8-8.
  */
 var util=require('util');
 

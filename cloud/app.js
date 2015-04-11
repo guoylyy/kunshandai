@@ -147,17 +147,22 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
 /*
 	新建项目
  */
-app.get('/loan/create_contract', function(req, res){
-  res.render('create_contract.ejs');
+app.get('/loan/create_contract', function (req, res){
+  //res.render('create_contract.ejs');
 });
 
 app.get('/loan/create_loan', function (req, res){
-  res.render('create_loan.ejs');
+  //res.render('create_loan.ejs');
+});
+
+app.get('/loan/generate_project', function (req, res){
+
 });
 
 /*
 	分条件查看项目列表
  */
+
 
 /*
 	查看联系人列表

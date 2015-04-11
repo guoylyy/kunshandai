@@ -16,20 +16,31 @@ require.config({
 		semantic:'../lib/semantic-ui/dist/semantic'
 	},
 	shim:{
-		'angular':{exports:'angular'},
-		'underscore':{exports:'_'}
+		'angular':{
+			exports:'angular'
+		},
+		'angularRoute':{
+			deps:['angular']
+		},
+		'underscore':{
+			exports:'_'
+		}
 	}
 });
 
 require(['angular',
+		 'angularRoute',
 		 'app',
-		
-		 'routes'
+		 'routes',
+		 'controllers/login',
+		 'services/user',
+		 'resources/setting',
+		 'resources/text'
 ],function(angular) {
 	// angular.bootstrap(document,['app']);
 	var $html = angular.element(document.getElementsByTagName('html')[0]);
 	angular.element().ready(function() {
-			// bootstrap the app manually
-			angular.bootstrap(document, ['app']);
-		});
+		// bootstrap the app manually
+		angular.bootstrap(document, ['app']);
+	});
 });

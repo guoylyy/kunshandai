@@ -1,11 +1,16 @@
-define(['../app','../resources/setting'],function(app,setting){
+define(['../app'],function(app){
 
-	return app.service('User', ['$scope','$location','$http', function($scope,$location,$http){
+	return app.factory('User', ['$http', 'ApiURL',
+		function($http,ApiURL){
 		
-		this.login = function(user){
-			
-			return $http.post(setting.APIURL+"/login",JSON.stringify(user));
+		var accountUrl = '/account';
+		
+		return{
+			login : function(user){
+				return $http.post(ApiURL+accountUrl+"/login",JSON.stringify(user));
+			}
 		}
+		
 
 	}]);
 });

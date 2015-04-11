@@ -1,22 +1,19 @@
-define(['app','../resources/text','../services/user'],function(app,text,User) {
+define(['app','../resources/text','../services/user'],function(app) {
 
-	return app.controller('LoginController', ["$scope","$rootScope","$location","User",
-	function($scope,$rootScope,$location,User){
-
-		$rootScope.title = text.login;
-
+	return app.controller('LoginController', ["$scope","$location","User",
+	function($scope,$location,User){
 		$scope.user = {
 			mobilePhone:'',
 			password:''
-		}
-
+		};
 		$scope.login = function(){
-			// User.login(user).success(function(data){
-			// 	if(data.err){
-			// 		alert(data.err);
-			// 	}
-			// 	alert("登录成功");
-			// });
-		}
+			User.login($scope.user).success(function(data){
+				if(data.err){
+					alert(data.err);
+				}
+				alert("登录成功");
+			});
+		};
+
 	}]);
 });

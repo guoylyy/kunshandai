@@ -5,9 +5,9 @@
  * Time		: 23:40
  */
 
-define(['app','controllers/login','controllers/signup'],
+define(['app','angularRoute','controllers/login','controllers/signup'],
 	function(app,login,logout,signup){
-		return app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider) {
+		return app.config(['$routeProvider',function($routeProvider) {
 			$routeProvider.
 				when('/',{redirectTo:'/login'}).
 				when('/login',{controller:login}).

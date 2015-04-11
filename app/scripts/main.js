@@ -8,10 +8,10 @@
 require.config({
 
 	paths:{
-		
 		underscore:'../lib/underscore',
 		angular:'../lib/angular/angular',
 		angularRoute:'../lib/angular-route/angular-route',
+		angularSemantic:'../lib/angular-semantic-ui/dist/angular-semantic-ui',
 		text:'../lib/requirejs-text/text',
 		semantic:'../lib/semantic-ui/dist/semantic'
 	},
@@ -22,25 +22,25 @@ require.config({
 		'angularRoute':{
 			deps:['angular']
 		},
+		'angularSemantic':{
+			deps:['angular']
+		},
 		'underscore':{
 			exports:'_'
 		}
 	}
 });
 
-require(['angular',
-		 'angularRoute',
+require([
+		 'angular',
 		 'app',
-		 'routes',
 		 'controllers/login',
-		 'services/user',
-		 'resources/setting',
-		 'resources/text'
+		 'services/user'
 ],function(angular) {
-	// angular.bootstrap(document,['app']);
-	var $html = angular.element(document.getElementsByTagName('html')[0]);
-	angular.element().ready(function() {
-		// bootstrap the app manually
+	
+	// var $html = angular.element(document.getElementsByTagName('html')[0]);
+	
+	angular.element(document).ready(function() {
 		angular.bootstrap(document, ['app']);
 	});
 });

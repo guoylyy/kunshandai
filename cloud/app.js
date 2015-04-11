@@ -83,7 +83,7 @@ app.get(config.baseUrl +'/account/logout', function(req, res){
   mutil.renderSuccess(res);
 });
 app.post(config.baseUrl +'/account/login', function(req, res){
-  var username = req.body.username;
+  var username = req.body.mobilePhoneNumber;
   var password = req.body.password;
   if(account.isLogin()){
     AV.User.logOut();

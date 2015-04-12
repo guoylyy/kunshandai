@@ -291,7 +291,7 @@ app.post(config.baseUrl + '/contract', function(req, res){
 /*
   查询字典表
  */
-app.get(config.baseUrl + '/dict/payWays', function (req, res){
+app.get(config.baseUrl + '/dict/payBackWays', function (req, res){
   mutil.renderData(res, mconfig.payBackWays);
 });
 app.get(config.baseUrl + '/dict/loanTypes', function (req, res){

@@ -21,9 +21,12 @@ var avosExpressCookieSession = require('avos-express-cookie-session');
 var mutil = require('cloud/mutil.js');
 var mloan = require('cloud/mloan.js');
 var mcontract = require('cloud/mcontract.js');
+var mconfig = require('cloud/mconfig.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
 var _s = require('underscore.string');
+
+var LoanRecord = AV.Object.extend('LoanRecord');
 
 // App 全局配置
 if (__production) {
@@ -104,9 +107,11 @@ app.post(config.baseUrl +'/account/login', function(req, res){
       }
   });
 });
+//如果用户已登录，返回用户信息
 app.get(config.baseUrl + '/account/isLogin', function(req, res){
   account.isLogin() ? res.json(account.isLogin()):mutil.renderResult(res, false, 210);
 });
+//注册
 app.post(config.baseUrl + '/account/register', function (req, res) {
   if(account.isLogin()){
     AV.User.logOut();
@@ -133,6 +138,7 @@ app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res
   });
 });
 //验证用户手机收到的验证码
+//issue
 app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req, res){
   var code = req.body.code;
   console.log(code);
@@ -151,7 +157,6 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
       mutil.renderError(res, error);
   });
 });
-
 /*
  *新建一个贷款项目
  */
@@ -163,7 +168,6 @@ app.post(config.baseUrl +'/loan/create_loan', function (req, res){
     mutil.renderError(res, error);
   });
 });
-
 //存储借款人和贷款人信息
 app.post(config.baseUrl +'/loan/create_contract', function (req, res){
   var loaner = mcontract.createContract(req.body.loaner);
@@ -192,15 +196,42 @@ app.post(config.baseUrl +'/loan/create_contract', function (req, res){
   });
 });
 
-//完善一个项目并生成还款记录
-//此时是确认了要生成一个项目
-app.post(config.baseUrl + '/loan/generate_loan', function (req, res){
+//生成项目时候初次记录生成放款
+app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
+  var loanId = req.body.loanId;
+  var loanerId = req.body.loanerId;
+  var assurerId = req.body.assurerId;
+  var loan = AV.Object.createWithoutData('Loan',loanId);
+  loan.fetch().then(function(floan){
+    //判断是否已经有放款记录,如果有删除掉
+    var query = floan.relation("loanRecords").query();
+    query.destroyAll().then(function(){
+      generateLoanRecord(floan,res);  
+    });
+  });
+});
+function generateLoanRecord(floan, res){
+  var lr = mloan.calculateLoanRecord(floan);//生成放款记录
+  lr.save().then(function(rlr){
+    var lrRelation = floan.relation('loanRecords');
+    lrRelation.add(rlr);
+    floan.save().then(function(data){
+      mutil.renderData(res,{loan:floan.attributes,loanRecord:rlr});
+    });
+  },
+    function(error){
+      mutil.renderError(res,{code:400, message:'生成放款记录失败!'});
+  });
+}
+
+//确认放款
+app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
 
 });
 
+
 //获取未完成的项目列表,分页
 //app.get();
-
 app.post(config.baseUrl + '/attachment', function (req, res){
   saveFileThen(req, function(attachment){
     if(attachment){
@@ -212,6 +243,36 @@ app.post(config.baseUrl + '/attachment', function (req, res){
   });
 });
 
+/*
+	分条件查看项目列表
+ */
+
+
+/*
+	查看联系人列表
+ */
+
+
+/*
+	查看个人主页
+ */
+
+
+
+/*
+  查询字典表
+ */
+app.get(config.baseUrl + '/dict/payWays', function (req, res){
+  mutil.renderData(res, mconfig.payBackWays);
+});
+app.get(config.baseUrl + '/dict/loanTypes', function (req, res){
+  mutil.renderData(res, mconfig.loanTypes);
+});
+
+
+/*
+  User defined fuctions
+ */
 function saveFileThen(req, f) {
     if (req.files == null) {
         f();
@@ -235,20 +296,6 @@ function saveFileThen(req, f) {
         f();
     }
 }
-
-/*
-	分条件查看项目列表
- */
-
-
-/*
-	查看联系人列表
- */
-
-
-/*
-	查看个人主页
- */
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
 app.listen({"static": {maxAge: 604800000}});

@@ -70,6 +70,9 @@ app.get('/signup', function(req, res){
 app.get('/manage', function(req, res){
   res.render('manage.ejs');
 });
+app.get('/createLoan', function(req, res){
+  res.render('create_loan.ejs');
+});
 
 /***************************************************
  * 账号相关的操作

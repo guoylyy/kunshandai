@@ -28,7 +28,7 @@ define(['app','underscore'],function(app,_) {
 				
 				$scope.signup = function(){
 
-					AccountService.verifyMobilePhone($scope.code).success(function(data){
+					AccountService.verifyMobilePhone({code:$scope.code}).success(function(data){
 						AccountService.login(_.omit($scope.account,'passwordConfirmation'))
 						.success(function(){
 

@@ -37,6 +37,8 @@ require([
 		 'account/AccountService',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
+		 'common/interceptors/responseErr',
+		 'common/interceptors/sessionAuth',
 		 'routes'
 ],function(angular) {
 	

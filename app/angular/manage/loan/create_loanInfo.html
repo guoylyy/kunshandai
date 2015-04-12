@@ -1,0 +1,156 @@
+<div class="form" ng-controller="createLoanCtrl">
+	<h3 class="ui dividing mcolor header">借款人</h3>
+	<div class="ui grid">
+		<div class="ten wide column">
+			<h4 class="ui top attached header">借款人信息</h4>
+			<div class="ui horizontal attached segment">
+				<div class="ui form">
+					<div class="fields">
+						<div class="five wide field">
+							<label>姓名</label>
+							<div class="ui corner labeled input">
+								<input type="text" placeholder="姓名" ng-model="brName">
+								<div class="ui corner label">
+									<i class="asterisk icon"></i>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="eleven wide field">
+							<label>身份证</label>
+							<div class="ui corner labeled input">
+								<input type="text" placeholder="身份证" ng-model="brID">
+								<div class="ui corner label">
+									<i class="asterisk icon"></i>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="ui section divider"></div>
+
+					<div class="two fields">
+						<div class="field">
+							<label>手机号</label>
+							<input type="tel" placeholder="手机号" ng-model="brMobilePhone">
+						</div>
+						<div class="field">
+							<label>邮箱</label>
+							<input type="email" placeholder="邮箱" ng-model="brEmail">
+						</div>
+					</div>
+					<div class="two fields">
+						<div class="field">
+							<label>QQ</label>
+							<input type="text" placeholder="QQ" ng-model="brQQ">
+						</div>
+						<div class="field">
+							<label>微信</label>
+							<input type="text" placeholder="微信" ng-model="brWechat">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="six wide column">
+			<h4 class="ui top attached header">借款人附件</h4>
+			<div class="ui right aligned horizontal attached segment">
+				<table class="ui table">
+					<tbody>
+						<tr>
+							<td class="collapsing">
+								<i class="picture icon"></i>
+								身份证正面
+							</td>
+							<td class="right aligned">
+								<i class="remove red icon"></i>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<i class="picture icon"></i>
+								身份证反面
+							</td>
+							<td class="right aligned">
+								<i class="remove red icon"></i>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<i class="file text outline icon"></i>
+								其他材料
+							</td>
+							<td class="right aligned">
+								<i class="remove red icon"></i>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="uploadButton" class="ui floated right  button">上传新材料</div>
+			</div>
+
+		</div>
+	</div>
+	<h3 class="ui dividing mcolor header">担保人</h3>
+	<div class="ui grid">
+		<div class="ten wide column">
+			<h4 class="ui top attached header">担保人信息</h4>
+			<div class="ui horizontal attached segment">
+				<div class="ui form">
+					<div class="fields">
+						<div class="five wide field">
+							<label>姓名</label>
+							<div class="ui corner labeled input">
+								<input type="text" placeholder="姓名" ng-model="grName">
+								<div class="ui corner label">
+									<i class="asterisk icon"></i>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="eleven wide field">
+							<label>身份证</label>
+							<div class="ui corner labeled input">
+								<input type="text" placeholder="身份证" ng-model="grID">
+								<div class="ui corner label">
+									<i class="asterisk icon"></i>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<div class="ui section divider"></div>
+
+					<div class="two fields">
+						<div class="field">
+							<label>手机号</label>
+							<input type="tel" placeholder="手机号" ng-model="grMobilePhone">
+						</div>
+						<div class="field">
+							<label>邮箱</label>
+							<input type="email" placeholder="邮箱" ng-model="grEmail">
+						</div>
+					</div>
+					<div class="two fields">
+						<div class="field">
+							<label>QQ</label>
+							<input type="text" placeholder="QQ" ng-model="grQQ">
+						</div>
+						<div class="field">
+							<label>微信</label>
+							<input type="text" placeholder="微信" ng-model="grWechat">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="six wide column">
+			<h4 class="ui top attached header">借款人附件</h4>
+			<div class="ui horizontal attached segment">
+				<p></p>
+			</div>
+		</div>
+	</div>
+</div>

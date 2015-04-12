@@ -1,9 +1,9 @@
 <div class="four wide column">
 	<div class="ui vertical  mnav menu">
 
-		<div class="active mcolor item" ui-sref="manage.index" >账户总览</div>
+		<div ui-sref-active="active" class="mcolor item" ui-sref="index" >账户总览</div>
 
-		<div class="ui dropdown item" ui-sref="manage.loan">
+		<div ui-sref-active="active"  class="ui dropdown mcolor item" ui-sref="loan">
 			放款管理
 			<i class="dropdown icon"></i>
 			<div class="menu">
@@ -12,27 +12,27 @@
 			</div>
 		</div>
 
-		<div class="ui dropdown item" ui-sref="manage.collect">
+		<div ui-sref-active="active"  class="ui dropdown mcolor item" ui-sref="collect">
 			收款管理
 			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a class="item">待收款项目</a>
-				<a class="item">已收款项目</a>
+				<a ui-sref-active="active" class="item" ui-sref="collect.pendding">待收款项目</a>
+				<a ui-sref-active="active" class="item" ui-sref="collect.done">已收款项目</a>
 			</div>
 		</div>
-		<div class="ui dropdown item" ui-sref="manage.project">
+		<div ui-sref-active="active"  class="ui dropdown mcolor item" ui-sref="project">
 			项目检视
 			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a class="item">正常项目</a>
+				<a class="item" >正常项目</a>
 				<a class="item">逾期项目</a>
 				<a class="item">坏账项目</a>
 				<a class="item">已结清项目</a>
 				<a class="item">所有项目</a>
 			</div>
 		</div>
-		<div class="item">客户管理</div>
-		<div class="item">账户安全</div>
-		<div class="item">详细提醒</div>
+		<a  ui-sref-active="active" class="mcolor item" ui-sref="client">客户管理</a>
+		<div class="mcolor item">账户安全</div>
+		<div class="mcolor item">详细提醒</div>
 	</div>
 </div>

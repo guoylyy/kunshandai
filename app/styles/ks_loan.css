@@ -151,8 +151,8 @@ body{
 	padding: 5 0 10 0em;
 	position: relative;
 }
-#management .container{
-	/*background-color: white;*/
+#management .container.form{
+	padding-top: 2em;
 }
 #management .mnav.menu{
 	border-radius: 0px;

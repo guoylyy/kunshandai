@@ -195,7 +195,7 @@ traits:
           description: 总共还款的月数
           type: number
         interests:
-          description: 百分之N
+          description: 百分之N(按处理后的小数传递)
           example: 5
           type: number
         assureCost:
@@ -204,15 +204,18 @@ traits:
         serviceCost:
           type: number
         overdueCostPercent:
-          description: 千分之N
-          example: 5
+          description: 千分之N(按处理后的小数传递)
+          example: 0.001
           type: number
         otherCost:
           type: number
         keepCost:
           type: number
         payWay:
-          description: 还款方式
+          description: |
+            还款方式,可能后期变动
+          example: |
+            {"debx":等额本息, "zqch":周期初还本付息,"zqmh":周期末还本付息,"qx":还全息}
           type: string
         firstPayDate:
           description: 首次还款时间
@@ -223,12 +226,37 @@ traits:
             application/json:
               schema: |
                 {
-                  "data": {
-                    "id": "5529ec78e4b0da2c5e080694"
-                  },
-                  "code": 200
+                    "data": {
+                        "amount": 111111,
+                        "spanMonth": 10,
+                        "startDate": {
+                            "__type": "Date",
+                            "iso": "2015-01-09T16:00:00.000Z"
+                        },
+                        "endDate": {
+                            "__type": "Date",
+                            "iso": "2015-10-10T00:00:00.000Z"
+                        },
+                        "payCircle": 3,
+                        "payTotalCircle": 10,
+                        "interests": 0.01,
+                        "overdueCostPercent": 0.01,
+                        "otherCost": 1000,
+                        "keepCost": 1000,
+                        "payWay": "debx",
+                        "firstPayDate": {
+                            "__type": "Date",
+                            "iso": "2015-04-09T16:00:00.000Z"
+                        },
+                        "objectId": "552a2736e4b0b40da36bd865",
+                        "createdAt": "2015-04-12T08:05:10.090Z",
+                        "updatedAt": "2015-04-12T08:05:10.090Z"
+                    },
+                    "code": 200
                 }
   /generate_project:
+    description: |
+      未完成
     post:
       queryParameters:
         name:
@@ -244,18 +272,52 @@ traits:
 /contract:
   post:
     queryParameters:
-      name:
+      loander:
+        description: |
+          以json形式拼接用户信息
         type: string
+        example: |
+           {
+             "name":"test",
+             "certificateType":"shenfenzheng",
+             "certificateNum":"542421421421321312312",
+             "email":"yilaing@foxmail.com",
+             "qq":"32727272992",
+             "address":"fdsafasf",
+             "wechat":"fasdfa",
+             "attachments": ["552a0e61e4b0b40da36acc5b"]
+           }
+      assurer:
+        description: |
+          以json形式拼接用户信息
+        type: string
+        example: |
+           {
+             "name":"test",
+             "certificateType":"shenfenzheng",
+             "certificateNum":"542421421421321312312",
+             "email":"yilaing@foxmail.com",
+             "qq":"32727272992",
+             "address":"fdsafasf",
+             "wechat":"fasdfa",
+             "attachments": ["552a0e61e4b0b40da36acc5b"]
+           }
     responses:
       200:
         body:
           application/json:
             example: |
               {
-
+                  "data": {
+                      "loanerId": "552a244ee4b0da2c5e0add15",
+                      "assurerId": "552a244ee4b0da2c5e0add13"
+                  },
+                  "code": 200
               }
   /{id}:
     get:
+      description: |
+        未完成
       responses:
         200:
           body:
@@ -266,3 +328,26 @@ traits:
                }
 
 
+/attachment:
+  post:
+    queryParameters:
+      attachment:
+        type: file
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
+                  "data": {
+                      "metaData": {
+                          "owner": "unknown",
+                          "size": 527,
+                          "mime_type": "text/plain"
+                      },
+                      "id": "552a2294e4b0b40da36ba7e7",
+                      "url": "http://ac-gvw1ggob.clouddn.com/b7f1294b28cdbb96.md",
+                      "name": "项目经理周总结模板.md"
+                  },
+                  "code": 200
+              }

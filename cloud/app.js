@@ -20,6 +20,7 @@ var avosExpressCookieSession = require('avos-express-cookie-session');
 
 var mutil = require('cloud/mutil.js');
 var mloan = require('cloud/mloan.js');
+var mcontract = require('cloud/mcontract.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
 var _s = require('underscore.string');
@@ -153,8 +154,8 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
  */
 app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var loan = mloan.createBasicLoan(req.body);
-  loan.save().then(function(project){
-    mutil.renderData(res,{id:project.id});
+  loan.save().then(function(r_loan){
+    mutil.renderData(res, r_loan);
   }, function(error){
     mutil.renderError(res, error);
   });
@@ -162,13 +163,75 @@ app.post(config.baseUrl +'/loan/create_loan', function (req, res){
 
 //存储借款人和贷款人信息
 app.post(config.baseUrl +'/loan/create_contract', function (req, res){
-  //res.render('create_contract.ejs');
+  var loaner = mcontract.createContract(req.body.loaner);
+  var resultMap = {};
+  loaner.save().then(function(r_loaner){
+    resultMap['loanerId'] = r_loaner.id;
+    if(req.body.loaner.attachments){
+      mcontract.bindContractFiles(r_loaner, req.body.loaner.attachments);
+    }
+  },function(error){
+    mutil.renderError(res, error);
+  }).then(function(){
+    if(req.body.assurer){
+      var assurer = mcontract.createContract(req.body.assurer);
+      assurer.save().then(function(r_assurer){
+        resultMap['assurerId'] = r_assurer.id;
+        mcontract.bindContractFiles(r_assurer, req.body.loaner.attachments);
+        mutil.renderData(res,resultMap);
+      },function(error){
+        mutil.renderError(res,error);
+      });
+    }else{
+      resultMap['assurerId'] = null;
+      mutil.renderData(res, resultMap);
+    }
+  });
 });
 
 //完善一个项目并生成还款记录
-app.post(config.baseUrl +'/loan/generate_project', function (req, res){
+//此时是确认了要生成一个项目
+app.post(config.baseUrl + '/loan/generate_loan', function (req, res){
 
 });
+
+//获取未完成的项目列表,分页
+//app.get();
+
+app.post(config.baseUrl + '/attachment', function (req, res){
+  saveFileThen(req, function(attachment){
+    if(attachment){
+      mutil.renderData(res, {metaData:attachment.metaData(), id:attachment.id, url:attachment.url(),
+        name:attachment.name()});
+    }else{
+      mutil.renderError(res, {code:400, message:'上传失败'});
+    }
+  });
+});
+
+function saveFileThen(req, f) {
+    if (req.files == null) {
+        f();
+        return;
+    }
+    var attachmentFile = req.files.attachment;
+    if (attachmentFile && attachmentFile.name !== '') {
+        fs.readFile(attachmentFile.path, function (err, data) {
+            if (err) {
+                return f();
+            }
+            //var base64Data = data.toString('base64');
+            var theFile = new AV.File(attachmentFile.name, data);
+            theFile.save().then(function (theFile) {
+                f(theFile);
+            }, function (err) {
+                f();
+            });
+        });
+    } else {
+        f();
+    }
+}
 
 /*
 	分条件查看项目列表

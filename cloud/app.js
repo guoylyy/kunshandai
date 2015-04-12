@@ -19,7 +19,7 @@ var crypto = require('crypto');
 var avosExpressCookieSession = require('avos-express-cookie-session');
 
 var mutil = require('cloud/mutil.js');
-var mproject = require('cloud/mproject.js');
+var mloan = require('cloud/mloan.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
 var _s = require('underscore.string');
@@ -149,29 +149,24 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
 });
 
 /*
-	新建项目
+	新建一个贷款项目
  */
-app.get('/loan/create_loan', function (req, res){
-  //TODO: get required data from request
-  //var project = mproject.createBasicProject(res, null, null);
-  var project = new AV.Project();
-  project.set('name',name);
-  project.save().then(function(project){
-    console.log(project);
+app.post(config.baseUrl +'/loan/create_loan', function (req, res){
+  var loan = mloan.createBasicLoan(req.body);
+  loan.save().then(function(project){
+    mutil.renderData(res,{id:project.id});
   }, function(error){
     mutil.renderError(res, error);
   });
 });
 
 //存储借款人和贷款人信息
-app.get('/loan/create_contract', function (req, res){
-  var loan_contract = {};
-  var assure_contract = {};
+app.post(config.baseUrl +'/loan/create_contract', function (req, res){
   //res.render('create_contract.ejs');
 });
 
 //完善一个项目并生成还款记录
-app.get('/loan/generate_project', function (req, res){
+app.post(config.baseUrl +'/loan/generate_project', function (req, res){
 
 });
 

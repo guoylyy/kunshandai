@@ -12,8 +12,6 @@ traits:
 
 /account:        
   /login:
-    get:
-      description: render login page.
     post:
       queryParameters:
         mobilePhoneNumber:
@@ -127,7 +125,7 @@ traits:
   /requestMobilePhoneVerif:
     get:
       description: |
-        rt
+        重新验证手机号
       responses:
         200:
           body:
@@ -145,7 +143,7 @@ traits:
             code
           type: integer
       description: |
-        rt
+        验证手机号
       responses:
         200:
           body:
@@ -158,7 +156,7 @@ traits:
   /requestEmailVerify:
     get:
       description: |
-        rt
+        发送验证邮件
       responses:
         200:
           body:
@@ -168,9 +166,103 @@ traits:
                   "result":"success",
                   "code":200
                 }
-#/project:
   
+/loan:
+  /create_loan:
+    post:
+      description: |
+        新建一个贷款项目
+      queryParameters:
+        amount:
+          example: 10000.0
+          type: string
+        spanMonth:
+          type: string
+        startDate:
+          description: 合同开始日期
+          example: 2014-10-29
+          type: date
+        endDate:
+          description: 合同结束日期
+          example: 2014-10-29
+          type: date
+        payCircle:
+          example: 2
+          description: 每X月还一次款
+          type: number
+        payTotalCircle:
+          example: 20
+          description: 总共还款的月数
+          type: number
+        interests:
+          description: 百分之N
+          example: 5
+          type: number
+        assureCost:
+          example: 10000.0
+          type: number
+        serviceCost:
+          type: number
+        overdueCostPercent:
+          description: 千分之N
+          example: 5
+          type: number
+        otherCost:
+          type: number
+        keepCost:
+          type: number
+        payWay:
+          description: 还款方式
+          type: string
+        firstPayDate:
+          description: 首次还款时间
+          type: date
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data": {
+                    "id": "5529ec78e4b0da2c5e080694"
+                  },
+                  "code": 200
+                }
+  /generate_project:
+    post:
+      queryParameters:
+        name:
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                }
 
+/contract:
+  post:
+    queryParameters:
+      name:
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {
 
+              }
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+               {
+                
+               }
 
 

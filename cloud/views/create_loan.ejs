@@ -1,0 +1,38 @@
+
+	<div id="management">
+		<% include header/logined_header %>
+		<div class="ui vertical  main segment">
+			<div class="container">
+				<h2 class="ui dividing mcolor header">新增放款</h2>
+				<div class="steps-segment">
+					<div class="ui three steps">
+						<div class=" step" ui-sref-active="active" ui-sref="createLoan">
+						 <i class="user icon"></i>
+							<div class="content">
+								<div class="title">填写基本信息</div>
+							</div>
+						</div>
+						<div class="step" ui-sref-active="active" ui-sref="createLoanDetail"> 
+						<i class="payment icon"></i>
+							<div class="content">
+								<div class="title">填写贷款信息</div>
+							</div>
+						</div>
+						<div class="disabled step">
+							<i class="info icon"></i>
+							<div class="content">
+								<div class="title">合同生成</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container form segment" ui-view="main">
+				</div>
+				<div class="ui section divider"></div>
+				<div class="ui  navbuttons grid" ui-view='ctrl'>
+					
+				</div>
+			</div>
+		</div>
+
+	</div>

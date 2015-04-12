@@ -153,7 +153,7 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
 });
 
 /*
-	新建一个贷款项目
+ *新建一个贷款项目
  */
 app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var loan = mloan.createBasicLoan(req.body);

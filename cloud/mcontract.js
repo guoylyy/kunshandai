@@ -14,6 +14,7 @@ function createContract(reqBody){
     contract.set('qq', reqBody.qq);
     contract.set('address', reqBody.address);
     contract.set('wechat', reqBody.wechat);
+    contract.set('mobilePhoneNumber', reqBody.mobilePhoneNumber);
     return contract;
 };
 

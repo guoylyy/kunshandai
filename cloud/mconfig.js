@@ -14,50 +14,50 @@ var loanPayBackStatus = {
 
 var payBackWays = {
 	debx:{
-		value:0,
+		value:'debx',
 		text:'等额本息'
 	},
 	xxhb:{
-		value:1,
+		value:'xxhb',
 		text:'先息后本'
 	},
 	zqcxhb:{
-		value:2,
+		value:'zqcxhb',
 		text:'周期初息后本'
 	},
 	zqmxhb:{
-		value:3,
+		value:'zqmxhb',
 		text:'周期末息后本'
 	},
 	dqhbfx:{
-		value:4,
+		value:'dqhbfx',
 		text:'到期还本付息'
 	}
 };
 
 var loanTypes = {
 	fcdy:{
-		value:0,
+		value:'fcdy',
 		text:'房产抵押'
 	},
 	qcdy:{
-		value:1,
+		value:'qcdy',
 		text:'汽车抵押'
 	},
 	mfdy:{
-		value:2,
+		value:'mfdy',
 		text:'买房抵押'
 	},
 	mcdy:{
-		value:3,
+		value:'mcdy',
 		text:'买车抵押'
 	},
 	wdy:{
-		value:4,
+		value:'wdy',
 		text:'无抵押'
 	},
 	qtdy:{
-		value:5,
+		value:'qtdy',
 		text:'其他抵押'
 	}
 };

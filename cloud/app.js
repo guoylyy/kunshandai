@@ -138,7 +138,7 @@ app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res
   });
 });
 //验证用户手机收到的验证码
-//issue
+//issue:输入错误的也返回200
 app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req, res){
   var code = req.body.code;
   console.log(code);
@@ -168,33 +168,6 @@ app.post(config.baseUrl +'/loan/create_loan', function (req, res){
     mutil.renderError(res, error);
   });
 });
-//存储借款人和贷款人信息
-app.post(config.baseUrl +'/loan/create_contract', function (req, res){
-  var loaner = mcontract.createContract(req.body.loaner);
-  var resultMap = {};
-  loaner.save().then(function(r_loaner){
-    resultMap['loanerId'] = r_loaner.id;
-    if(req.body.loaner.attachments){
-      mcontract.bindContractFiles(r_loaner, req.body.loaner.attachments);
-    }
-  },function(error){
-    mutil.renderError(res, error);
-  }).then(function(){
-    if(req.body.assurer){
-      var assurer = mcontract.createContract(req.body.assurer);
-      assurer.save().then(function(r_assurer){
-        resultMap['assurerId'] = r_assurer.id;
-        mcontract.bindContractFiles(r_assurer, req.body.loaner.attachments);
-        mutil.renderData(res,resultMap);
-      },function(error){
-        mutil.renderError(res,error);
-      });
-    }else{
-      resultMap['assurerId'] = null;
-      mutil.renderData(res, resultMap);
-    }
-  });
-});
 
 //生成项目时候初次记录生成放款
 app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
@@ -202,12 +175,26 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
   var loanerId = req.body.loanerId;
   var assurerId = req.body.assurerId;
   var loan = AV.Object.createWithoutData('Loan',loanId);
+  var loaner = AV.Object.createWithoutData('Contract',loanerId);
+  var assurer = AV.Object.createWithoutData('Contract',assurerId);
   loan.fetch().then(function(floan){
     //判断是否已经有放款记录,如果有删除掉
-    var query = floan.relation("loanRecords").query();
-    query.destroyAll().then(function(){
-      generateLoanRecord(floan,res);  
-    });
+    if(assurer){
+      floan.set('assurer',assurer);
+    }
+    if(loaner){
+      if(floan.attributes.status != mconfig.loanStatus.draft){
+        mutil.renderError(res,{code:400, message:"错误的项目状态!"});
+      }else{
+        floan.set('loaner',assurer);
+        var query = floan.relation("loanRecords").query();
+        query.destroyAll().then(function(){
+          generateLoanRecord(floan,res);  
+        });
+      }
+    }else{
+      mutil.renderError(res,{code:400, message:"贷款人缺失！"});
+    }
   });
 });
 function generateLoanRecord(floan, res){
@@ -216,7 +203,9 @@ function generateLoanRecord(floan, res){
     var lrRelation = floan.relation('loanRecords');
     lrRelation.add(rlr);
     floan.save().then(function(data){
-      mutil.renderData(res,{loan:floan.attributes,loanRecord:rlr});
+      var attributes = floan.attributes;
+      attributes['objectId'] = floan.id;
+      mutil.renderData(res,{loan:attributes,loanRecord:rlr});
     });
   },
     function(error){
@@ -226,7 +215,28 @@ function generateLoanRecord(floan, res){
 
 //确认放款
 app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
-
+  var loanId = req.body.loanId;
+  //生成放款记录
+  var loan = AV.Object.createWithoutData('Loan', loanId);
+  loan.fetch().then(function(floan){
+    if(floan.attributes.status != mconfig.loanStatus.draft){
+        mutil.renderError(res,{code:400, message:"错误的项目状态!"});
+    }else{
+      var loanPayBack = mloan.calculatePayBackMoney(floan);
+      loanPayBack.save().then(function(rpayBack){
+        var lpbRelation = floan.relation('loanPayBacks');
+        lpbRelation.add(rpayBack);
+        floan.set('status',mconfig.loanStatus.paying);
+        floan.save().then(function(data){
+          mutil.renderData(res,data);
+        },function(error){
+        mutil.renderError(res,error);
+        });
+      },function(error){
+        mutil.renderError(res,error);
+      });
+    }
+  });
 });
 
 
@@ -246,11 +256,30 @@ app.post(config.baseUrl + '/attachment', function (req, res){
 /*
 	分条件查看项目列表
  */
+//查询草稿项目
+app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
 
+});
 
 /*
 	查看联系人列表
  */
+//如果身份证或者驾驶证存在，就返回该用户的联系人
+app.get(config.baseUrl + '/contract/:certificateNum/isExist', function(req, res){
+
+});
+
+app.post(config.baseUrl + '/contract', function(req, res){
+  var contract = mcontract.createContract(req.body);
+  contract.save().then(function(r_contract){
+    if(req.body.attachments){
+      mcontract.bindContractFiles(r_contract, req.body.attachments);
+    }
+    mutil.renderData(res, r_contract);
+  },function(error){
+    mutil.renderError(res, error);
+  })
+});
 
 
 /*

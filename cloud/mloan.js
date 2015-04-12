@@ -1,9 +1,11 @@
 var Loan = AV.Object.extend('Loan');
-var PayBack = AV.Object.extend('PayBack'); //收入列表
+var LoanPayBack = AV.Object.extend('LoanPayBack'); //收入列表
 var LoanRecord = AV.Object.extend('LoanRecord'); //支出列表
 var util = require('util');
+var moment = require('moment');
 var mlog = require('cloud/mlog.js');
 var mutil = require('cloud/mutil.js');
+var mconfig = require('cloud/mconfig.js');
 
 /**
  * 分阶段创建项目
@@ -28,8 +30,10 @@ function createBasicLoan(reqBody){
     loan.set('keepCost', reqBody.keepCost);
     loan.set('payWay', reqBody.payWay);
     //放款时间
-    //根据还款类型确认初次还款日期
+    //根据还款类型确认初次放款日期
     loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
+
+    loan.set('status', mconfig.loanStatus.draft);
 	return loan;
 }
 
@@ -37,6 +41,9 @@ function transformLoan(l){
 
 };
 
+/*
+ * 针对首次放款的工厂类
+ */
 var loanRecordFactory = {};
 function calculateOutMoney(loan, interestsMoney, lr){
     var outMoney = loan.amount - interestsMoney - loan.keepCost - loan.assureCost -
@@ -47,6 +54,7 @@ function calculateOutMoney(loan, interestsMoney, lr){
     lr.set('serviceCost', -loan.serviceCost);
     lr.set('otherCost', -loan.otherCost);
     lr.set('outMoney', outMoney);
+    lr.set('order',0); //标记为首次放款
     return lr;
 };
 
@@ -69,14 +77,47 @@ loanRecordFactory.factory = function(loan){
     return new loanRecordFactory[loan.get('payWay')](loan.attributes);
 };
 
+
+/**
+ * 针对还款的工厂类
+ */
+var loanPayBackFactory = {};
+loanPayBackFactory.xxhb = function(loan){
+    var loanPayBack = new AV.Object('LoanPayBack');
+    var interestsMoney = loan.amount * loan.payTotalCircle * loan.interests;
+    var outMoney = loan.amount - interestsMoney - loan.keepCost - loan.assureCost -
+           loan.serviceCost - loan.otherCost;
+    var d = moment(loan.firstPayDate).add(loan.payTotalCircle,'month').format();
+    loanPayBack.set('payDate',d);
+    loanPayBack.set('payMoney',outMoney);
+    loanPayBack.set('status',mconfig.loanPayBackStatus.paying);
+    return loanPayBack;
+};
+loanPayBackFactory.debx = function(loan){
+    var loanPayBack = new AV.Object('LoanPayBack');  
+};
+loanPayBackFactory.factory = function(loan){
+    return new loanPayBackFactory[loan.get('payWay')](loan.attributes);
+};
+
+
+
+/*
+ * 以下是暴露给外部的访问的方法
+ */
 function calculateLoanRecord(loan){
     var lr = loanRecordFactory.factory(loan);
     return lr;
 }
 //各种不同类型的
 function calculatePayBackMoney(loan){
-
+    var lpb = loanPayBackFactory.factory(loan);
+    return lpb
 }
+
+
+
 
 exports.createBasicLoan=createBasicLoan;
 exports.calculateLoanRecord=calculateLoanRecord;
+exports.calculatePayBackMoney=calculatePayBackMoney;

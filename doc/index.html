@@ -216,8 +216,10 @@
         },
         "payCircle": 3,
         "payTotalCircle": 10,
-        "interests": 0.01,
-        "overdueCostPercent": 0.01,
+        "interests": 0.02,
+        "assureCost": 1000,
+        "serviceCost": 1000,
+        "overdueCostPercent": 0.003,
         "otherCost": 1000,
         "keepCost": 1000,
         "payWay": "debx",
@@ -225,26 +227,113 @@
             "__type": "Date",
             "iso": "2015-04-09T16:00:00.000Z"
         },
-        "objectId": "552a2736e4b0b40da36bd865",
-        "createdAt": "2015-04-12T08:05:10.090Z",
-        "updatedAt": "2015-04-12T08:05:10.090Z"
+        "status": 0,
+        "objectId": "552acd98e4b0b40da3725bd4",
+        "createdAt": "2015-04-12T19:55:04.068Z",
+        "updatedAt": "2015-04-12T19:55:04.068Z"
     },
     "code": 200
 }
-</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan_generate_project"><span class="parent">/loan</span>/generate_project</a> <span class="methods"><a href="#_loan_generate_project_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__loan_generate_project" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>未完成</p></div><div class="list-group"><div onclick="window.location.href = '#_loan_generate_project_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan_generate_project_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/loan</span>/generate_project</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_loan_generate_project_post_request" data-toggle="tab">Request</a></li><li><a href="#_loan_generate_project_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan_generate_project_post_request"><h3>Query Parameters</h3><ul><li><strong>name</strong>: <em>(string )</em></li></ul></div><div class="tab-pane" id="_loan_generate_project_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan_generate_bill"><span class="parent">/loan</span>/generate_bill</a> <span class="methods"><a href="#_loan_generate_bill_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__loan_generate_bill" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>生成放款账单（目前只支持xxhb）</p></div><div class="list-group"><div onclick="window.location.href = '#_loan_generate_bill_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan_generate_bill_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/loan</span>/generate_bill</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_loan_generate_bill_post_request" data-toggle="tab">Request</a></li><li><a href="#_loan_generate_bill_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan_generate_bill_post_request"><h3>Query Parameters</h3><ul><li><strong>loanId</strong>: <em>(string )</em></li><li><strong>loanerId</strong>: <em>(string )</em></li><li><strong>assurerId</strong>: <em>(string )</em></li></ul></div><div class="tab-pane" id="_loan_generate_bill_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+    "data": {
+        "loan": {
+            "objectId": "552acd98e4b0b40da3725bd4",
+            "amount": 111111,
+            "payWay": "xxhb",
+            "payCircle": 3,
+            "spanMonth": 10,
+            "payTotalCircle": 10,
+            "assureCost": 1000,
+            "overdueCostPercent": 0.003,
+            "startDate": "2015-01-09T16:00:00.000Z",
+            "loanRecords": {
+                "__type": "Relation",
+                "className": "LoanRecord"
+            },
+            "loanPayBacks": {
+                "__type": "Relation",
+                "className": "LoanPayBack"
+            },
+            "serviceCost": 1000,
+            "keepCost": 1000,
+            "endDate": "2015-10-10T00:00:00.000Z",
+            "status": 0,
+            "interests": 0.02,
+            "firstPayDate": "2015-04-09T16:00:00.000Z",
+            "otherCost": 1000,
+            "assurer": {
+                "objectId": "552acfe3e4b0b40da3725eed"
+            },
+            "loaner": {
+                "objectId": "552acfe3e4b0b40da3725eed"
+            }
+        },
+        "loanRecord": {
+            "interestsMoney": -22222.2,
+            "keepCost": -1000,
+            "assureCost": -1000,
+            "serviceCost": -1000,
+            "otherCost": -1000,
+            "outMoney": 84888.8,
+            "order": 0,
+            "objectId": "552ad190e4b0da2c5e125a8a",
+            "createdAt": "2015-04-12T20:12:00.575Z",
+            "updatedAt": "2015-04-12T20:12:00.575Z"
+        }
+    },
+    "code": 200
 }
-</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="_contract" class="panel-title">/contract</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__contract"><span class="parent"></span>/contract</a> <span class="methods"><a href="#_contract_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__contract" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_contract_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_contract_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/contract</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_contract_post_request" data-toggle="tab">Request</a></li><li><a href="#_contract_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_contract_post_request"><h3>Query Parameters</h3><ul><li><strong>loander</strong>: <em>(string )</em><p>以json形式拼接用户信息</p><p><strong>Example</strong>:</p><pre>{
-  "name":"test",
-  "mobilePhoneNumber":"18516171260",
-  "certificateType":"shenfenzheng",
-  "certificateNum":"542421421421321312312",
-  "email":"yilaing@foxmail.com",
-  "qq":"32727272992",
-  "address":"fdsafasf",
-  "wechat":"fasdfa",
-  "attachments": ["552a0e61e4b0b40da36acc5b"]
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan_assure_bill"><span class="parent">/loan</span>/assure_bill</a> <span class="methods"><a href="#_loan_assure_bill_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__loan_assure_bill" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>完成项目创建，如果不执行这一步取消了，这个项目就是草稿项目，放入草稿箱</p></div><div class="list-group"><div onclick="window.location.href = '#_loan_assure_bill_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan_assure_bill_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/loan</span>/assure_bill</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_loan_assure_bill_post_request" data-toggle="tab">Request</a></li><li><a href="#_loan_assure_bill_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan_assure_bill_post_request"><h3>Query Parameters</h3><ul><li><strong>loanId</strong>: <em>(string )</em></li></ul></div><div class="tab-pane" id="_loan_assure_bill_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+    "data": {
+        "amount": 111111,
+        "payWay": "xxhb",
+        "payCircle": 3,
+        "spanMonth": 10,
+        "payTotalCircle": 10,
+        "assurer": {
+            "__type": "Pointer",
+            "className": "Contract",
+            "objectId": "552acfe3e4b0b40da3725eed"
+        },
+        "assureCost": 1000,
+        "overdueCostPercent": 0.003,
+        "startDate": {
+            "__type": "Date",
+            "iso": "2015-01-09T16:00:00.000Z"
+        },
+        "loanRecords": {
+            "__type": "Relation",
+            "className": "LoanRecord"
+        },
+        "loaner": {
+            "__type": "Pointer",
+            "className": "Contract",
+            "objectId": "552acfe3e4b0b40da3725eed"
+        },
+        "loanPayBacks": {
+            "__type": "Relation",
+            "className": "LoanPayBack"
+        },
+        "serviceCost": 1000,
+        "keepCost": 1000,
+        "endDate": {
+            "__type": "Date",
+            "iso": "2015-10-10T00:00:00.000Z"
+        },
+        "status": 1,
+        "interests": 0.02,
+        "firstPayDate": {
+            "__type": "Date",
+            "iso": "2015-04-09T16:00:00.000Z"
+        },
+        "otherCost": 1000,
+        "objectId": "552acd98e4b0b40da3725bd4",
+        "createdAt": "2015-04-12T19:55:04.068Z",
+        "updatedAt": "2015-04-12T20:19:28.826Z"
+    },
+    "code": 200
 }
-</pre></li><li><strong>assurer</strong>: <em>(string )</em><p>以json形式拼接用户信息</p><p><strong>Example</strong>:</p><pre>{
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="_contract" class="panel-title">/contract</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__contract"><span class="parent"></span>/contract</a> <span class="methods"><a href="#_contract_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__contract" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_contract_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_contract_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent"></span>/contract</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_contract_post_request" data-toggle="tab">Request</a></li><li><a href="#_contract_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_contract_post_request"><h3>Query Parameters</h3><ul><li><strong>data</strong>: <em>(string )</em><p>以json形式传输联系人信息创建联系人,直接发送下面的json，不用加data</p><p><strong>Example</strong>:</p><pre>{
   "name":"test",
   "mobilePhoneNumber":"18516171260",
   "certificateType":"shenfenzheng",
@@ -257,8 +346,17 @@
 }
 </pre></li></ul></div><div class="tab-pane" id="_contract_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
     "data": {
-        "loanerId": "552a244ee4b0da2c5e0add15",
-        "assurerId": "552a244ee4b0da2c5e0add13"
+        "name": "test23",
+        "certificateType": "shenfenzheng",
+        "certificateNum": "542421421421321312312",
+        "email": "yilaing@foxmail.com",
+        "qq": "32727272992",
+        "address": "fdsafasf",
+        "wechat": "fasdfa",
+        "mobilePhoneNumber": "13911111111",
+        "objectId": "552ad42ee4b0da2c5e125ec1",
+        "createdAt": "2015-04-12T20:23:10.255Z",
+        "updatedAt": "2015-04-12T20:23:10.255Z"
     },
     "code": 200
 }
@@ -274,8 +372,61 @@
         },
         "id": "552a2294e4b0b40da36ba7e7",
         "url": "http://ac-gvw1ggob.clouddn.com/b7f1294b28cdbb96.md",
-        "name": "项目经理周总结模板.md"
+        "name": "xxxxxx.md"
     },
     "code": 200
 }
-</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#_account">/account</a></li><li><a href="#_loan">/loan</a></li><li><a href="#_contract">/contract</a></li><li><a href="#_attachment">/attachment</a></li></ul></div></div></div></div></body></html>
+</code></pre></div></div></div></div></div></div></div></div></div></div><div class="panel panel-default"><div class="panel-heading"><h3 id="_dict" class="panel-title">/dict</h3></div><div class="panel-body"><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__dict_payBackWays"><span class="parent">/dict</span>/payBackWays</a> <span class="methods"><a href="#_dict_payBackWays_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel__dict_payBackWays" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_dict_payBackWays_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>获取还款类型</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_dict_payBackWays_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/dict</span>/payBackWays</h4></div><div class="modal-body"><div class="alert alert-info"><p>获取还款类型</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_dict_payBackWays_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_dict_payBackWays_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+    "data": {
+        "debx": {
+            "value": "debx",
+            "text": "等额本息"
+        },
+        "xxhb": {
+            "value": "xxhb",
+            "text": "先息后本"
+        },
+        "zqcxhb": {
+            "value": "zqcxhb",
+            "text": "周期初息后本"
+        },
+        "zqmxhb": {
+            "value": "zqmxhb",
+            "text": "周期末息后本"
+        },
+        "dqhbfx": {
+            "value": "dqhbfx",
+            "text": "到期还本付息"
+        }
+    },
+    "code": 200
+}
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__dict_loanTypes"><span class="parent">/dict</span>/loanTypes</a> <span class="methods"><a href="#_dict_loanTypes_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel__dict_loanTypes" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_dict_loanTypes_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>获取贷款抵押种类</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_dict_loanTypes_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/dict</span>/loanTypes</h4></div><div class="modal-body"><div class="alert alert-info"><p>获取贷款抵押种类</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_dict_loanTypes_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_dict_loanTypes_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+    "data": {
+        "fcdy": {
+            "value": "fcdy",
+            "text": "房产抵押"
+        },
+        "qcdy": {
+            "value": "qcdy",
+            "text": "汽车抵押"
+        },
+        "mfdy": {
+            "value": "mfdy",
+            "text": "买房抵押"
+        },
+        "mcdy": {
+            "value": "mcdy",
+            "text": "买车抵押"
+        },
+        "wdy": {
+            "value": "wdy",
+            "text": "无抵押"
+        },
+        "qtdy": {
+            "value": "qtdy",
+            "text": "其他抵押"
+        }
+    },
+    "code": 200
+}</code></pre></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#_account">/account</a></li><li><a href="#_loan">/loan</a></li><li><a href="#_contract">/contract</a></li><li><a href="#_attachment">/attachment</a></li><li><a href="#_dict">/dict</a></li></ul></div></div></div></div></body></html>

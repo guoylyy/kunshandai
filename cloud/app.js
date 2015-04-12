@@ -30,9 +30,9 @@ if (__production) {
 } else {
     app.set('views', 'cloud/views');
 }
-// app.set('views', __dirname + '/views');
+// app.set('views', 'app/angular/account');
 // app.engine('.html', ejs.renderFile);
-app.set('view engine', 'ejs');        //将渲染引擎设为ejs
+app.set('view engine', 'ejs');        //将渲染引擎设为html
 app.use(express.bodyParser());        // 读取请求body的中间件
 app.use(expressValidator);
 app.use(avosExpressHttpsRedirect());
@@ -58,13 +58,16 @@ app.get('/home',function(req, res){
 });
 
 app.get('/index',function(req, res){
-  res.render('loan_search.ejs');
+  res.render('guest_layout.ejs');
 });
 app.get('/login', function(req, res){
-  res.render('login.ejs');
+  res.render('account.ejs');
 });
-app.get('/register', function(req, res){
-  res.render('register.ejs');
+app.get('/signup', function(req, res){
+  res.render('account.ejs');
+});
+app.get('/manage', function(req, res){
+  res.render('manage.ejs');
 });
 
 /***************************************************

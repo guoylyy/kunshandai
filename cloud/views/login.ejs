@@ -1,7 +1,7 @@
 <div id="account">
 
 <% include account/guest_body %>
-
+<div class="ui main segment">
 <div ng-controller="LoginController" class="container">
 <form id="loginForm" class="search-form-middle" action="/login" method="POST">
 	<div class="ui vertical middlebox segment">
@@ -14,7 +14,7 @@
 				        <p>{{errMsg}}</p>
 				     </div>
 					<div class=" field">
-						<input placeholder="手机号" type="text" name="mobilePhone" ng-model="user.mobilePhone"  required/>
+						<input placeholder="手机号" type="text" name="mobilePhoneNumber" ng-model="user.mobilePhoneNumber"  required/>
 					</div>
 					<div class="field">
 						<input type="password" placeholder="密码" name="password" ng-model="user.password" required>
@@ -35,11 +35,10 @@
 						</div>
 					</a>
 				</div>
-				
 			</div>
 		</div>
 	</div>
 </form>
 </div>
-
+</div>
 </div>

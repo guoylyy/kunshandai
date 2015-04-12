@@ -1,0 +1,38 @@
+<div ng-controller="LoginController" class="container">
+	<form id="loginForm" class="search-form-middle" action="/login" method="POST">
+		<div class="ui vertical middlebox segment">
+			<div class="ui grid">
+				<div class="ui eleven wide column">这里放图</div>			
+				<div class="ui five wide maininput column">
+					<div class="ui inverted  form" ng-class="{error:err}">
+						<h2 class="ui inverted header ">登录您的昆山贷款</h2>
+						<div class="ui error message" ng-show="err">
+							<p>{{errMsg}}</p>
+						</div>
+						<div class=" field">
+							<input placeholder="手机号" type="text" name="mobilePhoneNumber" ng-model="account.mobilePhoneNumber"  required/>
+						</div>
+						<div class="field">
+							<input type="password" placeholder="密码" name="password" ng-model="account.password" required>
+						</div>
+						<div class="fields">
+							<div class="eleven wide field" >
+								<checkbox ng-model="rememberMe">七天内免登陆</checkbox>
+							</div>
+							<div class="field">
+								<div class="ui submit blue button" id="user-login" ng-click="login()">登录</div>
+							</div>
+						</div>
+						<div class="ui horizontal divider">或</div>
+						<a ui-sref="signup">
+							<div class="fluid ui  green labeled icon button">
+								注册账号
+								<i class="add icon"></i>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

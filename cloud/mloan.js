@@ -13,9 +13,11 @@ var mconfig = require('cloud/mconfig.js');
  * 2. 创建联系人 - 放在contract.js里
  * 3. 根据以上的两个信息来确定一个项目，生成主项目
  */
-function createBasicLoan(reqBody){
+function createBasicLoan(reqBody, u){
 	//var loan = new Loan();
     var loan = new AV.Object('Loan');
+    loan.set('owner',u);
+
     loan.set('amount', reqBody.amount);
     loan.set('spanMonth', reqBody.spanMonth);
     loan.set('startDate', mutil.wrapperStrToDate(reqBody.startDate)); //合同相关

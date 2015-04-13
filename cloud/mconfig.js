@@ -1,6 +1,7 @@
 /*
  * 这个类是一些字典表等静态的配置信息
  */
+exports.pageSize = 10
 var loanStatus ={
 	draft: 0,
 	paying: 1,

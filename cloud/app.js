@@ -109,6 +109,7 @@ app.post(config.baseUrl +'/account/login', function(req, res){
 });
 //如果用户已登录，返回用户信息
 app.get(config.baseUrl + '/account/isLogin', function(req, res){
+  //console.log(req.token);
   account.isLogin() ? res.json(account.isLogin()):mutil.renderResult(res, false, 210);
 });
 //注册
@@ -161,7 +162,8 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
  *新建一个贷款项目
  */
 app.post(config.baseUrl +'/loan/create_loan', function (req, res){
-  var loan = mloan.createBasicLoan(req.body);
+  var u = check_login(res);
+  var loan = mloan.createBasicLoan(req.body, u);
   loan.save().then(function(r_loan){
     mutil.renderData(res, r_loan);
   }, function(error){
@@ -171,6 +173,7 @@ app.post(config.baseUrl +'/loan/create_loan', function (req, res){
 
 //生成项目时候初次记录生成放款
 app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
+  var u = check_login(res);
   var loanId = req.body.loanId;
   var loanerId = req.body.loanerId;
   var assurerId = req.body.assurerId;
@@ -211,10 +214,11 @@ function generateLoanRecord(floan, res){
     function(error){
       mutil.renderError(res,{code:400, message:'生成放款记录失败!'});
   });
-}
+};
 
 //确认放款
 app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
+  var u = check_login(res);
   var loanId = req.body.loanId;
   //生成放款记录
   var loan = AV.Object.createWithoutData('Loan', loanId);
@@ -238,8 +242,6 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
     }
   });
 });
-
-
 //获取未完成的项目列表,分页
 //app.get();
 app.post(config.baseUrl + '/attachment', function (req, res){
@@ -249,17 +251,65 @@ app.post(config.baseUrl + '/attachment', function (req, res){
         name:attachment.name()});
     }else{
       mutil.renderError(res, {code:400, message:'上传失败'});
-    }
+    };
   });
 });
 
-/*
-	分条件查看项目列表
- */
-//查询草稿项目
-app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
 
+//查询草稿项目
+app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
+  var u = check_login(res);
+  var pageNumber = req.params.pn;
+  var query = new AV.Query('Loan');
+  var totalPageNum = 1;
+  var resultsMap = {};
+  query.notEqualTo('status', mconfig.loanStatus.draft);
+  query.equalTo('owner', u);
+  query.count().then(function(count){
+    totalPageNum = parseInt(count / mconfig.pageSize) + 1;
+    resultsMap['totalPageNum'] = totalPageNum;
+    resultsMap['totalNum'] = count;
+  }).then(function(){
+      if(pageNumber > resultsMap.totalPageNum){
+        resultsMap['values'] = [];
+        mutil.renderData(res, resultsMap);
+      }else{
+        query.skip(pageNumber*mconfig.pageSize - mconfig.pageSize);
+        query.find({
+          success: function(results){
+            var rlist = [];
+            for (var i = 0; i < results.length; i++) {
+              rlist.push(transformLoan(results[i]));
+            };
+            resultsMap['values'] = rlist;
+            mutil.renderData(res, resultsMap);
+          },
+          error: function(error){
+            mutil.renderError(res,error);
+          }
+        });
+      }
+  });
 });
+
+
+
+
+function transformLoan(l){
+  var loaner = l.get('loaner');
+  return {
+      id: l.id,
+      amount: l.get('amount'),
+      createdAt: formatTimeLong(l.createdAt),
+      loaner: loaner,
+      payWay: l.get('payWay') 
+  };
+};
+
+function formatTimeLong(t) {
+    var date = moment(t).format('YYYY-MM-DD HH:mm:ss');
+    return date;
+}
 
 /*
 	查看联系人列表
@@ -280,8 +330,6 @@ app.post(config.baseUrl + '/contract', function(req, res){
     mutil.renderError(res, error);
   })
 });
-
-
 /*
 	查看个人主页
  */
@@ -325,6 +373,16 @@ function saveFileThen(req, f) {
         f();
     }
 }
+
+function check_login(res){
+  var u = account.isLogin();
+  if(u){
+    return u;
+  }else{
+    mutil.renderError(res, {code:501, message:'未登录，请重新登录！'});
+  }
+}
+
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
 app.listen({"static": {maxAge: 604800000}});

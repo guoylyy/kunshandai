@@ -5,8 +5,10 @@ var mlog = require('cloud/mlog.js');
 var mutil = require('cloud/mutil.js');
 
 
-function createContract(reqBody){
+function createContract(reqBody, u){
     var contract = new AV.Object('Contract');
+    contract.set('owner', u);
+    
     contract.set('name',reqBody.name);
     contract.set('certificateType', reqBody.certificateType);
     contract.set('certificateNum', reqBody.certificateNum);

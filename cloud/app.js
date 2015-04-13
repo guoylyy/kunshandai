@@ -320,7 +320,8 @@ app.get(config.baseUrl + '/contract/:certificateNum/isExist', function(req, res)
 });
 
 app.post(config.baseUrl + '/contract', function(req, res){
-  var contract = mcontract.createContract(req.body);
+  var u = check_login(res);
+  var contract = mcontract.createContract(req.body, u);
   contract.save().then(function(r_contract){
     if(req.body.attachments){
       mcontract.bindContractFiles(r_contract, req.body.attachments);

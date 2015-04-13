@@ -5,4 +5,3 @@ exports.cookieParserSalt="klp4e8b4sddjp2";
 exports.__production=false;
 var version = 'v1';
 exports.baseUrl = '/' + version;
-exports.pageSize = 10

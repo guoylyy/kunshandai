@@ -168,10 +168,37 @@ traits:
                 }
   
 /loan:
+  /all/{pn}:
+    get:
+      description: |
+        分页获取该用户所有项目
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "data": {
+                        "totalPageNum": 1,
+                        "totalNum": 1,
+                        "values": [
+                            {
+                                "id": "552bd8b7e4b0da2c5e1b8e3b",
+                                "amount": 111111,
+                                "createdAt": "2015-04-13 22:54:47",
+                                "loaner": {
+                                    "objectId": "552bd88ee4b0b40da37be1e0"
+                                },
+                                "payWay": "xxhb"
+                            }
+                        ]
+                    },
+                    "code": 200
+                }
   /create_loan:
     post:
       description: |
-        新建一个贷款项目
+        新建一个贷款项目(新建贷款第一步，然后新建联系人)
       queryParameters:
         amount:
           example: 10000.0
@@ -259,7 +286,7 @@ traits:
                 }
   /generate_bill:
     description: |
-      生成放款账单（目前只支持xxhb）
+      生成放款账单（目前只支持xxhb）（新建贷款第二步）
     post:
       queryParameters:
         loanId:
@@ -324,7 +351,7 @@ traits:
                }
   /assure_bill:
     description: |
-      完成项目创建，如果不执行这一步取消了，这个项目就是草稿项目，放入草稿箱
+      完成项目创建，如果不执行这一步取消了，这个项目就是草稿项目，放入草稿箱（新建贷款第三步，完成）
     post:
       queryParameters:
         loanId:
@@ -388,6 +415,8 @@ traits:
 
 /contract:
   post:
+    description: |
+      用户新建一个联系人
     queryParameters:
       data:
         description: |

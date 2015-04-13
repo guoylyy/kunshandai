@@ -316,7 +316,7 @@ function formatTimeLong(t) {
  */
 //如果身份证或者驾驶证存在，就返回该用户的联系人
 app.get(config.baseUrl + '/contract/:certificateNum/isExist', function(req, res){
-
+  
 });
 
 app.post(config.baseUrl + '/contract', function(req, res){

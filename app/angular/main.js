@@ -37,6 +37,7 @@ require([
 		 'account/AccountService',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
+		 'manage/loan/createLoanCtrl',
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
 		 'routes'

@@ -1,26 +1,26 @@
 <div class="four wide column">
 	<div class="ui vertical  mnav menu">
 
-		<div ui-sref-active="active" class="mcolor item" ui-sref="index" >账户总览</div>
+		<a ui-sref-active-eq="active" class="mcolor item" ui-sref="index" >账户总览</a>
 
-		<div ui-sref-active="active"  class="ui dropdown mcolor item" ui-sref="loan">
+		<div ui-sref-active="selected"  class="ui dropdown mcolor item">
 			放款管理
 			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a class="item">新增放款</a>
-				<a class="item"> 未放款项目</a>
+				<a class="item" href="/createLoan" target="_blank">新增放款</a>
+				<a class="item" ui-sref="loanPedding"> 未放款项目</a>
 			</div>
 		</div>
 
-		<div ui-sref-active="active"  class="ui dropdown mcolor item" ui-sref="collect">
+		<div class="ui dropdown mcolor item">
 			收款管理
 			<i class="dropdown icon"></i>
 			<div class="menu">
-				<a ui-sref-active="active" class="item" ui-sref="collect.pendding">待收款项目</a>
-				<a ui-sref-active="active" class="item" ui-sref="collect.done">已收款项目</a>
+				<a  class="item" ui-sref="collectPendding">待收款项目</a>
+				<a  class="item" ui-sref="collectDone">已收款项目</a>
 			</div>
 		</div>
-		<div ui-sref-active="active"  class="ui dropdown mcolor item" ui-sref="project">
+		<div ui-sref-active="selected"  class="ui dropdown mcolor item" ui-sref="project">
 			项目检视
 			<i class="dropdown icon"></i>
 			<div class="menu">
@@ -31,8 +31,16 @@
 				<a class="item">所有项目</a>
 			</div>
 		</div>
-		<a  ui-sref-active="active" class="mcolor item" ui-sref="client">客户管理</a>
+		<a  ui-sref-active-eq="active" class="mcolor item" ui-sref="client">客户管理</a>
 		<div class="mcolor item">账户安全</div>
 		<div class="mcolor item">详细提醒</div>
 	</div>
 </div>
+<script type="text/javascript" src="/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/semantic-ui/dist/semantic.min.js"></script>
+
+<script>
+	$('.dropdown').dropdown({
+		on:'hover'
+	});
+</script>

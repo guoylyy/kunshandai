@@ -43,17 +43,17 @@ define(['app'],function(app){
 		    		"main":{templateUrl: "/angular/manage/loan/loan.html"}
 		    	}
 		    })
-		    .state('collect',{
-		    	url:"#collect",
+		    .state('collectPendding',{
+		    	url:"#collect/pendding",
 		    	views:{
 		    		"main":{templateUrl: "/angular/manage/collect/collect.html"}
 		    	}
 		    })
-		    .state('collect.pendding',{
-		    	url:"/pendding"
-		    })
-		    .state('collect.done',{
-		    	url:"/done"
+		    .state('collectDone',{
+		    	url:"#collect/done",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/collect/collect.html"}
+		    	}
 		    })
 		    .state('project',{
 		    	url:"#project",

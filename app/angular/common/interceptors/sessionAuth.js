@@ -1,10 +1,10 @@
 define(['../../app'],function(app){
 
-	return app.factory('sessionAuth', ['$q','$injector', function($q,$injector){
+	return app.factory('sessionAuth', ['$q','$injector','$document', function($q,$injector,$document){
 		return {
 			request: function(config) {
 				
-				var cookies = document.cookies;
+				var cookies = $document.cookies;
 				console.log(cookies);
 				// if(cookies){	
 				// 	// console.log('login error: mobilephone number or password is wrong');

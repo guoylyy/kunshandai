@@ -20,6 +20,6 @@ define(['../app'],function(app){
 			}
 		}
 		
-
+0
 	}]);
 });

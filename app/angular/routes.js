@@ -72,14 +72,16 @@ define(['app'],function(app){
 		    	views:{
 		    		"main":{templateUrl: "/angular/manage/loan/create_loanInfo.html"},
 		    		"ctrl":{templateUrl: "/angular/manage/loan/loanInfo_ctrl.html"}
-		    	}
+		    	},
+				controller:"CreateLoanCtrl"
 		    })
 		    .state('createLoanDetail',{
 		    	url:"#detail",
 		    	views:{
 		    		"main":{templateUrl: "/angular/manage/loan/create_loan.html"},
 		    		"ctrl":{templateUrl: "/angular/manage/loan/loan_ctrl.html"}
-		    	}
+		    	},
+		    	controller:"CreateLoanCtrl"
 		    })
 		    ;
 

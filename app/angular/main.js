@@ -28,6 +28,7 @@ require.config({
 		'underscore':{
 			exports:'_'
 		}
+
 	}
 });
 
@@ -35,11 +36,14 @@ require([
 		 'angular',
 		 'app',
 		 'account/AccountService',
+		 'manage/loan/LoanService',
+		 'manage/contact/ContactService',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
-		 'manage/loan/createLoanCtrl',
+		 'manage/loan/CreateLoanCtrl',
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
+		 'common/directive/numberInput',
 		 'routes'
 ],function(angular) {
 	

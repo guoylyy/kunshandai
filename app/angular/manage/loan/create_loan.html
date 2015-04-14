@@ -4,7 +4,7 @@
 	<div class="ui form">
 		<div class="two wide field">
 			<label>贷款类型</label>
-			<div class="ui dropdown selection">
+			<!-- <div class="ui dropdown selection">
 				<input type="hidden" name="gender">	
 				<div class="default text">选择贷款类型</div>
 				<i class="dropdown icon"></i>
@@ -16,22 +16,29 @@
 					<div class="item" data-value="4">无抵押</div>
 					<div class="item" data-value="5">其他抵押</div>
 				</div>
-			</div>
+			</div> -->
+			<select ng-model="loanType.selected">
+			    <option ng-selected="{{loanType.value == loanType.selected}}"
+			            ng-repeat="loanType in loanTypes"
+			            value="{{loanType.value}}">
+			      {{loanType.text}}
+			    </option>
+			</select>
 		</div>
 		<div class="ui section divider"></div>
 
 		<div class="fields">
 			<div class="five wide field">
 				<label>贷款金额</label>
-				<div class="ui right labeled  input">
-					<input type="text" placeholder="贷款金额">	
+				<div class="ui right labeled  input" >
+					<input type="text" placeholder="贷款金额" ng-model="loanInfo.amount">	
 					<div class="ui label">元</div>
 				</div>
 			</div>
 			<div class="three wide field">
 				<label>贷款期限</label>
 				<div class="ui right labeled input">
-					<input type="text" placeholder="贷款期限">	
+					<input type="text" placeholder="贷款期限" ng-model="loanInfo.spanMonth"> 	
 					<div class="ui label">月</div>
 				</div>
 			</div>
@@ -39,12 +46,12 @@
 			<div class="four wide field">
 				<label>开始时间</label>
 				<div class="ui input">
-					<input type="date" placeholder="合同开始时间"></div>
+					<input type="text" placeholder="合同开始时间" ng-model="loanInfo.startDate"></div>
 				</div>
 				<div class="four wide field">
 					<label>截止时间</label>
 					<div class="ui input">
-						<input type="date" placeholder="合同截止时间"></div>
+						<input type="text" placeholder="合同截止时间" ng-model="loanInfo.endDate"></div>
 					</div>
 				</div>
 
@@ -52,21 +59,21 @@
 					<div class="four wide field">
 						<label>还款周期</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="还款周期">	
+							<input type="text" placeholder="还款周期"  ng-model="loanInfo.payCircle">	
 							<div class="ui label">月</div>
 						</div>
 					</div>
 					<div class="four wide field">
 						<label>还款总期数</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="还款周期">	
+							<input type="text" placeholder="还款周期"  ng-model="loanInfo.payTotalCircle">	
 							<div class="ui label">期</div>
 						</div>
 					</div>
 					<div class="four wide field">
 						<label>利率</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="利率">	
+							<input type="text" placeholder="利率"  ng-model="loanInfo.interests">	
 							<div class="ui label">月</div>
 						</div>
 					</div>
@@ -75,21 +82,21 @@
 					<div class="three wide field">
 						<label>履约保证金</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="履约保证金">	
+							<input type="text" placeholder="履约保证金"  ng-model="loanInfo.assureCost">	
 							<div class="ui label">月</div>
 						</div>
 					</div>
 					<div class="three wide field">
 						<label>服务费</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="服务费">	
+							<input type="text" placeholder="服务费"  ng-model="loanInfo.serviceCost">	
 							<div class="ui label">元</div>
 						</div>
 					</div>
 					<div class="three wide field">
 						<label>逾期违约金</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="逾期违约金">	
+							<input type="text" placeholder="逾期违约金"  ng-model="loanInfo.overdueCostPercent">	
 							<div class="ui label">月</div>
 						</div>
 					</div>
@@ -97,14 +104,14 @@
 					<div class="three wide field">
 						<label>其他费用</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="履约保证金">	
+							<input type="text" placeholder="履约保证金"  ng-model="loanInfo.otherCost">	
 							<div class="ui label">元</div>
 						</div>
 					</div>
 					<div class="three wide field">
 						<label>暂收金额</label>
 						<div class="ui right labeled  input">
-							<input type="text" placeholder="暂收金额">	
+							<input type="text" placeholder="暂收金额"  ng-model="loanInfo.keepCost">	
 							<div class="ui label">元</div>
 						</div>
 					</div>
@@ -117,7 +124,7 @@
 
 			<div class="ui form">
 				<div class="two wide field">
-					<label>还款类型</label>
+					<!-- <label>还款类型</label>
 					<div class="ui dropdown selection">
 						<input type="hidden" name="loanType">	
 						<div class="default text">选择还款类型</div>
@@ -131,20 +138,43 @@
 							<div class="item" data-value="5">按揭等额本金</div>
 							<div class="item" data-value="6">按揭等额本息</div>
 						</div>
-					</div>
+					</div> -->
+					<label>还款类型</label>
+					<!-- <select ng-model="loanType.selected">
+						<option ng-repeat="loanType in loanTypes" value="{{loanType.value}}" selected="{{loanType.selected}}">
+							{{loanType.name}}
+						</option>
+					</select> -->
+					<select ng-model="repayType.selected">
+					    <option ng-selected="{{repayType.value == repayType.selected}}"
+					            ng-repeat="repayType in repayTypes"
+					            value="{{repayType.value}}">
+					      {{repayType.text}}
+					    </option>
+					</select>
+					<!-- how to use ui-select
+					
+					<!-- <label>还款类型</label>
+ 					 <p>Selected: {{loanType.selected}}</p>
+					  <ui-select ng-model="loanType.selected" theme="selectize" ng-disabled="disabled" style="width: 300px;">
+					    <ui-select-match placeholder="选择或搜索还款类型">{{$select.selected.name}}</ui-select-match>
+					    <ui-select-choices repeat="loanType in loanTypes | filter: $select.search">
+					      <span ng-bind-html="loanType.name | highlight: $select.search"></span>
+					    </ui-select-choices>
+					  </ui-select> -->
 				</div>
 				<div class="ui section divider"></div>
 				<div class="fields">
 					<div class="four wide field">
 						<label>首次还款日期</label>
 						<div class="ui input">
-							<input type="date" placeholder="首次还款日期"></div>
+							<input type="text" placeholder="首次还款日期" ng-model="loanInfo.firstPayDate"></div>
 						</div>
 						<div class="four wide field">
 							<label>每期还款</label>
 							<div class="ui right labeled  input">
-								<input type="text" placeholder="每期还款">	
-								<div class="ui label">元</div>
+								<input type="text" placeholder="每期还款" disabled="">	
+								<div class="ui label">元</div>  
 							</div>
 						</div>
 					</div>

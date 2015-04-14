@@ -3,7 +3,7 @@ define(['../../app'],function(app){
 	return app.factory('ContactService', ['$http', 'ApiURL',
 		function($http,ApiURL){
 		
-		var contact = '/contract';
+		var contact = '/contact';
 		
 		return{
 			create : function(data){

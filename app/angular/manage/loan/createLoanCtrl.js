@@ -14,8 +14,8 @@ define(['../../app',"underscore"],function(app,_) {
 				address:''
 			};
 	}
-	return app.controller('createLoanCtrl', ["$scope","$location","LoanService","ContactService",'$state',
-		function($scope,$location,LoanService,ContactService,$state){
+	return app.controller('createLoanCtrl', ["$scope","$location","LoanService","ContactService",'DictService','$state',
+		function($scope,$location,LoanService,ContactService,DictService,$state){
 		
 		var loanInfo,
 			contract = {

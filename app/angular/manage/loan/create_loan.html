@@ -46,7 +46,8 @@
 			<div class="four wide field">
 				<label>开始时间</label>
 				<div class="ui input">
-					<input type="text" placeholder="合同开始时间" ng-model="loanInfo.startDate"></div>
+				<datepicker ng-model="dt" min-date="minDate" show-weeks="true" class="well well-sm"></datepicker>
+					<!-- <input type="text" placeholder="合同开始时间" ng-model="loanInfo.startDate"></div> -->
 				</div>
 				<div class="four wide field">
 					<label>截止时间</label>

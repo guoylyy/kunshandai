@@ -10,6 +10,7 @@ require.config({
 	paths:{
 		underscore:'../lib/underscore/underscore',
 		angular:'../lib/angular/angular',
+		uiBootstrap:'../lib/angular-bootstrap/ui-bootstrap-tpls',
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
 		angularSemantic:'../lib/angular-semantic-ui/dist/angular-semantic-ui',
 		text:'../lib/requirejs-text/text'
@@ -21,6 +22,9 @@ require.config({
 		'uiRouter':{
 			deps:['angular']
 
+		},
+		'uiBootstrap':{
+			deps:['angular']
 		},
 		'angularSemantic':{
 			deps:['angular']
@@ -35,6 +39,7 @@ require.config({
 require([
 		 'angular',
 		 'app',
+		 'manage/DictService',
 		 'account/AccountService',
 		 'manage/loan/LoanService',
 		 'manage/contact/ContactService',

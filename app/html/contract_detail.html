@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="../lib/bootstrap/dist/css/bootstrap.css" >
   	<link rel="stylesheet" href="../styles/ksd.css">
+  	<script type="text/javascript" src="../lib/jquery/dist/jquery.min.js"></script>
+  	<script type="text/javascript" src="../lib/bootstrap/dist/js/bootstrap.js"></script>
 	<title>合同详情</title>
 </head>
 <body>
@@ -48,7 +50,7 @@
 		<div class="ks-dividing">
 			<h4>合同详情</h4>
 		</div>
-		<div class="ks-panel panel panel-default">
+		<div class="ks-panel panel panel-primary">
 			<div class="panel-heading">贷款信息</div>
 		    <div class="panel-body">
 		    	<strong class="ks-heading ks-color-light">合同编号: D89230423</strong>
@@ -117,7 +119,7 @@
 				</table>
 		    </div>
 		</div>
-		<div class="ks-panel panel panel-default">
+		<div class="ks-panel panel panel-primary">
 			<div class="panel-heading">还款信息</div>
 		    <div class="panel-body">
 		    	<table class="table ">
@@ -213,5 +215,29 @@
 			</div>
 		</div>
 	</footer>
+<div class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript">
+	$(function(){
+		$('tr').click(function(){
+			$('.modal').modal('show');
+		})
+	});
+</script>
 </body>
 </html>

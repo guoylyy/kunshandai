@@ -27,7 +27,8 @@
     "angular-ui-router": "~0.2.13",
     "angular-file-upload": "~1.1.5",
     "bootstrap": "~3.3.4",
-    "ui-bootstrap": "~0.12.1"
+    "ui-bootstrap": "~0.12.1",
+    "angular-bootstrap": "~0.12.1"
   },
   "description": "kunshandai",
   "resolutions": {

@@ -20,7 +20,7 @@ var avosExpressCookieSession = require('avos-express-cookie-session');
 
 var mutil = require('cloud/mutil.js');
 var mloan = require('cloud/mloan.js');
-var mcontract = require('cloud/mcontract.js');
+var mcontact = require('cloud/mcontact.js');
 var mconfig = require('cloud/mconfig.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
@@ -185,8 +185,8 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
   var loanerId = req.body.loanerId;
   var assurerId = req.body.assurerId;
   var loan = AV.Object.createWithoutData('Loan',loanId);
-  var loaner = AV.Object.createWithoutData('Contract',loanerId);
-  var assurer = AV.Object.createWithoutData('Contract',assurerId);
+  var loaner = AV.Object.createWithoutData('Contact',loanerId);
+  var assurer = AV.Object.createWithoutData('Contact',assurerId);
   loan.fetch().then(function(floan){
     //判断是否已经有放款记录,如果有删除掉
     if(assurer){
@@ -309,23 +309,23 @@ app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
  * 已完成:
  *  1. 新建联系人
  */
-app.post(config.baseUrl + '/contract', function(req, res){
+app.post(config.baseUrl + '/contact', function(req, res){
   var u = check_login(res);
-  var contract = mcontract.createContract(req.body, u);
-  contract.save().then(function(r_contract){
+  var contact = mcontact.createContact(req.body, u);
+  contact.save().then(function(r_contact){
     if(req.body.attachments){
-      mcontract.bindContractFiles(r_contract, req.body.attachments);
+      mcontact.bindContactFiles(r_contact, req.body.attachments);
     }
-    mutil.renderData(res, r_contract);
+    mutil.renderData(res, r_contact);
   },function(error){
     mutil.renderError(res, error);
   })
 });
 //如果身份证或者驾驶证存在，就返回该用户的联系人
-app.get(config.baseUrl + '/contract/:certificateNum/isExist', function (req, res){
+app.get(config.baseUrl + '/contact/:certificateNum/isExist', function (req, res){
   var u = check_login(res);
   var certificateNum = req.params.certificateNum;
-  var query = new AV.Query('Contract');
+  var query = new AV.Query('Contact');
   query.equalTo("certificateNum",certificateNum);
   query.equalTo("owner",u);
   query.find({
@@ -343,9 +343,9 @@ app.get(config.baseUrl + '/contract/:certificateNum/isExist', function (req, res
 });
 
 //获取一个用户所有联系人
-app.get(config.baseUrl + '/contract/all', function (req, res){
+app.get(config.baseUrl + '/contact/all', function (req, res){
   var u = check_login(res);
-  var query = new AV.Query('Contract');
+  var query = new AV.Query('Contact');
   query.equalTo("owner",u);
   query.find({
     success: function(results){
@@ -357,9 +357,9 @@ app.get(config.baseUrl + '/contract/all', function (req, res){
   });
 });
 //删除一个联系人
-app.delete(config.baseUrl + '/contract/:id', function (req, res){
+app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
-  var query = new AV.Query('Contract');
+  var query = new AV.Query('Contact');
   query.equalTo("owner",u);
   query.equalTo("id",req.params.id);
   //todo:如果一个联系人有相关项目，是不可以删除的
@@ -374,7 +374,6 @@ app.delete(config.baseUrl + '/contract/:id', function (req, res){
 });
 
 
-
 /*
   查询字典表
  */
@@ -382,8 +381,6 @@ app.get(config.baseUrl + '/dict/:key', function (req, res){
   var key = req.params.key;
   mutil.renderData(res, mconfig[key]);
 });
-
-
 
 /*
   User defined fuctions

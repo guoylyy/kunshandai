@@ -7,41 +7,6 @@ var mlog = require('cloud/mlog.js');
 var mutil = require('cloud/mutil.js');
 var mconfig = require('cloud/mconfig.js');
 
-/**
- * 分阶段创建项目
- * 1. 创建项目信息
- * 2. 创建联系人 - 放在contract.js里
- * 3. 根据以上的两个信息来确定一个项目，生成主项目
- */
-function createBasicLoan(reqBody, u){
-	//var loan = new Loan();
-    var loan = new AV.Object('Loan');
-    loan.set('owner',u);
-
-    loan.set('amount', reqBody.amount);
-    loan.set('spanMonth', reqBody.spanMonth);
-    loan.set('startDate', mutil.wrapperStrToDate(reqBody.startDate)); //合同相关
-    loan.set('endDate', mutil.wrapperStrToDate(reqBody.endDate)); //合同相关
-    loan.set('payCircle', reqBody.payCircle); //还款周期
-    loan.set('payTotalCircle', reqBody.payTotalCircle); //还款总周期: 应该计算
-    loan.set('interests', reqBody.interests);
-    loan.set('assureCost', reqBody.assureCost);
-    loan.set('serviceCost', reqBody.serviceCost);
-    loan.set('overdueCostPercent', reqBody.overdueCostPercent);
-    loan.set('otherCost', reqBody.otherCost);
-    loan.set('keepCost', reqBody.keepCost);
-    loan.set('payWay', reqBody.payWay);
-    //放款时间
-    //根据还款类型确认初次放款日期
-    loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
-
-    loan.set('status', mconfig.loanStatus.draft);
-	return loan;
-}
-
-function transformLoan(l){
-
-};
 
 /*
  * 针对首次放款的工厂类
@@ -78,17 +43,16 @@ loanRecordFactory.xxhb = function(loan){
 loanRecordFactory.factory = function(loan){
     return new loanRecordFactory[loan.get('payWay')](loan.attributes);
 };
+/* End of 放款的工厂类 */
 
 
-/**
+/****************************
  * 针对还款的工厂类
  */
 var loanPayBackFactory = {};
 loanPayBackFactory.xxhb = function(loan){
     var loanPayBack = new AV.Object('LoanPayBack');
-    var interestsMoney = loan.amount * loan.payTotalCircle * loan.interests;
-    var outMoney = loan.amount - interestsMoney - loan.keepCost - loan.assureCost -
-           loan.serviceCost - loan.otherCost;
+    var outMoney = loan.amount;
     var d = moment(loan.firstPayDate).add(loan.payTotalCircle,'month').format();
     loanPayBack.set('payDate',d);
     loanPayBack.set('payMoney',outMoney);
@@ -101,7 +65,7 @@ loanPayBackFactory.debx = function(loan){
 loanPayBackFactory.factory = function(loan){
     return new loanPayBackFactory[loan.get('payWay')](loan.attributes);
 };
-
+/* End of 还款的工厂类 */
 
 
 /*
@@ -116,9 +80,33 @@ function calculatePayBackMoney(loan){
     var lpb = loanPayBackFactory.factory(loan);
     return lpb
 }
+function createBasicLoan(reqBody, u){
+    //var loan = new Loan();
+    var loan = new AV.Object('Loan');
+    loan.set('owner',u);
 
+    loan.set('loanType', reqBody.loanType); //TODO: check is this in dict or not
+    
+    loan.set('amount', reqBody.amount);
+    loan.set('spanMonth', reqBody.spanMonth);
+    loan.set('startDate', mutil.wrapperStrToDate(reqBody.startDate)); //合同相关
+    loan.set('endDate', mutil.wrapperStrToDate(reqBody.endDate)); //合同相关
+    loan.set('payCircle', reqBody.payCircle); //还款周期
+    loan.set('payTotalCircle', reqBody.payTotalCircle); //还款总周期: 应该计算
+    loan.set('interests', reqBody.interests);
+    loan.set('assureCost', reqBody.assureCost);
+    loan.set('serviceCost', reqBody.serviceCost);
+    loan.set('overdueCostPercent', reqBody.overdueCostPercent);
+    loan.set('otherCost', reqBody.otherCost);
+    loan.set('keepCost', reqBody.keepCost);
+    loan.set('payWay', reqBody.payWay);
+    //放款时间
+    //根据还款类型确认初次放款日期
+    loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
 
-
+    loan.set('status', mconfig.loanStatus.draft);
+    return loan;
+}
 
 exports.createBasicLoan=createBasicLoan;
 exports.calculateLoanRecord=calculateLoanRecord;

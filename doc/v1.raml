@@ -200,6 +200,9 @@ traits:
       description: |
         新建一个贷款项目(新建贷款第一步，然后新建联系人)
       queryParameters:
+        loanType:
+          example: qcdy(通过字典表接口获取)
+          type: string
         amount:
           example: 10000.0
           type: string
@@ -208,11 +211,11 @@ traits:
         startDate:
           description: 合同开始日期
           example: 2014-10-29
-          type: date
+          type: string
         endDate:
           description: 合同结束日期
           example: 2014-10-29
-          type: date
+          type: string
         payCircle:
           example: 2
           description: 每X月还一次款
@@ -246,7 +249,7 @@ traits:
           type: string
         firstPayDate:
           description: 首次还款时间
-          type: date
+          type: string
       responses:
         200:
           body:
@@ -290,10 +293,13 @@ traits:
     post:
       queryParameters:
         loanId:
+          required: true
           type: string
         loanerId:
+          required: true
           type: string
         assurerId:
+          required: false
           type: string
       responses:
         200:

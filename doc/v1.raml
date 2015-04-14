@@ -438,7 +438,7 @@ traits:
              "qq":"32727272992",
              "address":"fdsafasf",
              "wechat":"fasdfa",
-             "attachments": ["552a0e61e4b0b40da36acc5b"]
+             "attachments": ["552a0e61e4b0b40da36acc5b"] //可以多个
            }
     responses:
       200:
@@ -465,15 +465,106 @@ traits:
   /{id}:
     get:
       description: |
-        未完成
+        通过 ID 获取联系人对象
       responses:
         200:
           body:
             application/json:
               example: |
-               {
-                
-               }
+                {
+                  "data": [
+                    {
+                      "address": "fdsafasf",
+                      "email": "yilaing@foxmail.com",
+                      "certificateType": "shenfenzheng",
+                      "name": "test12",
+                      "attachments": {
+                        "__type": "Relation",
+                        "className": "_File"
+                      },
+                      "certificateNum": "5424214214213213123121",
+                      "qq": "32727272992",
+                      "wechat": "fasdfa",
+                      "mobilePhoneNumber": "13911111111",
+                      "owner": {
+                        "__type": "Pointer",
+                        "className": "_User",
+                        "objectId": "552be147e4b0da2c5e1bdc18"
+                      },
+                      "objectId": "552cce24e4b0da2c5e210acb",
+                      "createdAt": "2015-04-14T08:21:56.367Z",
+                      "updatedAt": "2015-04-14T08:21:56.750Z"
+                    }
+                  ],
+                  "code": 200
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "code": 404,
+                  "message": "contact not found"
+                }
+
+    delete:
+      description: |
+        删除一个联系人
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "result": "success",
+                  "code": 200
+                }
+        404:
+          body:
+            application/json:
+              example: |
+                {
+                  "code": 404,
+                  "message": "contact not found"
+                }
+
+  /all:
+    description: |
+      获取一个用户所有联系人（未分页）
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data":"[....]",
+                  "code":200
+                }
+  
+  /certificate/{certificateNum}:
+    description: |
+      通过证件号获取一个用户
+    get:  
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data":[{},{}],
+                  "code":200
+                }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "message": "contact not found",
+                  "code": 404
+                }
+  
+  
 
 
 /attachment:

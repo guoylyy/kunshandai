@@ -331,7 +331,7 @@ app.get(config.baseUrl + '/contact/:certificateNum/isExist', function (req, res)
   query.find({
     success: function(results){
       if(results.length==0){
-        mutil.renderData(res,null);
+        mutil.renderError(res,{code:404, message:'contact not found'});
       }else{
         mutil.renderData(res, results);  
       }
@@ -341,7 +341,6 @@ app.get(config.baseUrl + '/contact/:certificateNum/isExist', function (req, res)
     }
   });
 });
-
 //获取一个用户所有联系人
 app.get(config.baseUrl + '/contact/all', function (req, res){
   var u = check_login(res);
@@ -356,16 +355,38 @@ app.get(config.baseUrl + '/contact/all', function (req, res){
     }
   });
 });
+app.get(config.baseUrl + '/contact/:id', function (req, res){
+  var u = check_login(res);
+  var query = new AV.Query('Contact');
+  query.equalTo("owner",u);
+  query.equalTo("objectId",req.params.id);
+  query.find({
+    success: function(contact){
+      if(contact.certificateNum ){
+        mutil.renderData(res, contact);
+      }else{
+        mutil.renderError(res, {code:404, message:'contact not found'});
+      }
+    },
+    error: function(error){
+      mutil.renderError(res, error);
+    }
+  });
+});
 //删除一个联系人
 app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
   query.equalTo("owner",u);
-  query.equalTo("id",req.params.id);
+  query.equalTo("objectId",req.params.id);
   //todo:如果一个联系人有相关项目，是不可以删除的
   query.destroyAll({
     success: function(rc){
-      mutil.renderSuccess(res);
+      if(rc==undefined){
+        mutil.renderError(res, {code:404, message:'contact not found'});
+      }else{
+        mutil.renderSuccess(res);
+      }
     },
     error: function(error){
       mutil.renderError(res, error);

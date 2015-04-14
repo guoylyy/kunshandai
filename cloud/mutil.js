@@ -19,9 +19,7 @@ function addMonth(d, monthOffset){
 function doErr(err){
   console.log(err);
 }
-
 function renderError(res, error) {
-  console.log(error.code);
   if (error == null) {
     error = {
       message: "Unknown error",

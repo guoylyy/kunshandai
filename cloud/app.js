@@ -131,7 +131,8 @@ app.post(config.baseUrl + '/account/register', function (req, res) {
 });
 //发送手机验证码
 app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res){
-  var mobilePhoneNumber = req.query.mobilePhoneNumber;
+  var u = check_login();
+  var mobilePhoneNumber = u.get('mobilePhoneNumber');
   AV.User.requestMobilePhoneVerify(mobilePhoneNumber).then(function(){
     mutil.renderSuccess(res);
   }, function(error){
@@ -158,9 +159,15 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
       mutil.renderError(res, error);
   });
 });
-/*
- *新建一个贷款项目
- */
+
+/**********************************************
+ * 贷款项目相关操作
+ * 已完成:
+ *   1. 新建一个贷款
+ *   2. 贷款、联系人共同生成一个放款账单
+ *   3. 确认账单（这一步后一个项目进入还款阶段）
+ ***********************************************/
+//新建一个贷款项目
 app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
@@ -216,7 +223,7 @@ function generateLoanRecord(floan, res){
   });
 };
 
-//确认放款
+//确认放款，进入还款阶段
 app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   var u = check_login(res);
   var loanId = req.body.loanId;
@@ -255,7 +262,11 @@ app.post(config.baseUrl + '/attachment', function (req, res){
   });
 });
 
-
+/*******************************************
+* 项目查询相关接口
+* 已完成:
+*   1. 分页列出所有项目（不包括草稿项目)
+*******************************************/
 //查询草稿项目
 app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
   var u = check_login(res);
@@ -285,7 +296,7 @@ app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
             mutil.renderData(res, resultsMap);
           },
           error: function(error){
-            mutil.renderError(res,error);
+            mutil.renderError(res, error);
           }
         });
       }
@@ -293,8 +304,90 @@ app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
 });
 
 
+/*****************************************
+ * 联系人相关接口
+ * 已完成:
+ *  1. 新建联系人
+ */
+app.post(config.baseUrl + '/contract', function(req, res){
+  var u = check_login(res);
+  var contract = mcontract.createContract(req.body, u);
+  contract.save().then(function(r_contract){
+    if(req.body.attachments){
+      mcontract.bindContractFiles(r_contract, req.body.attachments);
+    }
+    mutil.renderData(res, r_contract);
+  },function(error){
+    mutil.renderError(res, error);
+  })
+});
+//如果身份证或者驾驶证存在，就返回该用户的联系人
+app.get(config.baseUrl + '/contract/:certificateNum/isExist', function (req, res){
+  var u = check_login(res);
+  var certificateNum = req.params.certificateNum;
+  var query = new AV.Query('Contract');
+  query.equalTo("certificateNum",certificateNum);
+  query.equalTo("owner",u);
+  query.find({
+    success: function(results){
+      if(results.length==0){
+        mutil.renderData(res,null);
+      }else{
+        mutil.renderData(res, results);  
+      }
+    },
+    error: function(error){
+      mutil.renderError(res, error);
+    }
+  });
+});
+
+//获取一个用户所有联系人
+app.get(config.baseUrl + '/contract/all', function (req, res){
+  var u = check_login(res);
+  var query = new AV.Query('Contract');
+  query.equalTo("owner",u);
+  query.find({
+    success: function(results){
+      mutil.renderData(res, results); 
+    },
+    error: function(error){
+      mutil.renderError(res, error);
+    }
+  });
+});
+//删除一个联系人
+app.delete(config.baseUrl + '/contract/:id', function (req, res){
+  var u = check_login(res);
+  var query = new AV.Query('Contract');
+  query.equalTo("owner",u);
+  query.equalTo("id",req.params.id);
+  //todo:如果一个联系人有相关项目，是不可以删除的
+  query.destroyAll({
+    success: function(rc){
+      mutil.renderSuccess(res);
+    },
+    error: function(error){
+      mutil.renderError(res, error);
+    }
+  });
+});
 
 
+
+/*
+  查询字典表
+ */
+app.get(config.baseUrl + '/dict/:key', function (req, res){
+  var key = req.params.key;
+  mutil.renderData(res, mconfig[key]);
+});
+
+
+
+/*
+  User defined fuctions
+ */
 function transformLoan(l){
   var loaner = l.get('loaner');
   return {
@@ -311,46 +404,6 @@ function formatTimeLong(t) {
     return date;
 }
 
-/*
-	查看联系人列表
- */
-//如果身份证或者驾驶证存在，就返回该用户的联系人
-app.get(config.baseUrl + '/contract/:certificateNum/isExist', function(req, res){
-  
-});
-
-app.post(config.baseUrl + '/contract', function(req, res){
-  var u = check_login(res);
-  var contract = mcontract.createContract(req.body, u);
-  contract.save().then(function(r_contract){
-    if(req.body.attachments){
-      mcontract.bindContractFiles(r_contract, req.body.attachments);
-    }
-    mutil.renderData(res, r_contract);
-  },function(error){
-    mutil.renderError(res, error);
-  })
-});
-/*
-	查看个人主页
- */
-
-
-
-/*
-  查询字典表
- */
-app.get(config.baseUrl + '/dict/payBackWays', function (req, res){
-  mutil.renderData(res, mconfig.payBackWays);
-});
-app.get(config.baseUrl + '/dict/loanTypes', function (req, res){
-  mutil.renderData(res, mconfig.loanTypes);
-});
-
-
-/*
-  User defined fuctions
- */
 function saveFileThen(req, f) {
     if (req.files == null) {
         f();

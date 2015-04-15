@@ -193,7 +193,7 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
       floan.set('assurer',assurer);
     }
     if(loaner){
-      if(floan.attributes.status != mconfig.loanStatus.draft){
+      if(floan.attributes.status != mconfig.loanStatus.draft.value){
         mutil.renderError(res,{code:400, message:"错误的项目状态!"});
       }else{
         floan.set('loaner',assurer);
@@ -230,14 +230,14 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   //生成放款记录
   var loan = AV.Object.createWithoutData('Loan', loanId);
   loan.fetch().then(function(floan){
-    if(floan.attributes.status != mconfig.loanStatus.draft){
+    if(floan.attributes.status != mconfig.loanStatus.draft.value){
         mutil.renderError(res,{code:400, message:"错误的项目状态!"});
     }else{
       var loanPayBack = mloan.calculatePayBackMoney(floan);
       loanPayBack.save().then(function(rpayBack){
         var lpbRelation = floan.relation('loanPayBacks');
         lpbRelation.add(rpayBack);
-        floan.set('status',mconfig.loanStatus.paying);
+        floan.set('status',mconfig.loanStatus.paying.value);
         floan.save().then(function(data){
           mutil.renderData(res,data);
         },function(error){
@@ -274,7 +274,7 @@ app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
   var query = new AV.Query('Loan');
   var totalPageNum = 1;
   var resultsMap = {};
-  query.notEqualTo('status', mconfig.loanStatus.draft);
+  query.notEqualTo('status', mconfig.loanStatus.draft.value);
   query.equalTo('owner', u);
   query.count().then(function(count){
     totalPageNum = parseInt(count / mconfig.pageSize) + 1;
@@ -399,8 +399,12 @@ app.delete(config.baseUrl + '/contact/:id', function (req, res){
   查询字典表
  */
 app.get(config.baseUrl + '/dict/:key', function (req, res){
-  var key = req.params.key;
-  mutil.renderData(res, mconfig[key]);
+  var key = req.params.key
+  var dictData = mconfig.convertDictToList(key);
+  if(dictData == null){
+    mutil.renderError(res, {code:404, message:'dict not found'});
+  }
+  mutil.renderData(res, mconfig.convertDictToList(key));
 });
 
 /*

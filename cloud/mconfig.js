@@ -3,14 +3,29 @@
  */
 exports.pageSize = 10
 var loanStatus ={
-	draft: 0,
-	paying: 1,
-	completed: 2
+	draft: {
+		value:0,
+		text:'未完成创建'
+	},
+	paying: {
+		value:1,
+		text:'进行中'
+	},
+	completed: {
+		value:2,
+		text:'已完成'
+	}
 };
 
 var loanPayBackStatus = {
-	paying: 1,
-	completed: 2
+	paying: {
+		value:1,
+		text:'进行中'
+	},
+	completed: {
+		value:2,
+		text:'已完成'
+	}
 };
 
 var payBackWays = {
@@ -64,6 +79,30 @@ var loanTypes = {
 };
 
 
+function convertDictToList(key){
+	if(key=='loanTypes'){
+		return getKeyValueList(loanTypes);
+	}else if(key=='payBackWays'){
+		return getKeyValueList(payBackWays);
+	}else if(key=='loanStatus'){
+		return getKeyValueList(loanStatus);
+	}else if(key=='loanPayBackStatus'){
+		return getKeyValueList(loanPayBackStatus);
+	}
+	return null;
+}
+function getKeyValueList(obj){
+	var keys = Object.keys(obj);
+	var rlist = [];
+	for (var i = 0; i < keys.length; i++) {
+		var value = obj[keys[i]].value;
+		var text = obj[keys[i]].text;
+		rlist.push({value:value, text:text});
+	};
+	return rlist;
+}
+
+exports.convertDictToList = convertDictToList;
 exports.loanStatus = loanStatus;
 exports.loanPayBackStatus = loanPayBackStatus;
 exports.payBackWays = payBackWays;

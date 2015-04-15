@@ -56,7 +56,7 @@ loanPayBackFactory.xxhb = function(loan){
     var d = moment(loan.firstPayDate).add(loan.payTotalCircle,'month').format();
     loanPayBack.set('payDate',d);
     loanPayBack.set('payMoney',outMoney);
-    loanPayBack.set('status',mconfig.loanPayBackStatus.paying);
+    loanPayBack.set('status',mconfig.loanPayBackStatus.paying.value);
     return loanPayBack;
 };
 loanPayBackFactory.debx = function(loan){
@@ -104,7 +104,7 @@ function createBasicLoan(reqBody, u){
     //根据还款类型确认初次放款日期
     loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
 
-    loan.set('status', mconfig.loanStatus.draft);
+    loan.set('status', mconfig.loanStatus.draft.value);
     return loan;
 }
 

@@ -418,7 +418,6 @@ traits:
                     "code": 200
                 }
 
-
 /contact:
   post:
     description: |
@@ -564,9 +563,6 @@ traits:
                   "code": 404
                 }
   
-  
-
-
 /attachment:
   post:
     queryParameters:
@@ -611,28 +607,32 @@ traits:
             application/json:
               schema: |
                 {
-                    "data": {
-                        "debx": {
-                            "value": "debx",
-                            "text": "等额本息"
-                        },
-                        "xxhb": {
-                            "value": "xxhb",
-                            "text": "先息后本"
-                        },
-                        "zqcxhb": {
-                            "value": "zqcxhb",
-                            "text": "周期初息后本"
-                        },
-                        "zqmxhb": {
-                            "value": "zqmxhb",
-                            "text": "周期末息后本"
-                        },
-                        "dqhbfx": {
-                            "value": "dqhbfx",
-                            "text": "到期还本付息"
-                        }
+                  "data": [
+                    {
+                      "value": "fcdy",
+                      "text": "房产抵押"
                     },
-                    "code": 200
+                    {
+                      "value": "qcdy",
+                      "text": "汽车抵押"
+                    },
+                    {
+                      "value": "mfdy",
+                      "text": "买房抵押"
+                    },
+                    {
+                      "value": "mcdy",
+                      "text": "买车抵押"
+                    },
+                    {
+                      "value": "wdy",
+                      "text": "无抵押"
+                    },
+                    {
+                      "value": "qtdy",
+                      "text": "其他抵押"
+                    }
+                  ],
+                  "code": 200
                 }
  

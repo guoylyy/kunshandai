@@ -59,8 +59,15 @@ define(['../../app',"underscore"],function(app,_) {
 			});
 
 			
-		}
-
+		};
+		$scope.open = function($event) {
+		    
+		    $event.preventDefault();
+		    $event.stopPropagation();
+		    $scope.calendar.opened = true;
+		};
+		$scope.calendar={};
+		
 		$scope.br = userInfo();
 		
 		$scope.gr = userInfo();
@@ -80,7 +87,7 @@ define(['../../app',"underscore"],function(app,_) {
 			keepCost:0,
 			payWay:'',
 			firstPayDate:''
-		}
+		};
 		$scope.loanType={
 			selected:'fcdy'
 		};

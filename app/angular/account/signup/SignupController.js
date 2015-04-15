@@ -2,42 +2,67 @@
 
 define(['app','underscore'],function(app,_) {
 
-	return app.controller('SignupController', ["$scope","$location","AccountService",
-			function($scope,$location,AccountService){
+	return app.controller('SignupController', ["$scope","$interval","$location","AccountService",
+			function($scope,$interval,$location,AccountService){
 
 				$scope.account = {
 					mobilePhoneNumber:'',
 					password:'',
 					passwordConfirmation:''
 				};
-								
+				
+				$scope.isCodeSending = false;
+				$scope.cutdown = 60;
+				$scope.isSignuping = false;
+
 				$scope.sendVerifyCode = function() {
+					
 					$scope.err = null;
 					if($scope.account.password !== $scope.account.passwordConfirmation){
 						$scope.err = "两次输入密码不一致";
 						return false;
 					}
+					
 
 					AccountService.signup(_.omit($scope.account,'passwordConfirmation'))
-					.success(function(data){
-						$scope.code = true;
-					}).error(function(data){
-						$scope.err = "发送验证码失败";
+					.then(function(res){
+						// if(res.code === -1){
+						// 	$scope.err = "请填写手机号";
+						// 	return;
+						// }else if(res.code === 1){
+						// 	$scope.err = "发送验证码失败,稍后再试";
+						// }
+						//验证码60s倒计时
+						$scope.isCodeSending  = true;
+						$interval(function(){
+							$scope.cutdown--;
+							if($scope.cutdown === 0){
+								$scope.isCodeSending  = false;
+								$scope.cutdown = 60;
+							}
+						},1000,60);
+					},function(err){
+						$scope.err = err;
 					});
 				};
 				
 				$scope.signup = function(){
-
-					AccountService.verifyMobilePhone({code:$scope.code}).success(function(data){
+					$scope.isSignuping = true;
+					AccountService.verifyMobilePhone({code:$scope.code})
+					.then(function(data){
 						AccountService.login(_.omit($scope.account,'passwordConfirmation'))
-						.success(function(){
-
-							window.location = '/manage';
+						.then(
+							function(){
+								window.location = '/manage';
+						},
+							function(err){
+								$scope.err = err;
+								$scope.isSignuping = false;
 						});
-
-					}).error(function(data){
-						$scope.err = "注册失败或验证码错误";
+					},function(err){
+						$scope.err = err;
+						$scope.isSignuping = false;
 					});
-				};
+				}
 	}]);
 });

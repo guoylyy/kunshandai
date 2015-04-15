@@ -1,153 +1,182 @@
-	<h3 class="ui dividing mcolor header">借款人</h3>
-	<div class="ui grid">
-		<div class="ten wide column">
-			<h4 class="ui top attached header">借款人信息</h4>
-			<div class="ui horizontal attached segment">
-				<div class="ui form">
-					<div class="fields">
-						<div class="five wide field">
-							<label>姓名</label>
-							<div class="ui corner labeled input">
-								<input type="text" placeholder="姓名" ng-model="br.name">
-								<div class="ui corner label">
-									<i class="asterisk icon"></i>
+<form name="contactsForm" novalidate>
+	<div class="ks-dividing">
+		<h4>借款人</h4>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">借款人信息</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group has-warning">
+								<label class="control-label">姓名</label>
+								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" required>
+								<div ng-show="contactsForm.$submitted || contactsForm.bname.$touched">
+									<div class="text-danger" ng-show="contactsForm.bname.$error.required">请填借款人姓名</div>
 								</div>
 							</div>
-
 						</div>
-
-						<div class="eleven wide field">
-							<label>身份证</label>
-							<div class="ui corner labeled input">
-								<input type="text" placeholder="身份证" ng-model="br.certificateNum">
-								<div class="ui corner label">
-									<i class="asterisk icon"></i>
+						<div class="col-md-8">
+							<div class="form-group has-warning">
+								<label class="control-label">身份证</label>
+								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" required>
+								<div ng-show="contactsForm.$submitted || contactsForm.bid.$touched">
+									<div class="text-danger" ng-show="contactsForm.bid.$error.required">请填借款人身份证</div>
 								</div>
 							</div>
+						</div>
+					</div>
+					<div class="ks-divider"></div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>手机号</label>
+								<input type="text" class="form-control" placeholder="手机号" ng-model="br.mobilePhoneNum" name="bmobilePhoneNum" ng-pattern="/\b\d{11}\b/">
+								<div ng-show="contactsForm.$submitted || contactsForm.bmobilePhoneNum.$touched">
+									<div class="text-danger" ng-show="contactsForm.bmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>邮箱</label>
+								<input type="email" class="form-control" placeholder="邮箱" ng-model="br.email" name="bemail">
+								<div ng-show="contactsForm.$submitted || contactsForm.bemail.$touched">
+									<div class="text-danger" ng-show="contactsForm.bemail.$error.email">请填写正确邮箱</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>QQ</label>
+								<input type="text" class="form-control" placeholder="QQ" ng-model="br.qq" name="bqq" ng=pattern="/\d+/">
+								<div ng-show="contactsForm.$submitted || contactsForm.bqq.$touched">
+									<div class="text-danger" ng-show="contactsForm.bqq.$error.pattern">请填写正确QQ号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>微信</label>
+								<input type="text" class="form-control" placeholder="微信" ng-model="br.wechat">
+							</div>
+						</div>
+					</div>
 
-						</div>
-					</div>
-					<div class="ui section divider"></div>
-
-					<div class="two fields">
-						<div class="field">
-							<label>手机号</label>
-							<input type="tel" placeholder="手机号" ng-model="br.mobilePhoneNum">
-						</div>
-						<div class="field">
-							<label>邮箱</label>
-							<input type="email" placeholder="邮箱" ng-model="br.email">
-						</div>
-					</div>
-					<div class="two fields">
-						<div class="field">
-							<label>QQ</label>
-							<input type="text" placeholder="QQ" ng-model="br.qq">
-						</div>
-						<div class="field">
-							<label>微信</label>
-							<input type="text" placeholder="微信" ng-model="br.wechat">
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
-		<div class="six wide column">
-			<h4 class="ui top attached header">借款人附件</h4>
-			<div class="ui right aligned horizontal attached segment">
-				<table class="ui table">
-					<tbody>
-						<tr>
-							<td class="collapsing">
-								<i class="picture icon"></i>
-								身份证正面
-							</td>
-							<td class="right aligned">
-								<i class="remove red icon"></i>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="picture icon"></i>
-								身份证反面
-							</td>
-							<td class="right aligned">
-								<i class="remove red icon"></i>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<i class="file text outline icon"></i>
-								其他材料
-							</td>
-							<td class="right aligned">
-								<i class="remove red icon"></i>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div id="uploadButton" class="ui floated right  button">上传新材料</div>
-			</div>
-
-		</div>
-	</div>
-	<h3 class="ui dividing mcolor header">担保人</h3>
-	<div class="ui grid">
-		<div class="ten wide column">
-			<h4 class="ui top attached header">担保人信息</h4>
-			<div class="ui horizontal attached segment">
-				<div class="ui form">
-					<div class="fields">
-						<div class="five wide field">
-							<label>姓名</label>
-							<div class="ui corner labeled input">
-								<input type="text" placeholder="姓名" ng-model="gr.name">
-								<div class="ui corner label">
-									<i class="asterisk icon"></i>
-								</div>
-							</div>
-
-						</div>
-
-						<div class="eleven wide field">
-							<label>身份证</label>
-							<div class="ui corner labeled input">
-								<input type="text" placeholder="身份证" ng-model="gr.certificateNum">
-								<div class="ui corner label">
-									<i class="asterisk icon"></i>
-								</div>
-							</div>
-
-						</div>
-					</div>
-					<div class="ui section divider"></div>
-					<div class="two fields">
-						<div class="field">
-							<label>手机号</label>
-							<input type="tel" placeholder="手机号" ng-model="gr.mobilePhoneNum">
-						</div>
-						<div class="field">
-							<label>邮箱</label>
-							<input type="email" placeholder="邮箱" ng-model="gr.email">
-						</div>
-					</div>
-					<div class="two fields">
-						<div class="field">
-							<label>QQ</label>
-							<input type="text" placeholder="QQ" ng-model="gr.qq">
-						</div>
-						<div class="field">
-							<label>微信</label>
-							<input type="text" placeholder="微信" ng-model="gr.wechat">
-						</div>
-					</div>
+		<div class="col-md-4">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">贷款信息</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<a class="list-group-item">
+							<span class="glyphicon glyphicon-remove text-danger ks-right"></span>
+							身份证
+						</a>
+					</ul>
+					<button  class="btn btn-default ks-right">上传新的资料</button>
 				</div>
 			</div>
 		</div>
-		<div class="six wide column">
-			<h4 class="ui top attached header">借款人附件</h4>
-			<div class="ui horizontal attached segment">
-				<p></p>
+	</div>
+
+	<div class="ks-dividing">
+		<h4>担保人</h4>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">担保人信息</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group has-warning">
+								<label class="control-label">姓名</label>
+								<input type="text" class="form-control" placeholder="姓名" name="gname" ng-model="gr.name" required>
+								<div ng-show="contactsForm.$submitted || contactsForm.gname.$touched">
+									<div class="text-danger" ng-show="contactsForm.gname.$error.required">请填担保人姓名</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="form-group has-warning">
+								<label class="control-label">身份证</label>
+								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum" required>
+								<div ng-show="contactsForm.$submitted || contactsForm.gid.$touched">
+									<div class="text-danger" ng-show="contactsForm.gid.$error.required">请填担保人姓名</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ks-divider"></div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>手机号</label>
+								<input type="text" class="form-control" placeholder="手机号" name="gmobilePhoneNum"ng-model="gr.mobilePhoneNum" ng-pattern="/\b\d{11}\b/">
+								<div ng-show="contactsForm.$submitted || contactsForm.gmobilePhoneNum.$touched">
+									<div class="text-danger" ng-show="contactsForm.gmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>邮箱</label>
+								<input type="email" class="form-control" placeholder="邮箱" name="gemail" ng-model="gr.email">
+								<div ng-show="contactsForm.$submitted || contactsForm.gemail.$touched">
+									<div class="text-danger" ng-show="contactsForm.gemail.$error.email">请填写正确邮箱</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>QQ</label>
+								<input type="text" class="form-control" placeholder="QQ" name="gqq" ng-model="gr.qq">
+								<div ng-show="contactsForm.$submitted || contactsForm.gqq.$touched">
+									<div class="text-danger" ng-show="contactsForm.gqq.$error.pattern">请填写正确QQ号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>微信</label>
+								<input type="text" class="form-control" placeholder="微信" ng-model="gr.wechat">
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">贷款信息</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<a class="list-group-item">
+							<span class="glyphicon glyphicon-remove text-danger ks-right"></span>
+							身份证
+						</a>
+					</ul>
+					<button  class="btn btn-default ks-right">上传新的资料</button>
+				</div>
 			</div>
 		</div>
 	</div>
+	<div class="ks-divider"></div>
+	<div class="container-fluid ks-pagination" >
+		<div class="col-md-6 ">
+		</div>
+		<div class="col-md-6" >
+			<button type="submit" class="btn btn-primary ks-right" ng-click="contactsForm.$valid && nav('next')">
+			下一步  
+		</button>
+	</div>
+</form>

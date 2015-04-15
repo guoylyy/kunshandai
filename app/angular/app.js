@@ -3,9 +3,9 @@
  */
 'use strict';
 
-define(['angular','uiRouter','uiBootstrap','angularSemantic'],function(angular){
+define(['angular','uiRouter','uiBootstrap'],function(angular){
 	
-	return angular.module('app',['ui.router','ui.bootstrap','angularify.semantic'])
+	return angular.module('app',['ui.router','ui.bootstrap'])
 	// .run(function($rootScope, $urlRouter) {
 	//     $rootScope.$on('$locationChangeSuccess', function(evt) {
 	//       evt.preventDefault();

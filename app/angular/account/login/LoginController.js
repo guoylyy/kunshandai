@@ -14,18 +14,18 @@ define(['app','../AccountService'],function(app) {
 
 				$scope.login = function(){
 					$scope.err = null;
-					AccountService.login($scope.account)
-					.then(function(){
-						window.location = '/manage';
-					},function(err){
-						$scope.err = err;
-					});
-					// .success(function(data){
-						
-					// }).error(function(data){
-					// 	$scope.err = true;
-					// 	$scope.errMsg = "账号或密码错误";
-					// });
+					$scope.logining = true;
+
+					AccountService.login($scope.account).then(
+						function(){
+							window.location = '/manage';
+						},
+						function(err){
+							$scope.err = err;
+							$scope.logining = false;
+						}
+					);
+
 				};
 	}]);
 });

@@ -70,16 +70,14 @@ define(['app'],function(app){
 		    .state('createLoan',{
 		    	url:"/createLoan",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/loan/create_loanInfo.html"},
-		    		"ctrl":{templateUrl: "/angular/manage/loan/loanInfo_ctrl.html"}
+		    		"main":{templateUrl: "/angular/manage/loan/create_loanInfo.html"}
 		    	},
 				controller:"CreateLoanCtrl"
 		    })
 		    .state('createLoanDetail',{
 		    	url:"#detail",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/loan/create_loanDetail.html"},
-		    		"ctrl":{templateUrl: "/angular/manage/loan/loan_ctrl.html"}
+		    		"main":{templateUrl: "/angular/manage/loan/create_loanDetail.html"}
 		    	},
 		    	controller:"CreateLoanCtrl"
 		    })

@@ -181,6 +181,9 @@ table td,table th{
 	margin-right: -60px;
 	font-size: 14px;
 }
+.nav-stacked li{
+	cursor: pointer;
+}
 .nav-stacked > li > a{
 	padding-left: 20px;
 	height: 45px;
@@ -188,15 +191,27 @@ table td,table th{
 .nav-stacked{
 	border: 1px solid rgba(0,0,0,0.1);
 }
-.nav-stacked > li{
+.nav-stacked > li,.nav-stacked .dropdown-menu > li >a:not(:last-child){
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 }
 .nav-stacked > li > a:hover,.nav-stacked > li > a:focus{
 	margin-left: -2px;
 	border-left: 2px solid #6b2347;
 }
-/*Form process steps*/
-.bs-wizard {margin-top: 10px;}
+.nav-stacked .dropdown-menu-right{
+	/*right: -160px;*/
+	left: 223px;
+}
+.nav-stacked .dropdown-menu{
+	top: -0px;
+	margin:0px;
+	/*padding:10px 30px;*/
+}
+.nav-stacked .dropdown-menu > li > a{
+	padding: 12px 43px;
+	font-size: 14px;
+}
+
 
 /*TODO add to less*/
 .nav-stacked > li.active > a{

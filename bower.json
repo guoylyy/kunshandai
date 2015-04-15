@@ -32,6 +32,6 @@
   },
   "description": "kunshandai",
   "resolutions": {
-    "angular": "~1.2.11"
+    "angular": "~1.3.15"
   }
 }

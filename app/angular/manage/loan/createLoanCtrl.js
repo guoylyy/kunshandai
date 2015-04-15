@@ -5,8 +5,8 @@ define(['../../app',"underscore"],function(app,_) {
 	
 	function userInfo(){
 		return {
-				name:'',
-				certificateNum:'',
+				name:'123',
+				certificateNum:'123',
 				mobilePhoneNum:'',
 				email:'',
 				qq:'',
@@ -14,8 +14,8 @@ define(['../../app',"underscore"],function(app,_) {
 				address:''
 			};
 	}
-	return app.controller('createLoanCtrl', ["$scope","$location","LoanService","ContactService",'DictService','$state',
-		function($scope,$location,LoanService,ContactService,DictService,$state){
+	return app.controller('createLoanCtrl', ["$scope","$location","$q","LoanService","ContactService",'DictService','$state',
+		function($scope,$location,$q,LoanService,ContactService,DictService,$state){
 		
 		var loanInfo,
 			contract = {
@@ -23,49 +23,82 @@ define(['../../app',"underscore"],function(app,_) {
 				loanerId:'',
 				assurerId:''
 				};
+
+
+		$scope.nav = function(direction){
+			if(direction === 'prev'){
+				$state.go('createLoan');
+		
+			}else if(direction === 'next'){
+				
+				var ltPromise =  DictService.get("loanTypes");
+				var rpPromise =DictService.get("payBackWays");
+				$q.all([ltPromise,rpPromise])
+					.then(function(results){
+						$scope.loanTypes =  results[0].data.data;
+						$scope.repayTypes = results[1].data.data;
+						$state.go('createLoanDetail');
+						
+					},function(err){
+						console.log(err);
+				});
+				
+			}
+			
+		};
+
 		$scope.createContact = function(){
+			
+			var deferred = $q.defer();
 
 			ContactService.create($scope.br).then(function(res){
 				contract.loanerId = res.data.data.objectId;
+			},function(res){
+				deferred.reject(res.data);
 			});
 			ContactService.create($scope.gr).then(function(res){
 				contract.assurerId = res.data.data.objectId;
+			},function(){
+				deferred.reject(res.data);
 			});
-			$state.go('createLoanDetail');
-		}
+
+			return deferred.promise;
+		};
+
 		$scope.createLoan = function(){
 			
-			//data format
-			$scope.loanInfo.payWay = $scope.repayType.selected;
-			var date = "2014-10-2";
-			$scope.loanInfo.startDate = date;
-			$scope.loanInfo.endDate = date;
-			$scope.loanInfo.firstPayDate = date;
-			// $scope.loanInfo.startDate = new Date($scope.loanInfo.startDate);
-			// $scope.loanInfo.endDate = new Date($scope.loanInfo.endDate);
-			// $scope.loanInfo.firstPayDate = new Date($scope.loanInfo.firstPayDate);
-			// $scope.loanInfo.startDate = new Date((new String($scope.loanInfo.startDate)).replace(/\//,"-"));
-			// $scope.loanInfo.endDate = new Date((new String($scope.loanInfo.endDate)).replace(/\//,"-"));
-			// $scope.loanInfo.firstPayDate = new Date((new String($scope.loanInfo.firstPayDate)).replace(/\//,"-"));
+			var createContactPromise = $scope.createContact();
 
-			LoanService.create($scope.loanInfo).then(function(res){
-				contract.loanId = res.data.data.objectId;
-				console.log(res.data);
-				LoanService.generate(contract).then(function(res){
-					alert("创建成功");
+			createContactPromise.then(function(){
+
+				$scope.loanInfo.payWay = $scope.repayType.selected;
+				var date = "2014-10-2";
+				$scope.loanInfo.startDate = date;
+				$scope.loanInfo.endDate = date;
+				$scope.loanInfo.firstPayDate = date;
+				
+				LoanService.create($scope.loanInfo).then(function(res){
+					contract.loanId = res.data.data.objectId;
+					console.log(res.data);
+					LoanService.generate(contract).then(function(res){
+						alert("创建成功");
+					});
+				},function(data){
+					console.log("err");
 				});
-			},function(data){
-				console.log("err");
-			});
 
+			},function(reason){
+				$scope.err = reason.message;
+			});
 			
 		};
-		$scope.open = function($event) {
+		$scope.open = function($event,opened) {
 		    
 		    $event.preventDefault();
 		    $event.stopPropagation();
-		    $scope.calendar.opened = true;
+		    $scope.calendar[opened] = true;
 		};
+
 		$scope.calendar={};
 		
 		$scope.br = userInfo();
@@ -96,8 +129,5 @@ define(['../../app',"underscore"],function(app,_) {
 			selected:'xxhb'
 		};
 		
-		$scope.loanTypes = DictService.get("loanTypes");
-
-		$scope.repayTypes =DictService.get("payBackWays");
 	}]);
 });

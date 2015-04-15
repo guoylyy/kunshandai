@@ -12,7 +12,6 @@ require.config({
 		angular:'../lib/angular/angular',
 		uiBootstrap:'../lib/angular-bootstrap/ui-bootstrap-tpls',
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
-		angularSemantic:'../lib/angular-semantic-ui/dist/angular-semantic-ui',
 		text:'../lib/requirejs-text/text'
 	},
 	shim:{
@@ -24,9 +23,6 @@ require.config({
 
 		},
 		'uiBootstrap':{
-			deps:['angular']
-		},
-		'angularSemantic':{
 			deps:['angular']
 		},
 		'underscore':{

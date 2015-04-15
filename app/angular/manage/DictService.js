@@ -1,13 +1,10 @@
 define(['../app'],function(app){
 
-	return app.factory('DictService', ['$http', 'ApiURL',function($http,ApiURL){
+	return app.factory('DictService', ['$http','$q','ApiURL',function($http,$q,ApiURL){
 		return {
 			get : function (key){
-				$http.get(ApiURL+"/dict/"+key).then(function(res){
-					return res.data.data;
-				},function(){
-					return ;
-				});
+				
+				return $http.get(ApiURL+"/dict/"+key);
 			}
 		}
 	}])

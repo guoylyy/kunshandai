@@ -308,6 +308,7 @@ app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
  * 联系人相关接口
  * 已完成:
  *  1. 新建联系人
+ *  2. 
  */
 app.post(config.baseUrl + '/contact', function(req, res){
   var u = check_login(res);
@@ -322,7 +323,7 @@ app.post(config.baseUrl + '/contact', function(req, res){
   })
 });
 //如果身份证或者驾驶证存在，就返回该用户的联系人
-app.get(config.baseUrl + '/contact/:certificateNum/isExist', function (req, res){
+app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, res){
   var u = check_login(res);
   var certificateNum = req.params.certificateNum;
   var query = new AV.Query('Contact');

@@ -134,7 +134,11 @@ angular.module('cfp.loadingBarInterceptor', ['cfp.loadingBar'])
           if (!rejection || !rejection.config) {
             $log.error('Broken interceptor detected: Config object not supplied in rejection:\n https://github.com/chieffancypants/angular-loading-bar/pull/50');
             reqsCompleted++;
-            setComplete();
+            if (reqsCompleted >= reqsTotal) {
+              setComplete();
+            } else {
+              cfpLoadingBar.set(reqsCompleted / reqsTotal);
+            }
             return $q.reject(rejection);
           }
 

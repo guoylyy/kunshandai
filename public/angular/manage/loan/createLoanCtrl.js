@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../app',"underscore"],function(app,_) {
+define(['app',"underscore"],function(app,_) {
 
 	
 	function userInfo(){
@@ -35,75 +35,57 @@ define(['../../app',"underscore"],function(app,_) {
 				$state.go('createLoan');
 		
 			}else if(direction === 'next'){
-				$state.go('createLoanDetail');
-				// var ltPromise =  DictService.get("loanTypes");
-				// var rpPromise =DictService.get("payBackWays");
-				// $q.all([ltPromise,rpPromise])
-				// 	.then(function(results){
-				// 		$scope.loanTypes =  results[0].data.data;
-				// 		$scope.repayTypes = results[1].data.data;
-				// 		$state.go('createLoanDetail');
-						
-				// 	},function(err){
-				// 		console.log(err);
-				// });
-				
+				$state.go('createLoanContact');
 			}
 			
 		};
 
-		$scope.createContact = function(){
+		var createContact = function(contact){
 			
 			var deferred = $q.defer();
 
-			ContactService.create($scope.br).then(function(res){
-				contract.loanerId = res.data.data.objectId;
-				deferred.resolve("contact id "+ contract.loanerId +" created");
+			ContactService.create(contact).then(function(res){
+				deferred.resolve(res.data.data.objectId);
 			},function(res){
-				deferred.reject(res.data);
-			});
-			ContactService.create($scope.gr).then(function(res){
-				contract.assurerId = res.data.data.objectId;
-				deferred.resolve("contact id "+ contract.loanerId +" created");
-			},function(){
 				deferred.reject(res.data);
 			});
 
 			return deferred.promise;
 		};
 
-		$scope.createLoan = function(){
+		var createLoan = function(){
 			
-			var createContactPromise = $scope.createContact();
+			var deferred = $q.defer();
 
-			createContactPromise.then(function(){
+			$scope.loanInfo.payWay = $scope.repayType.selected;
+			
+			LoanService.create($scope.loanInfo).then(function(res){
+				deferred.resolve(res.data.data.objectId);
+			},function(res){
+				deferred.reject(res.data);
+			});
+			return deferred.promise;
+		};
+
+		$scope.createContract = function(){
+			
+			$q.all([createContact($scope.br),createContact($scope.gr),createLoan()])
+			.then(function(results){
 				
-				//initial loanInfo
-				var createLoandefferred = $q.defer();
-				var date = "2014-10-2";
-
-				$scope.loanInfo.payWay = $scope.repayType.selected;
-				$scope.loanInfo.startDate = date;
-				$scope.loanInfo.endDate = date;
-				$scope.loanInfo.firstPayDate = date;
-
-				LoanService.create($scope.loanInfo).then(function(res){
-					contract.loanId = res.data.data.objectId;
-					createLoandefferred.resolve(contract.loanId);
-				});
-
-				return createLoandefferred.promise;
-
-			}).then(function(){
-				
+				contract.loanerId 	= results[0];				
+				contract.assurerId 	= results[1];
+				contract.loanId 	= results[2];
+				console.log(results[0], results[1], results[2]);
 				return LoanService.generate(contract);
+			
 			}).then(function(){
 				alert("生成合同成功");
 			}).catch(function(){
 				alert("生成合同失败");
-			});
-			
+			})
 		};
+
+		
 
 		$scope.open = function($event,opened) {
 		    
@@ -121,8 +103,8 @@ define(['../../app',"underscore"],function(app,_) {
 		$scope.loanInfo = {
 			amount:0,
 			spanMonth:0,
-			startDate:'',
-			endDate:'',
+			startDate:'2014-10-2',
+			endDate:'2014-10-2',
 			payCircle:12,
 			payTotalCircle:24,
 			interests:0,
@@ -132,7 +114,7 @@ define(['../../app',"underscore"],function(app,_) {
 			otherCost:0,
 			keepCost:0,
 			payWay:'',
-			firstPayDate:''
+			firstPayDate:'2014-10-2'
 		};
 		$scope.loanType={
 			selected:'fcdy'

@@ -9,6 +9,9 @@ define(['../app'],function(app){
 			login : function(user){
 				return $http.post(ApiURL+accountUrl+"/login",JSON.stringify(user));
 			},
+			logout : function(){
+				return $http.get(ApiURL+accountUrl+"/logout");
+			},
 			isLogin: function(){
 				return $http.get(ApiURL+accountUrl+"/isLogin");
 			},

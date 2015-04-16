@@ -7,6 +7,9 @@ input{
 a,a:hover{
 	text-decoration: none;
 }
+a{
+	cursor: pointer !important;
+}
 table td,table th{
 	text-align: center;
 }

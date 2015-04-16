@@ -68,8 +68,8 @@ define(['app'],function(app){
 		    	}
 		    })
 
-		    .state('createLoan',{
-		    	url:"/createLoan",
+		    .state('createLoanContact',{
+		    	url:"#contact",
 		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
 		    	resolve:{
 		    		loanTypes:function(DictService){
@@ -82,8 +82,8 @@ define(['app'],function(app){
 		    	controller:"CreateLoanCtrl"
 
 		    })
-		    .state('createLoanDetail',{
-		    	url:"#detail",
+		    .state('createLoan',{
+		    	url:"/createLoan",
 		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
 		    	resolve:{
 		    		loanTypes:function(DictService){
@@ -98,10 +98,7 @@ define(['app'],function(app){
 		    		}
 		    	},
 		    	controller: "CreateLoanCtrl"
-		    	// controller:function($scope,loanTypes,repayTypes){
-		    	// 	$scope.loanTypes = loanTypes.data.data;
-		    	// 	$scope.loanTypes = repayTypes.data.data;
-		    	// }
+
 		    });
 
 	}]);

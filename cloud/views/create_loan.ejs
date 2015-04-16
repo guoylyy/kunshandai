@@ -1,41 +1,4 @@
 
-<!-- 	<div id="management" ng-controller="createLoanCtrl">
-		<% include header/logined_header %>
-		<div class="ui vertical  main segment">
-			<div class="container">
-				<h2 class="ui dividing mcolor header">新增放款</h2>
-				<div class="steps-segment">
-					<div class="ui three steps">
-						<div class=" step" ui-sref-active="active" ui-sref="createLoan">
-						 <i class="user icon"></i>
-							<div class="content">
-								<div class="title">填写基本信息</div>
-							</div>
-						</div>
-						<div class="step" ui-sref-active="active" ui-sref="createLoanDetail"> 
-						<i class="payment icon"></i>
-							<div class="content">
-								<div class="title">填写贷款信息</div>
-							</div>
-						</div>
-						<div class="disabled step">
-							<i class="info icon"></i>
-							<div class="content">
-								<div class="title">合同生成</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="container form segment" ui-view="main" >
-				</div>
-				<div class="ui section divider"></div>
-				<div class="ui  navbuttons grid" ui-view='ctrl'>
-					
-				</div>
-			</div>
-		</div>
-
-	</div> -->
 <% include header/logined_header %>
 	<div class="container ks-main" >
 			<h3 class="ks-dividing">
@@ -43,19 +6,18 @@
 			</h3>
 			<div class="row">
 				 <div class="row bs-wizard" style="border-bottom:0;">
-                
-	                <div ui-sref="createLoan" class="col-xs-4 bs-wizard-step complete">
+                	<div  ui-sref="createLoan" class="col-xs-4 bs-wizard-step complete">
 	                  <div class="text-center bs-wizard-stepnum">步奏一</div>
-	                  <div class="progress"><div class="progress-bar"></div></div>
-	                  <a href="#" class="bs-wizard-dot"  ui-sref-active="active" ></a>
-	                  <div class="bs-wizard-info text-center">填写基本信息</div>
-	                </div>
-	                
-	                <div ui-sref-active="complete" ui-sref="createLoanDetail" class="col-xs-4 bs-wizard-step ">
-	                  <div class="text-center bs-wizard-stepnum">步奏二</div>
 	                  <div class="progress"><div class="progress-bar"></div></div>
 	                  <a href="#" class="bs-wizard-dot" ></a>
 	                  <div class="bs-wizard-info text-center">填写贷款信息</div>
+	                </div>
+
+	                <div ui-sref-active="complete" ui-sref="createLoanContact" class="col-xs-4 bs-wizard-step ">
+	                  <div class="text-center bs-wizard-stepnum">步奏二</div>
+	                  <div class="progress"><div class="progress-bar"></div></div>
+	                  <a href="#" class="bs-wizard-dot" ></a>
+	                  <div class="bs-wizard-info text-center">填写借款人、担保人信息</div>
 	                </div>
 	                
 	                <div class="col-xs-4 bs-wizard-step">
@@ -71,22 +33,6 @@
 			</div>		
 			<div ui-view></div>
 			
-	<!-- 		<div class="ks-divider"></div>
-			<div class="container-fluid ks-pagination" >
-				<div class="col-md-6 ">
-					<button type="submit" class="btn btn-primary" ui-sref="createLoan" ng-show="step.two" ng-click="nav('prev')">上一步</button>
-				</div>
-				<div class="col-md-6" >
-					<button type="submit" class="btn btn-primary ks-right" ng-show="step.one" 
-					ng-click="contactsForm.$setSubmitted(true)&& contactsForm.$valid && nav('next')">
-						下一步  
-					</button>
-				</div>
-				<div class="col-md-6" >
-					<button type="submit" class="btn btn-primary ks-right" ng-show="step.two" ng-click="createLoan()">
-						生成合同 
-					</button>
-				</div> -->
 				
 			</div>
 		</div>

@@ -1,4 +1,4 @@
-<form name="contactsForm" novalidate>
+<form name="contactsForm" novalidate ng-submit="contactsForm.$valid && createContract()">
 	<div class="ks-dividing">
 		<h4>借款人</h4>
 	</div>
@@ -171,12 +171,12 @@
 		</div>
 	</div>
 	<div class="ks-divider"></div>
-	<div class="container-fluid ks-pagination" >
+	<div class="container-fluid" >
 		<div class="col-md-6 ">
+			<button type="button" class="btn btn-primary"  ng-click="nav('prev')">上一步</button>
 		</div>
 		<div class="col-md-6" >
-			<button type="submit" class="btn btn-primary ks-right" ng-click="contactsForm.$valid && nav('next')">
-			下一步  
-		</button>
+			<button type="submit" class="btn btn-primary ks-right">生成合同 </button>
+		</div>
 	</div>
 </form>

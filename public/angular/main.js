@@ -49,6 +49,7 @@ require([
 		 'account/AccountService',
 		 'manage/loan/LoanService',
 		 'manage/contact/ContactService',
+		 'account/AccountController',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
 		 'manage/loan/CreateLoanCtrl',

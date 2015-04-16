@@ -1,4 +1,4 @@
-<form name="loanForm" novalidate>
+<form name="loanForm" novalidate ng-submit="createLoan()">
 		<div class="ks-panel panel panel-default">
 
 				<div class="panel-heading">贷款信息</div>
@@ -7,7 +7,7 @@
 		        	<div class="col-md-3">
 			        		<div class="form-group">
 			        			<label>贷款类型</label>
-			        			  <select class="form-control" ng-model="loanType.selected" ng-options="loanType.value as loanType.text for loanType in loanTypes"></select>
+			        			  <select class="form-control" ng-model="loanType.selected" ng-options="loanType.value as loanType.text for loanType in loanTypes" required></select>
 							</div>
 						</div>
 					</div>
@@ -16,9 +16,14 @@
 			        		<div class="form-group">
 			        			<label>贷款金额</label>
 			        			<div class="input-group">
-							  		<input type="text" class="form-control" placeholder="贷款金额" name="amout" ng-model="loanInfo.amount">
+			        			 <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+							  		<input type="text" class="form-control" placeholder="贷款金额" name="amout" float-number-input ng-model="loanInfo.amount" ng-pattern="/\d+/" required>
 							  		<span class="input-group-addon">元</span>
 							  	</div>
+							  	<div ng-show="contactsForm.$submitted || contactsForm.amout.$touched">
+									<div class="text-danger" ng-show="contactsForm.amout.$error.required">请填写贷款金额</div>
+									<div class="text-danger" ng-show="contactsForm.amout.$error.required">请填写贷款金额</div>
+								</div>
 							</div>
 						</div>
 						<div class="col-md-3">
@@ -26,7 +31,7 @@
 			        			<label>贷款期限</label>
 			        			<div class="input-group">
 
-							  		<input type="text" class="form-control" placeholder="贷款期限"  ng-model="loanInfo.spanMonth" required>
+							  		<input type="text" class="form-control" placeholder="贷款期限" number-input ng-model="loanInfo.spanMonth" required>
 							  		<span class="input-group-addon">月</span>
 							  	</div>
 							</div>
@@ -179,7 +184,7 @@
 					<button type="button" class="btn btn-primary"  ng-click="nav('prev')">上一步</button>
 				</div>
 				<div class="col-md-6" >
-				<button type="submit" class="btn btn-primary ks-right" ng-click="createLoan()">
+				<button type="submit" class="btn btn-primary ks-right">
 						生成合同 
 				</button>
 			</div>

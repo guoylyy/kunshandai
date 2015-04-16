@@ -12,6 +12,7 @@ require.config({
 		angular:'../lib/angular/angular',
 		uiBootstrap:'../lib/angular-bootstrap/ui-bootstrap-tpls',
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
+		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		text:'../lib/requirejs-text/text'
 	},
 	shim:{
@@ -27,6 +28,9 @@ require.config({
 		},
 		'underscore':{
 			exports:'_'
+		},
+		'i18nZh':{
+			deps:['angular']
 		}
 
 	}
@@ -35,6 +39,7 @@ require.config({
 require([
 		 'angular',
 		 'app',
+		 'i18nZh',
 		 'manage/DictService',
 		 'account/AccountService',
 		 'manage/loan/LoanService',
@@ -45,6 +50,7 @@ require([
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',
+		 'common/directive/floatNumberInput',
 		 'routes'
 ],function(angular) {
 	

@@ -14,8 +14,9 @@ define(['../../app',"underscore"],function(app,_) {
 				address:''
 			};
 	}
-	return app.controller('createLoanCtrl', ["$scope","$location","$q","LoanService","ContactService",'DictService','$state',
-		function($scope,$location,$q,LoanService,ContactService,DictService,$state){
+	return app.controller('CreateLoanCtrl', ["$scope","$location","$q","LoanService","ContactService",'DictService','$state',
+		'loanTypes','repayTypes',
+		function($scope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes){
 		
 		var loanInfo,
 			contract = {
@@ -24,24 +25,28 @@ define(['../../app',"underscore"],function(app,_) {
 				assurerId:''
 				};
 
-
+		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes.data : {};
+		$scope.repayTypes = (typeof repayTypes !== 'undefined' )? repayTypes.data : {};
+		// $scope.loanTypes = loanTypes.data;
+		// $scope.repayTypes = repayTypes.data;
+		
 		$scope.nav = function(direction){
 			if(direction === 'prev'){
 				$state.go('createLoan');
 		
 			}else if(direction === 'next'){
-				
-				var ltPromise =  DictService.get("loanTypes");
-				var rpPromise =DictService.get("payBackWays");
-				$q.all([ltPromise,rpPromise])
-					.then(function(results){
-						$scope.loanTypes =  results[0].data.data;
-						$scope.repayTypes = results[1].data.data;
-						$state.go('createLoanDetail');
+				$state.go('createLoanDetail');
+				// var ltPromise =  DictService.get("loanTypes");
+				// var rpPromise =DictService.get("payBackWays");
+				// $q.all([ltPromise,rpPromise])
+				// 	.then(function(results){
+				// 		$scope.loanTypes =  results[0].data.data;
+				// 		$scope.repayTypes = results[1].data.data;
+				// 		$state.go('createLoanDetail');
 						
-					},function(err){
-						console.log(err);
-				});
+				// 	},function(err){
+				// 		console.log(err);
+				// });
 				
 			}
 			
@@ -53,11 +58,13 @@ define(['../../app',"underscore"],function(app,_) {
 
 			ContactService.create($scope.br).then(function(res){
 				contract.loanerId = res.data.data.objectId;
+				deferred.resolve("contact id "+ contract.loanerId +" created");
 			},function(res){
 				deferred.reject(res.data);
 			});
 			ContactService.create($scope.gr).then(function(res){
 				contract.assurerId = res.data.data.objectId;
+				deferred.resolve("contact id "+ contract.loanerId +" created");
 			},function(){
 				deferred.reject(res.data);
 			});
@@ -70,28 +77,34 @@ define(['../../app',"underscore"],function(app,_) {
 			var createContactPromise = $scope.createContact();
 
 			createContactPromise.then(function(){
+				
+				//initial loanInfo
+				var createLoandefferred = $q.defer();
+				var date = "2014-10-2";
 
 				$scope.loanInfo.payWay = $scope.repayType.selected;
-				var date = "2014-10-2";
 				$scope.loanInfo.startDate = date;
 				$scope.loanInfo.endDate = date;
 				$scope.loanInfo.firstPayDate = date;
-				
+
 				LoanService.create($scope.loanInfo).then(function(res){
 					contract.loanId = res.data.data.objectId;
-					console.log(res.data);
-					LoanService.generate(contract).then(function(res){
-						alert("创建成功");
-					});
-				},function(data){
-					console.log("err");
+					createLoandefferred.resolve(contract.loanId);
 				});
 
-			},function(reason){
-				$scope.err = reason.message;
+				return createLoandefferred.promise;
+
+			}).then(function(){
+				
+				return LoanService.generate(contract);
+			}).then(function(){
+				alert("生成合同成功");
+			}).catch(function(){
+				alert("生成合同失败");
 			});
 			
 		};
+
 		$scope.open = function($event,opened) {
 		    
 		    $event.preventDefault();

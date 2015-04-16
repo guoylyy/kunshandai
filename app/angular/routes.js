@@ -5,7 +5,7 @@ define(['app'],function(app){
 	return app.config(['$stateProvider','$urlRouterProvider','$locationProvider',
 		function($stateProvider,$urlRouterProvider,$locationProvider){
 		
-		 // $urlRouterProvider.otherwise("/login");
+		  // $urlRouterProvider.when('/createLoan','/createLoan#info');
 		 $locationProvider.html5Mode({
 		  enabled: true,
 		  requireBase: false
@@ -67,21 +67,42 @@ define(['app'],function(app){
 		    		"main":{templateUrl: "/angular/manage/client/client.html"}
 		    	}
 		    })
+
 		    .state('createLoan',{
 		    	url:"/createLoan",
-		    	views:{
-		    		"main":{templateUrl: "/angular/manage/loan/create_loanInfo.html"}
+		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
+		    	resolve:{
+		    		loanTypes:function(DictService){
+		    			 return {};
+		    		},
+		    		repayTypes:function(DictService){
+		    			 return {};
+		    		}
 		    	},
-				controller:"CreateLoanCtrl"
+		    	controller:"CreateLoanCtrl"
+
 		    })
 		    .state('createLoanDetail',{
 		    	url:"#detail",
-		    	views:{
-		    		"main":{templateUrl: "/angular/manage/loan/create_loanDetail.html"}
+		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
+		    	resolve:{
+		    		loanTypes:function(DictService){
+		    			 return DictService.get('loanTypes').then(function(res){
+		    			 	return res.data;
+		    			 });
+		    		},
+		    		repayTypes:function(DictService){
+		    			  return DictService.get('payBackWays').then(function(res){
+		    			 	return res.data;
+		    			 });
+		    		}
 		    	},
-		    	controller:"CreateLoanCtrl"
-		    })
-		    ;
+		    	controller: "CreateLoanCtrl"
+		    	// controller:function($scope,loanTypes,repayTypes){
+		    	// 	$scope.loanTypes = loanTypes.data.data;
+		    	// 	$scope.loanTypes = repayTypes.data.data;
+		    	// }
+		    });
 
 	}]);
 

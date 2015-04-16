@@ -1,14 +1,18 @@
-<form name="loanForm" novalidate >
-<div class="container">
+<form name="loanForm" novalidate ng-submit="loanForm.$valid && nav('next')">
+<div class="container-fluid">
 <div class="col-md-6">
+
 		<div class="ks-panel panel panel-default">
 				<div class="panel-heading">贷款信息</div>
 		        <div class="panel-body">
 		         <div class="row">
-		        	<div class="col-md-3">
+		        	<div class="col-md-6">
 			        		<div class="form-group">
 			        			<label>贷款类型</label>
-			        			  <select class="form-control" ng-model="loanType.selected" ng-options="loanType.value as loanType.text for loanType in loanTypes" required></select>
+			        			  <select class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
+			        			  <div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
+									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写逾期违约金</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -88,7 +92,7 @@
 			        			<label>还款总期数</label>
 			        			<div class="input-group">
 							  		<input type="text" class="form-control" placeholder="还款总期数" number-input name="payTotalCircle" ng-model="loanInfo.payTotalCircle" required>
-							  		<span class="input-group-addon">月</span>
+							  		<span class="input-group-addon">期</span>
 							  	</div>
 							  	<div ng-show="loanForm.$submitted || loanForm.payTotalCircle.$touched">
 									<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.required">请填写还款总期数</div>
@@ -122,7 +126,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-36">
+						<div class="col-md-6">
 			        		<div class="form-group">
 			        			<label>服务费</label>
 			        			<div class="input-group">
@@ -181,9 +185,10 @@
 		        	<div class="col-md-6">
 			        		<div class="form-group">
 			        			<label>还款类型</label>
-			        	
-			                      <select class="form-control" ng-model="repayType.selected" ng-options="repayType.value as repayType.text for repayType in repayTypes"></select>
-			                  
+			                    <select class="form-control" ng-model="loanInfo.payWay" ng-options="repayType.value as repayType.text for repayType in repayTypes" required name="payWay"></select>
+			                    <div ng-show="loanForm.$submitted || loanForm.payWay.$touched">
+									<div class="text-danger" ng-show="loanForm.payWay.$error.required">请填写逾期违约金</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -221,7 +226,7 @@
 			<div class="container-fluid">
 				<div class="col-md-6 "></div>
 				<div class="col-md-6" >
-					<button type="button" class="btn btn-primary ks-right" ng-click="loanForm.$valid && nav('next')">下一步  </button>
+					<button type="submit" class="btn btn-primary ks-right">下一步  </button>
 				</div>
 			</div>
 </form>

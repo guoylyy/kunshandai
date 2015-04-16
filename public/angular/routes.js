@@ -67,22 +67,7 @@ define(['app'],function(app){
 		    		"main":{templateUrl: "/angular/manage/client/client.html"}
 		    	}
 		    })
-
-		    .state('createLoanContact',{
-		    	url:"#contact",
-		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
-		    	resolve:{
-		    		loanTypes:function(DictService){
-		    			 return {};
-		    		},
-		    		repayTypes:function(DictService){
-		    			 return {};
-		    		}
-		    	},
-		    	controller:"CreateLoanCtrl"
-
-		    })
-		    .state('createLoan',{
+  			.state('createLoan',{
 		    	url:"/createLoan",
 		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
 		    	resolve:{
@@ -95,6 +80,43 @@ define(['app'],function(app){
 		    			  return DictService.get('payBackWays').then(function(res){
 		    			 	return res.data;
 		    			 });
+		    		},
+		    		steps:function(){
+		    			return [true,false,false];
+		    		}
+		    	},
+		    	controller: "CreateLoanCtrl"
+
+		    })
+		    .state('createLoanContact',{
+		    	url:"#contact",
+		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
+		    	resolve:{
+		    		loanTypes:function(){
+		    			 return {};
+		    		},
+		    		repayTypes:function(){
+		    			 return {};
+		    		},
+		    		steps:function(){
+		    			return [false,true,false];
+		    		}
+		    	},
+		    	controller:"CreateLoanCtrl"
+
+		    })
+		 	 .state('contractCreated',{
+		    	url:"#contract",
+		    	templateUrl: "/angular/manage/common/contract.html",
+		    	resolve:{
+		    		loanTypes:function(){
+		    			 return {};
+		    		},
+		    		repayTypes:function(){
+		    			 return {};
+		    		},
+		    		steps:function(){
+		    			return [false,false,true];
 		    		}
 		    	},
 		    	controller: "CreateLoanCtrl"

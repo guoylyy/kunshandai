@@ -15,6 +15,7 @@ require.config({
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
+		angularWizard:'../lib/angular-wizard/dist/angular-wizard',
 		text:'../lib/requirejs-text/text'
 	},
 	shim:{
@@ -34,7 +35,10 @@ require.config({
 		'i18nZh':{
 			deps:['angular']
 		},
-		angularLoadingBar:{
+		'angularLoadingBar':{
+			deps:['angular']
+		},
+		'angularWizard':{
 			deps:['angular']
 		}
 
@@ -53,6 +57,7 @@ require([
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
 		 'manage/loan/CreateLoanCtrl',
+		 'manage/nav/NavController',
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',

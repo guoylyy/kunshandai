@@ -5,15 +5,15 @@
 		<div class="ks-panel panel panel-primary">
 			<div class="panel-heading">贷款信息</div>
 		    <div class="panel-body">
-		    	<strong class="ks-heading ks-color-light">合同编号: D89230423</strong>
+		    	<strong class="ks-heading ks-color-light">合同编号: {{contact.loanId}}</strong>
 		    	<div class="ks-divider"></div>
 		    	<p class="ks-heading">借款人信息:</p>
-		    	<p>姓 名: 潘建旭</p>
-		    	<p>电 话: 18801790304</p>
+		    	<p>姓 名: {{br.name}}</p>
+		    	<p>电 话: {{br.mobilePhoneNum}}</p>
 		    	<div class="ks-divider"></div>
 		    	<p class="ks-heading">担保人信息:</p>
-		    	<p>姓 名: 郭毅亮</p>
-		    	<p>电 话: 18801790304</p>
+		    	<p>姓 名: {{gr.name}}</p>
+		    	<p>电 话: {{gr.mobilePhoneNum}}</p>
 		    	<div class="ks-divider"></div>
 		    	<table class="table table-striped">
 									<thead>
@@ -33,14 +33,14 @@
 									
 										
 										<tr>
-											<td>买车贷款</td>
-											<td>1,000,000</td>
-											<td>2014-10-25</td>
-											<td>2015-04-21</td>
-											<td>先息后本</td>
-											<td>2014-10-01</td>
-											<td>24</td>
-											<td>24</td>
+											<td>{{loanInfo.loanType}}</td>
+											<td>{{loanInfo.amount}}</td>
+											<td>{{loanInfo.startDate}}</td>
+											<td>{{loanInfo.endDate}}</td>
+											<td>{{loanInfo.payWay}}</td>
+											<td>{{loanInfo.firstPayDate}}</td>
+											<td>{{loanInfo.payCircle}}</td>
+											<td>{{loanInfo.payTotalCircle}}</td>
 										</tr>
 									</tbody>
 				</table>
@@ -59,12 +59,12 @@
 									
 										
 										<tr>
-											<td>1</td>
-											<td>1,0,000</td>
-											<td>2,000</td>
-											<td>1,000</td>
-											<td>0</td>
-											<td>2,000</td>
+											<td>{{loanInfo.interests}}</td>
+											<td>{{loanInfo.assureCost}}</td>
+											<td>{{loanInfo.serviceCost}}</td>
+											<td>{{loanInfo.overdueCostPercent}}</td>
+											<td>{{loanInfo.otherCost}}</td>
+											<td>{{loanInfo.keepCost}}</td>
 										</tr>
 
 									</tbody>

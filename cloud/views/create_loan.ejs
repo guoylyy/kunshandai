@@ -4,33 +4,32 @@
 			<h3 class="ks-dividing">
 				新增放款
 			</h3>
-			<div class="row">
+			<div class="row" >
 				 <div class="row bs-wizard" style="border-bottom:0;">
-                	<div  ui-sref="createLoan" class="col-xs-4 bs-wizard-step complete">
-	                  <div class="text-center bs-wizard-stepnum">步奏一</div>
+                	<div ui-sref="createLoan" class="col-xs-4 bs-wizard-step complete" >
+	                  <div class="text-center bs-wizard-stepnum">步骤一</div>
 	                  <div class="progress"><div class="progress-bar"></div></div>
-	                  <a href="#" class="bs-wizard-dot" ></a>
+	                  <div  class="bs-wizard-dot" ></div>
 	                  <div class="bs-wizard-info text-center">填写贷款信息</div>
 	                </div>
 
-	                <div ui-sref-active="complete" ui-sref="createLoanContact" class="col-xs-4 bs-wizard-step ">
-	                  <div class="text-center bs-wizard-stepnum">步奏二</div>
+	                <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(stepActive[1]||stepActive[2])}">
+	                  <div class="text-center bs-wizard-stepnum" >步骤二</div>
 	                  <div class="progress"><div class="progress-bar"></div></div>
-	                  <a href="#" class="bs-wizard-dot" ></a>
+	                  <div  class="bs-wizard-dot" ></div>
 	                  <div class="bs-wizard-info text-center">填写借款人、担保人信息</div>
 	                </div>
 	                
-	                <div class="col-xs-4 bs-wizard-step">
+	                <div class="col-xs-4 bs-wizard-step" ng-class="{active:stepActive[2]}">
 	                  <div class="text-center bs-wizard-stepnum">完成</div>
 	                  <div class="progress"><div class="progress-bar"></div></div>
-	                  <a href="#" class="bs-wizard-dot"></a>
+	                  <div  class="bs-wizard-dot"></div>
 	                  <div class="bs-wizard-info text-center">生成贷款合同</div>
 	                </div>
                 
             	</div>
-        
-        
-			</div>		
+			</div>
+        	
 			<div ui-view></div>
 			
 				

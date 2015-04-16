@@ -3,9 +3,9 @@
  */
 'use strict';
 
-define(['angular','uiRouter','uiBootstrap','angularLoadingBar'],function(angular){
+define(['angular','uiRouter','uiBootstrap','angularLoadingBar','angularWizard'],function(angular){
 	
-	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar'])
+	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','mgo-angular-wizard'])
 	// .run(function($rootScope, $urlRouter) {
 	//     $rootScope.$on('$locationChangeSuccess', function(evt) {
 	//       evt.preventDefault();

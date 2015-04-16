@@ -199,7 +199,7 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
         floan.set('loaner',assurer);
         var query = floan.relation("loanRecords").query();
         query.destroyAll().then(function(){
-          generateLoanRecord(floan,res);  
+          generateLoanRecord(floan,res);
         });
       }
     }else{
@@ -216,6 +216,8 @@ function generateLoanRecord(floan, res){
       var attributes = floan.attributes;
       attributes['objectId'] = floan.id;
       mutil.renderData(res,{loan:attributes,loanRecord:rlr});
+    },function(error){
+      mutil.renderError(res, error);
     });
   },
     function(error){

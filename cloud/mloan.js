@@ -81,8 +81,8 @@ loanRecordFactory.factory = function(loan){
  */
 function generateLoanPayBack(payMoney, payDate, status){
     var loanPayBack = new AV.Object('LoanPayBack');
-    loanPayBack.set('payDate', d);
-    loanPayBack.set('payMoney', baseMoney + interestsMoney + overdueMoney);
+    loanPayBack.set('payDate', payDate);
+    loanPayBack.set('payMoney', payMoney);
     loanPayBack.set('status', mconfig.loanPayBackStatus.paying.value);
     return loanPayBack;
 };

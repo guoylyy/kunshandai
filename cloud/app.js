@@ -49,7 +49,7 @@ app.use(avosExpressCookieSession({    //设置 cookie
 }));
 app.use(expressLayouts);
 app.use(app.router);
-app.use(express.static('app'));  //设置app为静态目录
+app.use(express.static('public'));  //public
 /**
  * 主页路由器,用于渲染前端框架入口页面
  */

@@ -1436,6 +1436,9 @@ function ($compile, $parse, $document, $position, dateFilter, dateParser, datepi
       var dateFormat,
           closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : datepickerPopupConfig.closeOnDateSelection,
           appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : datepickerPopupConfig.appendToBody;
+      
+      //solve inital data not show correct format when use ng-model     
+      ngModel.$formatters.shift();
 
       scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
 

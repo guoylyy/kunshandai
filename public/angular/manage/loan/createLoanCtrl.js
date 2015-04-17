@@ -61,19 +61,13 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.calendar={};
 		
+		$scope.format = 'yyyy-MM-dd';
+
 		$scope.br = ContactService.getLoaner();
 		
 		$scope.gr = ContactService.getAssurer();
 		
 		$scope.loanInfo = LoanService.getLocal();
-
-		$scope.loanType={
-			selected:'fcdy'
-		};
-
-		$scope.repayType={
-			selected:'xxhb'
-		};
 		
 	}]);
 });

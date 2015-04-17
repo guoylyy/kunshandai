@@ -23,7 +23,7 @@ function calculateOutMoney(loan, interestsMoney){
     lr.set('serviceCost', -loan.serviceCost);
     lr.set('otherCost', -loan.otherCost);
     lr.set('outMoney', outMoney);
-    lr.set('order',0); //标记为首次放款
+    lr.set('order',1); //标记为首次放款
     return lr;
 };
 function getAVLoanRecord(){
@@ -35,7 +35,7 @@ function getAVLoanRecord(){
  *     放款期扣除所有利息以及其他费用，余额为放款金额
  */
 loanRecordFactory.xxhb = function(loan){
-    var interestsMoney = loan.amount * loan.payTotalCircle * loan.interests;
+    var interestsMoney = loan.amount * loan.payTotalCircle * loan.payCircle * loan.interests;
     var loanRecord = calculateOutMoney(loan, interestsMoney);
     return loanRecord;
 };
@@ -79,18 +79,20 @@ loanRecordFactory.factory = function(loan){
 /********************************************
  * 针对还款的工厂类, 目前只实现了首次的还款任务生成
  */
-function generateLoanPayBack(payMoney, payDate, status){
+function generateLoanPayBack(payMoney, payDate, status, order){
     var loanPayBack = new AV.Object('LoanPayBack');
     loanPayBack.set('payDate', payDate);
     loanPayBack.set('payMoney', payMoney);
-    loanPayBack.set('status', mconfig.loanPayBackStatus.paying.value);
+    loanPayBack.set('status', status);
+    loanPayBack.set('order',order);
     return loanPayBack;
 };
 var loanPayBackFactory = {};
+//先息后本，只生成一期还款,首次还款日期是最终还款日期
 loanPayBackFactory.xxhb = function(loan){
     var outMoney = loan.amount;
-    var d = moment(loan.firstPayDate).add(loan.payTotalCircle * loan.payCircle,'month').format();
-    return generateLoanPayBack(outMoney, d, mconfig.loanPayBackStatus.paying.value);
+    var d = moment(loan.firstPayDate).format();//todo:修改成首次还款日期日期
+    return [generateLoanPayBack(outMoney, d, mconfig.loanPayBackStatus.paying.value, 1)];
 };
 //等额本息需要每月还利息 + 本金 + 逾期违约金
 //生成之时预约违约金为 0
@@ -98,8 +100,17 @@ loanPayBackFactory.debx = function(loan){
     var baseMoney = loan.amount / loan.payTotalCircle; //每期本金
     var interestsMoney = loan.amount * loan.interests * loan.payCircle;
     var overdueMoney = 0;
-    var d = moment(loan.firstPayDate).format();
-    return generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, d, mconfig.loanPayBackStatus.paying.value);
+    var rlist = [];
+    for (var i = 1; i <= loan.payTotalCircle; i++) {
+        var status = mconfig.loanPayBackStatus.paying.value;
+        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
+        if(i > 1){
+            status = mconfig.loanPayBackStatus.toPaying.value;
+        }
+        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, 
+            d, status, i));
+    };
+    return rlist;
 };
 //周期初还本付息
 //期间只收利息
@@ -107,24 +118,42 @@ loanPayBackFactory.zqcxhb = function(loan){
     var baseMoney = 0; //每期还本金
     var interestsMoney = loan.amount * loan.interests * loan.payCircle;
     var overdueMoney = 0;
-    var d = moment(loan.firstPayDate).add(loan.payCircle,'month').format();
-    return generateLoanPayBack(interestsMoney, d, mconfig.loanPayBackStatus.paying.value);
+    var rlist = [];
+    for (var i = 1; i <= loan.payTotalCircle; i++) {
+        var status = mconfig.loanPayBackStatus.paying.value;
+        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
+        if(i > 1){
+            status = mconfig.loanPayBackStatus.toPaying.value;
+        }
+        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, 
+            d, status, i));
+    };
+    return rlist;
 };
 //周期末息后本 
 loanPayBackFactory.zqmxhb = function(loan){
     var baseMoney = 0; //每期还本金
     var interestsMoney = loan.amount * loan.interests * loan.payCircle;
     var overdueMoney = 0;
-    var d = moment(loan.firstPayDate).add(loan.payCircle,'month').format();
-    return generateLoanPayBack(interestsMoney, d, mconfig.loanPayBackStatus.paying.value);
+    var rlist = [];
+    for (var i = 1; i <= loan.payTotalCircle; i++) {
+        var status = mconfig.loanPayBackStatus.paying.value;
+        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
+        if(i > 1){
+            status = mconfig.loanPayBackStatus.toPaying.value;
+        }
+        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, 
+            d, status, i));
+    };
+    return rlist;
 };
 //到期本息
 loanPayBackFactory.dqhbfx = function(loan){
     var baseMoney = loan.amount;
-    var d = moment(loan.firstPayDate).add(loan.payCircle * loan.payTotalCircle,'month').format();
+    var d = moment(loan.firstPayDate).format();
     var overdueMoney = 0;
     var interestsMoney = loan.amount* loan.interests * loan.payCircle * loan.payTotalCircle;
-    return generateLoanPayBack(interestsMoney+ baseMoney, d, mconfig.loanPayBackStatus.paying.value);
+    return [generateLoanPayBack(interestsMoney+ baseMoney, d, mconfig.loanPayBackStatus.paying.value, 1)];
 }
 loanPayBackFactory.factory = function(loan){
     return new loanPayBackFactory[loan.get('payWay')](loan.attributes);
@@ -137,18 +166,20 @@ loanPayBackFactory.factory = function(loan){
  * 以下是暴露给外部的访问的方法
  */
 function calculateLoanRecord(loan){
-    var lr = loanRecordFactory.factory(loan);
-    return lr;
+    return loanRecordFactory.factory(loan);
 }
 //各种不同类型的
 function calculatePayBackMoney(loan){
-    var lpb = loanPayBackFactory.factory(loan);
-    return lpb
+    return loanPayBackFactory.factory(loan);
 }
 function createBasicLoan(reqBody, u){
     //var loan = new Loan();
     var loan = new AV.Object('Loan');
     loan.set('owner', u);
+    return updateLoan(loan, reqBody);
+}
+
+function updateLoan(loan, reqBody){
     loan.set('loanType', reqBody.loanType); //TODO: check is this in dict or not
     loan.set('amount', reqBody.amount);
     loan.set('spanMonth', reqBody.spanMonth);
@@ -164,13 +195,17 @@ function createBasicLoan(reqBody, u){
     loan.set('keepCost', reqBody.keepCost);
     loan.set('payWay', reqBody.payWay);
 
+    loan.set('otherCostDesc', reqBody.otherCostDesc);
+    loan.set('keepCostDesc', reqBody.keepCostDesc);
+
     //还款时间
     //根据还款类型确认初次还款日期
     loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
     loan.set('status', mconfig.loanStatus.draft.value);
     return loan;
-}
+};
 
+exports.updateLoan = updateLoan;
 exports.createBasicLoan=createBasicLoan;
 exports.calculateLoanRecord=calculateLoanRecord;
 exports.calculatePayBackMoney=calculatePayBackMoney;

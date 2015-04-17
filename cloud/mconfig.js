@@ -22,8 +22,12 @@ var loanPayBackStatus = {
 		value:1,
 		text:'进行中'
 	},
+	toPaying: {
+		value: 2,
+		text:'未进入还款流程'
+	},
 	completed: {
-		value:2,
+		value:3,
 		text:'已完成'
 	}
 };
@@ -91,6 +95,30 @@ function convertDictToList(key){
 	}
 	return null;
 }
+
+function getConfigMapByValue(key, value){
+	var obj;
+	if(key=='loanTypes'){
+		obj = loanTypes;
+	}else if(key=='payBackWays'){
+		obj = payBackWays;
+	}else if(key=='loanStatus'){
+		obj = loanStatus;
+	}else if(key=='loanPayBackStatus'){
+		obj = loanPayBackStatus;
+	}
+	if(!obj){
+		return null;
+	}
+	var keys = Object.keys(obj);
+	for (var i = 0; i < keys.length; i++) {
+		if(value == obj[keys[i]].value){
+			return obj[keys[i]];
+		}
+	};
+	return null;
+}
+
 function getKeyValueList(obj){
 	var keys = Object.keys(obj);
 	var rlist = [];
@@ -102,6 +130,7 @@ function getKeyValueList(obj){
 	return rlist;
 }
 
+exports.getConfigMapByValue = getConfigMapByValue;
 exports.convertDictToList = convertDictToList;
 exports.loanStatus = loanStatus;
 exports.loanPayBackStatus = loanPayBackStatus;

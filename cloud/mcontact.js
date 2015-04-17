@@ -8,7 +8,10 @@ var mutil = require('cloud/mutil.js');
 function createContact(reqBody, u){
     var contact = new AV.Object('Contact');
     contact.set('owner', u);
-    
+    return updateContact(contact, reqBody);
+};
+
+function updateContact(contact, reqBody){
     contact.set('name',reqBody.name);
     contact.set('certificateType', reqBody.certificateType);
     contact.set('certificateNum', reqBody.certificateNum);
@@ -18,7 +21,7 @@ function createContact(reqBody, u){
     contact.set('wechat', reqBody.wechat);
     contact.set('mobilePhoneNumber', reqBody.mobilePhoneNumber);
     return contact;
-};
+}
 
 function bindContactFiles(contact, attachmentIds){
     var attachments = contact.relation("attachments");
@@ -58,6 +61,6 @@ function searchContact(certificateNum){
 
 }
 
-
+exports.updateContact = updateContact;
 exports.createContact = createContact;
 exports.bindContactFiles = bindContactFiles;

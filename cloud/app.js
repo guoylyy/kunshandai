@@ -22,11 +22,13 @@ var mutil = require('cloud/mutil.js');
 var mloan = require('cloud/mloan.js');
 var mcontact = require('cloud/mcontact.js');
 var mconfig = require('cloud/mconfig.js');
+var mlog = require('cloud/mlog.js');
 var account = require('cloud/account.js');
 var config = require('cloud/config.js');
 var _s = require('underscore.string');
 
 var LoanRecord = AV.Object.extend('LoanRecord');
+var LoanPayBack = AV.Object.extend('LoanPayBack');
 
 // App 全局配置
 if (__production) {
@@ -109,7 +111,6 @@ app.post(config.baseUrl +'/account/login', function(req, res){
 });
 //如果用户已登录，返回用户信息
 app.get(config.baseUrl + '/account/isLogin', function(req, res){
-  //console.log(req.token);
   account.isLogin() ? res.json(account.isLogin()):mutil.renderResult(res, false, 210);
 });
 //注册
@@ -163,10 +164,74 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
 /**********************************************
  * 贷款项目相关操作
  * 已完成:
- *   1. 新建一个贷款
- *   2. 贷款、联系人共同生成一个放款账单
- *   3. 确认账单（这一步后一个项目进入还款阶段）
  ***********************************************/
+app.get(config.baseUrl + '/loan/:id', function (req, res){
+  var u = check_login(res);
+  var query = new AV.Query('Loan');
+  query.equalTo('owner', u);
+  query.equalTo('objectId', req.params.id);
+  query.include('loaner');
+  query.include('assurer');
+  query.find().then(function(data){
+    mutil.renderData(res,transformLoanDetails(data[0]));
+  });
+});
+
+app.put(config.baseUrl + '/loan/:id', function (req, res){
+  var u = check_login(res);
+  var loan = AV.Object.createWithoutData('Loan', req.params.id);
+  loan.fetch().then(function(l){
+    if(l.get('status') != mconfig.loanStatus.draft.value){
+      mutil.renderError(res,{code:400, message:'项目已进入还款阶段，不可更新！'});
+    }else{
+      n_loan = mloan.updateLoan(l, req.body);
+      n_loan.save().then(function(nloan){
+        mutil.renderData(res, transformLoanDetails(nloan));
+      },function(error){
+        mutil.renderError(res, error);
+      })
+    }
+  }, function(error){
+    mutil.renderError(res, error);
+  });
+});
+
+app.get(config.baseUrl + '/loan/:id/payments', function (req, res){
+  var u = check_login(res);
+  var loan = AV.Object.createWithoutData('Loan', req.params.id);
+  loan.fetch().then(function(l){
+    var query = l.relation("loanRecords").query();
+    query.find({
+      success: function(list){
+        mutil.renderData(res,list);
+      },
+      error: function(error){
+        mutil.renderError(res, error);    
+      }
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
+app.get(config.baseUrl + '/loan/:id/paybacks', function (req, res){
+  var u = check_login(res);
+  var loan = AV.Object.createWithoutData('Loan', req.params.id);
+  loan.fetch().then(function(l){
+    var query = l.relation("loanPayBacks").query();
+    query.find({
+      success: function(list){
+        mutil.renderData(res,list);
+      },
+      error: function(error){
+        mutil.renderError(res, error);    
+      }
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
 //新建一个贷款项目
 app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var u = check_login(res);
@@ -191,12 +256,14 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
     //判断是否已经有放款记录,如果有删除掉
     if(assurer){
       floan.set('assurer',assurer);
+      floan.set('assurerName', assurer.get('name'));
     }
     if(loaner){
       if(floan.attributes.status != mconfig.loanStatus.draft.value){
         mutil.renderError(res,{code:400, message:"错误的项目状态!"});
       }else{
         floan.set('loaner',assurer);
+        floan.set('loanerName', assurer.get('name'));
         var query = floan.relation("loanRecords").query();
         query.destroyAll().then(function(){
           generateLoanRecord(floan,res);
@@ -207,6 +274,7 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
     }
   });
 });
+
 function generateLoanRecord(floan, res){
   var lr = mloan.calculateLoanRecord(floan);//生成放款记录
   lr.save().then(function(rlr){
@@ -233,26 +301,32 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   var loan = AV.Object.createWithoutData('Loan', loanId);
   loan.fetch().then(function(floan){
     if(floan.attributes.status != mconfig.loanStatus.draft.value){
-        mutil.renderError(res,{code:400, message:"错误的项目状态!"});
+        mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
     }else{
-      var loanPayBack = mloan.calculatePayBackMoney(floan);
-      loanPayBack.save().then(function(rpayBack){
-        var lpbRelation = floan.relation('loanPayBacks');
-        lpbRelation.add(rpayBack);
-        floan.set('status',mconfig.loanStatus.paying.value);
-        floan.save().then(function(data){
-          mutil.renderData(res,data);
-        },function(error){
-        mutil.renderError(res,error);
-        });
-      },function(error){
-        mutil.renderError(res,error);
+      mlog.log('正在生成还款任务');
+      var loanPayBacks = mloan.calculatePayBackMoney(floan);
+      //console.log(loanPayBacks);
+      mlog.log('开始存储还款任务');
+      LoanPayBack.saveAll(loanPayBacks,{
+        success: function(lpbs){
+          //console.log(lpbs);
+          var lpbRelation = floan.relation('loanPayBacks');
+          lpbRelation.add(loanPayBacks);
+          floan.set('status',mconfig.loanStatus.paying.value);
+          floan.save().then(function(data){
+              mutil.renderData(res,data);
+            },function(error){
+            mutil.renderError(res,error);
+          });  
+        },
+        error: function(error){
+          mutil.renderError(res,error);
+        }
       });
     }
   });
 });
 //获取未完成的项目列表,分页
-//app.get();
 app.post(config.baseUrl + '/attachment', function (req, res){
   saveFileThen(req, function(attachment){
     if(attachment){
@@ -268,16 +342,44 @@ app.post(config.baseUrl + '/attachment', function (req, res){
 * 项目查询相关接口
 * 已完成:
 *   1. 分页列出所有项目（不包括草稿项目)
+*   2. 分页列出草稿项目
 *******************************************/
-//查询草稿项目
 app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
   var u = check_login(res);
   var pageNumber = req.params.pn;
   var query = new AV.Query('Loan');
-  var totalPageNum = 1;
-  var resultsMap = {};
+  query.include('loaner');
+  query.include('assurer');
   query.notEqualTo('status', mconfig.loanStatus.draft.value);
   query.equalTo('owner', u);
+  listLoan(res, query, pageNumber);
+});
+
+app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
+  var u = check_login(res);
+  var pageNumber = req.params.pn;
+  var query = new AV.Query('Loan');
+  query.include('loaner');
+  query.include('assurer');
+  query.equalTo('status', mconfig.loanStatus.draft.value);
+  query.equalTo('owner', u);
+  listLoan(res, query, pageNumber);
+});
+
+
+//按条件分页列出还款记录 未完成
+app.get(config.baseUrl + '/pays/:pn', function (req, res){
+  var payed = true;
+  var startDate = "";
+  var endDate = "";
+
+});
+
+//需要根据最近的还款周期列出项目，这个需要反向生成
+
+function listLoan(res, query, pageNumber){
+  var totalPageNum = 1;
+  var resultsMap = {};
   query.count().then(function(count){
     totalPageNum = parseInt(count / mconfig.pageSize) + 1;
     resultsMap['totalPageNum'] = totalPageNum;
@@ -303,14 +405,15 @@ app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
         });
       }
   });
-});
+};
 
 
 /*****************************************
  * 联系人相关接口
  * 已完成:
  *  1. 新建联系人
- *  2. 
+ *  2. 列出登录用户的联系人
+ *  3. 查询和删除单个联系人
  */
 app.post(config.baseUrl + '/contact', function(req, res){
   var u = check_login(res);
@@ -324,6 +427,40 @@ app.post(config.baseUrl + '/contact', function(req, res){
     mutil.renderError(res, error);
   })
 });
+app.put(config.baseUrl + '/contact/:id', function (req, res){
+  var u = check_login(res);
+  var contact = AV.Object.createWithoutData('Contact',req.params.id);
+  contact.fetch().then(function(rc){
+    n_contact = mcontact.updateContact(rc, req.body);
+    n_contact.save().then(function(rnc){
+      mutil.renderData(res, rnc);
+    }, function(error){
+    mutil.renderError(res,error);
+    });
+  },function(error){
+    mutil.renderError(res,error);
+  });
+});
+
+app.get(config.baseUrl + '/contact/:id', function (req, res){
+  var u = check_login(res);
+  var query = new AV.Query('Contact');
+  query.equalTo("owner",u);
+  query.equalTo("objectId",req.params.id);
+  query.find({
+    success: function(contact){
+      if(contact.certificateNum ){
+        mutil.renderData(res, contact);
+      }else{
+        mutil.renderError(res, {code:404, message:'contact not found'});
+      }
+    },
+    error: function(error){
+      mutil.renderError(res, error);
+    }
+  });
+});
+
 //如果身份证或者驾驶证存在，就返回该用户的联系人
 app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, res){
   var u = check_login(res);
@@ -358,31 +495,14 @@ app.get(config.baseUrl + '/contact/all', function (req, res){
     }
   });
 });
-app.get(config.baseUrl + '/contact/:id', function (req, res){
-  var u = check_login(res);
-  var query = new AV.Query('Contact');
-  query.equalTo("owner",u);
-  query.equalTo("objectId",req.params.id);
-  query.find({
-    success: function(contact){
-      if(contact.certificateNum ){
-        mutil.renderData(res, contact);
-      }else{
-        mutil.renderError(res, {code:404, message:'contact not found'});
-      }
-    },
-    error: function(error){
-      mutil.renderError(res, error);
-    }
-  });
-});
+
 //删除一个联系人
+////todo: 目前不可以随意删除
 app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
   query.equalTo("owner",u);
   query.equalTo("objectId",req.params.id);
-  //todo:如果一个联系人有相关项目，是不可以删除的
   query.destroyAll({
     success: function(rc){
       if(rc==undefined){
@@ -396,8 +516,6 @@ app.delete(config.baseUrl + '/contact/:id', function (req, res){
     }
   });
 });
-
-
 /*
   查询字典表
  */
@@ -415,16 +533,55 @@ app.get(config.baseUrl + '/dict/:key', function (req, res){
  */
 function transformLoan(l){
   var loaner = l.get('loaner');
+  var assurer = l.get('assurer');
+  if(!loaner){
+    loaner = null;
+  }
+  if(!assurer){
+    assurer = null;
+  }
   return {
       id: l.id,
       amount: l.get('amount'),
-      createdAt: formatTimeLong(l.createdAt),
-      loaner: loaner,
-      payWay: l.get('payWay') 
+      createdAt: formatTime(l.createdAt),
+      loaner: transformContact(loaner),
+      assurer: transformContact(assurer),
+      payWay: mconfig.getConfigMapByValue('payBackWays', l.get('payWay')),
+      status: mconfig.getConfigMapByValue('loanStatus', l.get('status'))
   };
 };
+function transformLoanDetails(l){
+  var m = transformLoan(l);
+  m['spanMonth'] = l.get('spanMonth');
+  m['startDate'] = l.get('startDate');
+  m['endDate'] = l.get('endDate');
+  m['payCircle'] = l.get('payCircle');
+  m['payTotalCircle'] = l.get('payTotalCircle');
+  m['interests'] = l.get('interests');
+  m['assureCost'] = l.get('assureCost');
+  m['serviceCost'] = l.get('serviceCost');
+  m['overdueCostPercent'] = l.get('overdueCostPercent');
+  m['otherCost'] = l.get('otherCost');
+  m['keepCost'] = l.get('keepCost');
+  m['otherCostDesc'] = l.get('otherCostDesc');
+  m['keepCostDesc'] = l.get('keepCostDesc');
+  m['firstPayDate'] = l.get('firstPayDate');
+  return m;
+}
 
-function formatTimeLong(t) {
+function transformContact(c){
+  if(!c){
+    return null;
+  }
+  return {
+    id: c.get('objectId'),
+    name: c.get('name'),
+    email: c.get('email')
+  };
+}
+
+
+function formatTime(t) {
     var date = moment(t).format('YYYY-MM-DD HH:mm:ss');
     return date;
 }

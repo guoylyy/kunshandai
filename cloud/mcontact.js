@@ -57,10 +57,6 @@ function bindContactFile(contact, fileId){
 }
 
 
-function searchContact(certificateNum){
-
-}
-
 exports.updateContact = updateContact;
 exports.createContact = createContact;
 exports.bindContactFiles = bindContactFiles;

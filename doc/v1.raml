@@ -168,32 +168,253 @@ traits:
                 }
   
 /loan:
-  /all/{pn}:
+  /{id}:
     get:
       description: |
-        分页获取该用户所有项目
+        获取一个项目详情
       responses:
         200:
           body:
             application/json:
               schema: |
                 {
-                    "data": {
-                        "totalPageNum": 1,
-                        "totalNum": 1,
-                        "values": [
-                            {
-                                "id": "552bd8b7e4b0da2c5e1b8e3b",
-                                "amount": 111111,
-                                "createdAt": "2015-04-13 22:54:47",
-                                "loaner": {
-                                    "objectId": "552bd88ee4b0b40da37be1e0"
-                                },
-                                "payWay": "xxhb"
-                            }
-                        ]
+                  "data": {
+                    "id": "553151b8e4b052897f2b198c",
+                    "amount": 111111,
+                    "createdAt": "2015-04-18 02:32:24",
+                    "loaner": {
+                      "name": "test12",
+                      "email": "yilaing@foxmail.com"
                     },
+                    "assurer": {
+                      "name": "test12",
+                      "email": "yilaing@foxmail.com"
+                    },
+                    "payWay": {
+                      "value": "debx",
+                      "text": "等额本息"
+                    },
+                    "status": {
+                      "value": 0,
+                      "text": "未完成创建"
+                    },
+                    "spanMonth": 10,
+                    "startDate": null,
+                    "endDate": null,
+                    "payCircle": 3,
+                    "payTotalCircle": 3,
+                    "interests": 0.02,
+                    "assureCost": 1000,
+                    "serviceCost": 1000,
+                    "overdueCostPercent": 0.003,
+                    "otherCost": 1000,
+                    "keepCost": 1000,
+                    "otherCostDesc": "test",
+                    "keepCostDesc": "test",
+                    "firstPayDate": null
+                  },
+                  "code": 200
+                }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 404,
+                  "message": "找不到对象!"
+                }
+    put:
+      description: |
+        更新一个一个项目详情
+      queryParameters:
+        data:
+          description: |
+            与创建项目 create_loan 相同
+          example: |
+            {
+              "amount" :111111,
+              "spanMonth":10,
+              "startDate":"2015-1-10",
+              "endDate":"2015-10-10",
+              "payCircle" : 3,
+              "payTotalCircle" : 3,
+              "interests" : 0.02,
+              "assureCost" : 1000.0,
+              "serviceCost" : 1000.0,
+              "overdueCostPercent" : 0.003,
+              "otherCost" : 1000.0,
+              "keepCost" : 1000.0,
+              "otherCostDesc" : "test",
+              "keepCostDesc" : "test",
+              "payWay" : "debx",
+              "loanType":"qcdy",
+              "firstPayDate" : "2015-4-10"   
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data": {
+                    "id": "553151b8e4b052897f2b198c",
+                    "amount": 111111,
+                    "createdAt": "2015-04-18 02:32:24",
+                    "loaner": {
+                      "name": "test12",
+                      "email": "yilaing@foxmail.com"
+                    },
+                    "assurer": {
+                      "name": "test12",
+                      "email": "yilaing@foxmail.com"
+                    },
+                    "payWay": {
+                      "value": "debx",
+                      "text": "等额本息"
+                    },
+                    "status": {
+                      "value": 0,
+                      "text": "未完成创建"
+                    },
+                    "spanMonth": 10,
+                    "startDate": null,
+                    "endDate": null,
+                    "payCircle": 3,
+                    "payTotalCircle": 3,
+                    "interests": 0.02,
+                    "assureCost": 1000,
+                    "serviceCost": 1000,
+                    "overdueCostPercent": 0.003,
+                    "otherCost": 1000,
+                    "keepCost": 1000,
+                    "otherCostDesc": "test",
+                    "keepCostDesc": "test",
+                    "firstPayDate": null
+                  },
+                  "code": 200
+                }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 404,
+                  "message": "找不到对象!"
+                }
+    /payments:
+      description: |
+        获取一个项目的所有放款记录
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data": [
+                      {
+                        "assureCost": -1000,
+                        "serviceCost": -1000,
+                        "outMoney": 107111,
+                        "keepCost": -1000,
+                        "order": 0,
+                        "interestsMoney": 0,
+                        "otherCost": -1000,
+                        "objectId": "553151d4e4b052897f2b19e8",
+                        "createdAt": "2015-04-17T18:32:52.490Z",
+                        "updatedAt": "2015-04-17T18:32:52.490Z"
+                      }
+                    ],
                     "code": 200
+                  }
+          404:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "code": 404,
+                    "message": "找不到对象!"
+                  }
+    /paybacks:
+      description: |
+        获取一个项目的所有还款记录
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data": [
+                      {
+                        "order": 1,
+                        "status": 1,
+                        "payMoney": 43703.66,
+                        "payDate": "2015-04-10T00:00:00+08:00",
+                        "objectId": "553151f6e4b052897f2b1a33",
+                        "createdAt": "2015-04-17T18:33:26.658Z",
+                        "updatedAt": "2015-04-17T18:33:26.658Z"
+                      },
+                      {
+                        "order": 2,
+                        "status": 2,
+                        "payMoney": 43703.66,
+                        "payDate": "2015-07-10T00:00:00+08:00",
+                        "objectId": "553151f6e4b052897f2b1a34",
+                        "createdAt": "2015-04-17T18:33:26.670Z",
+                        "updatedAt": "2015-04-17T18:33:26.670Z"
+                      }
+                    ],
+                    "code": 200
+                  }
+          404:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "code": 404,
+                    "message": "找不到对象!"
+                  }
+  /{filter}/{pn}:
+    get:
+      description: |
+        分页获取该用户所有项目
+        filter: draft:draft项目 | all:非draft项目
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data": {
+                    "totalPageNum": 1,
+                    "totalNum": 2,
+                    "pageSize": 10,
+                    "values": [
+                      {
+                        "id": "553151b8e4b052897f2b198c",
+                        "amount": 111111,
+                        "createdAt": "2015-04-18 02:32:24",
+                        "loaner": {
+                          "name": "test12",
+                          "email": "yilaing@foxmail.com"
+                        },
+                        "assurer": {
+                          "name": "test12",
+                          "email": "yilaing@foxmail.com"
+                        },
+                        "payWay": {
+                          "value": "debx",
+                          "text": "等额本息"
+                        },
+                        "status": {
+                          "value": 0,
+                          "text": "未完成创建"
+                        }
+                      }
+                    ]
+                  },
+                  "code": 200
                 }
   /create_loan:
     post:
@@ -310,55 +531,62 @@ traits:
           body:
             application/json:
               schema: |
-               {
-                   "data": {
-                       "loan": {
-                           "objectId": "552acd98e4b0b40da3725bd4",
-                           "amount": 111111,
-                           "payWay": "xxhb",
-                           "payCircle": 3,
-                           "spanMonth": 10,
-                           "payTotalCircle": 10,
-                           "assureCost": 1000,
-                           "overdueCostPercent": 0.003,
-                           "startDate": "2015-01-09T16:00:00.000Z",
-                           "loanRecords": {
-                               "__type": "Relation",
-                               "className": "LoanRecord"
-                           },
-                           "loanPayBacks": {
-                               "__type": "Relation",
-                               "className": "LoanPayBack"
-                           },
-                           "serviceCost": 1000,
-                           "keepCost": 1000,
-                           "endDate": "2015-10-10T00:00:00.000Z",
-                           "status": 0,
-                           "interests": 0.02,
-                           "firstPayDate": "2015-04-09T16:00:00.000Z",
-                           "otherCost": 1000,
-                           "assurer": {
-                               "objectId": "552acfe3e4b0b40da3725eed"
-                           },
-                           "loaner": {
-                               "objectId": "552acfe3e4b0b40da3725eed"
-                           }
-                       },
-                       "loanRecord": {
-                           "interestsMoney": -22222.2,
-                           "keepCost": -1000,
-                           "assureCost": -1000,
-                           "serviceCost": -1000,
-                           "otherCost": -1000,
-                           "outMoney": 84888.8,
-                           "order": 0,
-                           "objectId": "552ad190e4b0da2c5e125a8a",
-                           "createdAt": "2015-04-12T20:12:00.575Z",
-                           "updatedAt": "2015-04-12T20:12:00.575Z"
-                       }
-                   },
-                   "code": 200
-               }
+                {
+                  "data": {
+                    "loanId": {
+                      "id": "55316dd5e4b052897f2b54c3",
+                      "amount": 111111,
+                      "createdAt": "2015-04-18 04:32:21",
+                      "loaner": {
+                        "id": "55314bcee4b052897f2b0a8b"
+                      },
+                      "assurer": {
+                        "id": "55314bcee4b052897f2b0a8b"
+                      },
+                      "loanType": {
+                        "value": "qcdy",
+                        "text": "汽车抵押"
+                      },
+                      "payWay": {
+                        "value": "debx",
+                        "text": "等额本息"
+                      },
+                      "status": {
+                        "value": 0,
+                        "text": "未完成创建"
+                      }
+                    },
+                    "loanRecord": {
+                      "interestsMoney": 0,
+                      "keepCost": -1000,
+                      "assureCost": -1000,
+                      "serviceCost": -1000,
+                      "otherCost": -1000,
+                      "outMoney": 107111,
+                      "order": 1,
+                      "objectId": "553171a2e4b052897f2b5b52",
+                      "createdAt": "2015-04-17T20:48:34.913Z",
+                      "updatedAt": "2015-04-17T20:48:34.913Z"
+                    }
+                  },
+                  "code": 200
+                }
+        400:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 400,
+                  "message": "项目已经处于还款状态!"
+                }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 404,
+                  "message": "找不到对象!"
+                }  
   /assure_bill:
     description: |
       完成项目创建，如果不执行这一步取消了，这个项目就是草稿项目，放入草稿箱（新建贷款第三步，完成）
@@ -372,55 +600,57 @@ traits:
             application/json:
               schema: |
                 {
-                    "data": {
-                        "amount": 111111,
-                        "payWay": "xxhb",
-                        "payCircle": 3,
-                        "spanMonth": 10,
-                        "payTotalCircle": 10,
-                        "assurer": {
-                            "__type": "Pointer",
-                            "className": "Contract",
-                            "objectId": "552acfe3e4b0b40da3725eed"
-                        },
-                        "assureCost": 1000,
-                        "overdueCostPercent": 0.003,
-                        "startDate": {
-                            "__type": "Date",
-                            "iso": "2015-01-09T16:00:00.000Z"
-                        },
-                        "loanRecords": {
-                            "__type": "Relation",
-                            "className": "LoanRecord"
-                        },
-                        "loaner": {
-                            "__type": "Pointer",
-                            "className": "Contract",
-                            "objectId": "552acfe3e4b0b40da3725eed"
-                        },
-                        "loanPayBacks": {
-                            "__type": "Relation",
-                            "className": "LoanPayBack"
-                        },
-                        "serviceCost": 1000,
-                        "keepCost": 1000,
-                        "endDate": {
-                            "__type": "Date",
-                            "iso": "2015-10-10T00:00:00.000Z"
-                        },
-                        "status": 1,
-                        "interests": 0.02,
-                        "firstPayDate": {
-                            "__type": "Date",
-                            "iso": "2015-04-09T16:00:00.000Z"
-                        },
-                        "otherCost": 1000,
-                        "objectId": "552acd98e4b0b40da3725bd4",
-                        "createdAt": "2015-04-12T19:55:04.068Z",
-                        "updatedAt": "2015-04-12T20:19:28.826Z"
+                  "data": {
+                    "id": "55316d88e4b052897f2b533e",
+                    "amount": 111111,
+                    "createdAt": "2015-04-18 04:31:04",
+                    "loaner": null,
+                    "assurer": null,
+                    "loanType": {
+                      "value": "qcdy",
+                      "text": "汽车抵押"
                     },
-                    "code": 200
+                    "payWay": {
+                      "value": "debx",
+                      "text": "等额本息"
+                    },
+                    "status": {
+                      "value": 1,
+                      "text": "进行中"
+                    },
+                    "spanMonth": 10,
+                    "startDate": "2015-01-10 00:00:00",
+                    "endDate": "2015-10-10 08:00:00",
+                    "payCircle": 3,
+                    "payTotalCircle": 3,
+                    "interests": 0.02,
+                    "assureCost": 1000,
+                    "serviceCost": 1000,
+                    "overdueCostPercent": 0.003,
+                    "otherCost": 1000,
+                    "keepCost": 1000,
+                    "otherCostDesc": "test",
+                    "keepCostDesc": "test",
+                    "firstPayDate": "2015-04-10 00:00:00"
+                  },
+                  "code": 200
                 }
+        400:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 400,
+                  "message": "项目已经处于还款状态!"
+                }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 404,
+                  "message": "找不到对象!"
+                }  
 
 /contact:
   post:
@@ -531,6 +761,55 @@ traits:
                   "message": "contact not found"
                 }
 
+    put:
+      description: |
+        用户更新一个联系人
+      queryParameters:
+        data:
+          description: |
+            以json形式传输联系人信息创建联系人,直接发送下面的json，不用加data
+          type: string
+          example: |
+             {
+               "name":"test",
+               "mobilePhoneNumber":"18516171260",
+               "certificateType":"shenfenzheng",
+               "certificateNum":"542421421421321312312",
+               "email":"yilaing@foxmail.com",
+               "qq":"32727272992",
+               "address":"fdsafasf",
+               "wechat":"fasdfa",
+               "attachments": ["552a0e61e4b0b40da36acc5b"] //可以多个
+             }
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+               {
+                   "data": {
+                       "name": "test23",
+                       "certificateType": "shenfenzheng",
+                       "certificateNum": "542421421421321312312",
+                       "email": "yilaing@foxmail.com",
+                       "qq": "32727272992",
+                       "address": "fdsafasf",
+                       "wechat": "fasdfa",
+                       "mobilePhoneNumber": "13911111111",
+                       "objectId": "552ad42ee4b0da2c5e125ec1",
+                       "createdAt": "2015-04-12T20:23:10.255Z",
+                       "updatedAt": "2015-04-12T20:23:10.255Z"
+                   },
+                   "code": 200
+               }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 404,
+                  "message": "找不到对象!"
+                }
   /all:
     description: |
       获取一个用户所有联系人（未分页）

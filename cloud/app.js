@@ -173,7 +173,12 @@ app.get(config.baseUrl + '/loan/:id', function (req, res){
   query.include('loaner');
   query.include('assurer');
   query.find().then(function(data){
+    if(data.length !=1){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
+    }
     mutil.renderData(res,transformLoanDetails(data[0]));
+  },function(error){
+    mutil.renderError(res, error);
   });
 });
 
@@ -181,15 +186,19 @@ app.put(config.baseUrl + '/loan/:id', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
   loan.fetch().then(function(l){
-    if(l.get('status') != mconfig.loanStatus.draft.value){
-      mutil.renderError(res,{code:400, message:'项目已进入还款阶段，不可更新！'});
+    if(!l || l.get('status')==undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
     }else{
-      n_loan = mloan.updateLoan(l, req.body);
-      n_loan.save().then(function(nloan){
-        mutil.renderData(res, transformLoanDetails(nloan));
-      },function(error){
-        mutil.renderError(res, error);
-      })
+      if(l.get('status') != mconfig.loanStatus.draft.value){
+        mutil.renderError(res,{code:400, message:'项目已进入还款阶段，不可更新！'});
+      }else{
+        n_loan = mloan.updateLoan(l, req.body);
+        n_loan.save().then(function(nloan){
+          mutil.renderData(res, transformLoanDetails(nloan));
+        },function(error){
+          mutil.renderError(res, error);
+        });
+      }
     }
   }, function(error){
     mutil.renderError(res, error);
@@ -200,15 +209,19 @@ app.get(config.baseUrl + '/loan/:id/payments', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
   loan.fetch().then(function(l){
-    var query = l.relation("loanRecords").query();
-    query.find({
-      success: function(list){
-        mutil.renderData(res,list);
-      },
-      error: function(error){
-        mutil.renderError(res, error);    
-      }
-    });
+    if(!l || l.get('status')==undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
+    }else{
+     var query = l.relation("loanRecords").query();
+     query.find({
+       success: function(list){
+         mutil.renderData(res,list);
+       },
+       error: function(error){
+         mutil.renderError(res, error);    
+       }
+     });
+    }
   },function(error){
     mutil.renderError(res, error);
   });
@@ -218,15 +231,19 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
   loan.fetch().then(function(l){
-    var query = l.relation("loanPayBacks").query();
-    query.find({
-      success: function(list){
-        mutil.renderData(res,list);
-      },
-      error: function(error){
-        mutil.renderError(res, error);    
-      }
-    });
+    if(!l || l.get('status')==undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
+    }else{
+      var query = l.relation("loanPayBacks").query();
+      query.find({
+        success: function(list){
+          mutil.renderData(res,list);
+        },
+        error: function(error){
+          mutil.renderError(res, error);    
+        }
+      });
+    }
   },function(error){
     mutil.renderError(res, error);
   });
@@ -237,7 +254,7 @@ app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
   loan.save().then(function(r_loan){
-    mutil.renderData(res, r_loan);
+    mutil.renderData(res, transformLoanDetails(r_loan));
   }, function(error){
     mutil.renderError(res, error);
   });
@@ -253,24 +270,26 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
   var loaner = AV.Object.createWithoutData('Contact',loanerId);
   var assurer = AV.Object.createWithoutData('Contact',assurerId);
   loan.fetch().then(function(floan){
-    //判断是否已经有放款记录,如果有删除掉
-    if(assurer){
-      floan.set('assurer',assurer);
-      floan.set('assurerName', assurer.get('name'));
-    }
-    if(loaner){
-      if(floan.attributes.status != mconfig.loanStatus.draft.value){
-        mutil.renderError(res,{code:400, message:"错误的项目状态!"});
-      }else{
-        floan.set('loaner',assurer);
-        floan.set('loanerName', assurer.get('name'));
-        var query = floan.relation("loanRecords").query();
-        query.destroyAll().then(function(){
-          generateLoanRecord(floan,res);
-        });
-      }
+    if(floan.get('status') == undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
     }else{
-      mutil.renderError(res,{code:400, message:"贷款人缺失！"});
+      //判断是否已经有放款记录,如果有删除掉
+      if(assurer){
+        floan.set('assurer',assurer);
+      }
+      if(loaner){
+        if(floan.attributes.status != mconfig.loanStatus.draft.value){
+          mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
+        }else{
+          floan.set('loaner',assurer);
+          var query = floan.relation("loanRecords").query();
+          query.destroyAll().then(function(){
+            generateLoanRecord(floan,res);
+          });
+        }
+      }else{
+        mutil.renderError(res,{code:400, message:"贷款人缺失！"});
+      }
     }
   });
 });
@@ -281,9 +300,10 @@ function generateLoanRecord(floan, res){
     var lrRelation = floan.relation('loanRecords');
     lrRelation.add(rlr);
     floan.save().then(function(data){
-      var attributes = floan.attributes;
-      attributes['objectId'] = floan.id;
-      mutil.renderData(res,{loan:attributes,loanRecord:rlr});
+      mutil.renderData(res,{
+        loanId: transformLoan(floan),
+        loanRecord: rlr
+      });
     },function(error){
       mutil.renderError(res, error);
     });
@@ -300,21 +320,22 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   //生成放款记录
   var loan = AV.Object.createWithoutData('Loan', loanId);
   loan.fetch().then(function(floan){
-    if(floan.attributes.status != mconfig.loanStatus.draft.value){
-        mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
+    if(floan.get('status') == undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
     }else{
+      if(floan.attributes.status != mconfig.loanStatus.draft.value){
+          mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
+      }else{
       mlog.log('正在生成还款任务');
       var loanPayBacks = mloan.calculatePayBackMoney(floan);
-      //console.log(loanPayBacks);
       mlog.log('开始存储还款任务');
       LoanPayBack.saveAll(loanPayBacks,{
         success: function(lpbs){
-          //console.log(lpbs);
           var lpbRelation = floan.relation('loanPayBacks');
           lpbRelation.add(loanPayBacks);
           floan.set('status',mconfig.loanStatus.paying.value);
           floan.save().then(function(data){
-              mutil.renderData(res,data);
+              res.redirect(config.baseUrl + '/loan/' + data.id);
             },function(error){
             mutil.renderError(res,error);
           });  
@@ -323,6 +344,7 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
           mutil.renderError(res,error);
         }
       });
+      }
     }
   });
 });
@@ -384,6 +406,7 @@ function listLoan(res, query, pageNumber){
     totalPageNum = parseInt(count / mconfig.pageSize) + 1;
     resultsMap['totalPageNum'] = totalPageNum;
     resultsMap['totalNum'] = count;
+    resultsMap['pageSize'] = mconfig.pageSize;
   }).then(function(){
       if(pageNumber > resultsMap.totalPageNum){
         resultsMap['values'] = [];
@@ -431,17 +454,20 @@ app.put(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var contact = AV.Object.createWithoutData('Contact',req.params.id);
   contact.fetch().then(function(rc){
-    n_contact = mcontact.updateContact(rc, req.body);
-    n_contact.save().then(function(rnc){
-      mutil.renderData(res, rnc);
-    }, function(error){
-    mutil.renderError(res,error);
-    });
+    if(rc.get('certificateNum') == undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
+    }else{
+      n_contact = mcontact.updateContact(rc, req.body);
+      n_contact.save().then(function(rnc){
+        mutil.renderData(res, rnc);
+      }, function(error){
+      mutil.renderError(res,error);
+      });
+    };
   },function(error){
     mutil.renderError(res,error);
   });
 });
-
 app.get(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
@@ -460,7 +486,6 @@ app.get(config.baseUrl + '/contact/:id', function (req, res){
     }
   });
 });
-
 //如果身份证或者驾驶证存在，就返回该用户的联系人
 app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, res){
   var u = check_login(res);
@@ -495,9 +520,7 @@ app.get(config.baseUrl + '/contact/all', function (req, res){
     }
   });
 });
-
 //删除一个联系人
-////todo: 目前不可以随意删除
 app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
@@ -546,6 +569,7 @@ function transformLoan(l){
       createdAt: formatTime(l.createdAt),
       loaner: transformContact(loaner),
       assurer: transformContact(assurer),
+      loanType: mconfig.getConfigMapByValue('loanTypes', l.get('loanType')),
       payWay: mconfig.getConfigMapByValue('payBackWays', l.get('payWay')),
       status: mconfig.getConfigMapByValue('loanStatus', l.get('status'))
   };
@@ -553,8 +577,8 @@ function transformLoan(l){
 function transformLoanDetails(l){
   var m = transformLoan(l);
   m['spanMonth'] = l.get('spanMonth');
-  m['startDate'] = l.get('startDate');
-  m['endDate'] = l.get('endDate');
+  m['startDate'] = formatTime(l.get('startDate'));
+  m['endDate'] = formatTime(l.get('endDate'));
   m['payCircle'] = l.get('payCircle');
   m['payTotalCircle'] = l.get('payTotalCircle');
   m['interests'] = l.get('interests');
@@ -565,7 +589,7 @@ function transformLoanDetails(l){
   m['keepCost'] = l.get('keepCost');
   m['otherCostDesc'] = l.get('otherCostDesc');
   m['keepCostDesc'] = l.get('keepCostDesc');
-  m['firstPayDate'] = l.get('firstPayDate');
+  m['firstPayDate'] = formatTime(l.get('firstPayDate'));
   return m;
 }
 
@@ -574,7 +598,7 @@ function transformContact(c){
     return null;
   }
   return {
-    id: c.get('objectId'),
+    id: c.id,
     name: c.get('name'),
     email: c.get('email')
   };

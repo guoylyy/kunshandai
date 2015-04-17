@@ -10,8 +10,8 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-4">
-							<div class="form-group has-warning">
-								<label class="control-label">姓名</label>
+							<div class="form-group">
+								<label class="control-label">*姓名</label>
 								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" required>
 								<div ng-show="contactsForm.$submitted || contactsForm.bname.$touched">
 									<div class="text-danger" ng-show="contactsForm.bname.$error.required">请填借款人姓名</div>
@@ -19,8 +19,8 @@
 							</div>
 						</div>
 						<div class="col-md-8">
-							<div class="form-group has-warning">
-								<label class="control-label">身份证</label>
+							<div class="form-group">
+								<label class="control-label">*身份证</label>
 								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" required>
 								<div ng-show="contactsForm.$submitted || contactsForm.bid.$touched">
 									<div class="text-danger" ng-show="contactsForm.bid.$error.required">请填借款人身份证</div>
@@ -28,7 +28,12 @@
 							</div>
 						</div>
 					</div>
+					<div style="text-align:right">
+					<a ng-init="brMore=false" ng-click="brMore=!brMore" class=" text-info">{{brMore?'收起更多信息':'填写更多信息'}}</a>
+					</div>
+					<div ui-toggle="brMore">
 					<div class="ks-divider"></div>
+
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
@@ -66,13 +71,13 @@
 							</div>
 						</div>
 					</div>
-
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">贷款信息</div>
+				<div class="panel-heading">借款人附件</div>
 				<div class="panel-body">
 					<ul class="list-group">
 						<a class="list-group-item">
@@ -96,8 +101,8 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-4">
-							<div class="form-group has-warning">
-								<label class="control-label">姓名</label>
+							<div class="form-group">
+								<label class="control-label">*姓名</label>
 								<input type="text" class="form-control" placeholder="姓名" name="gname" ng-model="gr.name" required>
 								<div ng-show="contactsForm.$submitted || contactsForm.gname.$touched">
 									<div class="text-danger" ng-show="contactsForm.gname.$error.required">请填担保人姓名</div>
@@ -105,8 +110,8 @@
 							</div>
 						</div>
 						<div class="col-md-8">
-							<div class="form-group has-warning">
-								<label class="control-label">身份证</label>
+							<div class="form-group">
+								<label class="control-label">*身份证</label>
 								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum" required>
 								<div ng-show="contactsForm.$submitted || contactsForm.gid.$touched">
 									<div class="text-danger" ng-show="contactsForm.gid.$error.required">请填担保人姓名</div>
@@ -114,6 +119,11 @@
 							</div>
 						</div>
 					</div>
+					</div>
+					<div style="text-align:right">
+					<a ng-init="grMore=false" ng-click="grMore=!grMore" class=" text-info">{{grMore?'收起更多信息':'填写更多信息'}}</a>
+					</div>
+					<div ui-toggle="grMore">
 					<div class="ks-divider"></div>
 					<div class="row">
 						<div class="col-md-6">
@@ -152,13 +162,12 @@
 							</div>
 						</div>
 					</div>
-
+					</div>
 				</div>
 			</div>
-		</div>
 		<div class="col-md-4">
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">贷款信息</div>
+				<div class="panel-heading">担保人附件</div>
 				<div class="panel-body">
 					<ul class="list-group">
 						<a class="list-group-item">

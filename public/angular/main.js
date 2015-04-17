@@ -13,6 +13,7 @@ require.config({
 		angularAnimate:'../lib/angular-animate/angular-animate',
 		uiBootstrap:'../lib/angular-bootstrap/ui-bootstrap-tpls',
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
+		uiUtils:'../lib/angular-ui-utils/ui-utils',
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
 		angularWizard:'../lib/angular-wizard/dist/angular-wizard',
@@ -27,6 +28,9 @@ require.config({
 
 		},
 		'uiBootstrap':{
+			deps:['angular']
+		},
+		'uiUtils':{
 			deps:['angular']
 		},
 		'underscore':{

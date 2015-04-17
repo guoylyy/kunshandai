@@ -35,9 +35,27 @@ define(['../../app','underscore'],function(app,_){
 				return localLoan;
 			},
 			create : function(loan){
+				//format string to float
+				loan.amount = Number.parseFloat(loan.amount);
+				loan.interests = Number.parseFloat(loan.interests);
+				loan.assureCost = Number.parseFloat(loan.assureCost);
+				loan.serviceCost = Number.parseFloat(loan.serviceCost);
+				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent);
+				loan.otherCost = Number.parseFloat(loan.otherCost);
+				loan.keepCost = Number.parseFloat(loan.keepCost);
 				
+				//format string to number
+				loan.spanMonth = Number.parseInt(loan.spanMonth);
+				loan.payCircle = Number.parseInt(loan.payCircle);
+				loan.payTotalCircle = Number.parseInt(loan.payTotalCircle);
+				
+				//format string to date
+				loan.startDate = new Date(loan.startDate);
+				loan.endDate = new Date(loan.endDate);
+				loan.firstPayDate = new Date(loan.firstPayDate);
+
 				var deferred = $q.defer();
-				
+
 				$http.post(ApiURL+loanUrl+"/create_loan",JSON.stringify(loan))
 				.then(function(res){
 					// _.extend(localLoan,res.data.data);

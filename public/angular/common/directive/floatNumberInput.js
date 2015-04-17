@@ -20,12 +20,7 @@ define(['app'],function(app){
 							ngModelCtrl.$render();
 						
 					}else{
-						// var floatvar = parseFloat(clean);
-						// if (!isNaN(floatvar)) {
-						// 	floatvar = floatvar.toFixed(2);
-						// 	ngModelCtrl.$setViewValue(floatvar.toString());
-						// 	ngModelCtrl.$render();
-						// }
+
 					}
 					return clean;
 				});

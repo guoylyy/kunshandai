@@ -4,6 +4,12 @@ html{
 input{
 	font-size: 14px !important;
 }
+.ks-second-color{
+	color: #008cba;
+}
+.ks-clear{
+	clear: both;
+}
 a,a:hover{
 	text-decoration: none;
 }
@@ -222,4 +228,10 @@ table td,table th{
 	border-left: 2px solid #6b2347;
 	background: #fafafa;
 	color: #f5a022;
+}
+.ui-show{
+	display: block;
+}
+.ui-hide{
+	display: none;
 }

@@ -16,6 +16,7 @@ require.config({
 		uiUtils:'../lib/angular-ui-utils/ui-utils',
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
+		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',
 		angularWizard:'../lib/angular-wizard/dist/angular-wizard',
 		text:'../lib/requirejs-text/text'
 	},
@@ -42,6 +43,9 @@ require.config({
 		'angularLoadingBar':{
 			deps:['angular']
 		},
+		'angularFileUpload':{
+			deps:['angular']
+		},
 		'angularWizard':{
 			deps:['angular']
 		}
@@ -57,6 +61,8 @@ require([
 		 'account/AccountService',
 		 'manage/loan/LoanService',
 		 'manage/contact/ContactService',
+		 'manage/common/upload/UploadController',
+		 'manage/common/upload/UploadService',
 		 'account/AccountController',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',

@@ -27,14 +27,10 @@ define(['../../app','underscore'],function(app,_){
 			},
 			
 
-			localLoan = _.extend({},model);
+			localLoan = _.extend({},model),
 
-		var LoanService = {
+			typeTransform = function(loan){
 
-			getLocal:function(){
-				return localLoan;
-			},
-			create : function(loan){
 				//format string to float
 				loan.amount = Number.parseFloat(loan.amount);
 				loan.interests = Number.parseFloat(loan.interests);
@@ -54,9 +50,19 @@ define(['../../app','underscore'],function(app,_){
 				loan.endDate = new Date(loan.endDate);
 				loan.firstPayDate = new Date(loan.firstPayDate);
 
+				return loan;
+			};
+
+		var LoanService = {
+
+			getLocal:function(){
+				return localLoan;
+			},
+			create : function(loan){
+				
 				var deferred = $q.defer();
 
-				$http.post(ApiURL+loanUrl+"/create_loan",JSON.stringify(loan))
+				$http.post(ApiURL+loanUrl+"/create_loan",JSON.stringify(typeTransform(loan)))
 				.then(function(res){
 					// _.extend(localLoan,res.data.data);
 					deferred.resolve(res.data.data);

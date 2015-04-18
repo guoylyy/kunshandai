@@ -14,7 +14,8 @@ define(['../../app'],function(app){
 			email:'',
 			qq:'',
 			wechat:'',
-			address:''
+			address:'',
+			attachments:[]
 		}, 
 
 			loaner = _.extend({},model),

@@ -2,9 +2,10 @@
 
 define(['app',"underscore"],function(app,_) {
 
-	return app.controller('CreateLoanCtrl', ["$scope","$rootScope","$location","$q","LoanService","ContactService",'DictService','$state',
-		'loanTypes','repayTypes','steps',
-		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes,steps){
+	return app.controller('CreateLoanCtrl', 
+		["$scope","$rootScope","$location","$q","LoanService","ContactService",'DictService','$state',
+		'loanTypes','repayTypes','steps','$modal',
+		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes,steps,$modal){
 		
 
 		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes.data : {};
@@ -59,6 +60,25 @@ define(['app',"underscore"],function(app,_) {
 		    $scope.calendar[opened] = true;
 		};
 
+		var uploadFile = function(contact){
+			var modalInstance = $modal.open({
+				templateUrl: '/angular/manage/common/upload/uploadModal.html',
+				controller:'UploadController',
+				size:'lg',
+				resolve:{
+					contact:function(){
+						return contact;
+					}
+				}
+			});
+		}
+
+		
+		$scope.uploadBrAttachment = function(){
+			uploadFile("借款人");
+		}
+
+
 		$scope.calendar={};
 		
 		$scope.format = 'yyyy-MM-dd';
@@ -68,6 +88,7 @@ define(['app',"underscore"],function(app,_) {
 		$scope.gr = ContactService.getAssurer();
 		
 		$scope.loanInfo = LoanService.getLocal();
+
 		
 	}]);
 });

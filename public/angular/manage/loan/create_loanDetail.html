@@ -48,7 +48,7 @@
 			        		<div class="form-group">
 			        			<label>*开始日期</label>
 			        			<div class="input-group">
-					             <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.startDate" is-open="calendar.openedstart"  datepicker-options="dateOptions"ng-required="true" close-text="Close" name="startDate" />
+					             <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.startDate" is-open="calendar.openedstart"  datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="startDate"/>
 					              <span class="input-group-btn">
 					                <button type="button" class="btn btn-default" ng-click="open($event,'openedstart')"><i class="glyphicon glyphicon-calendar"></i></button>
 					              </span>
@@ -63,9 +63,9 @@
 			        		<div class="form-group">
 			        			<label>*截止日期</label>
 			        			<div class="input-group">
-					             <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions"ng-required="true" close-text="Close" name="endDate"/>
+					             <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions"ng-required="true"  close-text="关闭" name="endDate" show-weeks="false" />
 					              <span class="input-group-btn">
-					                <button type="button" class="btn btn-default" ng-click="open($event,'openedend')"><i class="glyphicon glyphicon-calendar"></i></button>
+					                <button type="button" class="btn btn-default" ng-click="open($event,'openedend')" ><i class="glyphicon glyphicon-calendar"></i></button>
 					              </span>
 					            </div>
 					            <div ng-show="loanForm.$submitted || loanForm.endDate.$touched">
@@ -77,27 +77,16 @@
 		        	</div>
 
 		        	<div class="row">
-		        		<div class="col-md-4">
-			        		<div class="form-group">
-			        			<label>*还款周期</label>
-			        			<div class="input-group">
-							  		<input type="text" class="form-control" placeholder="还款周期" number-input name="payCircle" ng-model="loanInfo.payCircle" required>
-							  		<span class="input-group-addon">月</span>
-							  	</div>
-							  	<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">
-									<div class="text-danger" ng-show="loanForm.payCircle.$error.required">请填写还款周期</div>
-								</div>
-							</div>
-						</div>
+		        		
 						<div class="col-md-4">
 			        		<div class="form-group">
-			        			<label>*还款总期数</label>
+			        			<label>*逾期违约金</label>
 			        			<div class="input-group">
-							  		<input type="text" class="form-control" placeholder="还款总期数" number-input name="payTotalCircle" ng-model="loanInfo.payTotalCircle" required>
-							  		<span class="input-group-addon">期</span>
+							  		<input type="text" class="form-control" placeholder="逾期违约金" float-number-input name="overdueCostPercent" ng-model="loanInfo.overdueCostPercent" required>
+							  		<span class="input-group-addon">‰ /天</span>
 							  	</div>
-							  	<div ng-show="loanForm.$submitted || loanForm.payTotalCircle.$touched">
-									<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.required">请填写还款总期数</div>
+							  	<div ng-show="loanForm.$submitted || loanForm.overdueCostPercent.$touched">
+									<div class="text-danger" ng-show="loanForm.overdueCostPercent.$error.required">请填写逾期违约金</div>
 								</div>
 							</div>
 						</div>
@@ -140,18 +129,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-			        		<div class="form-group">
-			        			<label>*逾期违约金</label>
-			        			<div class="input-group">
-							  		<input type="text" class="form-control" placeholder="逾期违约金" float-number-input name="overdueCostPercent" ng-model="loanInfo.overdueCostPercent" required>
-							  		<span class="input-group-addon">‰ /天</span>
-							  	</div>
-							  	<div ng-show="loanForm.$submitted || loanForm.overdueCostPercent.$touched">
-									<div class="text-danger" ng-show="loanForm.overdueCostPercent.$error.required">请填写逾期违约金</div>
-								</div>
-							</div>
-						</div>
+						
 						</div>
 						<div class="row">
 						
@@ -208,12 +186,36 @@
 								</div>
 							</div>
 						</div>
-			        	<div class="row">
-			        		<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-3">
+			        		<div class="form-group">
+			        			<label>*还款周期</label>
+			        			<div class="input-group">
+							  		<input type="text" class="form-control" placeholder="还款周期" number-input name="payCircle" ng-model="loanInfo.payCircle" required>
+							  		<span class="input-group-addon">月</span>
+							  	</div>
+							  	<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">
+									<div class="text-danger" ng-show="loanForm.payCircle.$error.required">请填写还款周期</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3">
+			        		<div class="form-group">
+			        			<label>*还款总期数</label>
+			        			<div class="input-group">
+							  		<input type="text" class="form-control" placeholder="还款总期数" number-input name="payTotalCircle" ng-model="loanInfo.payTotalCircle" required>
+							  		<span class="input-group-addon">期</span>
+							  	</div>
+							  	<div ng-show="loanForm.$submitted || loanForm.payTotalCircle.$touched">
+									<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.required">请填写还款总期数</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
 				        		<div class="form-group">
 				        			<label>*首次还款日期</label>
 				        			<div class="input-group">
-						             <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.firstPayDate" is-open="calendar.openedPay"  datepicker-options="dateOptions" ng-required="true" close-text="Close" required name="firstPayDate"/>
+						             <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.firstPayDate" is-open="calendar.openedPay"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭"  required name="firstPayDate" show-weeks="false"/>
 						              <span class="input-group-btn">
 						                <button type="button" class="btn btn-default" ng-click="open($event,'openedPay')"><i class="glyphicon glyphicon-calendar"></i></button>
 						              </span>
@@ -223,6 +225,9 @@
 									</div>
 								</div>
 							</div>
+						</div>
+			        	<!-- <div class="row">
+			        		
 							<div class="col-md-6">
 				        		<div class="form-group">
 				        			<label>每期还款</label>
@@ -233,7 +238,7 @@
 								</div>
 							</div>
 						
-			        	</div>
+			        	</div> -->
 			        </div>
 				</div>
 				<div class="ks-panel panel panel-default">

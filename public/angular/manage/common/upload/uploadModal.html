@@ -20,8 +20,8 @@
               <td>{{file.name}}</td>
               <td>{{file.type}}</td>
               <td>{{file.size}}</td>
-              <td  class="text-info" ng-show="!fileStatus[file.$$hashKey].error">
-                {{fileStatus[file.$$hashKey].percent}}
+              <td  class="text-success" ng-show="!fileStatus[file.$$hashKey].error">
+                {{fileStatus[file.$$hashKey].percent}}%
               </td>
               <td class="text-danger" ng-show="fileStatus[file.$$hashKey].error">上传失败</td>
               <td></td>              
@@ -31,11 +31,11 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-3">
-             <select class="form-control" ng-model="fileType.selected" ng-options="fileType.value as fileType.text for fileType in fileTypes" required name="fileType"></select>
+             <select class="form-control" ng-model="attachmentType" ng-options="attachType.value as attachType.text for attachType in attchTypes" required name="fileType"></select>
             </div>
             <div class="col-md-9">
               <div ng-file-drop ng-file-select ng-model="files" ng-file-chang="fileDropped($files,$event)" ng-multiple="true" drop-available="dropSupported" class="ks-drop-box">
-                <div>将文件拖动到此上传</div>
+                <div>将文件拖动到此上传 或 点击此处选择文件</div>
                 </div>
             </div>
           </div>

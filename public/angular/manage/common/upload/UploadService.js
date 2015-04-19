@@ -4,7 +4,19 @@ define(['app'],function(app){
 		
 		var fileStatus = {};
 
+		var attachmentTypes = [
+			{value:'inspection',text:"现场考察"},
+			{value:'certification',text:"证件"},
+			{value:'credit',text:"信用"},
+			{value:'agreement',text:"协议"},
+			{value:'receipt',text:"协议"},
+			{value:'other',text:"其他"}
+		];
+
 		return {
+			getAttachmentTypes:function(){
+				return attachmentTypes;
+			},
 			getFileStatus:function(){
 				return fileStatus;
 			},
@@ -15,7 +27,8 @@ define(['app'],function(app){
 		                $upload.upload({
 		                    url: ApiURL+'/attachment',
 		                    // fields: {'username': $scope.username},
-		                    file: file
+		                    file: file,
+		                    fileFormDataName:'attachment',
 		                }).progress(function (evt) {
 		                    if(!fileStatus[evt.config.file.$$hashKey]){
 		                    	fileStatus[evt.config.file.$$hashKey] = {};

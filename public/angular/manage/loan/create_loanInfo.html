@@ -80,12 +80,12 @@
 				<div class="panel-heading">借款人附件</div>
 				<div class="panel-body">
 					<ul class="list-group">
-						<a class="list-group-item">
-							<span class="glyphicon glyphicon-remove text-danger ks-right"></span>
-							身份证
-						</a>
+						<li class="list-group-item" ng-repeat="a in br.attachments">
+							<a class="glyphicon glyphicon-remove text-danger ks-right" ng-click="removeAttach('br',a.$$hashKey)"></a>
+							{{a.name}} | {{a.attachmentType}}
+						</li>
 					</ul>
-					<button class="btn btn-default ks-right" ng-click="uploadBrAttachment()">上传新的资料</button>
+					<button type="button" class="btn btn-default ks-right" ng-click="uploadAttachment('借款人')">上传新的资料</button>
 				</div>
 			</div>
 		</div>
@@ -170,12 +170,12 @@
 				<div class="panel-heading">担保人附件</div>
 				<div class="panel-body">
 					<ul class="list-group">
-						<a class="list-group-item">
-							<span class="glyphicon glyphicon-remove text-danger ks-right"></span>
-							身份证
+						<a class="list-group-item" ng-repeat="a in gr.attachments">
+							<span class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('gr',a.$$hashKey)"></span>
+							{{a.name}} | {{a.attachmentType}}
 						</a>
 					</ul>
-					<button  class="btn btn-default ks-right">上传新的资料</button>
+					<button type="button" class="btn btn-default ks-right" uploadAttachment('担保人')>上传新的资料</button>
 				</div>
 			</div>
 		</div>

@@ -60,7 +60,7 @@ define(['app',"underscore"],function(app,_) {
 		    $scope.calendar[opened] = true;
 		};
 
-		var uploadFile = function(contact){
+		$scope.uploadAttachment = function(contact){
 			var modalInstance = $modal.open({
 				templateUrl: '/angular/manage/common/upload/uploadModal.html',
 				controller:'UploadController',
@@ -71,13 +71,32 @@ define(['app',"underscore"],function(app,_) {
 					}
 				}
 			});
-		}
+			modalInstance.result.then(function (fileList) {
+		      	if(contact === '借款人'){
+					$scope.br.attachments = _.union($scope.br.attachments,fileList);
+				}else if(contact == '担保人'){
+					$scope.gr.attachments = _.union($scope.gr.attachments,fileList);
+				}
 
-		
-		$scope.uploadBrAttachment = function(){
-			uploadFile("借款人");
-		}
+		    }, function () {
+		      
+		      $log.info('Modal dismissed at: ' + new Date());
+		    
+		    });
+		};
 
+		$scope.removeAttach = function(contact,hashKey){
+			if(contact === 'br'){
+				var index = _.findIndex($scope.br.attachments,hashKey);
+				delete($scope.br.attachments[index]);
+				$scope.br.attachments = _.compact($scope.br.attachments);
+			}else if(contact === 'gr'){
+				var index = _.findIndex($scope.gr.attachments,hashKey);
+				delete($scope.gr.attachments[index]);
+				$scope.br.attachments = _.compact($scope.gr.attachments);
+			}
+			
+		};
 
 		$scope.calendar={};
 		

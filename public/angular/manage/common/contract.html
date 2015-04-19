@@ -2,7 +2,7 @@
 		<div class="ks-dividing">
 			<h4>合同详情</h4>
 		</div>
-		<div class="row" style="margin-top:20px;">
+		<div class="row">
 			<div class="col-md-offset-10 col-md-2">
 			<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
 			<button class="btn btn-success " ng-click="activeLoan()" ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
@@ -42,10 +42,10 @@
 										<tr>
 											<td>{{loanInfo.loanType}}</td>
 											<td>{{loanInfo.amount}}</td>
-											<td>{{loanInfo.startDate}}</td>
-											<td>{{loanInfo.endDate}}</td>
+											<td>{{loanInfo.startDate | date:"yyyy-MM-dd"}}</td>
+											<td>{{loanInfo.endDate | date:"yyyy-MM-dd"}}</td>
 											<td>{{loanInfo.payWay}}</td>
-											<td>{{loanInfo.firstPayDate}}</td>
+											<td>{{loanInfo.firstPayDate | date:"yyyy-MM-dd"}}</td>
 											<td>{{loanInfo.payCircle}}</td>
 											<td>{{loanInfo.payTotalCircle}}</td>
 										</tr>

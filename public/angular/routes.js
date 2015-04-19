@@ -61,6 +61,12 @@ define(['app'],function(app){
 		    		"main":{templateUrl: "/angular/manage/project/project.html"}
 		    	}
 		    })
+		    .state('allProjects',{
+		    	url:"#projects/all",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    	}
+		    })
 		    .state('client',{
 		    	url:"#client",
 		    	views:{

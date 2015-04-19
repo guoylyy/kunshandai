@@ -1,1 +1,149 @@
-	<h3 class="ui dividing mcolor header">项目检视</h3>
+<div class="ks-dividing">
+	<h4>项目检视->所有项目</h4>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="btn-group btn-group-middle" >
+			<button type="button" class="btn btn-default">正常项目</button>
+			<button type="button" class="btn btn-default">逾期项目</button>
+			<button type="button" class="btn btn-default">坏账项目</button>
+			<button type="button" class="btn btn-default">结清项目</button>
+			<button type="button" class="btn btn-default" ui-sref="allProjects" ui-sref-active="active">所有项目</button>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="input-group">
+			<div class="input-group-btn">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">合同号 <span class="caret"></span></button>
+				<ul class="dropdown-menu dropdown-menu-right" role="menu">
+					<li><a href="#">合同号</a></li>
+					<li><a href="#">借款人</a></li>
+					<li><a href="#">担保人</a></li>
+				</ul>
+			</div>
+			<input type="text" class="form-control" aria-label="Text input with dropdown button">
+			<span class="input-group-btn">
+				<button class="btn btn-primary" type="button">搜索</button>
+			</span>
+		</div>
+	</div>
+</div>
+<div class="ks-panel">
+	<div class="panel panel-default">
+		<div class="panel-heading">筛选条件 - 待确定!</div>
+		<div class="panel-body">
+			<div class="ks-condition">
+				<ul class="ks-list-unstyled">
+					<li>收款时间:</li>
+					<li><a href="#">所有</a></li>
+					<li><a href="#">小于一个月</a></li>
+					<li><a href="#">1~3个月</a></li>
+					<li><a href="#">3~6个月</a></li>
+					<li><a href="#">6~9个月</a></li>
+					<li><a href="#">9~12个月</a></li>
+					<li><a href="#">大于12个月</a></li>
+				</ul>
+			</div>
+			<div class="ks-condition">
+				<ul class="ks-list-unstyled">
+					<li>抵押方式:</li>
+					<li><a href="#"><span class="label label-warning">所有<span class="glyphicon glyphicon-remove"></span></span></a></li>
+					<li><a href="#">房产抵押</a></li>
+					<li><a href="#">汽车抵押</a></li>
+					<li><a href="#">买房贷款</a></li>
+					<li><a href="#">买车贷款</a></li>
+					<li><a href="#">无抵押</a></li>
+					<li><a href="#">其他抵押</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="ks-panel">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>合同编号</th>
+				<th>贷款金额</th>
+				<th>当前/总期</th>
+				<th>应收日期</th>
+				<th>应收金额</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>A9823420</td>
+				<td>1,000,000</td>
+				<td>5/24</td>
+				<td>2015/4/21</td>
+				<td>2,000</td>
+				<td>
+					<div class="ui dropdown">
+						<i class="chevron circle down icon"></i>
+						<div class="menu">
+							<div class="item"></div>
+							<div class="item"></div>
+							<div class="item"></div>
+						</div>
+					</div>
+					<div class="dropdown">
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul class="dropdown-menu" role="menu">
+							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
+							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
+							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>A9823420</td>
+				<td>1,000,000</td>
+				<td>5/24</td>
+				<td>2015/4/21</td>
+				<td>2,000</td>
+				<td>
+					<div class="dropdown">
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul class="dropdown-menu" role="menu">
+							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
+							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
+							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>A9823420</td>
+				<td>1,000,000</td>
+				<td>5/24</td>
+				<td>2015/4/21</td>
+				<td>2,000</td>
+				<td>
+					<div class="dropdown">
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul class="dropdown-menu" role="menu">
+							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
+							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
+							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="ks-panel">
+	<ul class="pagination pagination-sm">
+		<li class="disabled"><a href="#">«</a></li>
+		<li class="active"><a href="#">1</a></li>
+		<li><a href="#">2</a></li>
+		<li><a href="#">3</a></li>
+		<li><a href="#">4</a></li>
+		<li><a href="#">5</a></li>
+		<li><a href="#">»</a></li>
+	</ul>
+</div>

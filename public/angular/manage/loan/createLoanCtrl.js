@@ -121,6 +121,10 @@ define(['app',"underscore"],function(app,_) {
 		    });
 		};
 
+		$scope.selectContact = function(){
+			
+		}
+
 		$scope.removeAttach = function(contact,index){
 			if(contact === 'br'){
 				// var index = _.findIndex($scope.br.attachments,index);

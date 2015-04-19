@@ -36,6 +36,7 @@ define(['app'],function(app){
 		                    fileStatus[evt.config.file.$$hashKey].percent = parseInt(100.0 * evt.loaded / evt.total);
 		                    console.log('progress: ' + fileStatus[evt.config.file.$$hashKey].percent + '% ' + evt.config.file.name);
 		                }).success(function (data, status, headers, config) {
+		                    file.objectId = data.data.id;
 		                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 		                }).error(function(data, status, headers, config){
 		                	console.log('file ' + config.file.name + 'upload fail. Response: ' + data);

@@ -18,7 +18,9 @@ require.config({
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
 		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',
 		angularWizard:'../lib/angular-wizard/dist/angular-wizard',
+		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
 		text:'../lib/requirejs-text/text'
+		
 	},
 	shim:{
 		'angular':{
@@ -48,7 +50,12 @@ require.config({
 		},
 		'angularWizard':{
 			deps:['angular']
+		},
+		'angularSweetAlert':{
+
+			deps:['angular']
 		}
+		
 
 	}
 });

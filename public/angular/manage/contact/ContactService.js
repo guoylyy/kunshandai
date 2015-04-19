@@ -15,7 +15,7 @@ define(['../../app'],function(app){
 			qq:'',
 			wechat:'',
 			address:'',
-			attachments:[]
+			attachments:[]	
 		}, 
 
 			loaner = _.extend({},model),
@@ -41,6 +41,8 @@ define(['../../app'],function(app){
 			},
 			create : function(contact){
 				
+				contact.attachments = _.pluck(contact.attachments,'objectId');
+
 				var deferred = $q.defer();
 
 				$http.post(ApiURL+contactUrl,JSON.stringify(contact)).then(function(res){

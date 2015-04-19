@@ -4,8 +4,8 @@ define(['app',"underscore"],function(app,_) {
 
 	return app.controller('CreateLoanCtrl', 
 		["$scope","$rootScope","$location","$q","LoanService","ContactService",'DictService','$state',
-		'loanTypes','repayTypes','steps','$modal',
-		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes,steps,$modal){
+		'loanTypes','repayTypes','steps','$modal','SweetAlert',
+		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes,steps,$modal,SweetAlert){
 		
 
 		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes.data : {};
@@ -24,8 +24,11 @@ define(['app',"underscore"],function(app,_) {
 		$scope.createContract = function(){
 			
 			var loaner = ContactService.getLoaner(),
-				assurer =ContactService.getAssurer(),
+				assurer = ContactService.getAssurer(),
 				loan = LoanService.getLocal();
+			var rcLoaner = _.extend({},loaner),
+				rcASssurer = _.extend({},assurer),
+				rcLoan = _.extend({},rcLoan);
 
 			$q.all([ContactService.create(loaner), ContactService.create(assurer),
 				LoanService.create(loan)])
@@ -35,7 +38,8 @@ define(['app',"underscore"],function(app,_) {
 				var contract = {};
 				contract.loanerId 	= results[0].objectId;				
 				contract.assurerId 	= results[1].objectId;
-				contract.loanId 	= results[2].objectId;
+				// contract.loanId 	= results[2].objectId;
+				contract.loanId 	= results[2].id;
 
 				console.log(results[0], results[1], results[2]);
 
@@ -46,8 +50,10 @@ define(['app',"underscore"],function(app,_) {
 				$state.go('contractCreated');
 				
 			}).catch(function(){
-				
-				alert("生成合同失败");
+			
+				$scope.br.attachments = rcLoaner.attachments;
+				$scope.gr.attachments = rcASssurer.attachments;
+				SweetAlert.error("新建放款失败", "服务器出了点小差", "error");
 			})
 		};
 

@@ -81,7 +81,7 @@
 				<div class="panel-body">
 					<ul class="list-group">
 						<li class="list-group-item" ng-repeat="a in br.attachments">
-							<a class="glyphicon glyphicon-remove text-danger ks-right" ng-click="removeAttach('br',a.$$hashKey)"></a>
+							<a class="glyphicon glyphicon-remove text-danger ks-right" ng-click="removeAttach('br',$index)"></a>
 							{{a.name}} | {{a.attachmentType}}
 						</li>
 					</ul>
@@ -171,11 +171,11 @@
 				<div class="panel-body">
 					<ul class="list-group">
 						<a class="list-group-item" ng-repeat="a in gr.attachments">
-							<span class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('gr',a.$$hashKey)"></span>
+							<span class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('gr',$index)"></span>
 							{{a.name}} | {{a.attachmentType}}
 						</a>
 					</ul>
-					<button type="button" class="btn btn-default ks-right" uploadAttachment('担保人')>上传新的资料</button>
+					<button type="button" class="btn btn-default ks-right" ng-click="uploadAttachment('担保人')">上传新的资料</button>
 				</div>
 			</div>
 		</div>

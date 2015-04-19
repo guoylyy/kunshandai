@@ -85,13 +85,13 @@ define(['app',"underscore"],function(app,_) {
 		    });
 		};
 
-		$scope.removeAttach = function(contact,hashKey){
+		$scope.removeAttach = function(contact,index){
 			if(contact === 'br'){
-				var index = _.findIndex($scope.br.attachments,hashKey);
+				// var index = _.findIndex($scope.br.attachments,index);
 				delete($scope.br.attachments[index]);
 				$scope.br.attachments = _.compact($scope.br.attachments);
 			}else if(contact === 'gr'){
-				var index = _.findIndex($scope.gr.attachments,hashKey);
+				// var index = _.findIndex($scope.gr.attachments,index);
 				delete($scope.gr.attachments[index]);
 				$scope.br.attachments = _.compact($scope.gr.attachments);
 			}

@@ -77,6 +77,9 @@ define(['../../app','underscore'],function(app,_){
 			},
 			generate: function(contract){
 				return $http.post(ApiURL+loanUrl+"/generate_bill",JSON.stringify(contract));
+			},
+			assure: function(loanId){
+				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));
 			}
 		}
 

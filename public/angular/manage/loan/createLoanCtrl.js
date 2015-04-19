@@ -66,10 +66,10 @@ define(['app',"underscore"],function(app,_) {
 			.then(function(results){
 				
 				var contract = {};
-				contract.loanerId 	= results[0].objectId;				
-				contract.assurerId 	= results[1].objectId;
+				loaner.objectId 	= contract.loanerId 	= results[0].objectId;				
+				assurer.objectId 	= contract.assurerId 	= results[1].objectId;
 				// contract.loanId 	= results[2].objectId;
-				contract.loanId 	= results[2].id;
+				loan.objectId 		= contract.loanId 		= results[2].id;
 
 				console.log(results[0], results[1], results[2]);
 
@@ -133,6 +133,20 @@ define(['app',"underscore"],function(app,_) {
 			}
 			
 		};
+
+		$scope.activeLoan = function(){
+
+			LoanService.assure($scope.loanInfo.objectId).then(function(res){
+
+				$scope.loanInfo.actived = true;
+				SweetAlert.success("放款成功", "");
+
+			},function(res){
+				$scope.loanInfo.actived  = false;
+				SweetAlert.error("放款失败", "服务器内部错误");
+			});
+
+		}
 
 		$scope.calendar={};
 		

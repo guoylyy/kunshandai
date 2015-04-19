@@ -56,9 +56,9 @@ define(['app',"underscore"],function(app,_) {
 			var loaner = ContactService.getLoaner(),
 				assurer = ContactService.getAssurer(),
 				loan = LoanService.getLocal();
-			var rcLoaner = _.extend({},loaner),
-				rcASssurer = _.extend({},assurer),
-				rcLoan = _.extend({},rcLoan);
+			// var rcLoaner = _.extend({},loaner),
+			// 	rcASssurer = _.extend({},assurer),
+			// 	rcLoan = _.extend({},rcLoan);
 
 			$q.all([ContactService.create(loaner), ContactService.create(assurer),
 				LoanService.create(loan)])
@@ -81,8 +81,8 @@ define(['app',"underscore"],function(app,_) {
 				
 			}).catch(function(){
 			
-				$scope.br.attachments = rcLoaner.attachments;
-				$scope.gr.attachments = rcASssurer.attachments;
+				// $scope.br.attachments = rcLoaner.attachments;
+				// $scope.gr.attachments = rcASssurer.attachments;
 				SweetAlert.error("新建放款失败", "服务器出了点小差", "error");
 			})
 		};

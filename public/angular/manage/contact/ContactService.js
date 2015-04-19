@@ -41,13 +41,14 @@ define(['../../app'],function(app){
 			},
 			create : function(contact){
 				
-				contact.attachments = _.pluck(contact.attachments,'objectId');
+				var sendContact = _.extend({},contact);
+
+				sendContact.attachments = _.pluck(sendContact.attachments,'objectId');
 
 				var deferred = $q.defer();
 
-				$http.post(ApiURL+contactUrl,JSON.stringify(contact)).then(function(res){
+				$http.post(ApiURL+contactUrl,JSON.stringify(sendContact)).then(function(res){
 			
-					// _. extend(localContact,res.data.data);
 					deferred.resolve(res.data.data);
 			
 				},function(res){

@@ -1,4 +1,4 @@
-define(['app'],function(app){
+define(['app','underscore'],function(app,_){
 	return app.service('UploadService', ['ApiURL','$upload',
 		function(ApiURL,$upload){
 		
@@ -24,6 +24,7 @@ define(['app'],function(app){
 				if (files && files.length) {
 		            for (var i = 0; i < files.length; i++) {
 		                var file = files[i];
+		                var j  = i;
 		                $upload.upload({
 		                    url: ApiURL+'/attachment',
 		                    // fields: {'username': $scope.username},
@@ -36,8 +37,9 @@ define(['app'],function(app){
 		                    fileStatus[evt.config.file.$$hashKey].percent = parseInt(100.0 * evt.loaded / evt.total);
 		                    console.log('progress: ' + fileStatus[evt.config.file.$$hashKey].percent + '% ' + evt.config.file.name);
 		                }).success(function (data, status, headers, config) {
-		                    
-		                    file.objectId = data.data.id;
+		                    var index = _.findIndex(files,{'$$hashKey':config.file.$$hashKey});
+		                    files[index].objectId = data.data.id;
+		                    files[index].url = data.data.url;
 		                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 		                }).error(function(data, status, headers, config){
 		                	console.log('file ' + config.file.name + 'upload fail. Response: ' + data);

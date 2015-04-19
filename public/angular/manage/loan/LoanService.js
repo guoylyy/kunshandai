@@ -8,20 +8,22 @@ define(['../../app','underscore'],function(app,_){
 		var loanUrl = '/loan';
 
 		var model = {
-				objectId:'',
-				loanType:'',
-				amount:0,
-				spanMonth:0,
+				objectId:'', 
+				loanType:'', 
+				amount:'',    			//number
+				spanMonth:'', 			//number
 				startDate:'',
 				endDate:'',
-				payCircle:0,
-				payTotalCircle:0,
-				interests:0,
-				assureCost:0,
-				serviceCost:0,
-				overdueCostPercent:0,
-				otherCost:0,
-				keepCost:0,
+				payCircle:'', 			//number
+				payTotalCircle:'',		//number
+				interests:'',			//number
+				assureCost:'',			//number
+				serviceCost:'',			//number
+				overdueCostPercent:'',	//number
+				otherCost:'',			//number
+				otherCostDesc:'',
+				keepCost:'',			//number
+				keepCostDesc:'',
 				payWay:'',
 				firstPayDate:''
 			},

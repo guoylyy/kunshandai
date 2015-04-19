@@ -1,22 +1,19 @@
-define(['../../app'],function(app){
+'use strict';
 
-	return app.factory('sessionAuth', ['$q','$injector','$document', function($q,$injector,$document){
+define(['app'],function(app){
+	return app.factory('sessionAuth', ['$q','$injector',
+	 function($q,$injector,$cookies,AccountService){
 		return {
 			request: function(config) {
 				
-				var cookies = $document.cookies;
-				console.log(cookies);
-				// if(cookies){	
-				// 	// console.log('login error: mobilephone number or password is wrong');
-				// 	// return $q.reject('账号或密码错误');
-				// 	// console.log('cookies:'+cookies);
-				// 	return request;
-				// }
-				// else{
-				// 	$q.reject("user hasn't loined");
-				// 	console.log(request);
-				// 	// window.location = '/login';
-				// }
+				// var cookies = $cookies['avos.sess'];
+				// console.log(cookies);
+				
+				// if(AccountService.isLogin() !== true){
+				// 	windown.location = "/login";
+				// } 
+				
+				
 				return config;
 			}
 		}

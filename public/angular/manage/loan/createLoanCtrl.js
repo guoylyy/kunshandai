@@ -21,6 +21,36 @@ define(['app',"underscore"],function(app,_) {
 			}
 			
 		};
+		
+		$scope.$watch('loanInfo.payWay',function(){
+			circleChange();
+			dateChange();
+		});
+
+		$scope.$watch('loanInfo.spanMonth',function(){
+			circleChange();
+			dateChange();
+		});
+		
+		$scope.$watch('loanInfo.startDate',function(){
+			dateChange();
+		});
+
+		var circleChange = function(){
+			if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
+				$scope.loanInfo.payCircle = $scope.loanInfo.spanMonth;
+				$scope.loanInfo.payTotalCircle = 1;
+			}
+		};
+		var dateChange = function(){
+			var date = new Date($scope.loanInfo.startDate);
+			date.setMonth(date.getMonth()+ parseInt($scope.loanInfo.spanMonth));	
+			$scope.loanInfo.endDate = date;
+			if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
+				$scope.loanInfo.firstPayDate = $scope.loanInfo.endDate ;
+			}
+		};
+
 		$scope.createContract = function(){
 			
 			var loaner = ContactService.getLoaner(),

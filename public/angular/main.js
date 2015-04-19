@@ -16,8 +16,7 @@ require.config({
 		uiUtils:'../lib/angular-ui-utils/ui-utils',
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
-		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',
-		angularWizard:'../lib/angular-wizard/dist/angular-wizard',
+		angularFileUpload:'../lib/ng-file-upload/angular-file-upload'	
 		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
 		text:'../lib/requirejs-text/text'
 		
@@ -47,10 +46,7 @@ require.config({
 		},
 		'angularFileUpload':{
 			deps:['angular']
-		},
-		'angularWizard':{
-			deps:['angular']
-		},
+		}
 		'angularSweetAlert':{
 
 			deps:['angular']

@@ -4,16 +4,29 @@ define(['../app'],function(app){
 		function($http,ApiURL){
 		
 		var accountUrl = '/account';
+
+		var logined = false;
 		
 		return{
 			login : function(user){
 				return $http.post(ApiURL+accountUrl+"/login",JSON.stringify(user));
 			},
 			logout : function(){
+				logined = false;
 				return $http.get(ApiURL+accountUrl+"/logout");
 			},
 			isLogin: function(){
-				return $http.get(ApiURL+accountUrl+"/isLogin");
+				
+				if(logined === true){
+					return true;
+				}
+				return $http.get(ApiURL+accountUrl+"/isLogin").then(function(res){
+					if(res.status === 200){
+						return true;
+					}else{
+						return false;
+					}
+				});
 			},
 			signup : function(user){
 				return $http.post(ApiURL+accountUrl+"/register",JSON.stringify(user));
@@ -23,6 +36,6 @@ define(['../app'],function(app){
 			}
 		}
 		
-0
+
 	}]);
 });

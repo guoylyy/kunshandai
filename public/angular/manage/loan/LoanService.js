@@ -25,7 +25,8 @@ define(['../../app','underscore'],function(app,_){
 				keepCost:'',			//number
 				keepCostDesc:'',
 				payWay:'',
-				firstPayDate:''
+				firstPayDate:'',
+				paybacks:[]
 			},
 			
 
@@ -80,6 +81,9 @@ define(['../../app','underscore'],function(app,_){
 			},
 			assure: function(loanId){
 				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));
+			},
+			paybacks: function(loanId){
+				return $http.get(ApiURL+loanUrl+"/"+loanId+"/paybacks");
 			}
 		}
 

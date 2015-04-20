@@ -1,6 +1,6 @@
 define(['app','underscore'],function(app,_){
-	return app.controller('UploadController', ['$scope','$modalInstance','UploadService', 
-		function($scope,$modalInstance,UploadService,contact){
+	return app.controller('UploadController', ['$scope','$modalInstance','UploadService','SweetAlert', 
+		function($scope,$modalInstance,UploadService,SweetAlert,contact){
 		
 		$scope.contact = contact;
 
@@ -33,5 +33,23 @@ define(['app','underscore'],function(app,_){
 		$scope.attchTypes = UploadService.getAttachmentTypes();
 
 		$scope.fileStatus = UploadService.getFileStatus();
+
+		$scope.cancel = function () {
+		    if($scope.fileList.length){
+		    	 SweetAlert.swal({
+				   title: "确定取消上传附件?",
+				   text: "已上传的附件将被删除",
+				   type: "warning",
+				   showCancelButton: true,
+				   confirmButtonColor: "#DD6B55",
+				   confirmButtonText: "确定",
+				   closeOnConfirm: true}, 
+				function(){ 
+				   $modalInstance.dismiss('cancel');
+				});
+		    	}else{
+		    		$modalInstance.dismiss('cancel');
+		    	}
+		   };
 	}]);
 });

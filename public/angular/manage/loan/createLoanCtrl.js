@@ -76,8 +76,9 @@ define(['app',"underscore"],function(app,_) {
 				return LoanService.generate(contract);
 			
 			}).then(function(){
-				
-				$state.go('contractCreated');
+						
+					$state.go('contractCreated');
+
 				
 			}).catch(function(){
 			
@@ -87,7 +88,7 @@ define(['app',"underscore"],function(app,_) {
 			})
 		};
 
-		
+		$scope.payBackPlans;
 
 		$scope.open = function($event,opened) {
 		    
@@ -143,7 +144,14 @@ define(['app',"underscore"],function(app,_) {
 			LoanService.assure($scope.loanInfo.objectId).then(function(res){
 
 				$scope.loanInfo.actived = true;
+				
 				SweetAlert.success("放款成功", "");
+
+				LoanService.paybacks($scope.loanInfo.objectId).then(function(res){
+					$scope.loanInfo.paybacks = res.data.data;
+				},function(){
+					console.log("获取还款计划失败");
+				})
 
 			},function(res){
 				$scope.loanInfo.actived  = false;

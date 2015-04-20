@@ -3,7 +3,10 @@
 			<h4>合同详情</h4>
 		</div>
 		<div class="row">
-			<div class="col-md-offset-10 col-md-2">
+			<div class="col-md-10">
+				<h4>合同编号: {{loanInfo.objectId}}</h4>
+			</div>
+			<div class=" col-md-2">
 			<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
 			<button class="btn btn-success " ng-click="activeLoan()" ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
 			<button class="btn btn-info " type="submit" onclick="window.print()">打印合同</button>
@@ -12,8 +15,8 @@
 		<div class="ks-panel panel panel-primary">
 			<div class="panel-heading">贷款信息</div>
 		    <div class="panel-body">
-		    	<strong class="ks-heading ks-color-light">合同编号: {{contact.loanId}}</strong>
-		    	<div class="ks-divider"></div>
+		    	<!-- <strong class="ks-heading ks-color-light">合同编号: {{loanInfo.objectId}}</strong> -->
+		    	<!-- <div class="ks-divider"></div> -->
 		    	<p class="ks-heading">借款人信息:</p>
 		    	<p>姓 名: {{br.name}}</p>
 		    	<p>电 话: {{br.mobilePhoneNum}}</p>
@@ -78,60 +81,26 @@
 				</table>
 		    </div>
 		</div>
-		<div class="ks-panel panel panel-primary">
+		<div class="ks-panel panel panel-primary" ng-show="loanInfo.actived">
 			<div class="panel-heading">还款信息</div>
 		    <div class="panel-body">
 		    	<table class="table ">
 									<thead>
 										<tr>
 											<th>期数</th>
-											<th>应还金额（元）</th>
-											<th>实还金额（元）</th>
-											<th>应收日期</th>
-											<th>实还日期</th>
-											<th>逾期费用（元）</th>
+											<th>还款金额(元)</th>
+											<th>还款日期</th>
+											<th>状态</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="success">
-											<td>1/24</td>
-											<td>20,000</td>
-											<td>20,00</td>
-											<td>2015-3-21</td>
-											<td>2015-3-20</td>
-											<td>0</td>
-										</tr>
-										<tr class="success">
-											<td>2/24</td>
-											<td>20,000</td>
-											<td>20,00</td>
-											<td>2015-4-21</td>
-											<td>2015-4-19</td>
-											<td>0</td>
-										</tr>
-										<tr class="danger">
-											<td>3/24</td>
-											<td>20,000</td>
-											<td>20,00</td>
-											<td>2015-4-21</td>
-											<td></td>
-											<td>10.2</td>
-										</tr>
-										<tr class="">
-											<td>4/24</td>
-											<td>20,000</td>
-											<td>20,00</td>
-											<td>2015-4-21</td>
-											<td></td>
-											<td>0</td>
-										</tr>
-										<tr class="">
-											<td>5/24</td>
-											<td>20,000</td>
-											<td>20,00</td>
-											<td>2015-4-21</td>
-											<td></td>
-											<td>0</td>
+										<tr ng-repeat="p in loanInfo.paybacks" ng-class="{success:(p.status == 1),info:(status == 2)}">
+											<td>{{p.order}}</td>
+·											<td>{{p.payMoney}}</td>
+											<td>{{p.payDate | date:"yyyy-MM-dd" }}</td>
+											<td ng-show="p.status === 1" class="text-info">正在还</td>
+											<td ng-show="p.status === 2" >未还</td>
+											<td ng-show="p.status === 3"class="text-success">已还</td>
 										</tr>
 									</tbody>
 					</table>

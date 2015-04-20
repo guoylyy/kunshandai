@@ -21,7 +21,7 @@ function updateContact(contact, reqBody){
     contact.set('wechat', reqBody.wechat);
     contact.set('mobilePhoneNumber', reqBody.mobilePhoneNumber);
     return contact;
-}
+};
 
 function bindContactFiles(contact, attachmentIds){
     var attachments = contact.relation("attachments");
@@ -54,7 +54,7 @@ function bindContactFile(contact, fileId){
             console.log(error);
         }
     });
-}
+};
 
 
 exports.updateContact = updateContact;

@@ -9,7 +9,7 @@ define(['app','underscore'],function(app,_){
 			{value:'certification',text:"证件"},
 			{value:'credit',text:"信用"},
 			{value:'agreement',text:"协议"},
-			{value:'receipt',text:"协议"},
+			{value:'receipt',text:"收据"},
 			{value:'other',text:"其他"}
 		];
 

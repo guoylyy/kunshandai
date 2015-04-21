@@ -7,7 +7,7 @@
 			  <ul class="dropdown-menu dropdown-menu-right">
 		        <li>
 		          <a href="/createLoan" target="_blank">新增放款</a>
-		          <a href="#">待放款项目</a>
+		          <a href="#"  ui-sref="trashLoans" >待放款项目</a>
 		        </li>
 		      </ul>
 		</li>
@@ -15,8 +15,8 @@
 			<a ui-sref="collect" dropdown-toggle>收款管理<span class="glyphicon glyphicon-menu-right"></span></a>
 			 <ul class="dropdown-menu dropdown-menu-right">
 		        <li>
-		          <a href="#">待收款项目</a>
-		          <a href="#">已收款项目</a>
+		          <a href="#" ui-sref="collectPendding">待收款项目</a>
+		          <a href="#" ui-sref="collectDone">已收款项目</a>
 		        </li>
 		      </ul>
 		</li>
@@ -24,10 +24,10 @@
 			<a dropdown-toggle>项目检视<span class="glyphicon glyphicon-menu-right"></span></a>
 			<ul class="dropdown-menu dropdown-menu-right">
 		        <li>
-		          <a href="#">正常项目</a>
-		          <a href="#">逾期项目</a>
-		          <a href="#">坏账项目</a>
-		          <a href="#">结清项目</a>
+		          <a href="#" ui-sref="normalProjects">正常项目</a>
+		          <a href="#" ui-sref="overdueProjects">逾期项目</a>
+		          <a href="#" ui-sref="badDebtProjects">坏账项目</a>
+		          <a href="#" ui-sref="settleProjects">结清项目</a>
 		          <a href="#" ui-sref="allProjects">所有项目</a>
 		        </li>
 		      </ul>

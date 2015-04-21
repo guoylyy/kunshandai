@@ -43,6 +43,12 @@ define(['app'],function(app){
 		    		"main":{templateUrl: "/angular/manage/loan/loan.html"}
 		    	}
 		    })
+		    .state('trashLoans',{
+		    	url:"#loan/trash",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/loan/trash/trash.html"}
+		    	}
+		    })
 		    .state('collectPendding',{
 		    	url:"#collect/pendding",
 		    	views:{
@@ -63,6 +69,30 @@ define(['app'],function(app){
 		    })
 		    .state('allProjects',{
 		    	url:"#projects/all",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    	}
+		    })
+ 			.state('normalProjects',{
+		    	url:"#projects/normal",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    	}
+		    })
+ 			.state('overdueProjects',{
+		    	url:"#projects/overdue",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    	}
+		    })
+ 			.state('badDebtProjects',{
+		    	url:"#projects/badDebt",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    	}
+		    })
+ 		    .state('settleProjects',{
+		    	url:"#projects/settle",
 		    	views:{
 		    		"main":{templateUrl: "/angular/manage/project/project.html"}
 		    	}

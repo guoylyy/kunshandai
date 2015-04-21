@@ -1,11 +1,10 @@
 <div class="ks-dividing">
-	<h4>收款管理 -> {{ ('collectPendding' | isState)? '待收款项目':'已收款项目'}}</h4>
+	<h4 ng-show="('trashLoans' | isState)">放款管理->待放款合同</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="btn-group btn-group-middle" >
-			<button type="button" class="btn btn-default" ui-sref="collectPendding" ui-sref-active="active">待收款项目</button>
-			<button type="button" class="btn btn-default" ui-sref="collectDone"  ui-sref-active="active">已收款项目</button>
+			<button type="button" class="btn btn-default" ui-sref="trashLoans" ui-sref-active="active">待放款合同</button>
 
 		</div>
 	</div>
@@ -32,7 +31,7 @@
 		<div class="panel-body">
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
-					<li>收款时间:</li>
+					<li>合同新建时间:</li>
 					<li><a href="#">所有</a></li>
 					<li><a href="#">小于一个月</a></li>
 					<li><a href="#">1~3个月</a></li>
@@ -40,18 +39,6 @@
 					<li><a href="#">6~9个月</a></li>
 					<li><a href="#">9~12个月</a></li>
 					<li><a href="#">大于12个月</a></li>
-				</ul>
-			</div>
-			<div class="ks-condition">
-				<ul class="ks-list-unstyled">
-					<li>抵押方式:</li>
-					<li><a href="#"><span class="label label-warning">所有<span class="glyphicon glyphicon-remove"></span></span></a></li>
-					<li><a href="#">房产抵押</a></li>
-					<li><a href="#">汽车抵押</a></li>
-					<li><a href="#">买房贷款</a></li>
-					<li><a href="#">买车贷款</a></li>
-					<li><a href="#">无抵押</a></li>
-					<li><a href="#">其他抵押</a></li>
 				</ul>
 			</div>
 		</div>
@@ -62,20 +49,22 @@
 		<thead>
 			<tr>
 				<th>合同编号</th>
-				<th>贷款金额</th>
-				<th>当前/总期</th>
-				<th>应收日期</th>
-				<th>应收金额</th>
+				<th>贷款人</th>
+				<th>贷款金额（元）</th>
+				<th>贷款期限（月）</th>
+				<th>贷款类型</th>
+				<th>还款类型</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>A9823420</td>
+				<td>张三</td>
 				<td>1,000,000</td>
-				<td>5/24</td>
-				<td>2015/4/21</td>
-				<td>2,000</td>
+				<td>12</td>
+				<td>买车抵押</td>
+				<td>先息后本</td>
 				<td>
 					<div class="ui dropdown">
 						<i class="chevron circle down icon"></i>
@@ -95,14 +84,22 @@
 					</div>
 				</td>
 			</tr>
-
-			<tr>
+<tr>
 				<td>A9823420</td>
+				<td>张三</td>
 				<td>1,000,000</td>
-				<td>5/24</td>
-				<td>2015/4/21</td>
-				<td>2,000</td>
+				<td>12</td>
+				<td>买车抵押</td>
+				<td>先息后本</td>
 				<td>
+					<div class="ui dropdown">
+						<i class="chevron circle down icon"></i>
+						<div class="menu">
+							<div class="item"></div>
+							<div class="item"></div>
+							<div class="item"></div>
+						</div>
+					</div>
 					<div class="dropdown">
 						<span class="glyphicon glyphicon-triangle-bottom"></span>
 						<ul class="dropdown-menu" role="menu">
@@ -112,15 +109,22 @@
 						</ul>
 					</div>
 				</td>
-			</tr>
-
-			<tr>
+			</tr><tr>
 				<td>A9823420</td>
+				<td>张三</td>
 				<td>1,000,000</td>
-				<td>5/24</td>
-				<td>2015/4/21</td>
-				<td>2,000</td>
+				<td>12</td>
+				<td>买车抵押</td>
+				<td>先息后本</td>
 				<td>
+					<div class="ui dropdown">
+						<i class="chevron circle down icon"></i>
+						<div class="menu">
+							<div class="item"></div>
+							<div class="item"></div>
+							<div class="item"></div>
+						</div>
+					</div>
 					<div class="dropdown">
 						<span class="glyphicon glyphicon-triangle-bottom"></span>
 						<ul class="dropdown-menu" role="menu">

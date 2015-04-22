@@ -43,6 +43,9 @@ define(['app',"underscore"],function(app,_) {
 			}
 		};
 		var dateChange = function(){
+			if(!$scope.loanInfo.startDate){
+				return;
+			}
 			var date = new Date($scope.loanInfo.startDate);
 			date.setMonth(date.getMonth()+ parseInt($scope.loanInfo.spanMonth));	
 			$scope.loanInfo.endDate = date;
@@ -56,9 +59,6 @@ define(['app',"underscore"],function(app,_) {
 			var loaner = ContactService.getLoaner(),
 				assurer = ContactService.getAssurer(),
 				loan = LoanService.getLocal();
-			// var rcLoaner = _.extend({},loaner),
-			// 	rcASssurer = _.extend({},assurer),
-			// 	rcLoan = _.extend({},rcLoan);
 
 			$q.all([ContactService.create(loaner), ContactService.create(assurer),
 				LoanService.create(loan)])
@@ -68,7 +68,6 @@ define(['app',"underscore"],function(app,_) {
 				var contract = {};
 				loaner.objectId 	= contract.loanerId 	= results[0].objectId;				
 				assurer.objectId 	= contract.assurerId 	= results[1].objectId;
-				// contract.loanId 	= results[2].objectId;
 				loan.objectId 		= contract.loanId 		= results[2].id;
 
 				console.log(results[0], results[1], results[2]);
@@ -82,8 +81,6 @@ define(['app',"underscore"],function(app,_) {
 				
 			}).catch(function(){
 			
-				// $scope.br.attachments = rcLoaner.attachments;
-				// $scope.gr.attachments = rcASssurer.attachments;
 				SweetAlert.error("新建放款失败", "服务器出了点小差", "error");
 			})
 		};
@@ -128,11 +125,9 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.removeAttach = function(contact,index){
 			if(contact === 'br'){
-				// var index = _.findIndex($scope.br.attachments,index);
 				delete($scope.br.attachments[index]);
 				$scope.br.attachments = _.compact($scope.br.attachments);
 			}else if(contact === 'gr'){
-				// var index = _.findIndex($scope.gr.attachments,index);
 				delete($scope.gr.attachments[index]);
 				$scope.br.attachments = _.compact($scope.gr.attachments);
 			}

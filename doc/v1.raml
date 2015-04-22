@@ -651,6 +651,48 @@ traits:
                   "code": 404,
                   "message": "找不到对象!"
                 }  
+  /payBacks:
+    # /already/{pn}:
+    #   description: |
+    #     已收款的项目列表
+    /unpayed/{pn}:
+      description: |
+        未收款的项目列表(分页)
+      get:
+        queryParameters:
+          startDate:
+            type: date
+            description: |
+              起始时间
+          endDate:
+            type: date
+            description: |
+              终止时间
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "data": {
+                          "totalPageNum": 1,
+                          "totalNum": 1,
+                          "pageSize": 10,
+                          "values": [
+                              {
+                                  "loanObjectId": "55378bc2e4b0aff70792dc1c",
+                                  "payObjectId": "55378bc7e4b0aff70792dc5f",
+                                  "payTotalCircle": 3,
+                                  "payCurrCircle": 1,
+                                  "payDate": "2015-04-22T00:00:00+08:00",
+                                  "amount": 100000,
+                                  "payMoney": 633333.3333333334
+                              }
+                          ]
+                      },
+                      "code": 200
+                  }
+
 
 /contact:
   post:
@@ -851,6 +893,10 @@ traits:
     queryParameters:
       attachment:
         type: file
+      fileType:
+        description: |
+          文件类型，从字典表获取
+        type: string
     responses:
       200:
         body:

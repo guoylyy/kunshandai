@@ -82,6 +82,21 @@ var loanTypes = {
 	}
 };
 
+var fileTypes ={
+	certificate: {
+		value: 'certificate',
+		text: '身份证'
+	},
+	contract: {
+		value: 'contact',
+		text: '合同'
+	},
+	image: {
+		value: 'image',
+		text: '图片'
+	}
+};
+
 
 function convertDictToList(key){
 	if(key=='loanTypes'){
@@ -92,6 +107,8 @@ function convertDictToList(key){
 		return getKeyValueList(loanStatus);
 	}else if(key=='loanPayBackStatus'){
 		return getKeyValueList(loanPayBackStatus);
+	}else if(key=='fileTypes'){
+		return getKeyValueList(fileTypes);
 	}
 	return null;
 }

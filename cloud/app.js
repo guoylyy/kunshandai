@@ -1,5 +1,4 @@
 /**
- * [express description]
  * @author globit
  * @email  yiliangg@foxmail.com
  * @version [v1]
@@ -62,7 +61,6 @@ app.get('/home',function(req, res){
     res.redirect('/login');
   }
 });
-
 app.get('/index',function(req, res){
   res.render('guest_layout.ejs');
 });
@@ -85,7 +83,7 @@ app.get('/createLoan', function(req, res){
  * 1. 登录 登出 是否登录
  * 2. 注册 手机验证码 邮箱验证
  * TODO:
- * 1. 完善用户资料
+ * 1. 更新用户资料
  * 2. 获取用户资料
  * 3. 头像更新
  * 4. 修改密码
@@ -94,6 +92,7 @@ app.get(config.baseUrl +'/account/logout', function(req, res){
   AV.User.logOut();
   mutil.renderSuccess(res);
 });
+
 app.post(config.baseUrl +'/account/login', function(req, res){
   var username = req.body.mobilePhoneNumber;
   var password = req.body.password;
@@ -109,10 +108,12 @@ app.post(config.baseUrl +'/account/login', function(req, res){
       }
   });
 });
+
 //如果用户已登录，返回用户信息
 app.get(config.baseUrl + '/account/isLogin', function(req, res){
   account.isLogin() ? res.json(account.isLogin()):mutil.renderResult(res, false, 210);
 });
+
 //注册
 app.post(config.baseUrl + '/account/register', function (req, res) {
   if(account.isLogin()){
@@ -130,6 +131,7 @@ app.post(config.baseUrl + '/account/register', function (req, res) {
     mutil.renderError(res, error);
   });
 });
+
 //发送手机验证码
 app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res){
   var u = check_login();
@@ -140,6 +142,7 @@ app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res
       mutil.renderError(res, error);
   });
 });
+
 //验证用户手机收到的验证码
 //issue:输入错误的也返回200
 app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req, res){
@@ -151,6 +154,7 @@ app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req,
     mutil.renderError(res, error);
   });
 });
+
 //发送验证邮件
 app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
   var email = req.query.email;
@@ -161,10 +165,13 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
   });
 });
 
+app.put(config.baseUrl + '/account/:id', function (req, res){
+  mutil.renderSuccess(res);
+});
+
 /**********************************************
  * 贷款项目相关操作
- * 已完成:
- ***********************************************/
+ */
 app.get(config.baseUrl + '/loan/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Loan');
@@ -317,6 +324,7 @@ function generateLoanRecord(floan, res){
 app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   var u = check_login(res);
   var loanId = req.body.loanId;
+  //todo: 把放款日期改一下
   //生成放款记录
   var loan = AV.Object.createWithoutData('Loan', loanId);
   loan.fetch().then(function(floan){
@@ -348,17 +356,6 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
     }
   });
 });
-//获取未完成的项目列表,分页
-app.post(config.baseUrl + '/attachment', function (req, res){
-  saveFileThen(req, function(attachment){
-    if(attachment){
-      mutil.renderData(res, {metaData:attachment.metaData(), id:attachment.id, url:attachment.url(),
-        name:attachment.name()});
-    }else{
-      mutil.renderError(res, {code:400, message:'上传失败'});
-    };
-  });
-});
 
 /*******************************************
 * 项目查询相关接口
@@ -388,17 +385,127 @@ app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
   listLoan(res, query, pageNumber);
 });
 
-
-//按条件分页列出还款记录 未完成
-app.get(config.baseUrl + '/pays/:pn', function (req, res){
+//按条件分页列出项目当前还款情况
+app.get(config.baseUrl + '/payBack/list/:pn', function (req, res){
+  var pageNumber = req.params.pn;
   var payed = true;
-  var startDate = "";
-  var endDate = "";
+  //获取抵押方式
+  
+  //列出满足当前条件
+  var query = new AV.Query('LoanPayBack');
+  query.greaterThanOrEqualTo('payDate',req.query.startDate);
+  query.lessThanOrEqualTo('payDate', req.query.endDate);
+  query.equalTo('status',mconfig.loanPayBackStatus.paying.value);
+  query.include('loan');
+
+  var totalPageNum = 1;
+  var resultsMap = {};
+  query.count().then(function(count){
+    totalPageNum = parseInt(count / mconfig.pageSize) + 1;
+    resultsMap['totalPageNum'] = totalPageNum;
+    resultsMap['totalNum'] = count;
+    resultsMap['pageSize'] = mconfig.pageSize;
+  }).then(function(){
+      if(pageNumber > resultsMap.totalPageNum){
+        resultsMap['values'] = [];
+        mutil.renderData(res, resultsMap);
+      }else{
+        query.skip(pageNumber*mconfig.pageSize - mconfig.pageSize);
+        query.find({
+          success: function(lpbList){
+            var fList = [];
+            for (var i = 0; i < lpbList.length; i++) {
+              fList.push(concretePayBack(lpbList[i]), lpbList[i].get('loan'));
+            };
+            resultsMap['values'] = fList;
+            mutil.renderData(res, resultsMap);
+          },
+          error: function(error){
+            mutil.renderError(res, error);
+          }
+        });
+      }
+  });
+}); 
+
+app.post(config.baseUrl + '/payBack/:id', function (req, res){
+  var payBackId = req.params.id;
+  var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
+  loanPayBack.fetch().then(function(p){
+    //还款
+    p.set('payBackMoney', req.body.payBackMoney);
+    p.set('payBackDate', new Date(req.body.payBackDate));
+    p.set('status',mconfig.loanPayBackStatus.completed.value);
+    p.save().then(function(np){
+      var l = p.get('loan');
+      l.fetch().then(function(loan){
+        if(p.get('order') == loan.get('payTotalCircle')){
+          loan.set('status', mconfig.loanStatus.completed.value);
+          loan.save().then(function(rloan){
+            mutil.renderDataWithCode(res, true, 201);
+          },function(error){
+            mutil.renderError(res, error);
+          });
+        }else{
+          var query = new AV.Query('LoanPayBack');
+          query.equalTo('order', p.get('order') + 1);
+          query.equalTo('loan', p.get('loan'));
+          query.find({
+            success:function(pbs){
+              if(pbs.length == 1){
+                var pb = pbs[0];
+                pb.set('status', mconfig.loanPayBackStatus.paying.value);
+                pb.save().then(function(npb){
+                  mutil.renderData(res, concretePayBack(pb, loan));
+                });
+              }else if(pbs.length==0 && p.get('order') > 0){
+                mutil.renderSuccess(res);
+              }else{
+                mutil.renderError(res, {code:500, message:'内部错误!'});
+              }
+            },
+            error: function(error){
+              mutil.renderError(res, error);
+            }
+          });
+        }
+      });
+      //mutil.renderSuccess(res);
+    },function(error){
+      mutil.renderError(res, error);
+    });
+  },
+  function(error){
+    mutil.renderError(res, error);
+  });
 
 });
 
-//需要根据最近的还款周期列出项目，这个需要反向生成
+//结清之后的账单生成
+app.post(config.baseUrl + '/loan/:id/finish', function (req, res){
 
+});
+
+//项目调整
+//流程 结清当前项目 + 生成一个新项目
+
+
+function concretePayBack(lpb, loan){
+  var result = {};
+  result['loanObjectId'] = loan.id;
+  result['payObjectId'] = lpb.id;
+  result['payTotalCircle'] = loan.get('payTotalCircle');
+  result['payCurrCircle'] = lpb.get('order');
+  result['payDate'] = lpb.get('payDate');
+  result['amount'] = loan.get('amount');
+  //应收金额 = 按时还款金额 + 违约金
+  var overdueMoney = 0;
+  result['payMoney'] = lpb.get('payMoney') + overdueMoney;
+  return result;
+};
+
+
+//需要根据最近的还款周期列出项目，这个需要反向生成
 function listLoan(res, query, pageNumber){
   var totalPageNum = 1;
   var resultsMap = {};
@@ -436,7 +543,8 @@ function listLoan(res, query, pageNumber){
  * 已完成:
  *  1. 新建联系人
  *  2. 列出登录用户的联系人
- *  3. 查询和删除单个联系人
+ *  3. 更新,查询和删除单个联系人
+ *  4. 根据证件号查询联系人
  */
 app.post(config.baseUrl + '/contact', function(req, res){
   var u = check_login(res);
@@ -450,6 +558,8 @@ app.post(config.baseUrl + '/contact', function(req, res){
     mutil.renderError(res, error);
   })
 });
+
+/*更新联系人*/
 app.put(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var contact = AV.Object.createWithoutData('Contact',req.params.id);
@@ -468,6 +578,7 @@ app.put(config.baseUrl + '/contact/:id', function (req, res){
     mutil.renderError(res,error);
   });
 });
+
 app.get(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
@@ -486,6 +597,7 @@ app.get(config.baseUrl + '/contact/:id', function (req, res){
     }
   });
 });
+
 //如果身份证或者驾驶证存在，就返回该用户的联系人
 app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, res){
   var u = check_login(res);
@@ -506,6 +618,7 @@ app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, 
     }
   });
 });
+
 //获取一个用户所有联系人
 app.get(config.baseUrl + '/contact/all', function (req, res){
   var u = check_login(res);
@@ -520,6 +633,7 @@ app.get(config.baseUrl + '/contact/all', function (req, res){
     }
   });
 });
+
 //删除一个联系人
 app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
@@ -539,6 +653,7 @@ app.delete(config.baseUrl + '/contact/:id', function (req, res){
     }
   });
 });
+
 /*
   查询字典表
  */
@@ -551,6 +666,21 @@ app.get(config.baseUrl + '/dict/:key', function (req, res){
   mutil.renderData(res, mconfig.convertDictToList(key));
 });
 
+//上传文件
+app.post(config.baseUrl + '/attachment', function (req, res){
+  var fType = req.body.fileType;
+  if(!fType){
+    fType = null;
+  }
+  saveFileThen(req, fType, function(attachment){
+    if(attachment){
+      mutil.renderData(res, {metaData:attachment.metaData(), id:attachment.id, url:attachment.url(),
+        name:attachment.name()});
+    }else{
+      mutil.renderError(res, {code:400, message:'上传失败'});
+    };
+  });
+});
 /*
   User defined fuctions
  */
@@ -565,6 +695,7 @@ function transformLoan(l){
   }
   return {
       id: l.id,
+      objectId:l.id,
       amount: l.get('amount'),
       createdAt: formatTime(l.createdAt),
       loaner: transformContact(loaner),
@@ -602,15 +733,15 @@ function transformContact(c){
     name: c.get('name'),
     email: c.get('email')
   };
-}
-
+};
 
 function formatTime(t) {
     var date = moment(t).format('YYYY-MM-DD HH:mm:ss');
     return date;
-}
+};
 
-function saveFileThen(req, f) {
+//todo: set fileType
+function saveFileThen(req, fType, f) {
     if (req.files == null) {
         f();
         return;
@@ -621,8 +752,8 @@ function saveFileThen(req, f) {
             if (err) {
                 return f();
             }
-            //var base64Data = data.toString('base64');
             var theFile = new AV.File(attachmentFile.name, data);
+            theFile.metaData('fileType', fType);
             theFile.save().then(function (theFile) {
                 f(theFile);
             }, function (err) {
@@ -632,7 +763,7 @@ function saveFileThen(req, f) {
     } else {
         f();
     }
-}
+};
 
 function check_login(res){
   var u = account.isLogin();
@@ -641,7 +772,7 @@ function check_login(res){
   }else{
     mutil.renderError(res, {code:501, message:'未登录，请重新登录！'});
   }
-}
+};
 
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求

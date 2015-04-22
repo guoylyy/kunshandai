@@ -12,7 +12,6 @@ function addMonth(d, monthOffset){
   return moment(d).add(monthOffset,'month');
 }
 
-
 /*
   render json 工具
  */
@@ -43,23 +42,26 @@ function logErrorFn(){
 }
 function renderForbidden(res) {
   mlog.log('render forbidden');
-  renderError(res, "Forbidden area.");
 }
-function renderResult(res, result, code, backLink) {
-  res.status(code).json({result: result, backLink: backLink, code:code});
+function renderNotFound(res){
+  renderError(res, {code:404, message:'找不到对象!'});
+}
+function renderResult(res, result, code) {
+  res.status(code).json({result: result, code:code});
 }
 function renderData(res, data) {
   res.status(200).json({data: data, code:200});
 }
-
+function renderDataWithCode(res, data, code) {
+  res.status(code).json({data: data, code:code});
+}
 function wrapperStrToDate(dateStr){
   return new Date(dateStr);
 }
 
-
-
-
 exports.doErr=doErr;
+exports.renderDataWithCode = renderDataWithCode;
+exports.renderNotFound=renderNotFound;
 exports.renderSuccess=renderSuccess;
 exports.renderError=renderError;
 exports.rejectFn=rejectFn;
@@ -68,6 +70,5 @@ exports.logErrorFn=logErrorFn;
 exports.renderResult=renderResult;
 exports.renderData=renderData;
 exports.wrapperStrToDate=wrapperStrToDate;
-
 
 exports.addMonth=addMonth;

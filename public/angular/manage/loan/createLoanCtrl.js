@@ -81,7 +81,7 @@ define(['app',"underscore"],function(app,_) {
 				
 			}).catch(function(){
 			
-				SweetAlert.error("新建放款失败", "服务器出了点小差", "error");
+				SweetAlert.error("新建放款失败", "服务器开了点小差", "error");
 			})
 		};
 
@@ -135,7 +135,7 @@ define(['app',"underscore"],function(app,_) {
 		};
 
 		$scope.activeModalCancel = function(){
-				$scope.modalInstance.dismiss('cancel');
+				$scope.activeModal.dismiss('cancel');
 		}
 
 		$scope.activeModalFinish = function(){
@@ -156,6 +156,8 @@ define(['app',"underscore"],function(app,_) {
 				$scope.loanInfo.actived  = false;
 				SweetAlert.error("放款失败", "服务器内部错误");
 			});
+
+			$scope.activeModal.close();
 		}
 		
 		$scope.activeLoan = function(){
@@ -167,13 +169,11 @@ define(['app',"underscore"],function(app,_) {
 				resolve:{
 					payments:function(){
 						return LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
-							return data;
+							return $scope.payments = data[0];
 						});
 					}
 				}
 			});
-
-			
 
 		}
 
@@ -187,10 +187,9 @@ define(['app',"underscore"],function(app,_) {
 		
 		$scope.loanInfo = LoanService.getLocal();
 
-		$scope.loanInfo.loanType =  (loanTypes && loanTypes !== '')? loanTypes.data[0].value : '';
+		// $scope.loanInfo.loanType =  (loanTypes && loanTypes !== '')? loanTypes.data[0].value : '';
 
-		$scope.loanInfo.payWay = (repayTypes && repayTypes != '')? repayTypes.data[0].value : '';
-
+		// $scope.loanInfo.payWay = (repayTypes && repayTypes != '')? repayTypes.data[0].value : '';
 		
 	}]);
 });

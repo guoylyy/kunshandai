@@ -134,24 +134,46 @@ define(['app',"underscore"],function(app,_) {
 			
 		};
 
-		$scope.activeLoan = function(){
+		$scope.activeModalCancel = function(){
+				$scope.modalInstance.dismiss('cancel');
+		}
 
+		$scope.activeModalFinish = function(){
+			
 			LoanService.assure($scope.loanInfo.objectId).then(function(res){
 
-				$scope.loanInfo.actived = true;
-				
-				SweetAlert.success("放款成功", "");
+			$scope.loanInfo.actived = true;
+			
+			SweetAlert.success("放款成功", "");
 
-				LoanService.paybacks($scope.loanInfo.objectId).then(function(res){
-					$scope.loanInfo.paybacks = res.data.data;
-				},function(){
-					console.log("获取还款计划失败");
-				})
+			LoanService.paybacks($scope.loanInfo.objectId).then(function(res){
+				$scope.loanInfo.paybacks = res.data.data;
+			},function(){
+				console.log("获取还款计划失败");
+			})
 
 			},function(res){
 				$scope.loanInfo.actived  = false;
 				SweetAlert.error("放款失败", "服务器内部错误");
 			});
+		}
+		
+		$scope.activeLoan = function(){
+
+			$scope.activeModal = $modal.open({
+				templateUrl: '/angular/manage/loan/activeModal.html',
+				size:'lg',
+				scope:$scope,
+				resolve:{
+					payments:function(){
+						return LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
+							return data;
+						});
+					}
+				}
+			});
+
+			
 
 		}
 

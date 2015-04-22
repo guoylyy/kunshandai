@@ -1,0 +1,37 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">放款详情</h4>
+</div>
+<div class="modal-body">
+<div class="ks-panel">
+  <h4>合同编号:{{payments.objectId}}</h3>
+  <div class="ks-divider"></div>
+  <h4>放款金额:{{payments.outMoney}}</h3>
+  <div class="ks-divider"></div>
+  <h4>收入明细:</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>利息</th>
+        <th>履约保证金</th>
+         <th>服务费</th>
+        <th>其他费用</th>
+        <th>暂收金额</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{-payments.interestsMoney}}</td>
+        <td>{{-payments.assureCost}}</td>
+        <td>{{-payments.serviceCost}}</td>
+        <td>{{-payments.otherCost}}%</td>
+        <td>{{-payments.keepCost}}%</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" ng-click="activeModalCancel()">取消放款</button>
+  <button type="button" class="btn btn-success" ng-click="activeModalFinish()">放款完成</button>
+</div>

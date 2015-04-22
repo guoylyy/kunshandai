@@ -85,6 +85,19 @@ define(['../../app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
+			getPayments:function(id){
+
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+loanUrl+"/"+id+"/payments")
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res.data);
+				});
+
+				return deferred.promise;
+			},
 			create : function(loan){
 				
 				var deferred = $q.defer();

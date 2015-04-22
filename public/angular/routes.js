@@ -25,12 +25,7 @@ define(['app'],function(app){
 		    })
 
 		     // manage module routes
-		    .state('manage',{
-		    	url:"/manage",
-		    	views:{
-		    		"main":{templateUrl: "/angular/manage/index/index.html"}
-		    	}
-		    })
+		    
 		    .state('index',{
 		    	url:"#index",
 		    	views:{
@@ -43,11 +38,22 @@ define(['app'],function(app){
 		    		"main":{templateUrl: "/angular/manage/loan/loan.html"}
 		    	}
 		    })
-		    .state('trashLoans',{
-		    	url:"#loan/trash",
+		    .state('draftLoans',{
+		    	url:"#loan/draft?page",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/loan/trash/trash.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/loan/draft/draft.html",
+		    			resolve:{
+		    				draftLoans:function(LoanService,$stateParams){
+		    					return LoanService.getDraft($stateParams.page || 1).then(function(data){
+		    						return data;
+		    					});
+		    				}	
+		    			},
+		    			controller: "DraftLoanCtrl"
+		    		}
 		    	}
+		    	
 		    })
 		    .state('collectPendding',{
 		    	url:"#collect/pendding",
@@ -129,10 +135,10 @@ define(['app'],function(app){
 		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
 		    	resolve:{
 		    		loanTypes:function(){
-		    			 return {};
+		    			 return '';
 		    		},
 		    		repayTypes:function(){
-		    			 return {};
+		    			 return '';
 		    		},
 		    		steps:function(){
 		    			return [false,true,false];
@@ -146,10 +152,10 @@ define(['app'],function(app){
 		    	templateUrl: "/angular/manage/common/contract.html",
 		    	resolve:{
 		    		loanTypes:function(){
-		    			 return {};
+		    			 return '';
 		    		},
 		    		repayTypes:function(){
-		    			 return {};
+		    			 return '';
 		    		},
 		    		steps:function(){
 		    			return [false,false,true];
@@ -157,6 +163,11 @@ define(['app'],function(app){
 		    	},
 		    	controller: "CreateLoanCtrl"
 
+		    }).state('manage',{
+		    	url:"/manage",
+		    	views:{
+		    		"main":{templateUrl: "/angular/manage/index/index.html"}
+		    	}
 		    });
 
 	}]);

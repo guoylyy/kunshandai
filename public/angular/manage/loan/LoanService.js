@@ -61,6 +61,30 @@ define(['../../app','underscore'],function(app,_){
 			getLocal:function(){
 				return localLoan;
 			},
+			get:function(page){
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+loanUrl+"/all/"+page)
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res.data);
+				});
+
+				return deferred.promise;
+			},
+			getDraft:function(page){
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+loanUrl+"/draft/"+page)
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res.data);
+				});
+
+				return deferred.promise;
+			},
 			create : function(loan){
 				
 				var deferred = $q.defer();

@@ -43,7 +43,7 @@ define(['app',"underscore"],function(app,_) {
 			}
 		};
 		var dateChange = function(){
-			if(!$scope.loanInfo.startDate){
+			if(!$scope.loanInfo.startDate || !$scope.loanInfo.spanMonth){
 				return;
 			}
 			var date = new Date($scope.loanInfo.startDate);
@@ -164,6 +164,10 @@ define(['app',"underscore"],function(app,_) {
 		$scope.gr = ContactService.getAssurer();
 		
 		$scope.loanInfo = LoanService.getLocal();
+
+		$scope.loanInfo.loanType =  (loanTypes && loanTypes !== '')? loanTypes.data[0].value : '';
+
+		$scope.loanInfo.payWay = (repayTypes && repayTypes != '')? repayTypes.data[0].value : '';
 
 		
 	}]);

@@ -3,13 +3,13 @@
 			<h4>合同详情</h4>
 		</div>
 		<div class="row">
-			<div class="col-md-10">
+			<div class="col-md-11">
 				<h4>合同编号: {{loanInfo.objectId}}</h4>
 			</div>
-			<div class=" col-md-2">
+			<div class=" col-md-1">
 			<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
-			<button class="btn btn-success " ng-click="activeLoan()" ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
-			<button class="btn btn-info " type="submit" onclick="window.print()">打印合同</button>
+			<button class="btn btn-success " ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
+<!-- 			<button class="btn btn-info " type="submit" onclick="window.print()">打印合同</button> -->
 			</div>
 		</div>
 		<div class="ks-panel panel panel-primary">

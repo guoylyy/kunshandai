@@ -76,7 +76,7 @@ define(['app',"underscore"],function(app,_) {
 			
 			}).then(function(){
 						
-					$state.go('contractCreated');
+				$state.go('contractCreated');
 
 				
 			}).catch(function(){

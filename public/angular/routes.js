@@ -55,10 +55,20 @@ define(['app'],function(app){
 		    	}
 		    	
 		    })
-		    .state('collectPendding',{
-		    	url:"#collect/pendding",
+		    .state('collectPending',{
+		    	url:"#collect/pending",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/collect/collect.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/collect/collect.html",
+		    			resolve:{
+		    				loans:function(LoanService,$stateParams){
+		    					return LoanService.getUnpayedList($stateParams.page || 1).then(function(data){
+		    						return data;
+		    					});
+		    				}	
+		    			},
+		    			controller: "CollectController"
+		    		}
 		    	}
 		    })
 		    .state('collectDone',{

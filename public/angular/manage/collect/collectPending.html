@@ -1,5 +1,5 @@
 <div class="ks-dividing">
-	<h4>收款管理 -> {{ ('collectPending' | isState)? '待收款项目':'已收款项目'}}</h4>
+	<h4>收款管理 -> {{ ('collectPendding' | isState)? '待收款项目':'已收款项目'}}</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
@@ -70,12 +70,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="loan in loans">
-				<td>{{loan.loanObjectId}}</td>
-				<td>{{loan.amount}}</td>
-				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
-				<td>{{loan.payDate || date = "yyyy-MM-dd"}}</td>
-				<td>{{loan.payMoney}}</td>
+			<tr>
+				<td>A9823420</td>
+				<td>1,000,000</td>
+				<td>5/24</td>
+				<td>2015/4/21</td>
+				<td>2,000</td>
 				<td>
 					<div class="ui dropdown">
 						<i class="chevron circle down icon"></i>
@@ -96,10 +96,52 @@
 				</td>
 			</tr>
 
+			<tr>
+				<td>A9823420</td>
+				<td>1,000,000</td>
+				<td>5/24</td>
+				<td>2015/4/21</td>
+				<td>2,000</td>
+				<td>
+					<div class="dropdown">
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul class="dropdown-menu" role="menu">
+							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
+							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
+							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>A9823420</td>
+				<td>1,000,000</td>
+				<td>5/24</td>
+				<td>2015/4/21</td>
+				<td>2,000</td>
+				<td>
+					<div class="dropdown">
+						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<ul class="dropdown-menu" role="menu">
+							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
+							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
+							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+						</ul>
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
 <div class="ks-panel">
-	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+	<ul class="pagination pagination-sm">
+		<li class="disabled"><a href="#">«</a></li>
+		<li class="active"><a href="#">1</a></li>
+		<li><a href="#">2</a></li>
+		<li><a href="#">3</a></li>
+		<li><a href="#">4</a></li>
+		<li><a href="#">5</a></li>
+		<li><a href="#">»</a></li>
+	</ul>
 </div>

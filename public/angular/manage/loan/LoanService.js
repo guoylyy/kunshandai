@@ -85,6 +85,18 @@ define(['../../app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
+			getUnpayedList:function(page){
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+loanUrl+"/payBacks/unpayed/"+page)
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res.data);
+				});
+
+				return deferred.promise;
+			},
 			getPayments:function(id){
 
 				var deferred = $q.defer();

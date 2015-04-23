@@ -386,17 +386,22 @@ app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
 });
 
 //按条件分页列出项目当前还款情况
+//目前列出还款金额是以当日为节点计算需要还款的金额
 app.get(config.baseUrl + '/payBack/list/:pn', function (req, res){
   var pageNumber = req.params.pn;
-  var payed = true;
-  //获取抵押方式
+  var u = check_login(res);
   
-  //列出满足当前条件
+  //过滤条件设置
+  var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('owner', u);
+  if(req.query.loanType)
+    loanQuery.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
   var query = new AV.Query('LoanPayBack');
-  query.greaterThanOrEqualTo('payDate',req.query.startDate);
+  query.greaterThanOrEqualTo('payDate',req.query.startDate); 
   query.lessThanOrEqualTo('payDate', req.query.endDate);
-  query.equalTo('status',mconfig.loanPayBackStatus.paying.value);
+  query.equalTo('status', parseInt(req.query.status)); //贷款状态过滤
   query.include('loan');
+  query.matchesQuery('loan', loanQuery);
 
   var totalPageNum = 1;
   var resultsMap = {};
@@ -415,7 +420,7 @@ app.get(config.baseUrl + '/payBack/list/:pn', function (req, res){
           success: function(lpbList){
             var fList = [];
             for (var i = 0; i < lpbList.length; i++) {
-              fList.push(concretePayBack(lpbList[i]), lpbList[i].get('loan'));
+              fList.push(concretePayBack(lpbList[i], lpbList[i].get('loan')));
             };
             resultsMap['values'] = fList;
             mutil.renderData(res, resultsMap);
@@ -428,25 +433,20 @@ app.get(config.baseUrl + '/payBack/list/:pn', function (req, res){
   });
 }); 
 
+//还款:不能还最后一期
 app.post(config.baseUrl + '/payBack/:id', function (req, res){
   var payBackId = req.params.id;
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
   loanPayBack.fetch().then(function(p){
-    //还款
-    p.set('payBackMoney', req.body.payBackMoney);
-    p.set('payBackDate', new Date(req.body.payBackDate));
-    p.set('status',mconfig.loanPayBackStatus.completed.value);
-    p.save().then(function(np){
-      var l = p.get('loan');
-      l.fetch().then(function(loan){
-        if(p.get('order') == loan.get('payTotalCircle')){
-          loan.set('status', mconfig.loanStatus.completed.value);
-          loan.save().then(function(rloan){
-            mutil.renderDataWithCode(res, true, 201);
-          },function(error){
-            mutil.renderError(res, error);
-          });
-        }else{
+    var l = p.get('loan');
+    l.fetch().then(function(loan){
+      if(p.get('order') == loan.get('payTotalCircle')){
+        mutil.renderError(res, {code:500, message:'这是最后一期还款，请跳转到结清'});
+      }else{
+        p.set('payBackMoney', req.body.payBackMoney);
+        p.set('payBackDate', new Date(req.body.payBackDate));
+        p.set('status',mconfig.loanPayBackStatus.completed.value);
+        p.save().then(function(np){
           var query = new AV.Query('LoanPayBack');
           query.equalTo('order', p.get('order') + 1);
           query.equalTo('loan', p.get('loan'));
@@ -468,11 +468,8 @@ app.post(config.baseUrl + '/payBack/:id', function (req, res){
               mutil.renderError(res, error);
             }
           });
-        }
-      });
-      //mutil.renderSuccess(res);
-    },function(error){
-      mutil.renderError(res, error);
+        });
+      }
     });
   },
   function(error){
@@ -481,28 +478,32 @@ app.post(config.baseUrl + '/payBack/:id', function (req, res){
 
 });
 
-//结清之后的账单生成
+//结清账单生成
 app.post(config.baseUrl + '/loan/:id/finish', function (req, res){
 
 });
 
+//结清
+
+
 //项目调整
 //流程 结清当前项目 + 生成一个新项目
-
-
 function concretePayBack(lpb, loan){
   var result = {};
+  console.log(loan);
   result['loanObjectId'] = loan.id;
   result['payObjectId'] = lpb.id;
   result['payTotalCircle'] = loan.get('payTotalCircle');
   result['payCurrCircle'] = lpb.get('order');
   result['payDate'] = lpb.get('payDate');
   result['amount'] = loan.get('amount');
-  //应收金额 = 按时还款金额 + 违约金
+  //应收金额 = 按时还款金额 + 违约金:以当日为节点计算
   var overdueMoney = 0;
   result['payMoney'] = lpb.get('payMoney') + overdueMoney;
   return result;
 };
+
+
 
 
 //需要根据最近的还款周期列出项目，这个需要反向生成

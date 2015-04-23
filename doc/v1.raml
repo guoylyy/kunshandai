@@ -13,6 +13,8 @@ traits:
 /account:        
   /login:
     post:
+      description:
+        登录系统
       queryParameters:
         mobilePhoneNumber:
           description: |
@@ -52,10 +54,9 @@ traits:
                   "code": 211,
                   "message": "Could not find user"
                 }
-      description: login system with mobilePhoneNumber & password
   /logout:
     get:
-      description: logout current user
+      description: 登出当前用户
       responses:
         200:
           body:
@@ -72,7 +73,7 @@ traits:
                 }
   /isLogin:
     get:
-      description: check is current login or not
+      description: 查看用户是否已登录
       responses:
         200:
           body:
@@ -98,7 +99,7 @@ traits:
   /register:
     post:
       description: |
-        Register a new user and verify mobilePhoneNumber (close verify in leancloud if necessary)
+        注册用户
       queryParameters:
         mobilePhoneNumber:
           description: |
@@ -651,13 +652,10 @@ traits:
                   "code": 404,
                   "message": "找不到对象!"
                 }  
-  /payBacks:
-    # /already/{pn}:
-    #   description: |
-    #     已收款的项目列表
-    /unpayed/{pn}:
+  /payBack:
+    /list/{pn}:
       description: |
-        未收款的项目列表(分页)
+        分条件列出收款管理内项目
       get:
         queryParameters:
           startDate:
@@ -668,6 +666,14 @@ traits:
             type: date
             description: |
               终止时间
+          loanType:
+            type: string
+            description: |
+              抵押类型，从字典表获取value，所有贷款类型的话就不传或者undefined
+          status:
+            type: number
+            description: |
+              贷款类型 1:未还  3:已还
         responses:
           200:
             body:
@@ -692,6 +698,47 @@ traits:
                       },
                       "code": 200
                   }
+    /{id}:
+      post:
+        description: |
+          还款,但是不能还最后一期
+        queryParameters:
+          payBackMoney:
+            type: number
+            description: |
+              实际还的钱
+          payBackDate:
+            type: number
+            description: |
+              实际还钱日期
+        responses:
+          200:
+            description: |
+              成功，返回下一期的还款任务
+            body:
+              application/json:
+                schema: | 
+                  {
+                    "data": {   
+                      "loanObjectId": "55378bc2e4b0aff70792dc1c",
+                      "payObjectId": "55378bc7e4b0aff70792dc60",
+                      "payTotalCircle": 3,
+                      "payCurrCircle": 2,
+                      "payDate": "2015-07-22T00:00:00+08:00",
+                      "amount": 100000,
+                      "payMoney": 633333.3333333334
+                    },
+                    "code": 200
+                  }
+          500:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "code": 500,
+                    "message": "这是最后一期还款，请跳转到结清"
+                  }
+
 
 /contact:
   post:

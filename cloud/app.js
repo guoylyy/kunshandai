@@ -420,7 +420,7 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
           success: function(lpbList){
             var fList = [];
             for (var i = 0; i < lpbList.length; i++) {
-              fList.push(concretePayBack(lpbList[i], lpbList[i].get('loan')));
+              fList.push(concretePayBack(lpbList[i], lpbList[i].get('loan'), 0));
             };
             resultsMap['values'] = fList;
             mutil.renderData(res, resultsMap);
@@ -456,7 +456,7 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
                 var pb = pbs[0];
                 pb.set('status', mconfig.loanPayBackStatus.paying.value);
                 pb.save().then(function(npb){
-                  mutil.renderData(res, concretePayBack(pb, loan));
+                  mutil.renderData(res, concretePayBack(pb, loan, 0));
                 });
               }else if(pbs.length==0 && p.get('order') > 0){
                 mutil.renderSuccess(res);
@@ -478,32 +478,59 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
 
 });
 
-app.post(config.baseUrl + '/payBack/:id/bill', function (req, res){
-  
+//计算还款金额: 应还
+app.post(config.baseUrl + '/loan/payBack/:id/bill', function (req, res){
+  var payDate = req.body.payDate;
+  //根据还款时间计算应还金额
+  //判断是按天计算利息还是按月计算违约金 
+  var loanPayBack = AV.Object.createWithoutData('LoanPayBack', req.params.id);
+  loanPayBack.fetch().then(function(pb){
+    var l = pb.get('loan');
+    l.fetch().then(function(loan){
+      if(pb.get('order') == loan.get('payTotalCircle')){
+        mutil.renderError(res, {code:500, message:'这是最后一期还款，请跳转到结清'});
+      }else{
+        var overdueMoney = calculateOverdueMoney(loan, pb.get('payDate'), req.body.payBackDate);
+        mutil.renderData(res, concretePayBack(pb, loan, overdueMoney));
+      }
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
 });
 
+
 //结清账单生成
-app.post(config.baseUrl + '/loan/:id/finish', function (req, res){
+app.post(config.baseUrl + '/loan/payBack/:id/finishBill', function (req, res){
 
 });
 
 //结清
 
 
+function calculateOverdueMoney(loan, baseDate, payDate){
+  var a = moment(baseDate);
+  var b = moment(payDate);
+  var offsetDay = b.diff(a, 'days');
+  if(offsetDay <= 0){
+    return 0;
+  }else{
+    return loan.get('amount') * offsetDay * loan.get('overdueCostPercent');
+  }
+};
+
 //项目调整
 //流程 结清当前项目 + 生成一个新项目
-function concretePayBack(lpb, loan){
+function concretePayBack(lpb, loan, overdueMoney){
   var result = {};
-  console.log(loan);
   result['loanObjectId'] = loan.id;
   result['payObjectId'] = lpb.id;
   result['payTotalCircle'] = loan.get('payTotalCircle');
   result['payCurrCircle'] = lpb.get('order');
   result['payDate'] = lpb.get('payDate');
   result['amount'] = loan.get('amount');
-  //应收金额 = 按时还款金额 + 违约金:以当日为节点计算
-  var overdueMoney = 0;
   result['payMoney'] = lpb.get('payMoney') + overdueMoney;
+  result['overdueMoney'] = overdueMoney; //违约金
   return result;
 };
 

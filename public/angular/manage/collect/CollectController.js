@@ -14,6 +14,8 @@ define(['app'],function(app) {
 			$scope.loanTypes = loanTypes;
 
 			$scope.timeRanges = timeRanges;
+
+			$scope.currentState = $state.current;
 			
 			$scope.selected = {};
 

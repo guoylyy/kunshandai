@@ -95,17 +95,14 @@ define(['../../app','underscore'],function(app,_){
 				});
 
 			},
-			getPayedList:function(page){
-				var deferred = $q.defer();
-
-				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,JSON.stringify({status:3}))
+			getPayedList:function(page,startDate,endDate,loanType){
+				var params = {status:3,startDate:startDate,endDate:endDate,loanType:loanType};
+				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,{params:params})
 				.then(function(res){
 					return res.data.data;
 				},function(res){
 					return res.data;
 				});
-
-				return deferred.promise;
 			},
 			getPayments:function(id){
 

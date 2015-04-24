@@ -89,15 +89,32 @@ define(['app'],function(app){
 		    	}
 		    })
 		    .state('collectDone',{
-		    	url:"#collect/done",
+		    	url:"#collect/done?page&startDate&endDate&loanType",
 		    	views:{
 		    		"main":{
 		    			templateUrl: "/angular/manage/collect/collect.html",
 		    			resolve:{
-		    				loans:function(LoanService,$stateParams){
-		    					return LoanService.getPayedList($stateParams.page || 1).then(function(data){
+		    				loans:function(DictService,LoanService,$stateParams){
+		    					var startDate, endDate,loanType;
+		    					if(!$stateParams.startDate){
+		    						var timeRanges = DictService.get('timeRanges');
+		    						startDate = timeRanges[0].startDate;
+		    						endDate = timeRanges[0].endDate;
+		    						$stateParams.startDate = startDate;
+		    						$stateParams.endDate = endDate;
+		    					} 
+		    					startDate = new Date(parseInt($stateParams.startDate));
+		    					endDate = new Date(parseInt($stateParams.endDate));
+		    					loanType = $stateParams.loanType;
+		    					return LoanService.getPayedList($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
 		    						return data;
 		    					});
+		    				},
+		    				loanTypes:function(DictService){
+		    					return DictService.get('loanTypes');
+		    				},
+		    				timeRanges:function(DictService){
+		    					return DictService.get("timeRanges");
 		    				}	
 		    			},
 		    			controller: "CollectController"

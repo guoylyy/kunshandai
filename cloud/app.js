@@ -478,6 +478,10 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
 
 });
 
+app.post(config.baseUrl + '/payBack/:id/bill', function (req, res){
+  
+});
+
 //结清账单生成
 app.post(config.baseUrl + '/loan/:id/finish', function (req, res){
 
@@ -502,8 +506,6 @@ function concretePayBack(lpb, loan){
   result['payMoney'] = lpb.get('payMoney') + overdueMoney;
   return result;
 };
-
-
 
 
 //需要根据最近的还款周期列出项目，这个需要反向生成

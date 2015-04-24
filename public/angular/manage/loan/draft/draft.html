@@ -32,13 +32,13 @@
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>合同新建时间:</li>
-					<li><a href="#">所有</a></li>
-					<li><a href="#">小于一个月</a></li>
-					<li><a href="#">1~3个月</a></li>
-					<li><a href="#">3~6个月</a></li>
-					<li><a href="#">6~9个月</a></li>
-					<li><a href="#">9~12个月</a></li>
-					<li><a href="#">大于12个月</a></li>
+					<li><a >所有</a></li>
+					<li><a >小于一个月</a></li>
+					<li><a >1~3个月</a></li>
+					<li><a >3~6个月</a></li>
+					<li><a >6~9个月</a></li>
+					<li><a >9~12个月</a></li>
+					<li><a >大于12个月</a></li>
 				</ul>
 			</div>
 		</div>
@@ -66,20 +66,20 @@
 				<td>{{loan.loanType.text}}</td>
 				<td>{{loan.payWay.text}}</td>
 				<td>
-					<div class="ui dropdown">
-						<i class="chevron circle down icon"></i>
-						<div class="menu">
-							<div class="item"></div>
-							<div class="item"></div>
-							<div class="item"></div>
-						</div>
-					</div>
-					<div class="dropdown">
-						<span class="glyphicon glyphicon-triangle-bottom"></span>
+				  <!--  <span class="dropdown" dropdown on-toggle="toggled(open)">
+				      <a href class="dropdown-toggle" dropdown-toggle>
+				        Click me for a dropdown, yo!
+				      </a>
+				      <ul class="dropdown-menu">
+				        <li ng-repeat="choice in items">
+				          <a href>{{choice}}</a>
+				        </li>
+				      </ul>
+				    </span> -->
+					<div class="dropdown" dropdown>
+						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
-							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
-							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+							<li><a role="menuitem" ng-click="activeLoan(loan.id)">放款</a></li>
 						</ul>
 					</div>
 				</td>
@@ -88,6 +88,6 @@
 	</table>
 </div>
 <div class="ks-panel">
-	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
 
 </div>

@@ -138,7 +138,7 @@ define(['app',"underscore"],function(app,_) {
 				$scope.activeModal.dismiss('cancel');
 		}
 
-		$scope.activeModalFinish = function(){
+		$scope.activeModalFinish = function(loanId){
 			
 			LoanService.assure($scope.loanInfo.objectId).then(function(res){
 
@@ -146,7 +146,7 @@ define(['app',"underscore"],function(app,_) {
 			
 			SweetAlert.success("放款成功", "");
 
-			LoanService.paybacks($scope.loanInfo.objectId).then(function(res){
+			LoanService.paybacks(loanId).then(function(res){
 				$scope.loanInfo.paybacks = res.data.data;
 			},function(){
 				console.log("获取还款计划失败");
@@ -161,16 +161,19 @@ define(['app',"underscore"],function(app,_) {
 		}
 		
 		$scope.activeLoan = function(){
-
+			//不可使用resolve
 			$scope.activeModal = $modal.open({
-				templateUrl: '/angular/manage/loan/activeModal.html',
+				templateUrl: '/angular/manage/common/active/activeLoanModal.html',
 				size:'lg',
 				scope:$scope,
 				resolve:{
 					payments:function(){
 						return LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
-							return $scope.payments = data[0];
+						 $scope.payments = data[0];
 						});
+					},
+					loanId:function(){
+						 $scope.loanId = $scope.loanInfo.objectId;
 					}
 				}
 			});

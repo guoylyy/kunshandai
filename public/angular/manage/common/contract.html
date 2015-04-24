@@ -96,7 +96,7 @@
 									<tbody>
 										<tr ng-repeat="p in loanInfo.paybacks" ng-class="{success:(p.status == 1),info:(status == 2)}">
 											<td>{{p.order}}</td>
-·											<td>{{p.payMoney}}</td>
+											<td>{{p.payMoney}}</td>
 											<td>{{p.payDate | date:"yyyy-MM-dd" }}</td>
 											<td ng-show="p.status === 1" class="text-info">正在还</td>
 											<td ng-show="p.status === 2" >未还</td>

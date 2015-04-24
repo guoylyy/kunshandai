@@ -15,7 +15,7 @@ define(['../app'],function(app){
 				{
 					startDate: start.getTime(),
 					endDate: end.setMonth(start.getMonth()+1),
-					text:'小于一个月'
+					text:'小于1个月'
 				},
 				{
 					startDate: start.setMonth(start.getMonth()+1),

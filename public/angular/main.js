@@ -65,6 +65,7 @@ require([
 		 'manage/contact/ContactService',
 		 'manage/common/upload/UploadController',
 		 'manage/common/upload/UploadService',
+		 'manage/common/active/ActiveLoanCtrl',
 		 'account/AccountController',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',

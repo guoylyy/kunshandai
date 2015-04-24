@@ -24,21 +24,11 @@ define(['app'],function(app) {
 			$scope.changeLoanType = function(loanType){
 				$scope.selected.loanType = loanType;
 				$stateParams.loanType = loanType;
-				// $state.transitionTo($state.current, {loanType:loanType}, { 
-			 //      reload: true, inherit: false, notify: false 
-			 //    });
-			    $state.go($state.current,{loanType:loanType},{reload:true});
+			    $state.go($state.current, {loanType:loanType}, {reload:true});
 			}
 
 			$scope.pageChanged = function(){
-				
-				$stateParams.page = $scope.currentPage;
-				
-				$state.transitionTo($state.current, $stateParams, {
-				    reload: true,
-				    inherit: false,
-				    notify: true
-				});
+				$state.go($state.current, {page:$scope.currentPage}, {reload: true});
 			}
 
 	}]);

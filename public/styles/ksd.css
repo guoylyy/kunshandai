@@ -123,7 +123,10 @@ table td,table th{
 .ks-panel table thead tr{
 	background: #e7e7e7;
 }
-
+.ks-panel .dropdown-menu{
+	min-width: 60px;
+	left: -12px;
+}
 .ks-account{
 	margin-top: -17px;
 	background: url(../images/sh_bg.jpg) no-repeat center center fixed;

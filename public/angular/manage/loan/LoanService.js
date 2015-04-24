@@ -36,10 +36,10 @@ define(['../../app','underscore'],function(app,_){
 
 				//format string to float
 				loan.amount = Number.parseFloat(loan.amount);
-				loan.interests = Number.parseFloat(loan.interests);
+				loan.interests = Number.parseFloat(loan.interests) / 100;
 				loan.assureCost = Number.parseFloat(loan.assureCost);
 				loan.serviceCost = Number.parseFloat(loan.serviceCost);
-				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent);
+				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent) / 1000;
 				loan.otherCost = Number.parseFloat(loan.otherCost);
 				loan.keepCost = Number.parseFloat(loan.keepCost);
 				

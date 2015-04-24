@@ -7,7 +7,7 @@ define(['app'],function(app) {
 
 			$scope.totalLoans = loans.totalNum;
 
-			$scope.currentPage = loans.page || 1;
+			$scope.currentPage = $stateParams.page || 1;
 
 			$scope.loans = 	loans.values;
 

@@ -4,7 +4,7 @@ define(['app'],function(app){
 		
 		$scope.totalLoans = draftLoans.totalNum;
 
-		$scope.currentPage = draftLoans.page || 1;
+		$scope.currentPage =  $stateParams.page || 1;
 
 		$scope.loans = 	draftLoans.values;
 
@@ -12,7 +12,7 @@ define(['app'],function(app){
 			
 			$stateParams.page = $scope.currentPage;
 
-			$state.go($state.current, {page:$scope.currentPage}, {reload: true});
+			 $state.go($state.current, {page:$scope.currentPage}, {reload: true});
 		}
 		
 		$scope.activeModalCancel = function(){

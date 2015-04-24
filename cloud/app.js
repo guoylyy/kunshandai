@@ -703,8 +703,10 @@ app.get(config.baseUrl + '/dict/:key', function (req, res){
 });
 
 //上传文件
-app.post(config.baseUrl + '/attachment', function (req, res){
+app.post(config.baseUrl + '/attachment', function (req, res){  
+  
   var fType = req.body.fileType;
+  
   if(!fType){
     fType = null;
   }

@@ -27,8 +27,9 @@ define(['app','underscore'],function(app,_){
 		                var j  = i;
 		                $upload.upload({
 		                    url: ApiURL+'/attachment',
-		                    // fields: {'fileType': fileType},
-		                    data: {'fileType': fileType},
+		                    fields: {'fileType': fileType},
+		                    // sendObjectsAsJsonBlob: true,
+		                    // data: {fileType: fileType},
 		                    file: file,
 		                    fileFormDataName:'attachment'
 		                }).progress(function (evt) {

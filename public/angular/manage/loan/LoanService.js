@@ -85,14 +85,24 @@ define(['../../app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
-			getUnpayedList:function(page){
+			getUnpayedList:function(page,startDate,endDate,loanType){
+				var params = {status:1,startDate:startDate,endDate:endDate,loanType:loanType};
+				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,{params:params})
+				.then(function(res){
+					return res.data.data;
+				},function(res){
+					return res.data;
+				});
+
+			},
+			getPayedList:function(page){
 				var deferred = $q.defer();
 
-				$http.get(ApiURL+loanUrl+"/payBacks/unpayed/"+page)
+				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,JSON.stringify({status:3}))
 				.then(function(res){
-					deferred.resolve(res.data.data);
+					return res.data.data;
 				},function(res){
-					deferred.reject(res.data);
+					return res.data;
 				});
 
 				return deferred.promise;

@@ -70,6 +70,7 @@ require([
 		 'account/signup/SignupController',
 		 'manage/loan/CreateLoanCtrl',
 		 'manage/loan/draft/DraftLoanCtrl',
+		 'manage/collect/CollectController',
 		 'manage/nav/NavController',
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',

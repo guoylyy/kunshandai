@@ -30,7 +30,10 @@ define(['../../app'],function(app){
 			responseError:function(response){
 				if(response.status === 501){
 					window.location = "/login";
-				}else{
+				}else if(response.status === 404){
+					alert("地址未找到");
+				}
+				else{
 					return $q.reject(response.data.message);
 				}
 			}

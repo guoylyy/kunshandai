@@ -8,8 +8,8 @@ define(['app',"underscore"],function(app,_) {
 		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes,steps,$modal,SweetAlert){
 		
 
-		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes.data : {};
-		$scope.repayTypes = (typeof repayTypes !== 'undefined' )? repayTypes.data : {};
+		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes : {};
+		$scope.repayTypes = (typeof repayTypes !== 'undefined' )? repayTypes : {};
 
 		$rootScope.stepActive = steps;
 
@@ -186,10 +186,6 @@ define(['app',"underscore"],function(app,_) {
 		$scope.gr = ContactService.getAssurer();
 		
 		$scope.loanInfo = LoanService.getLocal();
-
-		// $scope.loanInfo.loanType =  (loanTypes && loanTypes !== '')? loanTypes.data[0].value : '';
-
-		// $scope.loanInfo.payWay = (repayTypes && repayTypes != '')? repayTypes.data[0].value : '';
 		
 	}]);
 });

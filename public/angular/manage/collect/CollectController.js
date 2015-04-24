@@ -2,8 +2,8 @@
 
 define(['app'],function(app) {
 
-	return app.controller('CollectController', ["$scope","$location",'loans',
-			function($scope,$location,loans){
+	return app.controller('CollectController', ["$scope","$state","$stateParams","$location",'loans','loanTypes','timeRanges',
+			function($scope,$state,$stateParams,$location,loans,loanTypes,timeRanges){
 
 			$scope.totalLoans = loans.totalNum;
 
@@ -11,8 +11,25 @@ define(['app'],function(app) {
 
 			$scope.loans = 	loans.values;
 
-			$scope.loans = loans.values;
-		
+			$scope.loanTypes = loanTypes;
+
+			$scope.timeRanges = timeRanges;
+			
+			$scope.selected = {};
+
+			$scope.dateRange = function(rangeId){
+
+			}
+
+			$scope.changeLoanType = function(loanType){
+				$scope.selected.loanType = loanType;
+				$stateParams.loanType = loanType;
+				// $state.transitionTo($state.current, {loanType:loanType}, { 
+			 //      reload: true, inherit: false, notify: false 
+			 //    });
+			    $state.go($state.current,{loanType:loanType},{reload:true});
+			}
+
 			$scope.pageChanged = function(){
 				
 				$stateParams.page = $scope.currentPage;

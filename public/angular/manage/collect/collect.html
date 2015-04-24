@@ -33,25 +33,15 @@
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>收款时间:</li>
-					<li><a href="#">所有</a></li>
-					<li><a href="#">小于一个月</a></li>
-					<li><a href="#">1~3个月</a></li>
-					<li><a href="#">3~6个月</a></li>
-					<li><a href="#">6~9个月</a></li>
-					<li><a href="#">9~12个月</a></li>
-					<li><a href="#">大于12个月</a></li>
+					<li><a ui-sref="collectPending({startDate:'',endDate:''})" ui-sref-active="label label-warning">所有</a></li>
+					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="collectPending({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
 				</ul>
 			</div>
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
-					<li>抵押方式:</li>
-					<li><a href="#"><span class="label label-warning">所有<span class="glyphicon glyphicon-remove"></span></span></a></li>
-					<li><a href="#">房产抵押</a></li>
-					<li><a href="#">汽车抵押</a></li>
-					<li><a href="#">买房贷款</a></li>
-					<li><a href="#">买车贷款</a></li>
-					<li><a href="#">无抵押</a></li>
-					<li><a href="#">其他抵押</a></li>
+					<li>贷款类型:</li>
+					<li><a  ui-sref="collectPending({loanType:''})" ui-sref-active="label label-warning">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
+					<li ng-repeat="loanType in loanTypes"><a ui-sref="collectPending({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -74,7 +64,7 @@
 				<td>{{loan.loanObjectId}}</td>
 				<td>{{loan.amount}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
-				<td>{{loan.payDate || date = "yyyy-MM-dd"}}</td>
+				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney}}</td>
 				<td>
 					<div class="ui dropdown">

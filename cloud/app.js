@@ -387,7 +387,7 @@ app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
 
 //按条件分页列出项目当前还款情况
 //目前列出还款金额是以当日为节点计算需要还款的金额
-app.get(config.baseUrl + '/payBack/list/:pn', function (req, res){
+app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
   var pageNumber = req.params.pn;
   var u = check_login(res);
   
@@ -434,7 +434,7 @@ app.get(config.baseUrl + '/payBack/list/:pn', function (req, res){
 }); 
 
 //还款:不能还最后一期
-app.post(config.baseUrl + '/payBack/:id', function (req, res){
+app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
   var payBackId = req.params.id;
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
   loanPayBack.fetch().then(function(p){

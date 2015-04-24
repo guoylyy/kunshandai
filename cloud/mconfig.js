@@ -83,17 +83,29 @@ var loanTypes = {
 };
 
 var fileTypes ={
-	certificate: {
-		value: 'certificate',
-		text: '身份证'
+	inspection: {
+		value: 'inspection',
+		text: '现场考察'
 	},
-	contract: {
-		value: 'contact',
-		text: '合同'
+	certification: {
+		value: 'certification',
+		text: '证件'
 	},
-	image: {
-		value: 'image',
-		text: '图片'
+	credit: {
+		value: 'credit',
+		text: '信用'
+	},
+	agreement: {
+		value: 'agreement',
+		text: '协议'
+	},
+	receipt: {
+		value: 'receipt',
+		text: '收据'
+	},
+	other: {
+		value: 'other',
+		text: '其他'
 	}
 };
 

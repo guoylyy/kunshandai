@@ -435,6 +435,8 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
 
 //还款:不能还最后一期
 app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
+  //acl
+  
   var payBackId = req.params.id;
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
   loanPayBack.fetch().then(function(p){
@@ -502,11 +504,15 @@ app.post(config.baseUrl + '/loan/payBack/:id/bill', function (req, res){
 
 //结清账单生成
 app.post(config.baseUrl + '/loan/payBack/:id/finishBill', function (req, res){
-
+  //acl
 });
 
 //结清
+app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
+  //acl
+});
 
+//
 
 function calculateOverdueMoney(loan, baseDate, payDate){
   var a = moment(baseDate);

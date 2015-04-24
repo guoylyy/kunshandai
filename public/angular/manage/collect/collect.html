@@ -62,7 +62,7 @@
 		<tbody>
 			<tr ng-repeat="loan in loans">
 				<td>{{loan.loanObjectId}}</td>
-				<td>{{loan.amount}}</td>
+				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney}}</td>

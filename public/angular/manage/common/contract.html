@@ -43,11 +43,11 @@
 									
 										
 										<tr>
-											<td>{{loanInfo.loanType}}</td>
+											<td>{{loanInfo.loanType | cDisplay:"loanTypes"}}</td>
 											<td>{{loanInfo.amount}}</td>
 											<td>{{loanInfo.startDate | date:"yyyy-MM-dd"}}</td>
 											<td>{{loanInfo.endDate | date:"yyyy-MM-dd"}}</td>
-											<td>{{loanInfo.payWay}}</td>
+											<td>{{loanInfo.payWay | cDisplay:"payBackWays"}}</td>
 											<td>{{loanInfo.firstPayDate | date:"yyyy-MM-dd"}}</td>
 											<td>{{loanInfo.payCircle}}</td>
 											<td>{{loanInfo.payTotalCircle}}</td>
@@ -60,7 +60,7 @@
 											<th>利率（‰/月）</th>
 											<th>履约保证金（元）</th>
 											<th>服务费（元）</th>
-											<th>逾期违约金（元/月）</th>
+											<th>逾期违约金（‰/月）</th>
 											<th>其他费用（元）</th>
 											<th>暂收金额（元）</th>
 										</tr>
@@ -69,10 +69,10 @@
 									
 										
 										<tr>
-											<td>{{loanInfo.interests}}</td>
+											<td>{{loanInfo.interests * 100}}</td>
 											<td>{{loanInfo.assureCost}}</td>
 											<td>{{loanInfo.serviceCost}}</td>
-											<td>{{loanInfo.overdueCostPercent}}</td>
+											<td>{{loanInfo.overdueCostPercent * 1000}}</td>
 											<td>{{loanInfo.otherCost}}</td>
 											<td>{{loanInfo.keepCost}}</td>
 										</tr>
@@ -114,9 +114,9 @@
 		    			<div class="ks-panel panel panel-default">
 							<div class="panel-heading">抵押物材料</div>
 						    <div class="panel-body">
-						    	<div class="row">
+						    	<ul class="list-group">
 						    		
-						    	</div>
+						    	</ul>
 						    </div>
 						</div>
 		    		</div>

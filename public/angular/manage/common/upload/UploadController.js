@@ -3,6 +3,14 @@ define(['app','underscore'],function(app,_){
 		function($scope,$modalInstance,UploadService,SweetAlert,contact){
 		
 		$scope.contact = contact;
+  		
+  		$scope.attachmentType = 'certification';
+
+		$scope.fileList = [];
+
+		$scope.attchTypes = UploadService.getAttachmentTypes();
+
+		$scope.fileStatus = UploadService.getFileStatus();
 
 		$scope.finish= function () {
 			_.each($scope.fileList,function(file,index){
@@ -14,9 +22,6 @@ define(['app','underscore'],function(app,_){
     		$modalInstance.close($scope.fileList);
   		};	
 
-  		$scope.attachmentType = 'certification';
-
-		$scope.fileList = [];
 
 		$scope.$watch('files', function () {
 			if($scope.files && $scope.files.length){
@@ -25,14 +30,11 @@ define(['app','underscore'],function(app,_){
 
 				})	
 				$scope.fileList = _.union($scope.fileList,$scope.files);
-				UploadService.upload($scope.files);
+				UploadService.upload($scope.files,$scope.attachmentType);
 			}
 		  
 		});
 
-		$scope.attchTypes = UploadService.getAttachmentTypes();
-
-		$scope.fileStatus = UploadService.getFileStatus();
 
 		$scope.cancel = function () {
 		    if($scope.fileList.length){

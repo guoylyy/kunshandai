@@ -61,7 +61,7 @@
 			<tr ng-repeat="loan in loans">
 				<td>{{loan.id}}</td>
 				<td>{{loan.loaner.name}}</td>
-				<td>{{loan.amount}}</td>
+				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.createdAt | date:"yyyy-MM-dd" }}</td>
 				<td>{{loan.loanType.text}}</td>
 				<td>{{loan.payWay.text}}</td>

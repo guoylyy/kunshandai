@@ -10,7 +10,7 @@
             <tr>
               <th>文件名</th>
               <th>文件类型</th>
-               <th>文件大小</th>
+               <th>文件大小(M)</th>
               <th>上传状态</th>
               <th>操作</th>
             </tr>
@@ -19,7 +19,7 @@
             <tr ng-repeat="file in fileList">
               <td>{{file.name}}</td>
               <td>{{file.type}}</td>
-              <td>{{file.size}}</td>
+              <td>{{file.size/1000000 | number:2}}</td>
               <td  class="text-success" ng-show="!fileStatus[file.$$hashKey].error">
                 {{fileStatus[file.$$hashKey].percent}}%
               </td>

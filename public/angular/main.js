@@ -77,6 +77,7 @@ require([
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',
 		 'common/directive/floatNumberInput',
+		 'common/filter/cDisplay',
 		 'routes'
 ],function(angular) {
 	

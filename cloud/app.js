@@ -538,6 +538,7 @@ function concretePayBack(lpb, loan, overdueMoney){
   var result = {};
   result['loanObjectId'] = loan.id;
   result['payObjectId'] = lpb.id;
+  result['serialNumber'] = loan.get('serialNumber');
   result['payTotalCircle'] = loan.get('payTotalCircle');
   result['payCurrCircle'] = lpb.get('order');
   result['payDate'] = lpb.get('payDate');
@@ -767,7 +768,8 @@ function transformLoan(l){
       loanType: mconfig.getConfigMapByValue('loanTypes', l.get('loanType')),
       payWay: mconfig.getConfigMapByValue('payBackWays', l.get('payWay')),
       status: mconfig.getConfigMapByValue('loanStatus', l.get('status')),
-      payStatus: payStatus
+      payStatus: payStatus,
+      serialNumber: l.get('serialNumber')
   };
   return result;
 };

@@ -397,8 +397,10 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
   if(req.query.loanType)
     loanQuery.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
   var query = new AV.Query('LoanPayBack');
-  query.greaterThanOrEqualTo('payDate',req.query.startDate); 
-  query.lessThanOrEqualTo('payDate', req.query.endDate);
+  if(req.query.startDate)
+    query.greaterThanOrEqualTo('payDate',req.query.startDate); 
+  if(req.query.endDate)
+    query.lessThanOrEqualTo('payDate', req.query.endDate);
   query.equalTo('status', parseInt(req.query.status)); //贷款状态过滤
   query.include('loan');
   query.matchesQuery('loan', loanQuery);
@@ -436,7 +438,6 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
 //还款:不能还最后一期
 app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
   //acl
-  
   var payBackId = req.params.id;
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
   loanPayBack.fetch().then(function(p){

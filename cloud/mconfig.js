@@ -110,6 +110,12 @@ var fileTypes ={
 };
 
 
+var loanListTypes = {
+	
+
+};
+
+
 function convertDictToList(key){
 	if(key=='loanTypes'){
 		return getKeyValueList(loanTypes);

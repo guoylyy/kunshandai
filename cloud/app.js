@@ -363,25 +363,31 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
 *   1. 分页列出所有项目（不包括草稿项目)
 *   2. 分页列出草稿项目
 *******************************************/
-app.get(config.baseUrl + '/loan/all/:pn', function (req, res){
+app.get(config.baseUrl + '/loan/:listType/:pn', function (req, res){
   var u = check_login(res);
   var pageNumber = req.params.pn;
   var query = new AV.Query('Loan');
   query.include('loaner');
   query.include('assurer');
-  query.notEqualTo('status', mconfig.loanStatus.draft.value);
   query.equalTo('owner', u);
-  listLoan(res, query, pageNumber);
-});
 
-app.get(config.baseUrl + '/loan/draft/:pn', function (req, res){
-  var u = check_login(res);
-  var pageNumber = req.params.pn;
-  var query = new AV.Query('Loan');
-  query.include('loaner');
-  query.include('assurer');
-  query.equalTo('status', mconfig.loanStatus.draft.value);
-  query.equalTo('owner', u);
+  if(req.params.listType == 'draft'){
+    query.equalTo('status', mconfig.loanStatus.draft.value);
+  }else{
+    query.include('loanPayBacks');
+    query.notEqualTo('status', mconfig.loanStatus.draft.value);
+    var now = moment();
+    if(req.params.listType == mconfig.loanListTypes.normal.value){
+      query.lessThanOrEqualTo('currPayDate', now.add(1, 'month').toDate());
+    }else if(req.params.listType == mconfig.loanListTypes.overdue.value){
+      query.greaterThan('currPayDate', now.add(1, 'month').toDate());
+      query.lessThanOrEqualTo('currPayDate', now.add(3, 'month').toDate());
+    }else if(req.params.listType == mconfig.loanListTypes.badbill.value){
+      query.greaterThan('currPayDate', now.add(3, 'month').toDate());
+    }else if(req.params.listType == mconfig.loanListTypes.completed.value){
+      query.equalTo('status', mconfig.loanStatus.completed.value);
+    }
+  }
   listLoan(res, query, pageNumber);
 });
 
@@ -538,6 +544,7 @@ function concretePayBack(lpb, loan, overdueMoney){
   result['amount'] = loan.get('amount');
   result['payMoney'] = lpb.get('payMoney') + overdueMoney;
   result['overdueMoney'] = overdueMoney; //违约金
+  //result['payedMoney'] = loan.payedMoney;
   return result;
 };
 
@@ -732,18 +739,39 @@ function transformLoan(l){
   if(!assurer){
     assurer = null;
   }
-  return {
+  var listStatus;
+  if(l.get('status') == mconfig.loanStatus.completed.value){
+    payStatus = mconfig.loanListTypes.completed;
+  }else{
+    var now = new moment();
+    var diffMonth = now.diff(moment(l.get('currPayDate')), 'month');
+    if(diffMonth <= 0){
+      //正常
+      payStatus = mconfig.loanListTypes.normal;
+    }else if(diffMonth>=1 && diffMonth<=3){
+      //逾期
+      payStatus = mconfig.loanListTypes.overdue;
+    }else if(diffMonth>3){
+      //坏账
+      payStatus = mconfig.loanListTypes.badbill;
+    }
+  }
+  var result = {
       id: l.id,
       objectId:l.id,
       amount: l.get('amount'),
       createdAt: formatTime(l.createdAt),
       loaner: transformContact(loaner),
+      payedMoney: l.get('payedMoney'),
       assurer: transformContact(assurer),
       loanType: mconfig.getConfigMapByValue('loanTypes', l.get('loanType')),
       payWay: mconfig.getConfigMapByValue('payBackWays', l.get('payWay')),
-      status: mconfig.getConfigMapByValue('loanStatus', l.get('status'))
+      status: mconfig.getConfigMapByValue('loanStatus', l.get('status')),
+      payStatus: payStatus
   };
+  return result;
 };
+
 function transformLoanDetails(l){
   var m = transformLoan(l);
   m['spanMonth'] = l.get('spanMonth');

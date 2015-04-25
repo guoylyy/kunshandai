@@ -111,8 +111,26 @@ var fileTypes ={
 
 
 var loanListTypes = {
-	
-
+	normal: {
+		value: 'normal',
+		text: '正常项目'
+	},
+	overdue: {
+		value: 'overdue',
+		text: '逾期项目'
+	},
+	badbill: {
+		value: 'badbill',
+		text: '坏账项目'
+	},
+	completed: {
+		value: 'completed',
+		text: '结清项目'
+	},
+	all: {
+		value: 'all',
+		text: '正常项目'
+	}
 };
 
 
@@ -165,6 +183,7 @@ function getKeyValueList(obj){
 	return rlist;
 }
 
+exports.loanListTypes = loanListTypes;
 exports.getConfigMapByValue = getConfigMapByValue;
 exports.convertDictToList = convertDictToList;
 exports.loanStatus = loanStatus;

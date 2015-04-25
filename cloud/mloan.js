@@ -226,8 +226,10 @@ function updateLoan(loan, reqBody){
     loan.set('otherCostDesc', reqBody.otherCostDesc);
     loan.set('keepCostDesc', reqBody.keepCostDesc);
 
+    loan.set('payedMoney', 0);
     //还款时间
     //根据还款类型确认初次还款日期
+    loan.set('currPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
     loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
     loan.set('status', mconfig.loanStatus.draft.value);
     return loan;

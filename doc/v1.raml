@@ -380,7 +380,7 @@ traits:
     get:
       description: |
         分页获取该用户所有项目
-        filter: draft:draft项目 | all:非draft项目
+        filter: draft:draft项目 | overdue: 逾期 | normal:正常 | badbill:坏账 | all：所有 | completed：已结清
       responses:
         200:
           body:
@@ -389,28 +389,40 @@ traits:
                 {
                   "data": {
                     "totalPageNum": 1,
-                    "totalNum": 2,
+                    "totalNum": 3,
                     "pageSize": 10,
                     "values": [
                       {
-                        "id": "553151b8e4b052897f2b198c",
-                        "amount": 111111,
-                        "createdAt": "2015-04-18 02:32:24",
+                        "id": "55378bc2e4b0aff70792dc1c",
+                        "objectId": "55378bc2e4b0aff70792dc1c",
+                        "amount": 100000,
+                        "createdAt": "2015-04-22 19:53:38",
                         "loaner": {
-                          "name": "test12",
-                          "email": "yilaing@foxmail.com"
+                          "id": "55378bc2e4b0aff70792dc20",
+                          "name": "潘xx",
+                          "email": ""
                         },
+                        "payedMoney": 0,
                         "assurer": {
-                          "name": "test12",
-                          "email": "yilaing@foxmail.com"
+                          "id": "55378bc2e4b0aff70792dc20",
+                          "name": "潘xx",
+                          "email": ""
+                        },
+                        "loanType": {
+                          "value": "fcdy",
+                          "text": "房产抵押"
                         },
                         "payWay": {
                           "value": "debx",
                           "text": "等额本息"
                         },
                         "status": {
-                          "value": 0,
-                          "text": "未完成创建"
+                          "value": 2,
+                          "text": "已完成"
+                        },
+                        "payStatus": {
+                          "value": "completed",
+                          "text": "结清项目"
                         }
                       }
                     ]

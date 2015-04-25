@@ -352,31 +352,43 @@
   "code": 404,
   "message": "找不到对象!"
 }
-</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan__filter___pn_"><span class="parent">/loan</span>/{filter}/{pn}</a> <span class="methods"><a href="#_loan__filter___pn__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel__loan__filter___pn_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_loan__filter___pn__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>分页获取该用户所有项目 filter: draft:draft项目 | all:非draft项目</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan__filter___pn__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/loan</span>/{filter}/{pn}</h4></div><div class="modal-body"><div class="alert alert-info"><p>分页获取该用户所有项目 filter: draft:draft项目 | all:非draft项目</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_loan__filter___pn__get_request" data-toggle="tab">Request</a></li><li><a href="#_loan__filter___pn__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan__filter___pn__get_request"><h3>URI Parameters</h3><ul><li><strong>filter</strong>: <em>required (string )</em></li><li><strong>pn</strong>: <em>required (string )</em></li></ul></div><div class="tab-pane" id="_loan__filter___pn__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan__filter___pn_"><span class="parent">/loan</span>/{filter}/{pn}</a> <span class="methods"><a href="#_loan__filter___pn__get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel__loan__filter___pn_" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_loan__filter___pn__get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>分页获取该用户所有项目 filter: draft:draft项目 | overdue: 逾期 | normal:正常 | badbill:坏账 | all：所有 | completed：已结清</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan__filter___pn__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/loan</span>/{filter}/{pn}</h4></div><div class="modal-body"><div class="alert alert-info"><p>分页获取该用户所有项目 filter: draft:draft项目 | overdue: 逾期 | normal:正常 | badbill:坏账 | all：所有 | completed：已结清</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_loan__filter___pn__get_request" data-toggle="tab">Request</a></li><li><a href="#_loan__filter___pn__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan__filter___pn__get_request"><h3>URI Parameters</h3><ul><li><strong>filter</strong>: <em>required (string )</em></li><li><strong>pn</strong>: <em>required (string )</em></li></ul></div><div class="tab-pane" id="_loan__filter___pn__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
   "data": {
     "totalPageNum": 1,
-    "totalNum": 2,
+    "totalNum": 3,
     "pageSize": 10,
     "values": [
       {
-        "id": "553151b8e4b052897f2b198c",
-        "amount": 111111,
-        "createdAt": "2015-04-18 02:32:24",
+        "id": "55378bc2e4b0aff70792dc1c",
+        "objectId": "55378bc2e4b0aff70792dc1c",
+        "amount": 100000,
+        "createdAt": "2015-04-22 19:53:38",
         "loaner": {
-          "name": "test12",
-          "email": "yilaing@foxmail.com"
+          "id": "55378bc2e4b0aff70792dc20",
+          "name": "潘xx",
+          "email": ""
         },
+        "payedMoney": 0,
         "assurer": {
-          "name": "test12",
-          "email": "yilaing@foxmail.com"
+          "id": "55378bc2e4b0aff70792dc20",
+          "name": "潘xx",
+          "email": ""
+        },
+        "loanType": {
+          "value": "fcdy",
+          "text": "房产抵押"
         },
         "payWay": {
           "value": "debx",
           "text": "等额本息"
         },
         "status": {
-          "value": 0,
-          "text": "未完成创建"
+          "value": 2,
+          "text": "已完成"
+        },
+        "payStatus": {
+          "value": "completed",
+          "text": "结清项目"
         }
       }
     ]

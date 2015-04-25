@@ -59,25 +59,33 @@ require([
 		 'angular',
 		 'app',
 		 'i18nZh',
-		 'manage/DictService',
+		 
 		 'account/AccountService',
-		 'manage/loan/LoanService',
-		 'manage/contact/ContactService',
-		 'manage/common/upload/UploadController',
-		 'manage/common/upload/UploadService',
-		 'manage/common/active/ActiveLoanCtrl',
 		 'account/AccountController',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
+
+		 'manage/DictService',
+		 'manage/common/upload/UploadController',
+		 'manage/common/upload/UploadService',
+		 'manage/common/active/ActiveLoanCtrl',
+		 
 		 'manage/loan/CreateLoanCtrl',
 		 'manage/loan/draft/DraftLoanCtrl',
+		 'manage/loan/LoanService',
+
+		 'manage/collect/CollectProcessCtrl',
 		 'manage/collect/CollectController',
+		 
+		 'manage/contact/ContactService',
 		 'manage/nav/NavController',
+		 
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',
 		 'common/directive/floatNumberInput',
 		 'common/filter/cDisplay',
+		 
 		 'routes'
 ],function(angular) {
 	

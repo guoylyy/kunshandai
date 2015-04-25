@@ -1,8 +1,7 @@
 define(['app'],function(app){
-	return app.controller('ActiveLoanCtrl', ['$scope','$modalInstance','LoanService',
-		function($scope,$modalInstance,LoanService,payments,loanId){
+	return app.controller('ActiveLoanCtrl',function($scope,$modalInstance,LoanService,payment,loanId){
 		
-		$scope.payments = payments;
+		$scope.payment = payment;
 
 		$scope.loanId = loanId;
 
@@ -13,21 +12,18 @@ define(['app'],function(app){
 
 		$scope.activeModalFinish = function(loanId){
 			
-			var activeFlag = false;
 			LoanService.assure(loanId).then(function(res){
 			
-				activeFlag =  true;
+				$modalInstance.close(true);
 
 			},function(res){
 				
-				activeFlag =  false;
+				$modalInstance.close(false);
 			
 			});
-
-			$scope.activeModal.close(activeFlag);
+			
 		}
 		
 
-
-	}])
+	})
 })

@@ -1,0 +1,54 @@
+
+<div class="modal-header">
+  <h4 class="modal-title">收款</h4>
+</div>
+<div class="modal-body">
+  <h4 class="text-info">合同编号: {{loan.id}}</h4>
+  <div class="ks-divider"></div>
+  <div class="row" style="font-size:14px;">
+    <div class="col-md-3">
+      <div>贷款金额: {{loan.amount}}</div>
+      <div>贷款类型: {{loan.loanType.text}}</div>
+    </div>
+    <div class="col-md-3">
+      <div>贷款人: {{loan.loaner.name}}</div>
+      <div>担保人: {{loan.assurer.name}}</div>
+    </div>
+    <div class="col-md-3">
+      <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>
+      <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
+    </div>
+    <div class="col-md-3">
+      <div>还款类型: {{loan.payWay.text}}</div>
+      <div>还款总期数: {{loan.payTotalCircle}}</div>
+    </div>
+  </div>
+  <div class="ks-panel">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>选择</th>
+        <th>期数</th>
+        <th>应收金额</th>
+         <th>应收日期</th>
+        <th>状态</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="payback in paybacks">
+        <td><input type="checkbox" ng-model="itemSelected[payback.order]" ng-disabled="payback.status == 3"></td>
+        <td>{{payback.order}}</td>
+        <td>{{payback.payMoney}}</td>
+        <td>{{payback.payDate}}</td>
+        <td ng-show="payback.status === 1" class="text-info">正在还</td>
+        <td ng-show="payback.status === 2" >未还</td>
+        <td ng-show="payback.status === 3"class="text-success">已还</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click="cancel()">取消收款</button>
+  <button type="button" class="btn btn-success" ng-click="startCollect()">开始收款</button>
+</div>

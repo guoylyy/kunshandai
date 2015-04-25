@@ -46,23 +46,6 @@
 				</ul>
 			</div>
 		</div>
-
-		<!-- <div class="panel-body" ng-show="currentState.name == 'collectDone'"> 
-			<div class="ks-condition">
-				<ul class="ks-list-unstyled">
-					<li>收款时间:</li>
-					<li><a ui-sref="collectDone({startDate:'',endDate:''})" ui-sref-active="label label-warning">所有</a></li>
-					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="collectDone({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
-				</ul>
-			</div>
-			<div class="ks-condition">
-				<ul class="ks-list-unstyled">
-					<li>贷款类型:</li>
-					<li><a  ui-sref="collectDone({loanType:''})" ui-sref-active="label label-warning">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
-					<li ng-repeat="loanType in loanTypes"><a ui-sref="collectDone({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
-				</ul>
-			</div>
-		</div> -->
 	</div>
 </div>
 <div class="ks-panel">
@@ -85,12 +68,12 @@
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney}}</td>
 				<td>
-					<div class="dropdown">
-						<span class="glyphicon glyphicon-triangle-bottom"></span>
-						<ul class="dropdown-menu" role="menu">
-							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
-							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
-							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+					<div class="dropdown" dropdown>
+						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
+						<ul class="dropdown-menu"  role="menu">
+							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)">收款</a></li>
+							<li><a role="menuitem" >结清</a></li>
+							<li ><a role="menuitem">调整</a></li>
 						</ul>
 					</div>
 				</td>

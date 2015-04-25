@@ -6,7 +6,7 @@ define(['app'],function(app){
 		function($stateProvider,$urlRouterProvider,$locationProvider){
 		
 		  // $urlRouterProvider.when('/createLoan','/createLoan#info');
-		 $locationProvider.html5Mode({
+		$locationProvider.html5Mode({
 		  enabled: true,
 		  requireBase: false
 		});

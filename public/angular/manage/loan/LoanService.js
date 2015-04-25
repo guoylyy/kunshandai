@@ -2,8 +2,8 @@
 
 define(['../../app','underscore'],function(app,_){
 
-	return app.factory('LoanService', ['$http','$q','ApiURL',
-		function($http,$q,ApiURL){
+	return app.factory('LoanService', ['$http','$q','ApiURL','$log',
+		function($http,$q,ApiURL,$log){
 		
 		var loanUrl = '/loan';
 
@@ -57,21 +57,27 @@ define(['../../app','underscore'],function(app,_){
 			};
 
 		var LoanService = {
-
+			getCorrectFormat:function(loan){
+				return typeTransform(loan);
+			},
 			getLocal:function(){
 				return localLoan;
 			},
-			get:function(page){
-				var deferred = $q.defer();
-
-				$http.get(ApiURL+loanUrl+"/all/"+page)
+			getLoan:function(loanId){
+				return $http.get(ApiURL+loanUrl+"/"+loanId)
 				.then(function(res){
-					deferred.resolve(res.data.data);
+					return typeTransform(res.data.data);
 				},function(res){
-					deferred.reject(res.data);
+					$log.error(res);
 				});
-
-				return deferred.promise;
+			},
+			getLoans:function(page){
+				return $http.get(ApiURL+loanUrl+"/all/"+page)
+				.then(function(res){
+					return res.data.data;
+				},function(res){
+					$log.error(res);
+				});
 			},
 			getDraft:function(page){
 				var deferred = $q.defer();
@@ -104,18 +110,21 @@ define(['../../app','underscore'],function(app,_){
 					return res.data;
 				});
 			},
-			getPayments:function(id){
-
-				var deferred = $q.defer();
-
-				$http.get(ApiURL+loanUrl+"/"+id+"/payments")
-				.then(function(res){
-					deferred.resolve(res.data.data);
+			getPaybacks: function(loanId){
+				return $http.get(ApiURL+loanUrl+"/"+loanId+"/paybacks").then(function(res){
+					return res.data.data;
 				},function(res){
-					deferred.reject(res.data);
+					$log.error(res);
 				});
+			},
+			getPayments:function(id){
+				return $http.get(ApiURL+loanUrl+"/"+id+"/payments")
+						.then(function(res){
+							return res.data.data[0];
+						},function(res){
+							$log.error(res);
+						});
 
-				return deferred.promise;
 			},
 			create : function(loan){
 				
@@ -137,9 +146,6 @@ define(['../../app','underscore'],function(app,_){
 			},
 			assure: function(loanId){
 				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));
-			},
-			paybacks: function(loanId){
-				return $http.get(ApiURL+loanUrl+"/"+loanId+"/paybacks");
 			}
 		}
 

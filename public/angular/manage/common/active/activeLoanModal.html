@@ -4,9 +4,9 @@
 </div>
 <div class="modal-body">
 <div class="ks-panel">
-  <h4>合同编号:{{loanId}}</h3>
+  <h4 >合同编号:{{loanId}}</h3>
   <div class="ks-divider"></div>
-  <h4>放款金额:{{payments.outMoney}}</h3>
+  <h4>放款金额:{{payment.outMoney}}</h3>
   <div class="ks-divider"></div>
   <h4>收入明细:</h3>
   <table class="table table-striped">
@@ -21,11 +21,11 @@
     </thead>
     <tbody>
       <tr>
-        <td>{{-payments.interestsMoney}}</td>
-        <td>{{-payments.assureCost}}</td>
-        <td>{{-payments.serviceCost}}</td>
-        <td>{{-payments.otherCost}}</td>
-        <td>{{-payments.keepCost}}</td>
+        <td>{{-payment.interestsMoney}}</td>
+        <td>{{-payment.assureCost}}</td>
+        <td>{{-payment.serviceCost}}</td>
+        <td>{{-payment.otherCost}}</td>
+        <td>{{-payment.keepCost}}</td>
       </tr>
     </tbody>
   </table>

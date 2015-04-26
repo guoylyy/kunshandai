@@ -950,6 +950,39 @@ traits:
                   "code": 404,
                   "message": "找不到对象!"
                 }
+
+    /attachments:
+      get:
+        description: |
+          获取联系人所有附件
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data": [
+                      {
+                        "mime_type": "image/jpeg",
+                        "key": "e55c7c8ab63d1ad6.JPG",
+                        "name": "IMGP0111剪裁.JPG",
+                        "url": "http://ac-gvw1ggob.clouddn.com/e55c7c8ab63d1ad6.JPG",
+                        "metaData": {
+                          "owner": "552e5c62e4b0c0794dc1ac59",
+                          "size": 41727,
+                          "fileType": "certification",
+                          "mime_type": "image/jpeg"
+                        },
+                        "bucket": "gvw1ggob",
+                        "objectId": "553a2f7ce4b0072c25e1f8cd",
+                        "createdAt": "2015-04-24T11:56:44.585Z",
+                        "updatedAt": "2015-04-24T11:56:44.585Z"
+                      }
+                    ],
+                    "code": 200
+                  }
+
+
   /all:
     description: |
       获取一个用户所有联系人（未分页）

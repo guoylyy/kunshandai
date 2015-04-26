@@ -699,6 +699,20 @@ app.delete(config.baseUrl + '/contact/:id', function (req, res){
   });
 });
 
+//获取联系人附件
+app.get(config.baseUrl + '/contact/:id/attachments', function (req,res){
+  var u = check_login(res);
+  var contact =  AV.Object.createWithoutData('Contact', req.params.id);
+  contact.fetch().then(function(rc){
+    var relation = rc.relation('attachments');
+    relation.query().find().then(function(attachmentList){
+      mutil.renderData(res, attachmentList);
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
 /*
   查询字典表
  */

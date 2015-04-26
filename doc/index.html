@@ -672,6 +672,27 @@
   "code": 404,
   "message": "找不到对象!"
 }
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__contact__id__attachments"><span class="parent">/contact/{id}</span>/attachments</a> <span class="methods"><a href="#_contact__id__attachments_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel__contact__id__attachments" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_contact__id__attachments_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>获取联系人所有附件</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_contact__id__attachments_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contact/{id}</span>/attachments</h4></div><div class="modal-body"><div class="alert alert-info"><p>获取联系人所有附件</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_contact__id__attachments_get_request" data-toggle="tab">Request</a></li><li><a href="#_contact__id__attachments_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_contact__id__attachments_get_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (string )</em></li></ul></div><div class="tab-pane" id="_contact__id__attachments_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "data": [
+    {
+      "mime_type": "image/jpeg",
+      "key": "e55c7c8ab63d1ad6.JPG",
+      "name": "IMGP0111剪裁.JPG",
+      "url": "http://ac-gvw1ggob.clouddn.com/e55c7c8ab63d1ad6.JPG",
+      "metaData": {
+        "owner": "552e5c62e4b0c0794dc1ac59",
+        "size": 41727,
+        "fileType": "certification",
+        "mime_type": "image/jpeg"
+      },
+      "bucket": "gvw1ggob",
+      "objectId": "553a2f7ce4b0072c25e1f8cd",
+      "createdAt": "2015-04-24T11:56:44.585Z",
+      "updatedAt": "2015-04-24T11:56:44.585Z"
+    }
+  ],
+  "code": 200
+}
 </code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__contact_all"><span class="parent">/contact</span>/all</a> <span class="methods"><a href="#_contact_all_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel__contact_all" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>获取一个用户所有联系人（未分页）</p></div><div class="list-group"><div onclick="window.location.href = '#_contact_all_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_contact_all_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contact</span>/all</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_contact_all_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_contact_all_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
   "data":"[....]",
   "code":200

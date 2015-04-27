@@ -69,8 +69,8 @@
 			<tr ng-repeat="loan in loans">
 				<td>{{loan.id}}</td>
 				<td>{{loan.loaner.name}}</td>
-				<td>{{loan.amount}}</td>
-				<td>{{loan.payedMoney}}</td>
+				<td>{{loan.amount | number:2}}</td>
+				<td>{{loan.payedMoney | number:2}}</td>
 				<td>{{loan.loanType.text}}</td>
 				<td>{{loan.payStatus.text}}</td>
 				<td>

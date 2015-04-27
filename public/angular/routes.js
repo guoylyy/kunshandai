@@ -10,6 +10,24 @@ define(['app'],function(app){
 		  enabled: true,
 		  requireBase: false
 		});
+		var resolveLoans = function(fn,DictService,$stateParams){
+		    var startDate, endDate,loanType;
+			if(!$stateParams.startDate){
+				var timeRanges = DictService.get('timeRanges');
+				startDate = timeRanges[0].startDate;
+				endDate = timeRanges[0].endDate;
+				$stateParams.startDate = startDate;
+				$stateParams.endDate = endDate;
+			} 
+		    startDate = new Date(parseInt($stateParams.startDate));
+		    endDate = new Date(parseInt($stateParams.endDate));
+		    loanType = $stateParams.loanType;
+		    $stateParams.page = $stateParams.page || 1
+		    return fn.call(this,$stateParams.page,startDate,endDate,loanType).then(function(data){
+		    	return data;
+		    });
+			
+		};
 
 		$stateProvider
 			//acount module routes
@@ -128,21 +146,8 @@ define(['app'],function(app){
 		    		"main":{
 		    			templateUrl: "/angular/manage/project/project.html",
 		    			resolve:{
-		    				loans:function(DictService,LoanService,$stateParams){
-		    					var startDate, endDate,loanType;
-		    					if(!$stateParams.startDate){
-		    						var timeRanges = DictService.get('timeRanges');
-		    						startDate = timeRanges[0].startDate;
-		    						endDate = timeRanges[0].endDate;
-		    						$stateParams.startDate = startDate;
-		    						$stateParams.endDate = endDate;
-		    					} 
-		    					startDate = new Date(parseInt($stateParams.startDate));
-		    					endDate = new Date(parseInt($stateParams.endDate));
-		    					loanType = $stateParams.loanType;
-		    					return LoanService.getLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
-		    						return data;
-		    					});
+		    				loans:function(DictService,$stateParams,LoanService){
+		    					return resolveLoans(LoanService.getLoans,DictService,$stateParams);
 		    				},
 		    				loanTypes:function(DictService){
 		    					return DictService.get('loanTypes');
@@ -162,20 +167,7 @@ define(['app'],function(app){
 		    			templateUrl: "/angular/manage/project/project.html",
 		    			resolve:{
 		    				loans:function(DictService,LoanService,$stateParams){
-		    					var startDate, endDate,loanType;
-		    					if(!$stateParams.startDate){
-		    						var timeRanges = DictService.get('timeRanges');
-		    						startDate = timeRanges[0].startDate;
-		    						endDate = timeRanges[0].endDate;
-		    						$stateParams.startDate = startDate;
-		    						$stateParams.endDate = endDate;
-		    					} 
-		    					startDate = new Date(parseInt($stateParams.startDate));
-		    					endDate = new Date(parseInt($stateParams.endDate));
-		    					loanType = $stateParams.loanType;
-		    					return LoanService.getNormalLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
-		    						return data;
-		    					});
+		    					return resolveLoans(LoanService.getNormalLoans,DictService,$stateParams);
 		    				},
 		    				loanTypes:function(DictService){
 		    					return DictService.get('loanTypes');
@@ -196,20 +188,7 @@ define(['app'],function(app){
 		    			templateUrl: "/angular/manage/project/project.html",
 		    			resolve:{
 		    				loans:function(DictService,LoanService,$stateParams){
-		    					var startDate, endDate,loanType;
-		    					if(!$stateParams.startDate){
-		    						var timeRanges = DictService.get('timeRanges');
-		    						startDate = timeRanges[0].startDate;
-		    						endDate = timeRanges[0].endDate;
-		    						$stateParams.startDate = startDate;
-		    						$stateParams.endDate = endDate;
-		    					} 
-		    					startDate = new Date(parseInt($stateParams.startDate));
-		    					endDate = new Date(parseInt($stateParams.endDate));
-		    					loanType = $stateParams.loanType;
-		    					return LoanService.getOverdueLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
-		    						return data;
-		    					});
+		    					return resolveLoans(LoanService.getOverdueLoans,DictService,$stateParams);
 		    				},
 		    				loanTypes:function(DictService){
 		    					return DictService.get('loanTypes');
@@ -229,20 +208,7 @@ define(['app'],function(app){
 		    			templateUrl: "/angular/manage/project/project.html",
 		    			resolve:{
 		    				loans:function(DictService,LoanService,$stateParams){
-		    					var startDate, endDate,loanType;
-		    					if(!$stateParams.startDate){
-		    						var timeRanges = DictService.get('timeRanges');
-		    						startDate = timeRanges[0].startDate;
-		    						endDate = timeRanges[0].endDate;
-		    						$stateParams.startDate = startDate;
-		    						$stateParams.endDate = endDate;
-		    					} 
-		    					startDate = new Date(parseInt($stateParams.startDate));
-		    					endDate = new Date(parseInt($stateParams.endDate));
-		    					loanType = $stateParams.loanType;
-		    					return LoanService.getBadbillLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
-		    						return data;
-		    					});
+		    					return resolveLoans(LoanService.getBadbillLoans,DictService,$stateParams);
 		    				},
 		    				loanTypes:function(DictService){
 		    					return DictService.get('loanTypes');
@@ -262,20 +228,7 @@ define(['app'],function(app){
 		    			templateUrl: "/angular/manage/project/project.html",
 		    			resolve:{
 		    				loans:function(DictService,LoanService,$stateParams){
-		    					var startDate, endDate,loanType;
-		    					if(!$stateParams.startDate){
-		    						var timeRanges = DictService.get('timeRanges');
-		    						startDate = timeRanges[0].startDate;
-		    						endDate = timeRanges[0].endDate;
-		    						$stateParams.startDate = startDate;
-		    						$stateParams.endDate = endDate;
-		    					} 
-		    					startDate = new Date(parseInt($stateParams.startDate));
-		    					endDate = new Date(parseInt($stateParams.endDate));
-		    					loanType = $stateParams.loanType;
-		    					return LoanService.getCompletedLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
-		    						return data;
-		    					});
+		    					return resolveLoans(LoanService.getCompleteLoans,DictService,$stateParams);
 		    				},
 		    				loanTypes:function(DictService){
 		    					return DictService.get('loanTypes');

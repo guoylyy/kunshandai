@@ -18,18 +18,7 @@ define(['app'],function(app) {
 
 			$scope.currentState = $state.current;
 			
-			$scope.selected = {};
-
-			$scope.dateRange = function(rangeId){
-
-			}
-
-			$scope.changeLoanType = function(loanType){
-				$scope.selected.loanType = loanType;
-				$stateParams.loanType = loanType;
-			    $state.go($state.current, {loanType:loanType}, {reload:true});
-			}
-
+		
 			$scope.pageChanged = function(){
 				$state.go($state.current, {page:$scope.currentPage}, {reload: true});
 			}

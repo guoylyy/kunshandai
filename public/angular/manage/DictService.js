@@ -13,6 +13,11 @@ define(['../app'],function(app){
 			var end = new Date(year,month,day);
 			return [
 				{
+					startDate: new Date("1970-01-01").getTime(),
+					endDate: new Date("2070-01-01").getTime(),
+					text:'所有'
+				},
+				{
 					startDate: start.getTime(),
 					endDate: end.setMonth(start.getMonth()+1),
 					text:'小于1个月'

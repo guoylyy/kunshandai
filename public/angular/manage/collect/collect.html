@@ -34,15 +34,14 @@
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>收款时间:</li>
-					<li><a ui-sref="{{currentState.name}}({startDate:'',endDate:''})" ui-sref-active="label label-warning">所有</a></li>
-					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="collectPending({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
 				</ul>
 			</div>
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>贷款类型:</li>
 					<li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-warning">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
-					<li ng-repeat="loanType in loanTypes"><a ui-sref="collectPending({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
+					<li ng-repeat="loanType in loanTypes"><a ui-sref="{{currentState.name}}({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
 				</ul>
 			</div>
 		</div>

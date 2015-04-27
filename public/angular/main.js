@@ -76,6 +76,8 @@ require([
 
 		 'manage/collect/CollectProcessCtrl',
 		 'manage/collect/CollectController',
+
+		 'manage/project/ProjectController',
 		 
 		 'manage/contact/ContactService',
 		 'manage/nav/NavController',

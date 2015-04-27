@@ -54,6 +54,26 @@ define(['../../app','underscore'],function(app,_){
 				loan.firstPayDate = new Date(loan.firstPayDate);
 
 				return loan;
+			},
+			getLoanList = function(page,filter,startDate,endDate,loanType){
+				var params = {startDate:startDate,endDate:endDate,loanType:loanType};
+				return $http.get(ApiURL+loanUrl+"/"+filter+"/"+page,{params:params})
+				.then(function(res){
+					return res.data.data;
+				},function(res){
+					$log.error(res);
+				});
+
+			},
+
+			getPaybackList = function(page,startDate,endDate,loanType,status){
+				var params = {status:status,startDate:startDate,endDate:endDate,loanType:loanType};
+				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,{params:params})
+				.then(function(res){
+					return res.data.data;
+				},function(res){
+					return res.data;
+				});
 			};
 
 		var LoanService = {
@@ -71,44 +91,30 @@ define(['../../app','underscore'],function(app,_){
 					$log.error(res);
 				});
 			},
-			getLoans:function(page){
-				return $http.get(ApiURL+loanUrl+"/all/"+page)
-				.then(function(res){
-					return res.data.data;
-				},function(res){
-					$log.error(res);
-				});
+			getNormalLoans:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"normal",startDate,endDate,loanType);
 			},
-			getDraft:function(page){
-				var deferred = $q.defer();
-
-				$http.get(ApiURL+loanUrl+"/draft/"+page)
-				.then(function(res){
-					deferred.resolve(res.data.data);
-				},function(res){
-					deferred.reject(res.data);
-				});
-
-				return deferred.promise;
+			getLoans:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"all",startDate,endDate,loanType);
+			},
+			getDraft:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"draft",startDate,endDate,loanType);
+			},
+			getBadbillLoans:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"badbill",startDate,endDate,loanType);
+			},
+			getOverdueLoans:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"overdue",startDate,endDate,loanType);
+			},
+			getCompletedLoans:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"completed",startDate,endDate,loanType);
 			},
 			getUnpayedList:function(page,startDate,endDate,loanType){
-				var params = {status:1,startDate:startDate,endDate:endDate,loanType:loanType};
-				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,{params:params})
-				.then(function(res){
-					return res.data.data;
-				},function(res){
-					return res.data;
-				});
+				return getPaybackList(page,startDate,endDate,loanType,1);
 
 			},
 			getPayedList:function(page,startDate,endDate,loanType){
-				var params = {status:3,startDate:startDate,endDate:endDate,loanType:loanType};
-				return $http.get(ApiURL+loanUrl+"/payBack/list/"+page,{params:params})
-				.then(function(res){
-					return res.data.data;
-				},function(res){
-					return res.data;
-				});
+				return getPaybackList(page,startDate,endDate,loanType,3);
 			},
 			getPaybacks: function(loanId){
 				return $http.get(ApiURL+loanUrl+"/"+loanId+"/paybacks").then(function(res){

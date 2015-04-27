@@ -1,8 +1,8 @@
 <div class="ks-dividing">
 	<h4 ng-show="('normalProjects' | isState)">项目检视->正常项目</h4>
 	<h4 ng-show="('overdueProjects' | isState)">项目检视->逾期项目</h4>
-	<h4 ng-show="('badDebtProjects' | isState)">项目检视->坏账项目</h4>
-	<h4 ng-show="('settleProjects' | isState)">项目检视->结清项目</h4>
+	<h4 ng-show="('badbillProjects' | isState)">项目检视->坏账项目</h4>
+	<h4 ng-show="('completedProjects' | isState)">项目检视->结清项目</h4>
 	<h4 ng-show="('allProjects' | isState)">项目检视->所有项目</h4>
 </div>
 <div class="row">
@@ -10,8 +10,8 @@
 		<div class="btn-group btn-group-middle" >
 			<button type="button" class="btn btn-default" ui-sref="normalProjects" ui-sref-active="active">正常项目</button>
 			<button type="button" class="btn btn-default" ui-sref="overdueProjects" ui-sref-active="active">逾期项目</button>
-			<button type="button" class="btn btn-default" ui-sref="badDebtProjects" ui-sref-active="active">坏账项目</button>
-			<button type="button" class="btn btn-default" ui-sref="settleProjects" ui-sref-active="active">结清项目</button>
+			<button type="button" class="btn btn-default" ui-sref="badbillProjects" ui-sref-active="active">坏账项目</button>
+			<button type="button" class="btn btn-default" ui-sref="completedProjects" ui-sref-active="active">结清项目</button>
 			<button type="button" class="btn btn-default" ui-sref="allProjects" ui-sref-active="active">所有项目</button>
 		</div>
 	</div>
@@ -34,30 +34,19 @@
 </div>
 <div class="ks-panel">
 	<div class="panel panel-default">
-		<div class="panel-heading">筛选条件 - 待确定!</div>
-		<div class="panel-body">
+		<div class="panel-heading">筛选条件</div>
+		<div class="panel-body"> 
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>收款时间:</li>
-					<li><a href="#">所有</a></li>
-					<li><a href="#">小于一个月</a></li>
-					<li><a href="#">1~3个月</a></li>
-					<li><a href="#">3~6个月</a></li>
-					<li><a href="#">6~9个月</a></li>
-					<li><a href="#">9~12个月</a></li>
-					<li><a href="#">大于12个月</a></li>
+					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
 				</ul>
 			</div>
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
-					<li>抵押方式:</li>
-					<li><a href="#"><span class="label label-warning">所有<span class="glyphicon glyphicon-remove"></span></span></a></li>
-					<li><a href="#">房产抵押</a></li>
-					<li><a href="#">汽车抵押</a></li>
-					<li><a href="#">买房贷款</a></li>
-					<li><a href="#">买车贷款</a></li>
-					<li><a href="#">无抵押</a></li>
-					<li><a href="#">其他抵押</a></li>
+					<li>贷款类型:</li>
+					<li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-warning">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
+					<li ng-repeat="loanType in loanTypes"><a ui-sref="{{currentState.name}}({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -71,60 +60,26 @@
 				<th>贷款人</th>
 				<th>贷款金额</th>
 				<th>已收金额</th>
-				<th>未收金额</th>
+				<th>贷款类型</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td>A9823420</td>
-				<td>李四</td>
-				<td>1,000,000</td>
-				<td>300,000</td>
-				<td>700,00</td>
-				<td class="text-success">正常</td>
+			<tr ng-repeat="loan in loans">
+				<td>{{loan.id}}</td>
+				<td>{{loan.loaner.name}}</td>
+				<td>{{loan.amount}}</td>
+				<td>{{loan.payedMoney}}</td>
+				<td>{{loan.loanType.text}}</td>
+				<td>{{loan.payStatus.text}}</td>
 				<td>
-					<div class="ui dropdown">
-						<i class="chevron circle down icon"></i>
-						<div class="menu">
-							<div class="item"></div>
-							<div class="item"></div>
-							<div class="item"></div>
-						</div>
-					</div>
-					<div class="dropdown">
-						<span class="glyphicon glyphicon-triangle-bottom"></span>
-						<ul class="dropdown-menu" role="menu">
-							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
-							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
-							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
-						</ul>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td>A9823420</td>
-				<td>王四为</td>
-				<td>1,200,000</td>
-				<td>200,000</td>
-				<td>1,000,00</td>
-				<td class="text-danger">逾期</td>
-				<td>
-					<div class="ui dropdown">
-						<i class="chevron circle down icon"></i>
-						<div class="menu">
-							<div class="item"></div>
-							<div class="item"></div>
-							<div class="item"></div>
-						</div>
-					</div>
-					<div class="dropdown">
-						<span class="glyphicon glyphicon-triangle-bottom"></span>
-						<ul class="dropdown-menu" role="menu">
-							<li><a role="menuitem" tabindex="-1" href="#">收款</a></li>
-							<li><a role="menuitem" tabindex="-1" href="#">结清</a></li>
-							<li ><a role="menuitem" tabindex="-1" href="#">调整</a></li>
+					<div class="dropdown" dropdown>
+						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
+						<ul class="dropdown-menu"  role="menu">
+							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)">收款</a></li>
+							<li><a role="menuitem" >结清</a></li>
+							<li ><a role="menuitem">调整</a></li>
 						</ul>
 					</div>
 				</td>
@@ -133,13 +88,5 @@
 	</table>
 </div>
 <div class="ks-panel">
-	<ul class="pagination pagination-sm">
-		<li class="disabled"><a href="#">«</a></li>
-		<li class="active"><a href="#">1</a></li>
-		<li><a href="#">2</a></li>
-		<li><a href="#">3</a></li>
-		<li><a href="#">4</a></li>
-		<li><a href="#">5</a></li>
-		<li><a href="#">»</a></li>
-	</ul>
+	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
 </div>

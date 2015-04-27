@@ -121,40 +121,171 @@ define(['app'],function(app){
 		    		}
 		    	}
 		    })
-		    .state('project',{
-		    	url:"#project",
-		    	views:{
-		    		"main":{templateUrl: "/angular/manage/project/project.html"}
-		    	}
-		    })
+
 		    .state('allProjects',{
-		    	url:"#projects/all",
+		    	url:"#projects/all?page&startDate&endDate&loanType",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/project/project.html",
+		    			resolve:{
+		    				loans:function(DictService,LoanService,$stateParams){
+		    					var startDate, endDate,loanType;
+		    					if(!$stateParams.startDate){
+		    						var timeRanges = DictService.get('timeRanges');
+		    						startDate = timeRanges[0].startDate;
+		    						endDate = timeRanges[0].endDate;
+		    						$stateParams.startDate = startDate;
+		    						$stateParams.endDate = endDate;
+		    					} 
+		    					startDate = new Date(parseInt($stateParams.startDate));
+		    					endDate = new Date(parseInt($stateParams.endDate));
+		    					loanType = $stateParams.loanType;
+		    					return LoanService.getLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
+		    						return data;
+		    					});
+		    				},
+		    				loanTypes:function(DictService){
+		    					return DictService.get('loanTypes');
+		    				},
+		    				timeRanges:function(DictService){
+		    					return DictService.get("timeRanges");
+		    				}	
+		    			},
+		    			controller: "ProjectController"
+		    		}
 		    	}
 		    })
  			.state('normalProjects',{
-		    	url:"#projects/normal",
+		    	url:"#projects/normal?page&startDate&endDate&loanType",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/project/project.html",
+		    			resolve:{
+		    				loans:function(DictService,LoanService,$stateParams){
+		    					var startDate, endDate,loanType;
+		    					if(!$stateParams.startDate){
+		    						var timeRanges = DictService.get('timeRanges');
+		    						startDate = timeRanges[0].startDate;
+		    						endDate = timeRanges[0].endDate;
+		    						$stateParams.startDate = startDate;
+		    						$stateParams.endDate = endDate;
+		    					} 
+		    					startDate = new Date(parseInt($stateParams.startDate));
+		    					endDate = new Date(parseInt($stateParams.endDate));
+		    					loanType = $stateParams.loanType;
+		    					return LoanService.getNormalLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
+		    						return data;
+		    					});
+		    				},
+		    				loanTypes:function(DictService){
+		    					return DictService.get('loanTypes');
+		    				},
+		    				timeRanges:function(DictService){
+		    					return DictService.get("timeRanges");
+		    				}	
+		    			},
+		    			controller: "ProjectController"
+		    		}
 		    	}
+		    	
 		    })
  			.state('overdueProjects',{
-		    	url:"#projects/overdue",
+		    	url:"#projects/overdue?page&startDate&endDate&loanType",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/project/project.html",
+		    			resolve:{
+		    				loans:function(DictService,LoanService,$stateParams){
+		    					var startDate, endDate,loanType;
+		    					if(!$stateParams.startDate){
+		    						var timeRanges = DictService.get('timeRanges');
+		    						startDate = timeRanges[0].startDate;
+		    						endDate = timeRanges[0].endDate;
+		    						$stateParams.startDate = startDate;
+		    						$stateParams.endDate = endDate;
+		    					} 
+		    					startDate = new Date(parseInt($stateParams.startDate));
+		    					endDate = new Date(parseInt($stateParams.endDate));
+		    					loanType = $stateParams.loanType;
+		    					return LoanService.getOverdueLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
+		    						return data;
+		    					});
+		    				},
+		    				loanTypes:function(DictService){
+		    					return DictService.get('loanTypes');
+		    				},
+		    				timeRanges:function(DictService){
+		    					return DictService.get("timeRanges");
+		    				}	
+		    			},
+		    			controller: "ProjectController"
+		    		}
 		    	}
 		    })
- 			.state('badDebtProjects',{
-		    	url:"#projects/badDebt",
+ 			.state('badbillProjects',{
+		    	url:"#projects/badbill?page&startDate&endDate&loanType",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/project/project.html",
+		    			resolve:{
+		    				loans:function(DictService,LoanService,$stateParams){
+		    					var startDate, endDate,loanType;
+		    					if(!$stateParams.startDate){
+		    						var timeRanges = DictService.get('timeRanges');
+		    						startDate = timeRanges[0].startDate;
+		    						endDate = timeRanges[0].endDate;
+		    						$stateParams.startDate = startDate;
+		    						$stateParams.endDate = endDate;
+		    					} 
+		    					startDate = new Date(parseInt($stateParams.startDate));
+		    					endDate = new Date(parseInt($stateParams.endDate));
+		    					loanType = $stateParams.loanType;
+		    					return LoanService.getBadbillLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
+		    						return data;
+		    					});
+		    				},
+		    				loanTypes:function(DictService){
+		    					return DictService.get('loanTypes');
+		    				},
+		    				timeRanges:function(DictService){
+		    					return DictService.get("timeRanges");
+		    				}	
+		    			},
+		    			controller: "ProjectController"
+		    		}
 		    	}
 		    })
- 		    .state('settleProjects',{
-		    	url:"#projects/settle",
+ 		    .state('completedProjects',{
+		    	url:"#projects/completed?page&startDate&endDate&loanType",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/project/project.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/project/project.html",
+		    			resolve:{
+		    				loans:function(DictService,LoanService,$stateParams){
+		    					var startDate, endDate,loanType;
+		    					if(!$stateParams.startDate){
+		    						var timeRanges = DictService.get('timeRanges');
+		    						startDate = timeRanges[0].startDate;
+		    						endDate = timeRanges[0].endDate;
+		    						$stateParams.startDate = startDate;
+		    						$stateParams.endDate = endDate;
+		    					} 
+		    					startDate = new Date(parseInt($stateParams.startDate));
+		    					endDate = new Date(parseInt($stateParams.endDate));
+		    					loanType = $stateParams.loanType;
+		    					return LoanService.getCompletedLoans($stateParams.page || 1,startDate,endDate,loanType).then(function(data){
+		    						return data;
+		    					});
+		    				},
+		    				loanTypes:function(DictService){
+		    					return DictService.get('loanTypes');
+		    				},
+		    				timeRanges:function(DictService){
+		    					return DictService.get("timeRanges");
+		    				}	
+		    			},
+		    			controller: "ProjectController"
+		    		}
 		    	}
 		    })
 		    .state('client',{

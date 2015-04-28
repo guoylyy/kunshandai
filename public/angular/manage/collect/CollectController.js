@@ -18,7 +18,8 @@ define(['app'],function(app) {
 
 			$scope.currentState = $state.current;
 			
-		
+
+
 			$scope.pageChanged = function(){
 				$state.go($state.current, {page:$scope.currentPage}, {reload: true});
 			}
@@ -42,6 +43,8 @@ define(['app'],function(app) {
 				});
 
 			}
+
+
 
 	}]);
 });

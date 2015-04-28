@@ -68,9 +68,9 @@
       <div class="form-group">
         <label>*还款日期</label>
         <div class="input-group">
-          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="collect.payDate" is-open="calendar.openedstart"  datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="payDate"/>
+          <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate" is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="payDate"/>
           <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ><i class="glyphicon glyphicon-calendar"></i></button>
+            <button type="button" class="btn btn-default" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
           </span>
         </div>
         <div ng-show="payForm.$submitted || payForm.payDate.$touched">

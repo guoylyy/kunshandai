@@ -154,7 +154,8 @@ define(['../../app','underscore'],function(app,_){
 				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));
 			},
 			countPaymoney:function(loanId,payDate){
-				return $http.post(ApiURL+loanUrl+"/payBack/"+loanId+"/bill",JSON.stringify({loanId:loanId,payBackDate:payDate}))
+				var payDate = new Date(payDate);
+				return $http.post(ApiURL+loanUrl+"/payBack/"+loanId+"/bill",JSON.stringify({payBackDate:payDate}))
 				.then(function(res){
 					return res.data.data;
 				},function(){
@@ -162,6 +163,8 @@ define(['../../app','underscore'],function(app,_){
 				});
 			},
 			payMoney:function(loanId,payDate,payMoney){
+				var payDate = new Date(payDate);
+				var payMoney = Number.parseInt(payMoney);
 				return $http.post(ApiURL+loanUrl+"/payBack/"+loanId,JSON.stringify({loanId:loanId,payBackDate:payDate,payBackMoney:payMoney}))
 				.then(function(res){
 					return res.data.data;

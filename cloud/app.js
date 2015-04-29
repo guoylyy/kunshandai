@@ -79,14 +79,6 @@ app.get('/createLoan', function(req, res){
 
 /***************************************************
  * 账号相关的操作
- * 已完成
- * 1. 登录 登出 是否登录
- * 2. 注册 手机验证码 邮箱验证
- * TODO:
- * 1. 更新用户资料
- * 2. 获取用户资料
- * 3. 头像更新
- * 4. 修改密码
  **************************************************/
 app.get(config.baseUrl +'/account/logout', function(req, res){
   AV.User.logOut();
@@ -147,7 +139,7 @@ app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function (req, res
 //issue:输入错误的也返回200
 app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function (req, res){
   var code = req.body.code;
-  console.log(code);
+  //console.log(code);
   AV.User.verifyMobilePhone(code).then(function(){
     mutil.renderSuccess(res);
   },function(error){
@@ -169,6 +161,26 @@ app.put(config.baseUrl + '/account/:id', function (req, res){
   mutil.renderSuccess(res);
 });
 
+//发送短信验证码
+app.post(config.baseUrl + '/account/requestResetPasswordBySmsCode', function (req, res){
+  var mobilePhoneNumber = req.body.mobilePhoneNumber;
+  AV.User.requestPasswordResetBySmsCode(mobilePhoneNumber).then(function(){
+    mutil.renderSuccess(res);
+  }, function(error){
+    mutil.renderError(res, error);
+  })
+});
+//通过短信验证码重新新密码
+app.post(config.baseUrl + '/account/resetPasswordBySmsCode', function (req, res){
+  var npassword = req.body.password;
+  var code = req.body.code;
+  AV.User.resetPasswordBySmsCode(code, npassword).then(function(){
+    mutil.renderSuccess(res);
+  },function(error){
+    mutil.renderError(res, error);
+  })
+});
+
 /**********************************************
  * 贷款项目相关操作
  */
@@ -184,6 +196,33 @@ app.get(config.baseUrl + '/loan/:id', function (req, res){
       mutil.renderError(res, {code:404, message:'找不到对象!'});
     }
     mutil.renderData(res,transformLoanDetails(data[0]));
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
+app.delete(config.baseUrl + '/loan/:id', function (req, res){
+  var u = check_login(res); 
+  var loan = AV.Object.createWithoutData('Loan', req.params.id);
+  loan.fetch().then(function(l){
+    console.log(u);
+    if(!l.id){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
+    }
+    else if(l.get('status') != mconfig.loanStatus.draft.value){
+      mutil.renderError(res, {code:500, message:'不能删除正在还款的项目'});
+    }else{
+      if(u.id == l.get('owner').id){
+        //delete
+        AV.Object.destroyAll([l]).then(function(){
+         mutil.renderSuccess(res);
+        },function(error){
+         mutil.renderError(res, error);
+        });
+      }else{
+        mutil.renderError(res, {code:500, message:'你没有权限删除这个对象'});
+      }
+    }
   },function(error){
     mutil.renderError(res, error);
   });
@@ -212,6 +251,7 @@ app.put(config.baseUrl + '/loan/:id', function (req, res){
   });
 });
 
+//查询放款记录
 app.get(config.baseUrl + '/loan/:id/payments', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
@@ -234,6 +274,7 @@ app.get(config.baseUrl + '/loan/:id/payments', function (req, res){
   });
 });
 
+//查询还款记录
 app.get(config.baseUrl + '/loan/:id/paybacks', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
@@ -242,29 +283,6 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function (req, res){
       mutil.renderError(res, {code:404, message:'找不到对象!'});
     }else{
       var query = l.relation("loanPayBacks").query();
-      query.find({
-        success: function(list){
-          mutil.renderData(res,list);
-        },
-        error: function(error){
-          mutil.renderError(res, error);    
-        }
-      });
-    }
-  },function(error){
-    mutil.renderError(res, error);
-  });
-});
-
-//查询放款记录
-app.get(config.baseUrl + '/loan/:id/loanRecords', function (req, res){
-  var u = check_login(res);
-  var loan = AV.Object.createWithoutData('Loan', req.params.id);
-  loan.fetch().then(function(l){
-    if(!l || l.get('status')==undefined){
-      mutil.renderError(res, {code:404, message:'找不到对象!'});
-    }else{
-      var query = l.relation("loanRecords").query();
       query.find({
         success: function(list){
           mutil.renderData(res,list);
@@ -390,6 +408,8 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
 *   1. 分页列出所有项目（不包括草稿项目)
 *   2. 分页列出草稿项目
 *******************************************/
+
+//列出贷款项目
 app.get(config.baseUrl + '/loan/:listType/:pn', function (req, res){
   var u = check_login(res);
   var pageNumber = req.params.pn;
@@ -402,7 +422,6 @@ app.get(config.baseUrl + '/loan/:listType/:pn', function (req, res){
     query.equalTo('status', mconfig.loanStatus.draft.value);
   }else{
     query.include('loanPayBacks');
-    query.notEqualTo('status', mconfig.loanStatus.draft.value);
     var now = moment();
     if(req.params.listType == mconfig.loanListTypes.normal.value){
       query.lessThanOrEqualTo('currPayDate', now.add(1, 'month').toDate());
@@ -418,7 +437,7 @@ app.get(config.baseUrl + '/loan/:listType/:pn', function (req, res){
   listLoan(res, query, pageNumber);
 });
 
-//按条件分页列出项目当前还款情况
+//还款管理列表
 //目前列出还款金额是以当日为节点计算需要还款的金额
 app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
   var pageNumber = req.params.pn;
@@ -542,7 +561,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.loanId);
   loan.fetch().then(function(rLoan){
-    if(rLoan.get('owner').objectId != u.get('objectId')){
+    if(rLoan.get('owner').id != u.id){
       mutil.renderError(res, {code:500, message:'访问了没有权限的项目!'});
     }else{
       var relation = rLoan.relation('loanPayBacks');
@@ -727,6 +746,37 @@ app.get(config.baseUrl + '/contact/:id/attachments', function (req,res){
     mutil.renderError(res, error);
   });
 });
+
+app.delete(config.baseUrl + '/contact/:id/attachments/:attid', function (req, res){
+  handlerContactAttachment(req, res, 'remove');
+});
+
+app.post(config.baseUrl + '/contact/:id/attachments/:attid', function (req, res){
+  handlerContactAttachment(req, res, 'add');
+});
+
+function handlerContactAttachment(req, res, type){
+  var u = check_login(res);
+  var contact =  AV.Object.createWithoutData('Contact', req.params.id);
+  var attachment = AV.Object.createWithoutData('_File', req.params.attid);
+  contact.fetch().then(function(r_contact){
+    var relation = r_contact.relation('attachments');
+    if(type == 'add'){
+      relation.add(attachment);  
+    }else if(type == 'remove'){
+      relation.remove(attachment);
+    }
+    r_contact.save().then(function(c){
+      mutil.renderData(res, c);
+    },function(error){
+      mutil.renderError(res, error);
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
+};
+
+
 
 /*
   查询字典表
@@ -960,7 +1010,6 @@ function check_login(res){
     mutil.renderError(res, {code:501, message:'未登录，请重新登录！'});
   }
 };
-
 
 // 最后，必须有这行代码来使 express 响应 HTTP 请求
 app.listen({"static": {maxAge: 604800000}});

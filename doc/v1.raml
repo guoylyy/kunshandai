@@ -167,6 +167,40 @@ traits:
                   "result":"success",
                   "code":200
                 }
+  /requestResetPasswordBySmsCode:
+    post:
+      description: |
+        获取重置密码的短信验证码 (错误信息和leancloud错误信息一致)
+      queryParameters:
+        mobilePhoneNumber:
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":"success",
+                  "code":200
+                }  
+  /resetPasswordBySmsCode:
+    post:
+      description: |
+        通过短信验证码重置密码 (错误信息和leancloud错误信息一致)
+      queryParameters:
+        code:
+          type: string
+        password:
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "result":"success",
+                  "code":200
+                }  
   
 /loan:
   /{id}:
@@ -364,40 +398,6 @@ traits:
                         "objectId": "553151f6e4b052897f2b1a34",
                         "createdAt": "2015-04-17T18:33:26.670Z",
                         "updatedAt": "2015-04-17T18:33:26.670Z"
-                      }
-                    ],
-                    "code": 200
-                  }
-          404:
-            body:
-              application/json:
-                schema: |
-                  {
-                    "code": 404,
-                    "message": "找不到对象!"
-                  }
-    /loanRecords:
-      description: |
-        获取一个项目的获取一个贷款项目的所有放款记录
-      get:
-        responses:
-          200:
-            body:
-              application/json:
-                schema: |
-                  {
-                    "data": [
-                      {
-                        "assureCost": -123,
-                        "serviceCost": -456,
-                        "outMoney": 290253,
-                        "keepCost": -90,
-                        "order": 1,
-                        "interestsMoney": -9000,
-                        "otherCost": -78,
-                        "objectId": "5540315de4b0467125e58081",
-                        "createdAt": "2015-04-29T01:18:21.293Z",
-                        "updatedAt": "2015-04-29T01:18:21.293Z"
                       }
                     ],
                     "code": 200
@@ -1164,6 +1164,63 @@ traits:
                     ],
                     "code": 200
                   }
+
+      /{attchment_id}:
+        post:
+          description: |
+            为联系人添加一个附件 (错误信息和leancloud错误信息一致)
+          responses:
+            200:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "data": {
+                        "attachments": {
+                          "__type": "Relation",
+                          "className": "_File"
+                        },
+                        "address": "",
+                        "email": "",
+                        "certificateType": "",
+                        "name": "1231",
+                        "certificateNum": "1231",
+                        "qq": "",
+                        "wechat": "",
+                        "objectId": "5540d023e4b055ee74e9c1a3",
+                        "createdAt": "2015-04-29T12:35:47.878Z",
+                        "updatedAt": "2015-04-29T13:39:17.149Z"
+                      },
+                      "code": 200
+                    }
+        delete:
+          description: |
+            为联系人删除一个附件 (错误信息和leancloud错误信息一致)
+          responses:
+            200:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "data": {
+                        "attachments": {
+                          "__type": "Relation",
+                          "className": "_File"
+                        },
+                        "address": "",
+                        "email": "",
+                        "certificateType": "",
+                        "name": "1231",
+                        "certificateNum": "1231",
+                        "qq": "",
+                        "wechat": "",
+                        "objectId": "5540d023e4b055ee74e9c1a3",
+                        "createdAt": "2015-04-29T12:35:47.878Z",
+                        "updatedAt": "2015-04-29T13:39:17.149Z"
+                      },
+                      "code": 200
+                    }
+
 
 
   /all:

@@ -34,13 +34,39 @@ define(['app',"underscore"],function(app,_) {
 		
 		$scope.$watch('loanInfo.startDate',function(){
 			dateChange();
+			payTotalCircleChange();
 		});
 
-		var circleChange = function(){
-			if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
-				$scope.loanInfo.payCircle = $scope.loanInfo.spanMonth;
-				$scope.loanInfo.payTotalCircle = 1;
+		$scope.$watch('loanInfo.firstPayDate',function(){
+			payTotalCircleChange();
+		});
+
+		$scope.$watch('loanInfo.payCircle',function(){
+			payTotalCircleChange();
+		});
+
+		$scope.afterStartDate = function(value){
+			return new Date(value) > new Date($scope.startDate);
+		}
+
+		var payTotalCircleChange = function(){
+			if($scope.loanInfo.payCircle && $scope.loanInfo.endDate && $scope.loanInfo.firstPayDate){
+				var endDate =  new Date($scope.loanInfo.endDate);
+				var firstPayDate = new Date($scope.loanInfo.firstPayDate);
+				var years = endDate.getFullYear() - firstPayDate.getFullYear();
+				var Months = endDate.getMonth() - firstPayDate.getMonth();
+				$scope.loanInfo.payTotalCircle = parseInt( (years * 12 + Months)/ $scope.loanInfo.payCircle);
 			}
+		}
+
+		var circleChange = function(){
+			if($scope.loanInfo.spanMonth && $scope.loanInfo.startDate && $scope.loanInfo.firstPayDate ){
+				if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
+					$scope.loanInfo.payCircle = $scope.loanInfo.spanMonth;
+					$scope.loanInfo.payTotalCircle = 1;
+				}
+			}
+
 		};
 		var dateChange = function(){
 			if(!$scope.loanInfo.startDate || !$scope.loanInfo.spanMonth){
@@ -51,6 +77,8 @@ define(['app',"underscore"],function(app,_) {
 			$scope.loanInfo.endDate = date;
 			if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
 				$scope.loanInfo.firstPayDate = $scope.loanInfo.endDate ;
+			}else{
+				$scope.loanInfo.firstPayDate = $scope.loanInfo.startDate;
 			}
 		};
 

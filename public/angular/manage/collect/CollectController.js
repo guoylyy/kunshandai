@@ -26,7 +26,7 @@ define(['app'],function(app) {
 
 			$scope.collect = function(loanId){
 
-				$scope.collectModal = $modal.open({
+				var collectModal = $modal.open({
 					templateUrl: '/angular/manage/collect/collectModal.html',
 					controller:'CollectProcessCtrl',
 					size:'lg',
@@ -40,6 +40,10 @@ define(['app'],function(app) {
 							return LoanService.getPaybacks(loanId);
 						}
 					}
+				});
+
+				collectModal.result.then(function(){
+					$state.go($state.current, {}, {reload: true});
 				});
 
 			}

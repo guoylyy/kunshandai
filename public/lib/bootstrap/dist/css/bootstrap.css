@@ -5665,8 +5665,8 @@ a.list-group-item-danger.active:focus {
   line-height: 1;
   color: #ffffff;
   text-shadow: 0 1px 0 #ffffff;
-  opacity: 0.2;
-  filter: alpha(opacity=20);
+  opacity: 0.8;
+  filter: alpha(opacity=80);
 }
 .close:hover,
 .close:focus {

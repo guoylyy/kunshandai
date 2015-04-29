@@ -42,8 +42,10 @@ define(['app'],function(app) {
 					}
 				});
 
-				collectModal.result.then(function(){
-					$state.go($state.current, {}, {reload: true});
+				collectModal.result.then(function(succ){
+					if(succ){
+						$state.reload();
+					}
 				});
 
 			}

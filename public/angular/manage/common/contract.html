@@ -44,7 +44,7 @@
 										
 										<tr>
 											<td>{{loanInfo.loanType | cDisplay:"loanTypes"}}</td>
-											<td>{{loanInfo.amount}}</td>
+											<td>{{loanInfo.amount | number:2}}</td>
 											<td>{{loanInfo.startDate | date:"yyyy-MM-dd"}}</td>
 											<td>{{loanInfo.endDate | date:"yyyy-MM-dd"}}</td>
 											<td>{{loanInfo.payWay | cDisplay:"payBackWays"}}</td>
@@ -70,11 +70,11 @@
 										
 										<tr>
 											<td>{{loanInfo.interests * 100}}</td>
-											<td>{{loanInfo.assureCost}}</td>
-											<td>{{loanInfo.serviceCost}}</td>
+											<td>{{loanInfo.assureCost | number:2}}</td>
+											<td>{{loanInfo.serviceCost | number:2}}</td>
 											<td>{{loanInfo.overdueCostPercent * 1000}}</td>
-											<td>{{loanInfo.otherCost}}</td>
-											<td>{{loanInfo.keepCost}}</td>
+											<td>{{loanInfo.otherCost | number:2}}</td>
+											<td>{{loanInfo.keepCost | number:2}}</td>
 										</tr>
 
 									</tbody>

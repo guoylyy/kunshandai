@@ -153,25 +153,55 @@ define(['../../app','underscore'],function(app,_){
 			assure: function(loanId){
 				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));
 			},
-			countPaymoney:function(loanId,payDate){
+			countPaymoney:function(payBackId,payDate){
 				var payDate = new Date(payDate);
-				return $http.post(ApiURL+loanUrl+"/payBack/"+loanId+"/bill",JSON.stringify({payBackDate:payDate}))
+				return $http.post(ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",JSON.stringify({payBackDate:payDate}))
 				.then(function(res){
 					return res.data.data;
 				},function(res){
 					$log.error(res);
 				});
 			},
-			payMoney:function(loanId,payDate,payMoney){
+			payMoney:function(payBackId,payDate,payMoney){
 				var payDate = new Date(payDate);
 				var payMoney = Number.parseInt(payMoney);
 
-				return $http.post(ApiURL+loanUrl+"/payBack/"+loanId,JSON.stringify({loanId:loanId,payBackDate:payDate,payBackMoney:payMoney}))
+				return $http.post(ApiURL+loanUrl+"/payBack/"+payBackId,JSON.stringify({paybackid:payBackId,payBackDate:payDate,payBackMoney:payMoney}))
 				.then(function(res){
 					return res.data.data;
 				},function(res){
 					$log.error(res);
 				});
+			},
+			countCompleteMoney:function(loanId,payDate){
+				var deferred = $q.defer();
+
+				var payDate = new Date(payDate);
+				var params = {payDate:payDate};
+				$http.get(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",{params:params})
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					$log.error(res);
+					deferred.reject(res);
+				});
+
+				return deferred.promise;
+			},
+			completeLoan:function(loanId,payDate,payData){
+				var deferred = $q.defer();
+			
+				var payDate = new Date(payDate);
+				
+				$http.post(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",JSON.stringify({payBackDate:payDate,payBackData:payData}))
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					$log.error(res);
+					deferred.reject(res);
+				});
+
+				return deferred.promise;
 			}
 		}
 

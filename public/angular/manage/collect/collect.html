@@ -70,8 +70,8 @@
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu"  role="menu">
-							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)">收款</a></li>
-							<li><a role="menuitem" >结清</a></li>
+							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle"> 收款</a></li>
+							<li><a role="menuitem"  ng-click="collect(loan.loanObjectId)">结清</a></li>
 							<li ><a role="menuitem">调整</a></li>
 						</ul>
 					</div>

@@ -1,0 +1,80 @@
+<div class="row">
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">*{{pwan.houseCertificate.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pwan.houseCertificate.text}}" ng-model="pwan.houseCertificate.value" name="houseCertificate" required>
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.houseCertificate.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.houseCertificate.$error.required">请填{{pwan.houseCertificate.text}}</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="form-group">
+			<label class="control-label">*{{pwan.landCertificate.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pwan.landCertificate.text}}" ng-model="pwan.landCertificate.value" name="landCertificate" required>
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.landCertificate.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.landCertificate.$error.required">请填{{pwan.landCertificate.text}}</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div style="text-align:right">
+	<a ng-init="pwanMore=false" ng-click="pwanMore=!pwanMore" class=" text-info">{{pwanMore?'收起更多抵押物信息':'填写更多抵押物信息'}}</a>
+</div>
+<div ui-toggle="pwanMore">
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.owner.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.owner.text}}" ng-model="pwan.owner.value" name="owner">
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.area.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.area.text}}" ng-model="pwan.area.value" name="color">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.city.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.city.text}}" ng-model="pwan.city.value" name="brand" >
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.zone.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.zone.text}}" ng-model="pwan.zone.value" name="zone" >
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.buildingNum.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.buildingNum.text}}" ng-model="pwan.buildingNum.value" name="buildingNum" >
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.roomNum.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.roomNum.text}}" ng-model="pwan.roomNum.value" name="roomNum" >
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.price.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.price.text}}" float-number-input ng-model="pwan.price.value" name="price">
+			</div>
+		</div>
+	</div>
+</div>

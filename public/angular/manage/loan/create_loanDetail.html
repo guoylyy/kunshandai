@@ -11,7 +11,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*贷款类型</label>
-								<select ng-init="loanInfo.loanType = loanTypes[0].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
+								<select ng-init="loanInfo.loanType = loanInfo.loanType || loanTypes[0].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
 								<div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
 									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写逾期违约金</div>
 								</div>
@@ -187,7 +187,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*还款类型</label>
-								<select  ng-init="loanInfo.payWay = repayTypes[0].value" class="form-control" ng-model="loanInfo.payWay" ng-options="repayType.value as repayType.text for repayType in repayTypes" required name="payWay"></select>
+								<select  ng-init="loanInfo.payWay = loanInfo.payWay || repayTypes[0].value" class="form-control" ng-model="loanInfo.payWay" ng-options="repayType.value as repayType.text for repayType in repayTypes" required name="payWay"></select>
 								<div ng-show="loanForm.$submitted || loanForm.payWay.$touched">
 									<div class="text-danger" ng-show="loanForm.payWay.$error.required">请填写逾期违约金</div>
 									<div class="text-danger" ng-show="loanForm.payWay.$error.date">请填写正确的日期格式</div>
@@ -241,19 +241,7 @@
 						</div>
 						
 					</div>
-			        	<!-- <div class="row">
-			        		
-							<div class="col-md-6">
-				        		<div class="form-group">
-				        			<label>每期还款</label>
-				        			<div class="input-group">
-								  		<input type="text" class="form-control" placeholder="每期还款" disabled="">
-								  		<span class="input-group-addon">元</span>
-								  	</div>
-								</div>
-							</div>
-						
-						</div> -->
+			  
 					</div>
 				</div>
 

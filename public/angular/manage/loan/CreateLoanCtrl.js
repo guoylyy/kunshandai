@@ -4,8 +4,9 @@ define(['app',"underscore"],function(app,_) {
 
 	return app.controller('CreateLoanCtrl', 
 		["$scope","$rootScope","$location","$q","LoanService","ContactService",'DictService','$state',
-		'loanTypes','repayTypes','steps','$modal','SweetAlert',
-		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,repayTypes,steps,$modal,SweetAlert){
+		'loanTypes','repayTypes','steps','$modal','SweetAlert','PwanService',
+		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,
+			repayTypes,steps,$modal,SweetAlert,PwanService){
 		
 
 		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes : {};
@@ -20,56 +21,60 @@ define(['app',"underscore"],function(app,_) {
 				$state.go('createLoanContact');
 			}
 			
-		};
+		}
 
 		$scope.selected = {};
 		
 		$scope.$watch('loanInfo.payWay',function(){
 			circleChange();
 			dateChange();
-		});
+		})
 
 		$scope.$watch('loanInfo.spanMonth',function(){
 			circleChange();
 			dateChange();
-		});
+		})
 		
 		$scope.$watch('loanInfo.startDate',function(){
 			dateChange();
 			payTotalCircleChange();
-		});
+		})
 
 		$scope.$watch('loanInfo.firstPayDate',function(){
 			payTotalCircleChange();
-		});
+		})
 
 		$scope.$watch('loanInfo.payCircle',function(){
 			payTotalCircleChange();
-		});
+		})
 
 		$scope.afterStartDate = function(value){
 			return new Date(value) > new Date($scope.startDate);
 		}
 
 		var payTotalCircleChange = function(){
-			if($scope.loanInfo.payCircle && $scope.loanInfo.endDate && $scope.loanInfo.firstPayDate){
-				var endDate =  new Date($scope.loanInfo.endDate);
-				var firstPayDate = new Date($scope.loanInfo.firstPayDate);
-				var years = endDate.getFullYear() - firstPayDate.getFullYear();
-				var Months = endDate.getMonth() - firstPayDate.getMonth();
-				$scope.loanInfo.payTotalCircle = parseInt( (years * 12 + Months)/ $scope.loanInfo.payCircle);
-			}
+			// if($scope.loanInfo.payCircle && $scope.loanInfo.endDate && $scope.loanInfo.firstPayDate){
+				
+			// 	var endDate =  new Date($scope.loanInfo.endDate);
+			// 	var firstPayDate = new Date($scope.loanInfo.firstPayDate);
+				
+			// 	var years = endDate.getFullYear() - firstPayDate.getFullYear();
+			// 	var Months = endDate.getMonth() - firstPayDate.getMonth();
+
+			// 	$scope.loanInfo.payTotalCircle = parseInt( (years * 12 + Months)/ $scope.loanInfo.payCircle) + 1;
+			// }
 		}
 
 		var circleChange = function(){
-			if($scope.loanInfo.spanMonth && $scope.loanInfo.startDate && $scope.loanInfo.firstPayDate ){
+			if($scope.loanInfo.spanMonth){
 				if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
 					$scope.loanInfo.payCircle = $scope.loanInfo.spanMonth;
 					$scope.loanInfo.payTotalCircle = 1;
 				}
 			}
 
-		};
+		}
+		
 		var dateChange = function(){
 			if(!$scope.loanInfo.startDate || !$scope.loanInfo.spanMonth){
 				return;
@@ -82,25 +87,28 @@ define(['app',"underscore"],function(app,_) {
 			}else{
 				$scope.loanInfo.firstPayDate = $scope.loanInfo.startDate;
 			}
-		};
+		}
 
 		$scope.createContract = function(){
 			
 			var loaner = ContactService.getLoaner(),
 				assurer = ContactService.getAssurer(),
 				loan = LoanService.getLocal();
+			
 
 			$q.all([ContactService.create(loaner), ContactService.create(assurer),
-				LoanService.create(loan)])
+				LoanService.create(loan),PwanService.create($scope.pwan,$scope.loanInfo.attachments)])
 
 			.then(function(results){
 				
 				var contract = {};
-				loaner.objectId 	= contract.loanerId 	= results[0].objectId;				
+				loaner.objectId 	= contract.loanerId 	= results[0].objectId;	
 				assurer.objectId 	= contract.assurerId 	= results[1].objectId;
 				loan.objectId 		= contract.loanId 		= results[2].id;
+									  loan.serialNumber		= results[2].serialNumber;
+									  contract.loanPawnId	= results[3].objectId;
 
-				console.log(results[0], results[1], results[2]);
+				// console.log(results[0], results[1], results[2],results[3]);
 
 				return LoanService.generate(contract);
 			
@@ -113,16 +121,14 @@ define(['app',"underscore"],function(app,_) {
 			
 				SweetAlert.error("新建放款失败", "服务器开了点小差", "error");
 			})
-		};
-
-		$scope.payBackPlans;
+		}
 
 		$scope.open = function($event,opened) {
 		    
 		    $event.preventDefault();
 		    $event.stopPropagation();
 		    $scope.calendar[opened] = true;
-		};
+		}
 
 		$scope.uploadAttachment = function(type){
 			var modalInstance = $modal.open({
@@ -140,16 +146,16 @@ define(['app',"underscore"],function(app,_) {
 					$scope.br.attachments = _.union($scope.br.attachments,fileList);
 				}else if(type == '担保人'){
 					$scope.gr.attachments = _.union($scope.gr.attachments,fileList);
-				}else if(type === '汽车'||type === '房屋'){
+				}else if(type === '抵押物'){
 					$scope.loanInfo.attachments = _.union($scope.loanInfo.attachments,fileList);
 				}
 
 		    }, function () {
 		      
-		      $log.info('Modal dismissed at: ' + new Date());
+		      // $log.info('Modal dismissed at: ' + new Date());
 		    
 		    });
-		};
+		}
 
 		$scope.selectContact = function(){
 			
@@ -167,7 +173,7 @@ define(['app',"underscore"],function(app,_) {
 				$scope.loanInfo.attachments = _.compact($scope.loanInfo.attachments);
 			}
 			
-		};
+		}
 
 		
 		$scope.activeLoan = function(){
@@ -192,13 +198,17 @@ define(['app',"underscore"],function(app,_) {
 				$scope.loanInfo.actived = actived;
 
 				if(actived){
-					$scope.loanInfo.paybacks = LoanService.paybacks(loanId);	
+					LoanService.getPaybacks($scope.loanInfo.objectId).then(function(paybacks){
+						$scope.loanInfo.paybacks  = paybacks;
+						SweetAlert.success("放款完成");
+					},function(){
+						SweetAlert.success("获取还款信息失败");
+					})	
 				}
 
 			},function(){
 
 			})
-
 
 		}
 
@@ -206,11 +216,22 @@ define(['app',"underscore"],function(app,_) {
 		
 		$scope.format = 'yyyy-MM-dd';
 
+		$scope.template = {
+		
+			houseUrl	: '/angular/manage/loan/pwan/house_pwan.html',
+			carUrl		: '/angular/manage/loan/pwan/car_pwan.html',
+			grUrl		:'/angular/manage/contact/grInfo.html'
+		}
+
 		$scope.br = ContactService.getLoaner();
 		
 		$scope.gr = ContactService.getAssurer();
 		
 		$scope.loanInfo = LoanService.getLocal();
-		
+
+		$scope.pwan = PwanService.getLocal($scope.loanInfo.loanType);
+
+		$scope.pwanInfos = _.pairs($scope.pwan);
+
 	}]);
 });

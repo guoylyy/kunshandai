@@ -56,11 +56,11 @@ define(['../app'],function(app){
 				if(key === 'timeRanges'){
 					return timeRangeValues();
 				}
-				if(keys.key){
-					return keys.key;
+				if(keys[key]){
+					return keys[key];
 				}
 				return $http.get(ApiURL+"/dict/"+key).then(function(res){
-					return keys.key = res.data.data;
+					return keys[key] = res.data.data;
 				},function(res){
 					console.log("fetch dict error "+key);
 				});

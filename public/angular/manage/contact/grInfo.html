@@ -1,0 +1,95 @@
+	<div class="ks-dividing">
+		<h4>担保人</h4>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">
+					担保人信息
+					<span><a class="text-info ks-right small">从客户中选择</a></span>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label">*姓名</label>
+								<input type="text" class="form-control" placeholder="姓名" name="gname" ng-model="gr.name" >
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gname.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gname.$error.required">请填担保人姓名</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">*身份证</label>
+								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gid.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gid.$error.required">请填担保人姓名</div>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+					<div style="text-align:right">
+						<a ng-init="grMore=false" ng-click="grMore=!grMore" class=" text-info">{{grMore?'收起更多信息':'填写更多信息'}}</a>
+					</div>
+					<div ui-toggle="grMore">
+					<div class="ks-divider"></div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>手机号</label>
+								<input type="text" class="form-control" placeholder="手机号" name="gmobilePhoneNum"ng-model="gr.mobilePhoneNum" ng-pattern="/\b\d{11}\b/">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gmobilePhoneNum.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>邮箱</label>
+								<input type="email" class="form-control" placeholder="邮箱" name="gemail" ng-model="gr.email">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gemail.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gemail.$error.email">请填写正确邮箱</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>QQ</label>
+								<input type="text" class="form-control" placeholder="QQ" name="gqq" ng-model="gr.qq">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gqq.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gqq.$error.pattern">请填写正确QQ号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>微信</label>
+								<input type="text" class="form-control" placeholder="微信" ng-model="gr.wechat">
+
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">担保人附件</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item" ng-show="gr.attachments" ng-repeat="a in gr.attachments">
+							<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('gr',$index)"></a>
+							<a ng-href="a.url" target="_blank">
+								{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+							</a>
+						</li>
+					</ul>
+					<button type="button" class="btn btn-default ks-right" ng-click="uploadAttachment('担保人')">上传新的资料</button>
+				</div>
+			</div>
+		</div>
+	</div>

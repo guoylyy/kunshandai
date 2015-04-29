@@ -1,0 +1,75 @@
+
+
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label">*{{pwan.carNum.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pwan.carNum.text}}" ng-model="pwan.carNum.value" name="carNum" required>
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.carNum.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.carNum.$error.required">请填{{pwan.carNum.text}}</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label">*{{pwan.engineNum.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pwan.engineNum.text}}" ng-model="pwan.engineNum.value" name="engineNum" required>
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.engineNum.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.engineNum.$error.required">{{pwan.engineNum.text}}</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label">*{{pwan.frameNum.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pwan.frameNum.text}}" ng-model="pwan.frameNum.value" name="frameNum" required>
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.frameNum.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.frameNum.$error.required">请填{{pwan.frameNum.text}}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div style="text-align:right">
+	<a ng-init="pwanMore=false" ng-click="pwanMore=!pwanMore" class=" text-info">{{pwanMore?'收起更多抵押物信息':'填写更多抵押物信息'}}</a>
+</div>
+<div ui-toggle="pwanMore">
+	<div class="ks-divider"></div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.owner.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.owner.text}}" ng-model="pwan.owner.value" name="owner">
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.color.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.color.text}}" ng-model="pwan.color.value" name="color">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.brand.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.brand.text}}" ng-model="pwan.brand.value" name="brand" >
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.drivingLicense.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.drivingLicense.text}}" ng-model="pwan.drivingLicense.value" name="drivingLicense">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="control-label">{{pwan.price.text}}</label>
+				<input type="text" class="form-control" placeholder="{{pwan.price.text}}" ng-model="pwan.price.value" name="price" >
+			</div>
+		</div>
+	</div>
+</div>

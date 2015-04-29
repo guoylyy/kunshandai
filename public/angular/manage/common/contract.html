@@ -4,7 +4,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-11">
-				<h4>合同编号: {{loanInfo.objectId}}</h4>
+				<h4>合同编号: {{loanInfo.serialNumber}}</h4>
 			</div>
 			<div class=" col-md-1">
 			<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
@@ -96,7 +96,7 @@
 									<tbody>
 										<tr ng-repeat="p in loanInfo.paybacks" ng-class="{success:(p.status == 1),info:(status == 2)}">
 											<td>{{p.order}}</td>
-											<td>{{p.payMoney}}</td>
+											<td>{{p.payMoney | number:2}}</td>
 											<td>{{p.payDate | date:"yyyy-MM-dd" }}</td>
 											<td ng-show="p.status === 1" class="text-info">正在还</td>
 											<td ng-show="p.status === 2" >未还</td>
@@ -107,46 +107,71 @@
 		    </div>
 		</div>
 		<div class="ks-panel panel panel-default">
-			<div class="panel-heading">其他材料</div>
+			<div class="panel-heading">抵押物材料</div>
 		    <div class="panel-body">
 		    	<div class="row">
-		    		<div class="col-md-4">
+		    		<div class="col-md-8">
 		    			<div class="ks-panel panel panel-default">
-							<div class="panel-heading">抵押物材料</div>
+							<div class="panel-heading">抵押物信息</div>
 						    <div class="panel-body">
-						    	<ul class="list-group">
-						    		
-						    	</ul>
+						    	<div class="row">
+									<div class="col-md-6" ng-repeat="pwanInfo in pwanInfos" >
+										<strong>{{pwanInfo[1].text}}: </strong> <label>{{pwanInfo[1].value}}</label>
+									</div>
+								</div>
 						    </div>
 						</div>
 		    		</div>
 		    		<div class="col-md-4">
 		    			<div class="ks-panel panel panel-default">
-							<div class="panel-heading">借款人材料</div>
+							<div class="panel-heading">抵押物附件</div>
 						    <div class="panel-body">
-						    	<ul class="list-group">
-									<li class="list-group-item" ng-repeat="a in br.attachments" >
-										<a href="{{a.url}}" target="_blank">{{a.name}} | {{a.attachmentType}}</a>
+					    		<ul class="list-group">
+									<li class="list-group-item" ng-repeat="a in loanInfo.attachments" >
+										<a ng-href="a.url" target="_blank">
+											{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+										</a>
 									</li>
 								</ul>
 						    </div>
 						</div>
 		    		</div>
-		    		<div class="col-md-4">
+		    	</div>
+		    </div>
+		</div>
+
+		<div class="ks-panel panel panel-default">
+			<div class="panel-heading">其他材料</div>
+		    <div class="panel-body">
+		    	<div class="row">
+		    		<div class="col-md-6">
 		    			<div class="ks-panel panel panel-default">
-							<div class="panel-heading">担保人材料</div>
+							<div class="panel-heading">借款人附件</div>
+						    <div class="panel-body">
+						    	<ul class="list-group">
+									<li class="list-group-item" ng-repeat="a in br.attachments" >
+										<a ng-href="a.url" target="_blank">
+											{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+										</a>
+									</li>
+								</ul>
+						    </div>
+						</div>
+		    		</div>
+		    		<div class="col-md-6">
+		    			<div class="ks-panel panel panel-default">
+							<div class="panel-heading">担保人附件</div>
 						    <div class="panel-body">
 						    	
 						    		<ul class="list-group">
 										<li class="list-group-item" ng-repeat="a in gr.attachments" >
-											<a href="{{a.url}}" target="_blank">{{a.name}} | {{a.attachmentType}}</a>
-										</li>
+											<a ng-href="a.url" target="_blank">
+												{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+											</a>
 									</ul>
-						 
 						    </div>
 						</div>
 		    		</div>
-
 		    	</div>
 		    </div>
 		</div>

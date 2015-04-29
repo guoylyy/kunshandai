@@ -81,12 +81,14 @@ loanRecordFactory.factory = function(loan){
  */
 var loanPayBackFactory = {
     payBackInit: {},
-    overdueMoneyCal : {}
+    overdueMoneyCal : {},
+    finishBillParmsCal: {}
 };
-function generateLoanPayBack(loan, payMoney, payDate, status, order){
+function generateLoanPayBack(loan, payMoney, interestsMoney, payDate, status, order){
     var loanPayBack = new AV.Object('LoanPayBack');
     loanPayBack.set('payDate', payDate);
     loanPayBack.set('payMoney', payMoney);
+    loanPayBack.set('interestsMoney', interestsMoney);
     loanPayBack.set('status', status);
     loanPayBack.set('order',order);
     loanPayBack.set('loan', loan);
@@ -96,7 +98,7 @@ function generateLoanPayBack(loan, payMoney, payDate, status, order){
 loanPayBackFactory.payBackInit.xxhb = function(loanObj, loan){
     var outMoney = loan.amount;
     var d = moment(loan.firstPayDate).format();//todo:修改成首次还款日期日期
-    return [generateLoanPayBack(loanObj, outMoney, d, mconfig.loanPayBackStatus.paying.value, 1)];
+    return [generateLoanPayBack(loanObj, outMoney, 0, d, mconfig.loanPayBackStatus.paying.value, 1)];
 };
 //等额本息需要每月还利息 + 本金 + 逾期违约金
 //生成之时预约违约金为 0
@@ -111,7 +113,7 @@ loanPayBackFactory.payBackInit.debx = function(loanObj, loan){
         if(i > 1){
             status = mconfig.loanPayBackStatus.toPaying.value;
         }
-        rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, 
+        rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, interestsMoney,
             d, status, i));
     };
     return rlist;
@@ -129,7 +131,7 @@ loanPayBackFactory.payBackInit.zqcxhb = function(loanObj, loan){
         if(i > 1){
             status = mconfig.loanPayBackStatus.toPaying.value;
         }
-        rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, 
+        rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, interestsMoney,
             d, status, i));
     };
     return rlist;
@@ -146,7 +148,7 @@ loanPayBackFactory.payBackInit.zqmxhb = function(loanObj, loan){
         if(i > 1){
             status = mconfig.loanPayBackStatus.toPaying.value;
         }
-        rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, 
+        rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, interestsMoney,
             d, status, i));
     };
     return rlist;
@@ -157,7 +159,7 @@ loanPayBackFactory.payBackInit.dqhbfx = function(loanObj, loan){
     var d = moment(loan.firstPayDate).format();
     var overdueMoney = 0;
     var interestsMoney = loan.amount* loan.interests * loan.payCircle * loan.payTotalCircle;
-    return [generateLoanPayBack(loanObj, interestsMoney+ baseMoney, d, mconfig.loanPayBackStatus.paying.value, 1)];
+    return [generateLoanPayBack(loanObj, interestsMoney+ baseMoney, interestsMoney, d, mconfig.loanPayBackStatus.paying.value, 1)];
 };
 
 //还款的违约金计算
@@ -177,6 +179,35 @@ loanPayBackFactory.overdueMoneyCal.dqhbfx = function(loanObj, currDate){
     return 0;
 };
 
+
+//提前结清违约金和退还项目利息计算接口
+var finishBillParms = {
+    income: { //收入金额
+        amount: 0,
+        overdueMoney: 0
+    },
+    outcome: {  //应该退还的金额
+        assureCost : 0,
+        keepCost : 0
+    }
+};
+loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, currDate){
+    return finishBillParms;
+};
+loanPayBackFactory.finishBillParmsCal.debx = function(loanObj, currDate){
+    return finishBillParms;
+};
+loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, currDate){
+    return finishBillParms;
+};
+loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, currDate){
+    return finishBillParms;
+};
+loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, currDate){
+    return finishBillParms;
+};
+
+
 loanPayBackFactory.factory = function(loan){
     return new loanPayBackFactory.payBackInit[loan.get('payWay')](loan, loan.attributes);
 };
@@ -184,6 +215,11 @@ loanPayBackFactory.factory = function(loan){
 loanPayBackFactory.overdueMoney = function(loan, currDate){
     return new loanPayBackFactory.overdueMoneyCal[loan.get('payWay')](loan, currDate);
 };
+
+loanPayBackFactory.finishBillParms = function(loan, payDate){
+    return new loanPayBackFactory.finishBillParmsCal[loan.get('payWay')](loan, payDate);
+};
+
 /* End of 针对还款的工厂类 
  * ****************************/
 
@@ -201,6 +237,11 @@ function calculatePayBackMoney(loan){
 function calculateOverdueMoney(loan, currDate){
     return loanPayBackFactory.overdueMoney(loan, currDate);
 };
+//计算结清违约金接口和退还利息的接口
+function calculateFinishBillParms(loan, payDate){
+    return loanPayBackFactory.finishBillParms(loan, payDate);
+};
+
 function createBasicLoan(reqBody, u){
     var loan = new AV.Object('Loan');
     loan.set('owner', u);
@@ -235,6 +276,7 @@ function updateLoan(loan, reqBody){
     return loan;
 };
 
+exports.calculateFinishBillParms = calculateFinishBillParms;
 exports.calculateOverdueMoney = calculateOverdueMoney;
 exports.updateLoan = updateLoan;
 exports.createBasicLoan=createBasicLoan;

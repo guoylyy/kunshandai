@@ -29,6 +29,10 @@ var loanPayBackStatus = {
 	completed: {
 		value:3,
 		text:'已完成'
+	},
+	closed :{
+		value:4,
+		text:'已关闭'
 	}
 };
 

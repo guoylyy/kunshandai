@@ -256,6 +256,29 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function (req, res){
   });
 });
 
+//查询放款记录
+app.get(config.baseUrl + '/loan/:id/loanRecords', function (req, res){
+  var u = check_login(res);
+  var loan = AV.Object.createWithoutData('Loan', req.params.id);
+  loan.fetch().then(function(l){
+    if(!l || l.get('status')==undefined){
+      mutil.renderError(res, {code:404, message:'找不到对象!'});
+    }else{
+      var query = l.relation("loanRecords").query();
+      query.find({
+        success: function(list){
+          mutil.renderData(res,list);
+        },
+        error: function(error){
+          mutil.renderError(res, error);    
+        }
+      });
+    }
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
 //新建一个贷款项目
 app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var u = check_login(res);
@@ -510,16 +533,64 @@ app.post(config.baseUrl + '/loan/payBack/:id/bill', function (req, res){
 
 
 //结清账单生成
-app.post(config.baseUrl + '/loan/payBack/:id/finishBill', function (req, res){
-  //acl
+app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
+  //接受项目id，获取结清账单
+  var u = check_login(res);
+  var loan = AV.Object.createWithoutData('Loan', req.params.loanId);
+  loan.fetch().then(function(rLoan){
+    if(rLoan.get('owner').objectId != u.get('objectId')){
+      mutil.renderError(res, {code:500, message:'访问了没有权限的项目!'});
+    }else{
+      var relation = rLoan.relation('loanPayBacks');
+      var q = relation.query();
+      q.notEqualTo('status',mconfig.loanPayBackStatus.completed.value);
+      q.notEqualTo('status',mconfig.loanPayBackStatus.closed.value);
+      q.find().then(function(pbs){
+        var totalInterests = 0;
+        var totalPayMoney = 0;
+        for (var i = 0; i < pbs.length; i++) {
+          totalInterests += pbs[i].get('interestsMoney');
+          totalPayMoney  += pbs[i].get('payMoney');
+        };
+        var rc = mloan.calculateFinishBillParms(rLoan, req.query.payDate);
+        rc.income.amount = totalPayMoney;
+        mutil.renderData(res, rc);  
+      },function(error){
+        mutil.renderError(res, error);
+      });
+    }
+  });
 });
 
 //结清
 app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
-  //acl
+  var u = check_login(res);
+  var loan = AV.Object.createWithoutData('Loan', req.params.id);
+  loan.fetch().then(function(rLoan){
+    if(rLoan.get('status') != mconfig.loanStatus.paying.value){
+      mutil.renderError(res, {code:500, message:'项目状态错误!'});
+    }else{
+      rLoan.set('finishBill', req.body.payBackData);
+      rLoan.set('status', mconfig.loanStatus.completed.value);
+      var relation = rLoan.relation('loanPayBacks');
+      var q = relation.query();
+      q.notEqualTo('status',mconfig.loanPayBackStatus.completed.value);
+      q.find().then(function(list){
+        rLoan.save().then(function(ll){
+          for (var i = 0; i < list.length; i++) {
+            list[i].set('status',mconfig.loanPayBackStatus.closed.value);
+            list[i].set('payBackMoney',0);
+            list[i].set('payBackDate',req.body.payBackDate);
+            list[i].save();
+          };
+          mutil.renderSuccess(res);
+        },function(error){
+          mutil.renderError(res, error);
+        })
+      });
+    }
+  });
 });
-
-//
 
 function calculateOverdueMoney(loan, baseDate, payDate){
   var a = moment(baseDate);
@@ -541,10 +612,11 @@ function concretePayBack(lpb, loan, overdueMoney){
   result['serialNumber'] = loan.get('serialNumber');
   result['payTotalCircle'] = loan.get('payTotalCircle');
   result['payCurrCircle'] = lpb.get('order');
-  result['payDate'] = lpb.get('payDate');
+  result['payDate'] = lpb.get('payDate'); //应还日期
   result['amount'] = loan.get('amount');
   result['payMoney'] = lpb.get('payMoney') + overdueMoney;
   result['overdueMoney'] = overdueMoney; //违约金
+  result['interestsMoney'] = lpb.get('interestsMoney'); //利息
   //result['payedMoney'] = loan.payedMoney;
   return result;
 };
@@ -581,7 +653,6 @@ function listLoan(res, query, pageNumber){
       }
   });
 };
-
 
 /*****************************************
  * 联系人相关接口
@@ -727,9 +798,7 @@ app.get(config.baseUrl + '/dict/:key', function (req, res){
 
 //上传文件
 app.post(config.baseUrl + '/attachment', function (req, res){  
-  
   var fType = req.body.fileType;
-  
   if(!fType){
     fType = null;
   }
@@ -804,6 +873,7 @@ function transformLoanDetails(l){
   m['otherCostDesc'] = l.get('otherCostDesc');
   m['keepCostDesc'] = l.get('keepCostDesc');
   m['firstPayDate'] = formatTime(l.get('firstPayDate'));
+  m['finishBill'] = l.get('finishBill');
   return m;
 }
 

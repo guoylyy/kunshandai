@@ -376,6 +376,40 @@ traits:
                     "code": 404,
                     "message": "找不到对象!"
                   }
+    /loanRecords:
+      description: |
+        获取一个项目的获取一个贷款项目的所有放款记录
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data": [
+                      {
+                        "assureCost": -123,
+                        "serviceCost": -456,
+                        "outMoney": 290253,
+                        "keepCost": -90,
+                        "order": 1,
+                        "interestsMoney": -9000,
+                        "otherCost": -78,
+                        "objectId": "5540315de4b0467125e58081",
+                        "createdAt": "2015-04-29T01:18:21.293Z",
+                        "updatedAt": "2015-04-29T01:18:21.293Z"
+                      }
+                    ],
+                    "code": 200
+                  }
+          404:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "code": 404,
+                    "message": "找不到对象!"
+                  }
   /{filter}/{pn}:
     get:
       description: |
@@ -712,7 +746,7 @@ traits:
                       },
                       "code": 200
                   }
-    /{id}:
+    /{paybackid}:
       post:
         description: |
           还款,但是不能还最后一期
@@ -789,6 +823,88 @@ traits:
                     {
                       "code": 500,
                       "message": "这是最后一期还款，请跳转到结清"
+                    }
+    /{loanId}:
+      /finishBill:
+        get:
+          description: |
+            查看目前结清的账单
+          queryParameters:
+            payDate:
+              type: date
+              example: |
+                "2014-10-10"
+          responses:
+            200:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "data": {
+                        "income": {
+                          "amount": 0, 
+                          "overdueMoney": 0  
+                        },
+                        "outcome": {
+                          "assureCost": 0, 
+                          "keepCost": 0 
+                        }
+                      },
+                      "code": 200
+                    }
+            500:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "code": 500,
+                      "message": "访问了没有权限的项目"
+                    }
+        post:
+          description: |
+            结清接口
+          queryParameters:
+            data:
+              type: string
+              example: |
+                {
+                    "payBackDate":"2014-10-10",
+                    "payBackData":{
+                      "income": {
+                        "amount": 0, //应还金额
+                        "overdueMoney": 0 //其中违约金
+                      },
+                      "outcome": {
+                        "assureCost": 0, //退还的保证金
+                        "keepCost": 0 //退还的暂存金额
+                      }
+                    }
+                }
+          responses:
+            200:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "data": {
+                        "income": {
+                          "amount": 0,
+                          "overdueMoney": 0
+                        },
+                        "outcome": {
+                          "assureCost": 0,
+                          "keepCost": 0
+                        }
+                      },
+                      "code": 200
+                    }
+            500:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "code": 500,
+                      "message": "项目状态错误"
                     }
 
 

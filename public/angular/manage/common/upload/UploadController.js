@@ -1,8 +1,7 @@
 define(['app','underscore'],function(app,_){
-	return app.controller('UploadController', ['$scope','$modalInstance','UploadService','SweetAlert', 
-		function($scope,$modalInstance,UploadService,SweetAlert,contact){
+	return app.controller('UploadController', function($scope,$modalInstance,UploadService,SweetAlert,type){
 		
-		$scope.contact = contact;
+		$scope.type = type;
   		
   		$scope.attachmentType = 'certification';
 
@@ -53,5 +52,5 @@ define(['app','underscore'],function(app,_){
 		    		$modalInstance.dismiss('cancel');
 		    	}
 		   };
-	}]);
+	});
 });

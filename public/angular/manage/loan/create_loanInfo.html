@@ -1,4 +1,4 @@
-<form name="contactsForm" novalidate ng-submit="contactsForm.$valid && createContract()">
+<form name="moreInfoForm" novalidate ng-submit="moreInfoForm.$valid && createContract()">
 	<div class="container-fluid">
 	<div class="ks-dividing">
 		<h4>借款人</h4>
@@ -13,8 +13,8 @@
 							<div class="form-group">
 								<label class="control-label">*姓名</label>
 								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" required>
-								<div ng-show="contactsForm.$submitted || contactsForm.bname.$touched">
-									<div class="text-danger" ng-show="contactsForm.bname.$error.required">请填借款人姓名</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bname.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填借款人姓名</div>
 								</div>
 							</div>
 						</div>
@@ -22,8 +22,8 @@
 							<div class="form-group">
 								<label class="control-label">*身份证</label>
 								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" required>
-								<div ng-show="contactsForm.$submitted || contactsForm.bid.$touched">
-									<div class="text-danger" ng-show="contactsForm.bid.$error.required">请填借款人身份证</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bid.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填借款人身份证</div>
 								</div>
 							</div>
 						</div>
@@ -39,8 +39,8 @@
 							<div class="form-group">
 								<label>手机号</label>
 								<input type="text" class="form-control" placeholder="手机号" ng-model="br.mobilePhoneNum" name="bmobilePhoneNum" ng-pattern="/\b\d{11}\b/">
-								<div ng-show="contactsForm.$submitted || contactsForm.bmobilePhoneNum.$touched">
-									<div class="text-danger" ng-show="contactsForm.bmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bmobilePhoneNum.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
 								</div>
 							</div>
 						</div>
@@ -48,8 +48,8 @@
 							<div class="form-group">
 								<label>邮箱</label>
 								<input type="email" class="form-control" placeholder="邮箱" ng-model="br.email" name="bemail">
-								<div ng-show="contactsForm.$submitted || contactsForm.bemail.$touched">
-									<div class="text-danger" ng-show="contactsForm.bemail.$error.email">请填写正确邮箱</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bemail.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bemail.$error.email">请填写正确邮箱</div>
 								</div>
 							</div>
 						</div>
@@ -59,8 +59,8 @@
 							<div class="form-group">
 								<label>QQ</label>
 								<input type="text" class="form-control" placeholder="QQ" ng-model="br.qq" name="bqq" ng=pattern="/\d+/">
-								<div ng-show="contactsForm.$submitted || contactsForm.bqq.$touched">
-									<div class="text-danger" ng-show="contactsForm.bqq.$error.pattern">请填写正确QQ号</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bqq.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bqq.$error.pattern">请填写正确QQ号</div>
 								</div>
 							</div>
 						</div>
@@ -109,8 +109,8 @@
 							<div class="form-group">
 								<label class="control-label">*姓名</label>
 								<input type="text" class="form-control" placeholder="姓名" name="gname" ng-model="gr.name" required>
-								<div ng-show="contactsForm.$submitted || contactsForm.gname.$touched">
-									<div class="text-danger" ng-show="contactsForm.gname.$error.required">请填担保人姓名</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gname.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gname.$error.required">请填担保人姓名</div>
 								</div>
 							</div>
 						</div>
@@ -118,8 +118,8 @@
 							<div class="form-group">
 								<label class="control-label">*身份证</label>
 								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum" required>
-								<div ng-show="contactsForm.$submitted || contactsForm.gid.$touched">
-									<div class="text-danger" ng-show="contactsForm.gid.$error.required">请填担保人姓名</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gid.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gid.$error.required">请填担保人姓名</div>
 								</div>
 							</div>
 						</div>
@@ -135,8 +135,8 @@
 							<div class="form-group">
 								<label>手机号</label>
 								<input type="text" class="form-control" placeholder="手机号" name="gmobilePhoneNum"ng-model="gr.mobilePhoneNum" ng-pattern="/\b\d{11}\b/">
-								<div ng-show="contactsForm.$submitted || contactsForm.gmobilePhoneNum.$touched">
-									<div class="text-danger" ng-show="contactsForm.gmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gmobilePhoneNum.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
 								</div>
 
 							</div>
@@ -145,8 +145,8 @@
 							<div class="form-group">
 								<label>邮箱</label>
 								<input type="email" class="form-control" placeholder="邮箱" name="gemail" ng-model="gr.email">
-								<div ng-show="contactsForm.$submitted || contactsForm.gemail.$touched">
-									<div class="text-danger" ng-show="contactsForm.gemail.$error.email">请填写正确邮箱</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gemail.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gemail.$error.email">请填写正确邮箱</div>
 								</div>
 							</div>
 						</div>
@@ -154,8 +154,8 @@
 							<div class="form-group">
 								<label>QQ</label>
 								<input type="text" class="form-control" placeholder="QQ" name="gqq" ng-model="gr.qq">
-								<div ng-show="contactsForm.$submitted || contactsForm.gqq.$touched">
-									<div class="text-danger" ng-show="contactsForm.gqq.$error.pattern">请填写正确QQ号</div>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gqq.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gqq.$error.pattern">请填写正确QQ号</div>
 								</div>
 							</div>
 						</div>
@@ -188,6 +188,176 @@
 			</div>
 		</div>
 	</div>
+	<div class="ks-dividing">
+		<h4>抵押物</h4>
+	</div>
+	<div class="row" >
+		<div class="col-md-8">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">抵押物信息</div>
+				<div class="panel-body" ng-show="loanInfo.loanType === 'qcdy' || loanInfo.loanType === 'mcdy'">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label">*车牌</label>
+								<input type="text" class="form-control" placeholder="车牌" ng-model="car.plateNumber" name="plateNumber" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.plateNumber.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.plateNumber.$error.required">请填车牌号</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label">*发动机号</label>
+								<input type="text" class="form-control" placeholder="发动机号" ng-model="car.engineNum" name="engineNum" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.engineNum.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.engineNum.$error.required">请填发动机号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label">*车架号</label>
+								<input type="text" class="form-control" placeholder="车架号" ng-model="car.carframeNum" name="carframeNum" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.carframeNum.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.carframeNum.$error.required">请填车架号</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">车主</label>
+								<input type="text" class="form-control" placeholder="车主" ng-model="car.owner" name="owner">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">车身颜色</label>
+								<input type="text" class="form-control" placeholder="车身颜色" ng-model="car.color" name="color">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">汽车品牌</label>
+								<input type="text" class="form-control" placeholder="汽车品牌" ng-model="car.brand" name="brand" >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">行驶证号</label>
+								<input type="text" class="form-control" placeholder="行驶证号" ng-model="car.drivingLicense" name="drivingLicense">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">评估价格</label>
+								<input type="text" class="form-control" placeholder="评估价格" ng-model="car.price" name="price" >
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body" ng-show="loanInfo.loanType === 'fcdy' || loanInfo.loanType === 'mfdy'">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">*房产证号</label>
+								<input type="text" class="form-control" placeholder="房产证号" ng-model="house.houseCertificate" name="houseCertificate" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.houseCertificate.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.houseCertificate.$error.required">请填房产证号</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">*土地证号</label>
+								<input type="text" class="form-control" placeholder="土地证号" ng-model="house.landCertificate" name="landCertificate" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.landCertificate.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.landCertificate.$error.required">请填发动机号</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">业主</label>
+								<input type="text" class="form-control" placeholder="业主" ng-model="house.owner" name="owner">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">房屋面积(平方米)</label>
+								<input type="text" class="form-control" placeholder="房屋面积" ng-model="house.area" name="color">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">所在城市</label>
+								<input type="text" class="form-control" placeholder="所在城市" ng-model="house.city" name="brand" >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">所在小区</label>
+								<input type="text" class="form-control" placeholder="所在小区" ng-model="house.zone" name="price" >
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">楼号</label>
+								<input type="text" class="form-control" placeholder="楼号" ng-model="house.buildingNum" name="buildingNum" >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">室号</label>
+								<input type="text" class="form-control" placeholder="室号" ng-model="house.roomNum" name="roomNum" >
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">评估价格</label>
+								<input type="text" class="form-control" placeholder="评估价格" float-number-input ng-model="house.price" name="price">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">抵押物附件</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item" ng-show="loan.attachments" ng-repeat="a in loan.attachments">
+							<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('loan',$index)"></a>
+							<a ng-href="a.url" target="_blank">
+								{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+							</a>
+						</li>
+					</ul>
+					<button type="button" class="btn btn-default ks-right" ng-click="uploadAttachment('汽车')">上传新的资料</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="ks-divider"></div>
 	<div class="container-fluid" >
 		<div class="col-md-6 ">

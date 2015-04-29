@@ -108,7 +108,6 @@ define(['app','underscore'],function(app,_) {
 			});
 		}
 
-
 		$scope.cancel = function(){
 			$modalInstance.dismiss('cancel');
 		}

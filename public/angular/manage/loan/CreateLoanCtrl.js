@@ -21,6 +21,8 @@ define(['app',"underscore"],function(app,_) {
 			}
 			
 		};
+
+		$scope.selected = {};
 		
 		$scope.$watch('loanInfo.payWay',function(){
 			circleChange();
@@ -122,22 +124,24 @@ define(['app',"underscore"],function(app,_) {
 		    $scope.calendar[opened] = true;
 		};
 
-		$scope.uploadAttachment = function(contact){
+		$scope.uploadAttachment = function(type){
 			var modalInstance = $modal.open({
 				templateUrl: '/angular/manage/common/upload/uploadModal.html',
 				controller:'UploadController',
 				size:'lg',
 				resolve:{
-					contact:function(){
-						return contact;
+					type:function(){
+						return type;
 					}
 				}
 			});
 			modalInstance.result.then(function (fileList) {
-		      	if(contact === '借款人'){
+		      	if(type === '借款人'){
 					$scope.br.attachments = _.union($scope.br.attachments,fileList);
-				}else if(contact == '担保人'){
+				}else if(type == '担保人'){
 					$scope.gr.attachments = _.union($scope.gr.attachments,fileList);
+				}else if(type === '汽车'||type === '房屋'){
+					$scope.loanInfo.attachments = _.union($scope.loanInfo.attachments,fileList);
 				}
 
 		    }, function () {
@@ -151,13 +155,16 @@ define(['app',"underscore"],function(app,_) {
 			
 		}
 
-		$scope.removeAttach = function(contact,index){
-			if(contact === 'br'){
+		$scope.removeAttach = function(type,index){
+			if(type === 'br'){
 				delete($scope.br.attachments[index]);
 				$scope.br.attachments = _.compact($scope.br.attachments);
-			}else if(contact === 'gr'){
+			}else if(type === 'gr'){
 				delete($scope.gr.attachments[index]);
-				$scope.br.attachments = _.compact($scope.gr.attachments);
+				$scope.gr.attachments = _.compact($scope.gr.attachments);
+			}else if(type === 'loan'){
+				delete($scope.loanInfo.attachments[index]);
+				$scope.loanInfo.attachments = _.compact($scope.loanInfo.attachments);
 			}
 			
 		};

@@ -592,67 +592,7 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
   });
 });
 
-function calculateOverdueMoney(loan, baseDate, payDate){
-  var a = moment(baseDate);
-  var b = moment(payDate);
-  var offsetDay = b.diff(a, 'days');
-  if(offsetDay <= 0){
-    return 0;
-  }else{
-    return loan.get('amount') * offsetDay * loan.get('overdueCostPercent');
-  }
-};
 
-//项目调整
-//流程 结清当前项目 + 生成一个新项目
-function concretePayBack(lpb, loan, overdueMoney){
-  var result = {};
-  result['loanObjectId'] = loan.id;
-  result['payObjectId'] = lpb.id;
-  result['serialNumber'] = loan.get('serialNumber');
-  result['payTotalCircle'] = loan.get('payTotalCircle');
-  result['payCurrCircle'] = lpb.get('order');
-  result['payDate'] = lpb.get('payDate'); //应还日期
-  result['amount'] = loan.get('amount');
-  result['payMoney'] = lpb.get('payMoney') + overdueMoney;
-  result['overdueMoney'] = overdueMoney; //违约金
-  result['interestsMoney'] = lpb.get('interestsMoney'); //利息
-  //result['payedMoney'] = loan.payedMoney;
-  return result;
-};
-
-
-//需要根据最近的还款周期列出项目，这个需要反向生成
-function listLoan(res, query, pageNumber){
-  var totalPageNum = 1;
-  var resultsMap = {};
-  query.count().then(function(count){
-    totalPageNum = parseInt(count / mconfig.pageSize) + 1;
-    resultsMap['totalPageNum'] = totalPageNum;
-    resultsMap['totalNum'] = count;
-    resultsMap['pageSize'] = mconfig.pageSize;
-  }).then(function(){
-      if(pageNumber > resultsMap.totalPageNum){
-        resultsMap['values'] = [];
-        mutil.renderData(res, resultsMap);
-      }else{
-        query.skip(pageNumber*mconfig.pageSize - mconfig.pageSize);
-        query.find({
-          success: function(results){
-            var rlist = [];
-            for (var i = 0; i < results.length; i++) {
-              rlist.push(transformLoan(results[i]));
-            };
-            resultsMap['values'] = rlist;
-            mutil.renderData(res, resultsMap);
-          },
-          error: function(error){
-            mutil.renderError(res, error);
-          }
-        });
-      }
-  });
-};
 
 /*****************************************
  * 联系人相关接口
@@ -814,6 +754,68 @@ app.post(config.baseUrl + '/attachment', function (req, res){
 /*
   User defined fuctions
  */
+function calculateOverdueMoney(loan, baseDate, payDate){
+  var a = moment(baseDate);
+  var b = moment(payDate);
+  var offsetDay = b.diff(a, 'days');
+  if(offsetDay <= 0){
+    return 0;
+  }else{
+    return loan.get('amount') * offsetDay * loan.get('overdueCostPercent');
+  }
+};
+
+//项目调整
+//流程 结清当前项目 + 生成一个新项目
+function concretePayBack(lpb, loan, overdueMoney){
+  var result = {};
+  result['loanObjectId'] = loan.id;
+  result['payObjectId'] = lpb.id;
+  result['serialNumber'] = loan.get('serialNumber');
+  result['payTotalCircle'] = loan.get('payTotalCircle');
+  result['payCurrCircle'] = lpb.get('order');
+  result['payDate'] = lpb.get('payDate'); //应还日期
+  result['amount'] = loan.get('amount');
+  result['payMoney'] = lpb.get('payMoney') + overdueMoney;
+  result['overdueMoney'] = overdueMoney; //违约金
+  result['interestsMoney'] = lpb.get('interestsMoney'); //利息
+  //result['payedMoney'] = loan.payedMoney;
+  return result;
+};
+
+
+//需要根据最近的还款周期列出项目，这个需要反向生成
+function listLoan(res, query, pageNumber){
+  var totalPageNum = 1;
+  var resultsMap = {};
+  query.count().then(function(count){
+    totalPageNum = parseInt(count / mconfig.pageSize) + 1;
+    resultsMap['totalPageNum'] = totalPageNum;
+    resultsMap['totalNum'] = count;
+    resultsMap['pageSize'] = mconfig.pageSize;
+  }).then(function(){
+      if(pageNumber > resultsMap.totalPageNum){
+        resultsMap['values'] = [];
+        mutil.renderData(res, resultsMap);
+      }else{
+        query.skip(pageNumber*mconfig.pageSize - mconfig.pageSize);
+        query.find({
+          success: function(results){
+            var rlist = [];
+            for (var i = 0; i < results.length; i++) {
+              rlist.push(transformLoan(results[i]));
+            };
+            resultsMap['values'] = rlist;
+            mutil.renderData(res, resultsMap);
+          },
+          error: function(error){
+            mutil.renderError(res, error);
+          }
+        });
+      }
+  });
+};
+
 function transformLoan(l){
   var loaner = l.get('loaner');
   var assurer = l.get('assurer');

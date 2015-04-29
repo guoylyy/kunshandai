@@ -574,6 +574,9 @@ traits:
         assurerId:
           required: false
           type: string
+        loanPawnId:
+          required: true
+          type: string
       responses:
         200:
           body:
@@ -907,6 +910,70 @@ traits:
                       "message": "项目状态错误"
                     }
 
+/loanPawn:
+  description: |
+    贷款抵押物接口
+  post:
+    description: |
+      新建一个抵押物
+    queryParameters:
+      data:
+        type: string
+        description: |
+          按照自己定义的json数据结构存储
+      attachments:
+        type: string
+        description: |
+          附件的id list
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                "data": {
+                  "data": {
+                    "name": "fdsa",
+                    "type": "type",
+                    "update": "fdsafa"
+                  },
+                  "objectId": "5540925be4b055ee74e6f982",
+                  "createdAt": "2015-04-29T08:12:11.279Z",
+                  "updatedAt": "2015-04-29T08:12:11.279Z"
+                },
+                "code": 200
+              }
+  /{id}:
+    /attachments:
+      get:
+        description: |
+          获取抵押物附件信息
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data": [
+                      {
+                        "mime_type": "image/jpeg",
+                        "key": "999745ff88d81fd6.jpg",
+                        "name": "account_view.jpg",
+                        "url": "http://ac-gvw1ggob.clouddn.com/999745ff88d81fd6.jpg",
+                        "metaData": {
+                          "owner": "552f6adfe4b0643b70a8f3bd",
+                          "size": 364463,
+                          "fileType": "credit",
+                          "mime_type": "image/jpeg"
+                        },
+                        "bucket": "gvw1ggob",
+                        "objectId": "55404984e4b063749a728fe4",
+                        "createdAt": "2015-04-29T03:01:24.345Z",
+                        "updatedAt": "2015-04-29T03:01:24.345Z"
+                      }
+                    ],
+                    "code": 200
+                  }
 
 /contact:
   post:

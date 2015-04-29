@@ -1,12 +1,13 @@
 var Loan = AV.Object.extend('Loan');
+var File = AV.Object.extend('_File');
 var LoanPayBack = AV.Object.extend('LoanPayBack'); //收入列表
 var LoanRecord = AV.Object.extend('LoanRecord'); //支出列表
+var LoanPawn = AV.Object.extend('LoanPawn');
 var util = require('util');
 var moment = require('moment');
 var mlog = require('cloud/mlog.js');
 var mutil = require('cloud/mutil.js');
 var mconfig = require('cloud/mconfig.js');
-
 
 /*********************************************
  * 针对首次放款的工厂类
@@ -276,9 +277,40 @@ function updateLoan(loan, reqBody){
     return loan;
 };
 
+//贷款抵押物
+function createLoanPawn(reqBody){
+    var pawn = new AV.Object('LoanPawn');
+    pawn.set('data', reqBody.data);
+    return pawn; 
+};
+
+function bindPawnAttachments(pawn, attachmentIds){
+    var attachments = pawn.relation("attachments");
+    var query =  new AV.Query(File);
+    if(attachmentIds){
+        for (var i = attachmentIds.length - 1; i >= 0; i--) {
+            var id = attachmentIds[i];
+            query.get(id, {
+                success: function(file){
+                    attachments.add(file);
+                    pawn.save();
+                },
+                error: function(object, error){
+                    console.log(error);
+                }
+            });
+        };
+    }else{
+        return;
+    }
+};
+
 exports.calculateFinishBillParms = calculateFinishBillParms;
 exports.calculateOverdueMoney = calculateOverdueMoney;
 exports.updateLoan = updateLoan;
 exports.createBasicLoan=createBasicLoan;
 exports.calculateLoanRecord=calculateLoanRecord;
 exports.calculatePayBackMoney=calculatePayBackMoney;
+
+exports.createLoanPawn = createLoanPawn;
+exports.bindPawnAttachments = bindPawnAttachments;

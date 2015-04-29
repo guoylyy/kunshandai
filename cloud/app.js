@@ -299,6 +299,7 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
   var loan = AV.Object.createWithoutData('Loan',loanId);
   var loaner = AV.Object.createWithoutData('Contact',loanerId);
   var assurer = AV.Object.createWithoutData('Contact',assurerId);
+  var pawn = AV.Object.createWithoutData('LoanPawn', req.body.loanPawnId);
   loan.fetch().then(function(floan){
     if(floan.get('status') == undefined){
       mutil.renderError(res, {code:404, message:'找不到对象!'});
@@ -306,6 +307,9 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
       //判断是否已经有放款记录,如果有删除掉
       if(assurer){
         floan.set('assurer',assurer);
+      }
+      if(pawn){
+        floan.set('pawn', pawn);
       }
       if(loaner){
         if(floan.attributes.status != mconfig.loanStatus.draft.value){
@@ -751,6 +755,34 @@ app.post(config.baseUrl + '/attachment', function (req, res){
     };
   });
 });
+
+app.post(config.baseUrl + '/loanPawn', function (req,res){
+  var u = check_login(res);
+  var pawn = mloan.createLoanPawn(req.body);
+  pawn.save().then(function(r_pawn){
+    if(req.body.attachments){
+      mloan.bindPawnAttachments(r_pawn,req.body.attachments);
+    }
+    mutil.renderData(res, r_pawn);
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
+app.get(config.baseUrl + '/loanPawn/:id/attachments', function (req,res){
+  var u = check_login(u);
+  var pawn = AV.Object.createWithoutData('LoanPawn',req.params.id);
+  pawn.fetch().then(function(r_pawn){
+    r_pawn.relation('attachments').query().find(function(alist){
+      mutil.renderData(res, alist);
+    },function(error){
+      mutil.renderError(res, error);
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
 /*
   User defined fuctions
  */

@@ -336,6 +336,76 @@ traits:
                   "code": 404,
                   "message": "找不到对象!"
                 }
+    delete:
+      description: |
+        删除一个项目（只能删除draft项目）
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data": {
+                    "id": "553151b8e4b052897f2b198c",
+                    "amount": 111111,
+                    "createdAt": "2015-04-18 02:32:24",
+                    "loaner": {
+                      "name": "test12",
+                      "email": "yilaing@foxmail.com"
+                    },
+                    "assurer": {
+                      "name": "test12",
+                      "email": "yilaing@foxmail.com"
+                    },
+                    "payWay": {
+                      "value": "debx",
+                      "text": "等额本息"
+                    },
+                    "status": {
+                      "value": 0,
+                      "text": "未完成创建"
+                    },
+                    "spanMonth": 10,
+                    "startDate": null,
+                    "endDate": null,
+                    "payCircle": 3,
+                    "payTotalCircle": 3,
+                    "interests": 0.02,
+                    "assureCost": 1000,
+                    "serviceCost": 1000,
+                    "overdueCostPercent": 0.003,
+                    "otherCost": 1000,
+                    "keepCost": 1000,
+                    "otherCostDesc": "test",
+                    "keepCostDesc": "test",
+                    "firstPayDate": null
+                  },
+                  "code": 200
+                }
+        404:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 404,
+                  "message": "找不到对象!"
+                }
+        500:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 500,
+                  "message": "不能删除正在还款的项目!"
+                }
+        510:
+          body:
+            application/json:
+              schema: |
+                {
+                  "code": 510,
+                  "message": "你没有权限删除这个对象!"
+                }
     /payments:
       description: |
         获取一个项目的所有放款记录

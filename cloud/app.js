@@ -220,7 +220,7 @@ app.delete(config.baseUrl + '/loan/:id', function (req, res){
          mutil.renderError(res, error);
         });
       }else{
-        mutil.renderError(res, {code:500, message:'你没有权限删除这个对象'});
+        mutil.renderError(res, {code:510, message:'你没有权限删除这个对象'});
       }
     }
   },function(error){

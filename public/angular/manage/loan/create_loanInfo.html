@@ -30,8 +30,9 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label class="control-label">*担保人</label><br>
-								<input type="radio" name="hasGr" ng-model="br.hasGr" value="true" required> 有
-								<input type="radio" name="hasGr" ng-model="br.hasGr" value="false" required> 无
+								<!-- <input type="radio" name="hasGr" ng-model="br.hasGr" value="true" required> 有
+								<input type="radio" name="hasGr" ng-model="br.hasGr" value="false" required> 无 -->
+								<a ng-init="br.hasGr=false" ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.hasGr.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
 								</div>
@@ -102,7 +103,7 @@
 			</div>
 		</div>
 	</div>
-	<div ng-show="br.hasGr">
+	<div  ui-toggle="br.hasGr">
 		<div ng-include="template.grUrl"></div>
 	</div>
 	

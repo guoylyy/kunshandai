@@ -25,6 +25,10 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.selected = {};
 		
+		$scope.$watch('br.hasGr',function(newValue){
+			console.log(newValue);
+		})
+
 		$scope.$watch('loanInfo.payWay',function(){
 			circleChange();
 			dateChange();

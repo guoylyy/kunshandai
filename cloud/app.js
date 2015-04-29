@@ -302,7 +302,7 @@ app.post(config.baseUrl +'/loan/create_loan', function (req, res){
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
   loan.save().then(function(r_loan){
-    mutil.renderData(res, transformLoanDetails(r_loan));
+    res.redirect(config.baseUrl + '/loan/' + r_loan.id);
   }, function(error){
     mutil.renderError(res, error);
   });

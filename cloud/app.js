@@ -912,6 +912,10 @@ function listLoan(res, query, pageNumber){
 function transformLoan(l){
   var loaner = l.get('loaner');
   var assurer = l.get('assurer');
+  var pawn = l.get('pawn');
+  if(!pawn){
+    pawn = null;
+  }
   if(!loaner){
     loaner = null;
   }
@@ -941,6 +945,7 @@ function transformLoan(l){
       amount: l.get('amount'),
       createdAt: formatTime(l.createdAt),
       loaner: transformContact(loaner),
+      pawn : pawn,
       payedMoney: l.get('payedMoney'),
       assurer: transformContact(assurer),
       loanType: mconfig.getConfigMapByValue('loanTypes', l.get('loanType')),

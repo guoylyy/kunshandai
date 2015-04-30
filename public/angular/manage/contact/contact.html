@@ -33,7 +33,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="contact in contacts">
+			<tr ng-repeat="contact in currContacts">
 				<td>{{contact.name}}</td>
 				<td>{{contact.mobilePhoneNum}}</td>
 				<td>{{contact.certificationNum}}</td>
@@ -54,5 +54,5 @@
 	</table>
 </div>
 <div class="ks-panel">
-	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
+	<pagination total-items="totalNum" ng-model="currPage" items-per-page="numPerPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
 </div>

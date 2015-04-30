@@ -223,29 +223,7 @@ define(['app'],function(app){
 		    			templateUrl: "/angular/manage/contact/contact.html",
 		    			resolve:{
 							contacts:function(ContactService){
-				    			// return ContactService.getAll().then(function(data){
-				    			// 	return data;
-				    			// })
-				    			return [
-					    			{
-					    				objectId:'1',
-					    				name:'pjx',
-					    				certificationNum:'52273219911002202',
-					    				mobilePhoneNum:'1888888888'
-					    			},
-					    			{
-					    				objectId:'2',
-					    				name:'pjx',
-					    				certificationNum:'52273219911002202',
-					    				mobilePhoneNum:'1888888888'
-					    			},
-					    			{
-					    				objectId:'3',
-					    				name:'pjx',
-					    				certificationNum:'52273219911002202',
-					    				mobilePhoneNum:'1888888888'
-					    			},
-				    			]
+				    			return ContactService.getAll();
 				    		}
 		    			},
 		    			controller: "ContactController"

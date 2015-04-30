@@ -75,10 +75,10 @@ define(['../../app'],function(app){
 				});
 				return deferred.promise;
 			},
-			getAll: function(id){
+			getAll: function(){
 				var deferred = $q.defer();
 
-				$http.get(ApiURL+contactUrl+"/all").then(function(res){
+				$http.get(ApiURL+contactUrl+"/list/all").then(function(res){
 					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);

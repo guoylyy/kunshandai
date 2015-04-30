@@ -4,6 +4,11 @@ define(['app'],function(app){
 
 		$scope.contacts = contacts;
 
+		$scope.totalNum = $scope.contacts.length;
+		$scope.currPage = 1;
+		$scope.numPerPage = 10;
+		$scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
+
 		$scope.view = function(contactId,controlName){
 			openContactModal(contactId,'view');
 		}
@@ -15,25 +20,23 @@ define(['app'],function(app){
 		$scope.create = function(){
 			openContactModal('','create');
 		}
+
+		$scope.pageChanged = function (){
+			$scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
+		}
+
 		var openContactModal = function(contatId,controlName){
-			var  contactModal = $modal.open({
+			var contactModal = $modal.open({
 				templateUrl: '/angular/manage/contact/contactModal.html',
 				controller:'ContactModalCtrl',
 				size:'md',
 				resolve:{
 					contact:function(){
-						 if(contatId) {
-							 // return ContactService.get(contactId).then(function(data){
-							// 	return data;
-							// })
-		    				return {
-		    					name:'pjx',
-			    				certificationNum:'52273219911002202',
-						    	mobilePhoneNum:'1888888888'
-					    	}
-					    }else{
-					    	return ContactService.getModel();
-					    }
+					 	if(contatId) {
+						 	return ContactService.get(contatId);
+				    }else{
+				    	return ContactService.getModel();
+				    }
 					},
 					control:function(){
 						var control = {
@@ -55,8 +58,6 @@ define(['app'],function(app){
 
 			})
 		}
-
-		$scope
 		
 	}])
 })

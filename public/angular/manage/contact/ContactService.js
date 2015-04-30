@@ -22,6 +22,10 @@ define(['../../app'],function(app){
 
 			assurer = _.extend({},model);
 
+		var getModel = function(){
+			return _.extend({},model);
+		}	
+
 		var ContactService = {
 			
 			getLoaner: function(){
@@ -30,6 +34,10 @@ define(['../../app'],function(app){
 			getAssurer: function(){
 				return assurer;
 			},
+			getModel:function(){
+				return getModel();
+			},
+			//这个目前不用
 			getLocalContact:function(name){
 				if(!localContacts[name]){
 					var newContact = getModel();
@@ -59,9 +67,24 @@ define(['../../app'],function(app){
 
 			},
 			get: function(id){
-				return $http.get(ApiURL+contactUrl+"/"+id);
+				var deferred = $q.defer();
+				$http.get(ApiURL+contactUrl+"/"+id).then(function(res){
+					deferred.resolve(res.data.data);
+				},function(){
+					deferred.reject(res);
+				});
+				return deferred.promise;
 			},
+			getAll: function(id){
+				var deferred = $q.defer();
 
+				$http.get(ApiURL+contactUrl+"/all").then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				});
+				return deferred.promise;
+			},
 			getAttachments:function(id){
 				var deferred = $q.defer();
 

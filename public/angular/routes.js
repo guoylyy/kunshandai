@@ -5,11 +5,12 @@ define(['app'],function(app){
 	return app.config(['$stateProvider','$urlRouterProvider','$locationProvider',
 		function($stateProvider,$urlRouterProvider,$locationProvider){
 		
-		  // $urlRouterProvider.when('/createLoan','/createLoan#info');
+		 
 		$locationProvider.html5Mode({
 		  enabled: true,
 		  requireBase: false
 		});
+
 		var resolveLoans = function(fn,DictService,$stateParams){
 		    var startDate, endDate,loanType;
 			if(!$stateParams.startDate){
@@ -115,7 +116,7 @@ define(['app'],function(app){
 		    	controller:'RetrievePasswordController'
 		    })
 		     // manage module routes
-		    
+
 		    .state('index',{
 		    	url:"/manage",
 		    	views:{
@@ -215,10 +216,40 @@ define(['app'],function(app){
 		    		}
 		    	}
 		    })
-		    .state('client',{
-		    	url:"#client",
+		    .state('contact',{
+		    	url:"#contact",
 		    	views:{
-		    		"main":{templateUrl: "/angular/manage/client/client.html"}
+		    		"main":{
+		    			templateUrl: "/angular/manage/contact/contact.html",
+		    			resolve:{
+							contacts:function(ContactService){
+				    			// return ContactService.getAll().then(function(data){
+				    			// 	return data;
+				    			// })
+				    			return [
+					    			{
+					    				objectId:'1',
+					    				name:'pjx',
+					    				certificationNum:'52273219911002202',
+					    				mobilePhoneNum:'1888888888'
+					    			},
+					    			{
+					    				objectId:'2',
+					    				name:'pjx',
+					    				certificationNum:'52273219911002202',
+					    				mobilePhoneNum:'1888888888'
+					    			},
+					    			{
+					    				objectId:'3',
+					    				name:'pjx',
+					    				certificationNum:'52273219911002202',
+					    				mobilePhoneNum:'1888888888'
+					    			},
+				    			]
+				    		}
+		    			},
+		    			controller: "ContactController"
+		    		}
 		    	}
 		    })
   			.state('createLoan',{

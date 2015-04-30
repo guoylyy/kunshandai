@@ -1,0 +1,103 @@
+
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h4 class="modal-title">联系人详情</h4>
+
+</div>
+<div class="modal-body">
+  <div class="panel-body" ng-show="control.view">
+  <div class="row">
+  <div class="col-md-12">
+      <dl class="dl-horizontal">
+        <dt>姓名:</dt>
+        <dd>{{contact.name}}</dd>
+        <dt>身份证</dt>
+        <dd>{{contact.certificateNum}}</dd>
+        <dt>手机号</dt>
+         <dd>{{contact.mobilePhoneNum}}</dd>
+        <dt>邮箱</dt>
+         <dd>{{contact.email}}</dd>
+        <dt>QQ</dt>
+         <dd>{{contact.qq}}</dd>
+        <dt>微信</dt>
+         <dd>{{contact.wechat}}</dd>
+        <dt>地址</dt>
+         <dd>{{contact.address}}</dd>
+      </dl>
+    </div>
+  </div>
+  </div>
+  <div class="panel-body" ng-show="control.edit || control.create">
+  <form name="editForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label">姓名</label>
+          <input type="text" class="form-control" placeholder="姓名" ng-model="contact.name" name="bname" required>
+          <div ng-show="editForm.$submitted || editForm.bname.$touched">
+            <div class="text-danger" ng-show="editForm.bname.$error.required">请填姓名</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label">身份证</label>
+          <input type="text" class="form-control" placeholder="身份证" ng-model="contact.certificateNum" name="id" required>
+          <div ng-show="editForm.$submitted || editForm.id.$touched">
+            <div class="text-danger" ng-show="editForm.id.$error.required">请填身份证</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>手机号</label>
+          <input type="text" class="form-control" placeholder="手机号" ng-model="contact.mobilePhoneNum" name="mobilePhoneNum" ng-pattern="/\b\d{11}\b/">
+          <div ng-show="editForm.$submitted || editForm.mobilePhoneNum.$touched">
+            <div class="text-danger" ng-show="editForm.mobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>邮箱</label>
+          <input type="email" class="form-control" placeholder="邮箱" ng-model="contact.email" name="email">
+          <div ng-show="editForm.$submitted || editForm.email.$touched">
+            <div class="text-danger" ng-show="editForm.email.$error.email">请填写正确邮箱</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>QQ</label>
+          <input type="text" class="form-control" placeholder="QQ" ng-model="contact.qq" name="qq" ng=pattern="/\d+/">
+          <div ng-show="editForm.$submitted || editForm.qq.$touched">
+            <div class="text-danger" ng-show="editForm.qq.$error.pattern">请填写正确QQ号</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>微信</label>
+          <input type="text" class="form-control" placeholder="微信" ng-model="contact.wechat">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>地址</label>
+          <input type="text" class="form-control" placeholder="地址" ng-model="contact.wechat">
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" ng-click="cancel()" ng-show="control.view">关闭</button>
+  <button type="submit" class="btn btn-success" ng-click="finishEdit()" ng-show="control.edit">完成编辑</button>
+  <button type="button" class="btn btn-warning" ng-click="startEdit()" ng-show="control.view">编辑</button>
+   <button type="button" class="btn btn-warning" ng-click="finishCreate()" ng-show="control.create">新建</button>
+</div>
+</form>

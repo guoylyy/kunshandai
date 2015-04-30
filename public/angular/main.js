@@ -89,6 +89,9 @@ require([
 		 'manage/project/ProjectController',
 		 
 		 'manage/contact/ContactService',
+		 'manage/contact/ContactController',
+		 'manage/contact/ContactModalCtrl',
+		 
 		 'manage/nav/NavController',
 		 
 		 'common/interceptors/responseErr',

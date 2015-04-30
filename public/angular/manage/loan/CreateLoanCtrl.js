@@ -14,7 +14,7 @@ define(['app',"underscore"],function(app,_) {
 
 		$rootScope.stepActive = steps;
 
-		$scope.countResult = {};
+		$scope.countResults = {};
 
 		$scope.nav = function(direction){
 			if(direction === 'prev'){
@@ -38,7 +38,7 @@ define(['app',"underscore"],function(app,_) {
 			var loan = angular.copy($scope.loanInfo);
 			loan.interests = loan.interests / 100;
 			loan.overdueCostPercent = loan.overdueCostPercent / 1000;
-			$scope.countResult = LoanService.getCountResult(loan);
+			$scope.countResults = LoanService.getCountResult(loan);
 		};
 
 		$scope.$watch('loanInfo.payWay',function(){

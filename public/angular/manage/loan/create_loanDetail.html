@@ -256,7 +256,7 @@
 					</div>
 
 					<div class="panel-body" >
-						<table class="table table-striped" ng-repeat="cr in countResults">
+						<table class="table table-striped" >
 							<thead>
 								<tr>
 									<th>期数</th>
@@ -266,9 +266,7 @@
 								</tr>
 							</thead>
 							<tbody>
-
-
-								<tr>
+								<tr ng-repeat="cr in countResults">
 									<td>{{cr.order}}</td>
 									<td>{{cr.interestsMoney}}</td>
 									<td>{{cr.payDate | date:"yyyy-MM-dd"}}</td>

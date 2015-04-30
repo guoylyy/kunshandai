@@ -10,8 +10,12 @@ define(['app','underscore'],function(app,_){
 
 		$scope.$watch("loanInfo",function(){
 			if($scope.loanInfo){
-				return PawnService.getPawn($scope.loanInfo.pawn.objectId).then(function(data){
+				PawnService.getPawn($scope.loanInfo.pawn.objectId).then(function(data){
 					$scope.loanInfo.attachments	= data;
+				})
+
+				PawnService.getPawnInfo($scope.loanInfo.pawn.objectId).then(function(data){
+					$scope.pawnInfos = _.pairs(data);
 				})
 			}
 		});

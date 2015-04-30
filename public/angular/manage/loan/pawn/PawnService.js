@@ -118,12 +118,25 @@ define(['app'],function(app){
 
 				return deferred.promise;
 			},
-			getPawn:function(loanId){
+			getPawn:function(pawnId){
 				var deferred = $q.defer();
 
-				$http.get(ApiURL+pawnUrl+"/"+loanId+"/attachments").then(function(res){
+				$http.get(ApiURL+pawnUrl+"/"+pawnId+"/attachments").then(function(res){
 
 					deferred.resolve(res.data.data);
+
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
+			getPawnInfo:function(pawnId){
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+pawnUrl+"/"+pawnId).then(function(res){
+
+					deferred.resolve(res.data.data.data);
 
 				},function(res){
 					deferred.reject(res);

@@ -54,13 +54,21 @@ define(['app'],function(app){
 		    	templateUrl: "angular/account/signup/signup.html"
 		      
 		    })
+		    .state('retrieve_password', {
+		    	url: "/retrieve_password",
+		    	templateUrl: "angular/account/retrieve_password/retrieve_password.html",
+		    	controller:'RetrievePasswordController'
+		    })
 
 		     // manage module routes
 		    
 		    .state('index',{
-		    	url:"#index",
+		    	url:"/manage",
 		    	views:{
-		    		"main":{templateUrl:  "/angular/manage/index/index.html"}
+		    		"main":{
+		    			templateUrl:  "/angular/manage/index/index.html",
+		    			controller: 'IndexController'
+		    		}
 		    	}
 		    })
 		    .state('loan',{

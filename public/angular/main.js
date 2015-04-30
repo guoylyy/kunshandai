@@ -15,6 +15,7 @@ require.config({
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
 		uiUtils:'../lib/angular-ui-utils/ui-utils',
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
+		'highcharts-ng': '../lib/highcharts-ng/dist/highcharts-ng',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
 		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',	
 		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
@@ -49,8 +50,10 @@ require.config({
 		},
 		'angularSweetAlert':{
 			deps:['angular']
+		},
+		'highcharts-ng':{
+			deps:['angular']
 		}
-		
 
 	}
 });
@@ -64,6 +67,9 @@ require([
 		 'account/AccountController',
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
+		 'account/retrieve_password/RetrievePasswordController',
+
+		 'manage/index/IndexController',
 
 		 'manage/DictService',
 		 'manage/common/upload/UploadController',

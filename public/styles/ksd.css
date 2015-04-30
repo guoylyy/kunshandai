@@ -234,6 +234,9 @@ table td,table th{
 	padding: 12px 43px;
 	font-size: 14px;
 }
+.well-reset{
+	margin-bottom: 0px;
+}
 
 
 /*TODO add to less*/
@@ -248,4 +251,12 @@ table td,table th{
 }
 .ui-hide{
 	display: none;
+}
+
+
+/*write by @globit*/
+.ks-hlight-text{
+	color: rgb(107, 35, 71);
+	font-size: 23px;
+	padding: 0px 5px 0px 5px;
 }

@@ -33,7 +33,14 @@ define(['../app'],function(app){
 			},
 			verifyMobilePhone: function(code){
 				return $http.post(ApiURL+accountUrl+"/verifyUserMobilePhoneNumber",JSON.stringify(code));
+			},
+			requestResetPasswordBySmsCode: function(mobilePhoneNumber){
+				return $http.post(ApiURL+accountUrl+'/requestResetPasswordBySmsCode',JSON.stringify(mobilePhoneNumber));
+			},
+			resetPasswordBySmsCode: function(data){
+				return $http.post(ApiURL+accountUrl+'/resetPasswordBySmsCode',JSON.stringify(data));
 			}
+
 		}
 		
 

@@ -1,7 +1,7 @@
 
 define(['app','underscore'],function(app,_) {
 	return app.controller('CollectProcessCtrl', 
-		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert){
+		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process){
 		
 		$scope.loan 	= loan;
 		$scope.paybacks = paybacks;
@@ -11,21 +11,29 @@ define(['app','underscore'],function(app,_) {
 
  		$scope.billGenerated = false;
 
-		$scope.process 	= {
-			list:true,
-			pay:false,
-			complete:false
-		}
+		$scope.process 	= process;
 
 		$scope.calendar	= {
 			opened:false
 		}
 
+		$scope.total = {};
+		$scope.payData = {income:0,outcome:0};
+
 		$scope.$watch("paybacks",function(){
-			if($scope.paybacks && $scope.paybacks.length == 1){
-				$scope.process.complete = true;
-				$scope.process.pay = false;
-				$scope.process.list = false;
+			// if($scope.paybacks && $scope.paybacks.length == 1){
+			// 	$scope.process.complete = true;
+			// 	$scope.process.pay = false;
+			// 	$scope.process.list = false;
+			// }
+		})
+
+		var completeInputs = ['payData.income.amount','payData.income.overdueMoney','payData.outcome.assureCost','payData.outcome.keepCost'];
+
+		$scope.$watchGroup(completeInputs,function(){
+			if($scope.total && $scope.payData){
+				$scope.total.income = parseFloat($scope.payData.income.amount) + parseFloat($scope.payData.income.overdueMoney);
+				$scope.total.outcome = parseFloat($scope.payData.outcome.assureCost) + parseFloat($scope.payData.outcome.keepCost);	
 			}
 		})
 
@@ -43,6 +51,10 @@ define(['app','underscore'],function(app,_) {
 				LoanService.countCompleteMoney($scope.loan.id,$scope.completeDate)
 				.then(function(res){
 					$scope.completedBill = res;
+					$scope.payData ={
+						outcome:_.extend({},res.outcome),
+						income:_.extend({},res.income)
+					};
 					$scope.billGenerated = true;
 				});
 			}
@@ -74,7 +86,7 @@ define(['app','underscore'],function(app,_) {
 		}
 
 		$scope.pay = function(){
-			LoanService.payMoney($scope.loan,$scope.payDate)
+			LoanService.payMoney($scope.paybackId,$scope.payDate)
 			.then(function(){
 				SweetAlert.success("收款成功","");
 				$modalInstance.close();
@@ -91,7 +103,7 @@ define(['app','underscore'],function(app,_) {
 		
 		$scope.completeLoan = function(){
 
-			LoanService.completeLoan($scope.loan.id,$scope.completeDate,$scope.completedBill)
+			LoanService.completeLoan($scope.loan.id,$scope.completeDate,$scope.payData)
 			.then(function(){
 				SweetAlert.swal({
 				   title: "结清成功",

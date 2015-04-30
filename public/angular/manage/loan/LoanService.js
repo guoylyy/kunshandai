@@ -164,7 +164,7 @@ define(['../../app','underscore'],function(app,_){
 			},
 			payMoney:function(payBackId,payDate,payMoney){
 				var payDate = new Date(payDate);
-				var payMoney = Number.parseInt(payMoney);
+				var payMoney = Number.parseFloat(payMoney);
 
 				return $http.post(ApiURL+loanUrl+"/payBack/"+payBackId,JSON.stringify({paybackid:payBackId,payBackDate:payDate,payBackMoney:payMoney}))
 				.then(function(res){
@@ -175,7 +175,6 @@ define(['../../app','underscore'],function(app,_){
 			},
 			countCompleteMoney:function(loanId,payDate){
 				var deferred = $q.defer();
-
 				var payDate = new Date(payDate);
 				var params = {payDate:payDate};
 				$http.get(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",{params:params})
@@ -193,6 +192,11 @@ define(['../../app','underscore'],function(app,_){
 			
 				var payDate = new Date(payDate);
 				
+				payData.income.amount = parseFloat(payData.income.amount);
+				payData.income.overdueMoney = parseFloat(payData.income.overdueMoney);
+				payData.outcome.assureCost = parseFloat(payData.outcome.assureCost);
+				payData.outcome.keepCost = parseFloat(payData.outcome.keepCost);
+
 				$http.post(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",JSON.stringify({payBackDate:payDate,payBackData:payData}))
 				.then(function(res){
 					deferred.resolve(res.data.data);

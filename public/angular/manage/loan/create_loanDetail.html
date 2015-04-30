@@ -22,13 +22,13 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*贷款金额</label>
-								<div class="input-group has-danger">
-									<!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
-									<input type="text" class="form-control" placeholder="贷款金额" name="amout" float-number-input ng-model="loanInfo.amount"  required >
+								<div class="input-group">
+									
+									<input type="text" class="form-control" placeholder="贷款金额" name="amount" float-number-input ng-model="loanInfo.amount"  required >
 									<span class="input-group-addon">元</span>
 								</div>
-								<div ng-show="loanForm.$submitted || loanForm.amout.$touched">
-									<div class="text-danger" ng-show="loanForm.amout.$error.required">请填写贷款金额</div>
+								<div ng-show="loanForm.$submitted || loanForm.amount.$touched">
+									<div class="text-danger" ng-show="loanForm.amount.$error.required">请填写贷款金额</div>
 								</div>
 							</div>
 						</div>

@@ -1,0 +1,95 @@
+<div ng-show="process.pay">
+ <form name="payForm" ng-submit="payForm.$valid && pay()">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">收款</h4>
+  </div>
+  <div class="modal-body">
+   <h4 class="text-info">合同编号: {{loan.id}}</h4>
+   <div class="ks-divider"></div>
+   <div class="row" style="font-size:14px;">
+    <div class="col-md-3">
+      <div>贷款金额: {{loan.amount}}</div>
+      <div>贷款类型: {{loan.loanType.text}}</div>
+    </div>
+    <div class="col-md-3">
+      <div>贷款人: {{loan.loaner.name}}</div>
+      <div>担保人: {{loan.assurer.name}}</div>
+    </div>
+    <div class="col-md-3">
+      <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>
+      <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
+    </div>
+    <div class="col-md-3">
+      <div>还款类型: {{loan.payWay.text}}</div>
+      <div>还款总期数: {{loan.payTotalCircle}}</div>
+    </div>
+  </div>
+  <div class="ks-panel">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>期数</th>
+          <th>应收金额</th>
+          <th>应收日期</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{selectedPayback.order}}</td>
+          <td>{{selectedPayback.payMoney}}</td>
+          <td>{{selectedPayback.payDate}}</td>
+          <td ng-show="selectedPayback.status === 1" class="text-info">正在还</td>
+          <td ng-show="selectedPayback.status === 2" >未还</td>
+          <td ng-show="selectedPayback.status === 3"class="text-success">已还</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+          <div class="form-group">
+            <label>*还款日期</label>
+            <div class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate" is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="payDate"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+            <div ng-show="payForm.$submitted || payForm.payDate.$touched">
+              <div class="text-danger" ng-show="payForm.payDate.$error.required">请填写还款日期</div>
+              <div class="text-danger" ng-show="payForm.payDate.$error.date">请填写正确的日期格式</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-offset-4 col-md-4">
+          <div class="form-group">
+            <label>*收款金额</label>
+            <div class="input-group has-danger">
+              <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+              <input type="text" class="form-control" placeholder="收款金额" name="amout" float-number-input ng-model="payMoney"  required >
+              <span class="input-group-addon">元</span>
+            </div>
+            <div ng-show="payForm.$submitted || payForm.payMoney.$touched">
+              <div class="text-danger" ng-show="payForm.payMoney.$error.required">请填写收款金额</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
+  <button type="submit" class="btn btn-success">完成收款</button>
+</div>
+</form>
+</div>

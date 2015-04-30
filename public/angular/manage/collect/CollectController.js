@@ -17,15 +17,14 @@ define(['app'],function(app) {
 			$scope.timeRanges = timeRanges;
 
 			$scope.currentState = $state.current;
-			
 
-
-			$scope.pageChanged = function(){
-				$state.go($state.current, {page:$scope.currentPage}, {reload: true});
+			$scope.template = {
+				processCompleteUrl	:'/angular/manage/collect/template/processComplete.html',
+				processListUrl		:'/angular/manage/collect/template/processList.html',
+				processPayUrl		:'/angular/manage/collect/template/processPay.html'
 			}
-
-			$scope.collect = function(loanId){
-
+			
+			var collectModal = function(loanId,processName){
 				var collectModal = $modal.open({
 					templateUrl: '/angular/manage/collect/collectModal.html',
 					controller:'CollectProcessCtrl',
@@ -38,6 +37,15 @@ define(['app'],function(app) {
 						},
 						paybacks:function(){
 							return LoanService.getPaybacks(loanId);
+						},
+						process:function(){
+							var process =  {
+									list:false,
+									pay:false,
+									complete:false
+								}
+							process[processName] = true;
+							return process;
 						}
 					}
 				});
@@ -47,9 +55,19 @@ define(['app'],function(app) {
 						$state.reload();
 					}
 				});
-
 			}
 
+			$scope.pageChanged = function(){
+				$state.go($state.current, {page:$scope.currentPage}, {reload: true});
+			}
+
+			$scope.collect = function(loanId){
+				collectModal(loanId,'list');
+			}
+
+			$scope.complete = function(loanId){
+				collectModal(loanId,'complete');
+			}
 
 
 	}]);

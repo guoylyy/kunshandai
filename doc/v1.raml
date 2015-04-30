@@ -1019,6 +1019,30 @@ traits:
                 "code": 200
               }
   /{id}:
+    get:
+      description: |
+        获取抵押物信息
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "data": {
+                        "data": {
+                            
+                        },
+                        "attachments": {
+                            "__type": "Relation",
+                            "className": "_File"
+                        },
+                        "objectId": "5540de2de4b055ee74ead7c5",
+                        "createdAt": "2015-04-29T13:35:41.230Z",
+                        "updatedAt": "2015-04-29T13:35:41.550Z"
+                    },
+                    "code": 200
+                }
+
     /attachments:
       get:
         description: |

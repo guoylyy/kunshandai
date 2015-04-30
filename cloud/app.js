@@ -826,6 +826,17 @@ app.post(config.baseUrl + '/loanPawn', function (req,res){
   });
 });
 
+app.get(config.baseUrl + '/loanPawn/:id', function (req,res){
+  var u = check_login(res);
+  var pawn = AV.Object.createWithoutData('LoanPawn', req.params.id);
+  pawn.fetch().then(function(r_pawn){
+    mutil.renderData(res, r_pawn);
+  },function(error){
+    mutil.renderError(res, error);
+  });
+});
+
+
 app.get(config.baseUrl + '/loanPawn/:id/attachments', function (req,res){
   var u = check_login(u);
   var pawn = AV.Object.createWithoutData('LoanPawn',req.params.id);
@@ -910,6 +921,9 @@ function listLoan(res, query, pageNumber){
 };
 
 function transformLoan(l){
+  if(l == undefined){
+    return {};
+  }
   var loaner = l.get('loaner');
   var assurer = l.get('assurer');
   var pawn = l.get('pawn');

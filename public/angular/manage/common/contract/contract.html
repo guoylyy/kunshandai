@@ -15,24 +15,27 @@
 		<div class="ks-panel panel panel-primary">
 			<div class="panel-heading">贷款信息</div>
 		    <div class="panel-body">
-		    	<!-- <strong class="ks-heading ks-color-light">合同编号: {{loanInfo.objectId}}</strong> -->
-		    	<!-- <div class="ks-divider"></div> -->
-		    	<p class="ks-heading">借款人信息:</p>
-		    	<p>姓 名 : {{br.name}}</p>
-		    	<p>身份证: {{br.certificateNum}}</p>
-		    	<p>电 话 : {{br.mobilePhoneNum}}</p>
-		    	<p>邮 箱 : {{br.email}}</p>
-		    	<p>微 信 : {{br.wechat}}</p>
-
-		    	<div ng-show="br.hasGr || loanInfo.assurer.name !== ''">
-			    	<div class="ks-divider"></div>
-			    	<p class="ks-heading">担保人信息:</p>
-			    	<p>姓 名 : {{gr.name}}</p>
-			    	<p>身份证: {{gr.certificateNum}}</p>
-			    	<p>电 话 : {{gr.mobilePhoneNum}}</p>
-			    	<p>邮 箱 : {{gr.email}}</p>
-			    	<p>微 信 : {{gr.wechat}}</p>
-				</div>
+		    	<div class="row">
+		    		<div class="col-md-6">
+			    		<p class="ks-heading">借款人信息:</p>
+				    	<p>姓 名 : {{br.name}}</p>
+				    	<p>身份证: {{br.certificateNum}}</p>
+				    	<p>电 话 : {{br.mobilePhoneNum}}</p>
+				    	<p>邮 箱 : {{br.email}}</p>
+				    	<p>微 信 : {{br.wechat}}</p>
+			    	</div>
+		    		<div class="col-md-6">
+	    				<div ng-show="br.hasGr || loanInfo.assurer.name !== ''">
+					    	<p class="ks-heading">担保人信息:</p>
+					    	<p>姓 名 : {{gr.name}}</p>
+					    	<p>身份证: {{gr.certificateNum}}</p>
+					    	<p>电 话 : {{gr.mobilePhoneNum}}</p>
+					    	<p>邮 箱 : {{gr.email}}</p>
+					    	<p>微 信 : {{gr.wechat}}</p>
+						</div>
+		    		</div>
+		    	</div>
+		    	
 		    	<div class="ks-divider"></div>
 		    	<table class="table table-striped">
 									<thead>

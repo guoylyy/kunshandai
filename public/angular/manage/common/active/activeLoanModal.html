@@ -6,29 +6,32 @@
 <div class="ks-panel">
   <h4><a class="text-info" href="/loan?id={{loanId}}" target="_blank">合同编号: {{loanId}}</a></h4>
   <div class="ks-divider"></div>
-  <h4>放款金额: {{payment.outMoney | number:2 }} 元</h3>
-  <div class="ks-divider"></div>
-  <h4>收入明细:</h3>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>利息（元）</th>
-        <th>履约保证金（元）</th>
-         <th>服务费（元）</th>
-        <th>其他费用（元）</th>
-        <th>暂收金额（元）</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>{{-payment.interestsMoney | number:2}}</td>
-        <td>{{-payment.assureCost | number:2}}</td>
-        <td>{{-payment.serviceCost | number:2}}</td>
-        <td>{{-payment.otherCost | number:2}}</td>
-        <td>{{-payment.keepCost | number:2}}</td>
-      </tr>
-    </tbody>
-  </table>
+  
+  <div ng-repeat="payment in payments">
+    <h4>放款金额: {{payment.outMoney | number:2 }} 元</h3>
+    <div class="ks-divider"></div>
+    <h4>收入明细:</h4>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>利息（元）</th>
+          <th>履约保证金（元）</th>
+           <th>服务费（元）</th>
+          <th>其他费用（元）</th>
+          <th>暂收金额（元）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{-payment.interestsMoney | number:2}}</td>
+          <td>{{-payment.assureCost | number:2}}</td>
+          <td>{{-payment.serviceCost | number:2}}</td>
+          <td>{{-payment.otherCost | number:2}}</td>
+          <td>{{-payment.keepCost | number:2}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 </div>
 <div class="modal-footer">

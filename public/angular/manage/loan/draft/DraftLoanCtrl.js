@@ -44,7 +44,7 @@ define(['app'],function(app){
 				size:'lg',
 				controller:'ActiveLoanCtrl',
 				resolve:{
-					payment:function(){
+					payments:function(){
 						return LoanService.getPayments(loanId);
 					},
 					loanId:function(){

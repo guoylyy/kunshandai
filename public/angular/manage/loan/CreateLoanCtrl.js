@@ -14,6 +14,8 @@ define(['app',"underscore"],function(app,_) {
 
 		$rootScope.stepActive = steps;
 
+		$scope.countResult = {};
+
 		$scope.nav = function(direction){
 			if(direction === 'prev'){
 				$state.go('createLoan');
@@ -28,6 +30,16 @@ define(['app',"underscore"],function(app,_) {
 		$scope.$watch('br.hasGr',function(newValue){
 			console.log(newValue);
 		})
+		var loanInfofunction  = function(){
+			return $scope.loanInfo;
+		}
+
+		$scope.count = function(){
+			var loan = angular.copy($scope.loanInfo);
+			loan.interests = loan.interests / 100;
+			loan.overdueCostPercent = loan.overdueCostPercent / 1000;
+			$scope.countResult = LoanService.getCountResult(loan);
+		};
 
 		$scope.$watch('loanInfo.payWay',function(){
 			circleChange();

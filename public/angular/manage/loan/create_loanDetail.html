@@ -53,7 +53,9 @@
 								<div class="input-group">
 									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.startDate" is-open="calendar.openedstart"  datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="startDate"/>
 									<span class="input-group-btn">
-										<button type="button" class="btn btn-default" ng-click="open($event,'openedstart')"><i class="glyphicon glyphicon-calendar"></i></button>
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedstart')">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</button>
 									</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.startDate.$touched">
@@ -67,8 +69,11 @@
 								<label>*截止日期</label>
 								<div class="input-group">
 									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions"ng-required="true"  close-text="关闭" name="endDate" ng-disabled="true"/>
+
 									<span class="input-group-btn">
-										<button type="button" class="btn btn-default" ng-click="open($event,'openedend')" ng-disabled="true"/><i class="glyphicon glyphicon-calendar"></i></button>
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedend')">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</button>
 									</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.endDate.$touched">
@@ -246,21 +251,28 @@
 				</div>
 
 				<div class="ks-panel panel panel-default">
-					<div class="panel-heading">贷款计算</div>
+					<div class="panel-heading">贷款计算
+						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="count()" style="margin-top:-5px;">计算</button>
+					</div>
+
 					<div class="panel-body" >
-						<table class="table table-striped">
+						<table class="table table-striped" ng-repeat="cr in countResults">
 							<thead>
 								<tr>
-									<th>项目名</th>
-									<th>数值</th>
+									<th>期数</th>
+									<th>利息</th>
+									<th>还款日期</th>
+									<th>应还金额</th>
 								</tr>
 							</thead>
 							<tbody>
 
 
 								<tr>
-									<td>每期还款</td>
-									<td></td>
+									<td>{{cr.order}}</td>
+									<td>{{cr.interestsMoney}}</td>
+									<td>{{cr.payDate | date:"yyyy-MM-dd"}}</td>
+									<td>{{cr.interestsMoney | number:2}}</td>
 								</tr>
 
 							</tbody>

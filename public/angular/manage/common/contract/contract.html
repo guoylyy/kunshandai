@@ -19,11 +19,11 @@
 		    	<!-- <div class="ks-divider"></div> -->
 		    	<p class="ks-heading">借款人信息:</p>
 		    	<p>姓 名: {{br.name}}</p>
-		    	<p>电 话: {{br.mobilePhoneNum}}</p>
-		    	<div class="ks-divider"></div>
-		    	<p class="ks-heading">担保人信息:</p>
-		    	<p>姓 名: {{gr.name}}</p>
-		    	<p>电 话: {{gr.mobilePhoneNum}}</p>
+		    	<div ng-show="br.hasGr || loanInfo.assurer.id !== ''">
+			    	<div class="ks-divider"></div>
+			    	<p class="ks-heading">担保人信息:</p>
+			    	<p>姓 名: {{gr.name}}</p>
+				</div>
 		    	<div class="ks-divider"></div>
 		    	<table class="table table-striped">
 									<thead>
@@ -79,6 +79,33 @@
 
 									</tbody>
 				</table>
+		    </div>
+		</div>
+		<div class="ks-panel panel panel-primary" ng-show="loanInfo.actived">
+			<div class="panel-heading">放款信息</div>
+		    <div class="panel-body">
+				  <table class="table table-striped">
+				    <thead>
+				      <tr>
+				      	<th>放款金额（元）</th>
+				        <th>利息（元）</th>
+				        <th>履约保证金（元）</th>
+				         <th>服务费（元）</th>
+				        <th>其他费用（元）</th>
+				        <th>暂收金额（元）</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr ng-repeat="payment in loanInfo.payments">
+				      	<td class="text-danger">{{payment.outMoney | number:2 }}</td>
+				        <td>{{-payment.interestsMoney | number:2}}</td>
+				        <td>{{-payment.assureCost | number:2}}</td>
+				        <td>{{-payment.serviceCost | number:2}}</td>
+				        <td>{{-payment.otherCost | number:2}}</td>
+				        <td>{{-payment.keepCost | number:2}}</td>
+				      </tr>
+				    </tbody>
+				  </table>
 		    </div>
 		</div>
 		<div class="ks-panel panel panel-primary" ng-show="loanInfo.actived">

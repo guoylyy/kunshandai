@@ -86,10 +86,10 @@ define(['app','underscore'],function(app,_) {
 		}
 
 		$scope.pay = function(){
-			LoanService.payMoney($scope.paybackId,$scope.payDate)
+			LoanService.payMoney($scope.paybackId,$scope.payDate,$scope.payMoney)
 			.then(function(){
 				SweetAlert.success("收款成功","");
-				$modalInstance.close();
+				$modalInstance.close(true);
 			});
 		}
 

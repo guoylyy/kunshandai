@@ -188,8 +188,10 @@ define(['app',"underscore"],function(app,_) {
 				size:'lg',
 				resolve:{
 					payment:function(){
-						return LoanService.getPayments($scope.loanInfo.objectId);
-						
+						return LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
+							$scope.loanInfo.payment = data;
+							return data[0];
+						})
 					},
 					loanId:function(){
 						 return $scope.loanInfo.objectId;

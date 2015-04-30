@@ -112,7 +112,12 @@ define(['app'],function(app){
 			if(!value || !type){
 				return '';
 			}
-			return keyValues[type][value].text;
+			if(typeof value === 'string'){
+				return keyValues[type][value].text;	
+			}else{
+				return value.text;	
+			}
+			
 		}
 	})
 })

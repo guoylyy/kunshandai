@@ -15,6 +15,27 @@ define(['app'],function(app){
 			 $state.go($state.current, {page:$scope.currentPage}, {reload: true});
 		}
 		
+		$scope.deleteLoan = function(loanId){
+
+			SweetAlert.swal({
+			   title: "确定删除该合同?",
+			   text: "删除后将不可恢复",
+			   type: "warning",
+			   showCancelButton: true,
+			   confirmButtonColor: "#DD6B55",
+			   confirmButtonText: "确定",
+			   closeOnConfirm: false}, 
+			function(isConfirm){ 
+				if(isConfirm){
+					LoanService.deleteDraftLoan(loanId).then(function(){
+				   		SweetAlert.success("删除成功");
+				   		$state.reload();
+				    },function(){
+						SweetAlert.error("删除失败","服务器开小差啦");
+				    });
+				}
+			});
+		}
 
 		$scope.activeLoan = function(loanId){
 

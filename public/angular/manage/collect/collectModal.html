@@ -8,7 +8,7 @@
       <h4 class="modal-title">收款</h4>
     </div>
     <div class="modal-body">
-      <h4 class="text-info">合同编号: {{loan.id}}</h4>
+      <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">合同编号: {{loan.serialNumber}}</a></h4>
       <div class="ks-divider"></div>
       <div class="row" style="font-size:14px;">
         <div class="col-md-3">
@@ -44,7 +44,7 @@
               <td><input type="radio" name="payback" value="{{payback.objectId}}" 
                 ng-model="$parent.paybackId" ng-disabled="payback.status !== 1" required></td>
                 <td>{{payback.order}}</td>
-                <td>{{payback.payMoney}}</td>
+                <td>{{payback.payMoney | number:2}}</td>
                 <td>{{payback.payDate}}</td>
                 <td ng-show="payback.status === 1" class="text-info">正在还</td>
                 <td ng-show="payback.status === 2" >未还</td>
@@ -75,7 +75,7 @@
     <h4 class="modal-title">收款</h4>
   </div>
   <div class="modal-body">
-   <h4 class="text-info">合同编号: {{loan.id}}</h4>
+   <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">合同编号: {{loan.serialNumber}}</a></h4>
    <div class="ks-divider"></div>
    <div class="row" style="font-size:14px;">
     <div class="col-md-3">
@@ -108,7 +108,7 @@
       <tbody>
         <tr>
           <td>{{selectedPayback.order}}</td>
-          <td>{{selectedPayback.payMoney}}</td>
+          <td>{{selectedPayback.payMoney | number:2}}</td>
           <td>{{selectedPayback.payDate}}</td>
           <td ng-show="selectedPayback.status === 1" class="text-info">正在还</td>
           <td ng-show="selectedPayback.status === 2" >未还</td>
@@ -143,7 +143,7 @@
             <label>*收款金额</label>
             <div class="input-group has-danger">
               <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
-              <input type="text" class="form-control" placeholder="收款金额" name="amout" float-number-input ng-model="payMoney"  required >
+              <input type="text" class="form-control" placeholder="收款金额" name="payMoney" float-number-input ng-model="payMoney"  required >
               <span class="input-group-addon">元</span>
             </div>
             <div ng-show="payForm.$submitted || payForm.payMoney.$touched">
@@ -171,7 +171,7 @@
     <h4 class="modal-title">结清</h4>
   </div>
   <div class="modal-body">
-   <h4 class="text-info">合同编号: {{loan.id}}</h4>
+   <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">合同编号: {{loan.serialNumber}}</a></h4>
    <div class="ks-divider"></div>
    <div class="row" style="font-size:14px;">
     <div class="col-md-3">
@@ -213,17 +213,17 @@
         </tr>
       </tbody>
     </table>
+     <div class="ks-divider"></div>
   </div>
-  <div class="panel panel-primary">
-    <div class="panel-body">
+
       <div class="row">
-        <div class="col-md-offset-4 col-md-4">
-          <div class="form-group">
-            <label>*结清日期</label>
+        <div class="col-md-4">
+          <div class="form-group has-warning">
+            <label class="control-label">结清日期</label>
             <div class="input-group">
               <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="completeDate" is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="completeDate"/>
               <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
+                <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </div>
             <div ng-show="completeForm.$submitted || completeForm.completeDate.$touched">
@@ -233,10 +233,8 @@
           </div>
         </div>
       </div>
-      </div>
-    </div>
 
-          <div class="ks-divider"></div>
+     <div class="ks-divider"></div>
       <div class="panel panel-success" ng-show="billGenerated">
        <div class="panel-heading">结清账单</div>
          <div class="panel-body">

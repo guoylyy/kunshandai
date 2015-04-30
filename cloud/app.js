@@ -73,6 +73,9 @@ app.get('/signup', function(req, res){
 app.get('/manage', function(req, res){
   res.render('manage.ejs');
 });
+app.get('/loan', function(req, res){
+  res.render('empty_layout.ejs');
+});
 app.get('/createLoan', function(req, res){
   res.render('create_loan.ejs');
 });

@@ -25,7 +25,7 @@
 		</div>
 	</div>
 </div>
-<div class="ks-panel">
+<!-- <div class="ks-panel">
 	<div class="panel panel-default">
 		<div class="panel-heading">筛选条件 - 待确定!</div>
 		<div class="panel-body">
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <div class="ks-panel">
 	<table class="table table-striped">
 		<thead>
@@ -59,7 +59,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="loan in loans">
-				<td>{{loan.id}}</td>
+				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.serialNumber}}</a></td>
 				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.createdAt | date:"yyyy-MM-dd" }}</td>
@@ -80,6 +80,7 @@
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a role="menuitem" ng-click="activeLoan(loan.id)">放款</a></li>
+							<li><a role="menuitem" ng-click="deleteLoan(loan.id)" class="text-danger">删除</a></li>
 						</ul>
 					</div>
 				</td>

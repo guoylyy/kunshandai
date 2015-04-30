@@ -54,7 +54,47 @@ define(['app'],function(app){
 		    	templateUrl: "angular/account/signup/signup.html"
 		      
 		    })
-
+		    .state('loan',{
+		    	url:'/loan?id',
+		    	templateUrl: "angular/manage/common/contract/contract.html",
+		    	resolve:{
+		    		loan:function(LoanService,$stateParams){
+		    			return LoanService.getLoan($stateParams.id).then(function(data){
+		    				return data;
+		    			})
+		    		},
+		    		paybacks:function(LoanService,$stateParams){
+		    			return LoanService.getPaybacks($stateParams.id).then(function(data){
+		    				return data;
+		    			})
+		    		},
+		    		payments:function(LoanService,$stateParams){
+		    			return LoanService.getPayments($stateParams.id).then(function(data){
+		    				return data;
+		    			})
+		    		},
+		    		pwan:function(PwanService,$stateParams){
+		    			return PwanService.getPawn($stateParams.id).then(function(data){
+		    				return data;
+		    			})
+		    		},
+		    		attachments:function(LoanService,ContactService,$stateParams){
+		    			var attachments = {};
+		    			return LoanService.getLoan($stateParams.id).then(function(data){
+		    				ContactService.getAttachments(data.loaner.id).then(function(data){
+		    					attachments.br = data;
+		    				});
+		    				if(data.assurer.id){
+		    					ContactService.getAttachments(data.assurer.id).then(function(data){
+		    						attachments.gr = data;
+		    					});
+		    				}
+		    				return attachments;
+		    			})
+		    		}
+		    	},
+		    	controller:'ContractController'
+		    })
 		     // manage module routes
 		    
 		    .state('index',{
@@ -63,12 +103,12 @@ define(['app'],function(app){
 		    		"main":{templateUrl:  "/angular/manage/index/index.html"}
 		    	}
 		    })
-		    .state('loan',{
-		    	url:"#loan",
-		    	views:{
-		    		"main":{templateUrl: "/angular/manage/loan/loan.html"}
-		    	}
-		    })
+		    // .state('loan',{
+		    // 	url:"#loan",
+		    // 	views:{
+		    // 		"main":{templateUrl: "/angular/manage/loan/loan.html"}
+		    // 	}
+		    // })
 		    .state('draftLoans',{
 		    	url:"#loan/draft?page",
 		    	views:{
@@ -200,7 +240,7 @@ define(['app'],function(app){
 		    })
 		 	 .state('contractCreated',{
 		    	url:"#contract",
-		    	templateUrl: "/angular/manage/common/contract.html",
+		    	templateUrl: "/angular/manage/common/contract/contract.html",
 		    	resolve:{
 		    		loanTypes:function(){
 		    			 return '';

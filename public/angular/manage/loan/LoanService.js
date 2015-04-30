@@ -123,13 +123,13 @@ define(['../../app','underscore'],function(app,_){
 					$log.error(res);
 				});
 			},
-			getPayments:function(id){
-				return $http.get(ApiURL+loanUrl+"/"+id+"/payments")
-						.then(function(res){
-							return res.data.data[0];
-						},function(res){
-							$log.error(res);
-						});
+			getPayments:function(loanId){
+				return $http.get(ApiURL+loanUrl+"/"+loanId+"/payments")
+				.then(function(res){
+					return res.data.data;
+				},function(res){
+					$log.error(res);
+				});
 
 			},
 			create : function(loan){
@@ -146,6 +146,18 @@ define(['../../app','underscore'],function(app,_){
 
 				return deferred.promise;
 
+			},
+			deleteDraftLoan  : function(loanId){
+				var deferred = $q.defer();
+				$http.delete(ApiURL+loanUrl+"/"+loanId)
+				.then(function(res){
+					// _.extend(localLoan,res.data.data);
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res.data);
+				});
+
+				return deferred.promise;
 			},
 			generate: function(contract){
 				return $http.post(ApiURL+loanUrl+"/generate_bill",JSON.stringify(contract));

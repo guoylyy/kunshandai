@@ -69,6 +69,7 @@ require([
 		 'manage/common/upload/UploadController',
 		 'manage/common/upload/UploadService',
 		 'manage/common/active/ActiveLoanCtrl',
+		 'manage/common/contract/ContractController',
 		
 		 'manage/loan/CreateLoanCtrl',
 		 'manage/loan/draft/DraftLoanCtrl',

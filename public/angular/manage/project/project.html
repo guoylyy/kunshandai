@@ -66,8 +66,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="loan in loans">
-				<td>{{loan.id}}</td>
+			<tr ng-repeat="loan in loans">draft
+				<td><a href="/loan?id={{loan.loanObjectId}}" target="_blank" class="text-primary">{{loan.serialNumber}}</a></td>
 				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.payedMoney | number:2}}</td>

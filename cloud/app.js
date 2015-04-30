@@ -54,9 +54,12 @@ app.use(express.static('public'));  //public
 /**
  * 主页路由器,用于渲染前端框架入口页面
  */
+app.get('/', function (req,res){
+  res.redirect('/home');
+});
 app.get('/home',function(req, res){
   if(account.isLogin()){
-    res.redirect('/index');
+    res.redirect('/manage');
   }else{
     res.redirect('/login');
   }
@@ -336,7 +339,7 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
         if(floan.attributes.status != mconfig.loanStatus.draft.value){
           mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
         }else{
-          floan.set('loaner',assurer);
+          floan.set('loaner',loaner);
           var query = floan.relation("loanRecords").query();
           query.destroyAll().then(function(){
             generateLoanRecord(floan,res);
@@ -420,11 +423,14 @@ app.get(config.baseUrl + '/loan/:listType/:pn', function (req, res){
   query.include('loaner');
   query.include('assurer');
   query.equalTo('owner', u);
-
+  if(req.query.loanType){
+      query.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
+  }
   if(req.params.listType == 'draft'){
     query.equalTo('status', mconfig.loanStatus.draft.value);
   }else{
     query.include('loanPayBacks');
+    query.notEqualTo('status', mconfig.loanStatus.draft.value); //贷款抵押类型过滤
     var now = moment();
     if(req.params.listType == mconfig.loanListTypes.normal.value){
       query.lessThanOrEqualTo('currPayDate', now.add(1, 'month').toDate());
@@ -457,7 +463,7 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
   if(req.query.endDate)
     query.lessThanOrEqualTo('payDate', req.query.endDate);
   query.equalTo('status', parseInt(req.query.status)); //贷款状态过滤
-  query.include('loan');
+  query.include(['loan.loaner']);
   query.matchesQuery('loan', loanQuery);
 
   var totalPageNum = 1;
@@ -473,6 +479,7 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
         mutil.renderData(res, resultsMap);
       }else{
         query.skip(pageNumber*mconfig.pageSize - mconfig.pageSize);
+        query.limit(mconfig.pageSize);
         query.find({
           success: function(lpbList){
             var fList = [];
@@ -557,7 +564,6 @@ app.post(config.baseUrl + '/loan/payBack/:id/bill', function (req, res){
   });
 });
 
-
 //结清账单生成
 app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
   //接受项目id，获取结清账单
@@ -617,8 +623,6 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
     }
   });
 });
-
-
 
 /*****************************************
  * 联系人相关接口
@@ -854,6 +858,10 @@ function calculateOverdueMoney(loan, baseDate, payDate){
 //流程 结清当前项目 + 生成一个新项目
 function concretePayBack(lpb, loan, overdueMoney){
   var result = {};
+  result['loaner'] = {
+    name: loan.get('loaner').get('name'),
+    ObjectId : loan.get('loaner').id,
+  };
   result['loanObjectId'] = loan.id;
   result['payObjectId'] = lpb.id;
   result['serialNumber'] = loan.get('serialNumber');

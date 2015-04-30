@@ -54,6 +54,7 @@ define(['app'],function(app){
 		    	templateUrl: "angular/account/signup/signup.html"
 		      
 		    })
+<<<<<<< HEAD
 		    .state('loan',{
 		    	url:'/loan?id',
 		    	templateUrl: "angular/manage/common/contract/contract.html",
@@ -95,12 +96,23 @@ define(['app'],function(app){
 		    	},
 		    	controller:'ContractController'
 		    })
+=======
+		    .state('retrieve_password', {
+		    	url: "/retrieve_password",
+		    	templateUrl: "angular/account/retrieve_password/retrieve_password.html",
+		    	controller:'RetrievePasswordController'
+		    })
+
+>>>>>>> origin/master
 		     // manage module routes
 		    
 		    .state('index',{
-		    	url:"#index",
+		    	url:"/manage",
 		    	views:{
-		    		"main":{templateUrl:  "/angular/manage/index/index.html"}
+		    		"main":{
+		    			templateUrl:  "/angular/manage/index/index.html",
+		    			controller: 'IndexController'
+		    		}
 		    	}
 		    })
 		    // .state('loan',{

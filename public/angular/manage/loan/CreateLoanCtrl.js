@@ -224,8 +224,8 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.template = {
 		
-			houseUrl	: '/angular/manage/loan/pwan/house_pwan.html',
-			carUrl		: '/angular/manage/loan/pwan/car_pwan.html',
+			houseUrl	: '/angular/manage/loan/pawn/house_pawn.html',
+			carUrl		: '/angular/manage/loan/pawn/car_pawn.html',
 			grUrl		:'/angular/manage/contact/grInfo.html'
 		}
 

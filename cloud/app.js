@@ -336,7 +336,7 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
         if(floan.attributes.status != mconfig.loanStatus.draft.value){
           mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
         }else{
-          floan.set('loaner',assurer);
+          floan.set('loaner',loaner);
           var query = floan.relation("loanRecords").query();
           query.destroyAll().then(function(){
             generateLoanRecord(floan,res);

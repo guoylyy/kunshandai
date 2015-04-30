@@ -454,6 +454,7 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
   
   //过滤条件设置
   var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('status', mconfig.loanStatus.paying.value);
   loanQuery.equalTo('owner', u);
   if(req.query.loanType)
     loanQuery.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤

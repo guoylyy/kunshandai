@@ -164,7 +164,7 @@
 						    <div class="panel-body">
 					    		<ul class="list-group">
 									<li class="list-group-item" ng-repeat="a in loanInfo.attachments" >
-										<a ng-href="a.url" target="_blank">
+										<a href="{{a.url}}" target="_blank">
 											{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
 										</a>
 									</li>
@@ -186,7 +186,7 @@
 						    <div class="panel-body">
 						    	<ul class="list-group">
 									<li class="list-group-item" ng-repeat="a in br.attachments" >
-										<a ng-href="a.url" target="_blank">
+										<a href="{{a.url}}" target="_blank">
 											{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
 										</a>
 									</li>
@@ -201,7 +201,7 @@
 						    	
 						    		<ul class="list-group">
 										<li class="list-group-item" ng-repeat="a in gr.attachments" >
-											<a ng-href="a.url" target="_blank">
+											<a href="{{a.url}}" target="_blank">
 												{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
 											</a>
 									</ul>

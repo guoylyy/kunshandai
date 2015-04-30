@@ -78,19 +78,32 @@ define(['app'],function(app){
 		    				return data;
 		    			})
 		    		},
-		    		attachments:function(LoanService,ContactService,$stateParams){
+		    		attachments:function($q,LoanService,ContactService,$stateParams){
 		    			var attachments = {};
-		    			return LoanService.getLoan($stateParams.id).then(function(data){
-		    				ContactService.getAttachments(data.loaner.id).then(function(data){
-		    					attachments.br = data;
-		    				});
-		    				if(data.assurer.id){
-		    					ContactService.getAttachments(data.assurer.id).then(function(data){
-		    						attachments.gr = data;
-		    					});
-		    				}
-		    				return attachments;
+
+		    			var defferrd = $q.defer();
+
+		    			LoanService.getLoan($stateParams.id).then(function(loanData){
+		    				
+		    				 ContactService.getAttachments(loanData.loaner.id).then(function(attachdata){
+		    					attachments.br = attachdata;
+
+		    				}).then(function(){
+		    					if(loanData.assurer.id){
+			    					
+			    					ContactService.getAttachments(loanData.assurer.id).then(function(attachdata){
+			    						attachments.gr = attachdata;
+			    						defferrd.resolve(attachments);
+			    					});
+		    					}else{
+		    						defferrd.resolve(attachments);
+		    					}
+		    				})
+		    				
+		    				
 		    			})
+
+		    			return defferrd.promise;
 		    		}
 		    	},
 		    	controller:'ContractController'

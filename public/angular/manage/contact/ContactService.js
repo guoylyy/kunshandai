@@ -65,9 +65,10 @@ define(['../../app'],function(app){
 			getAttachments:function(id){
 				var deferred = $q.defer();
 
-				return $http.get(ApiURL+contactUrl+"/"+id+"/attachments").then(function(res){
+				$http.get(ApiURL+contactUrl+"/"+id+"/attachments").then(function(res){
 					deferred.resolve(res.data.data);
 				},function(res){
+					
 					deferred.reject(res);
 				});
 

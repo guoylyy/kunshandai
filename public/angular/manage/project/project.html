@@ -67,7 +67,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="loan in loans">
-				<td><a href="/loan?id={{loan.loanObjectId}}" target="_blank" class="text-primary">{{loan.serialNumber}}</a></td>
+				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.serialNumber}}</a></td>
 				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.payedMoney | number:2}}</td>
@@ -77,7 +77,7 @@
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu"  role="menu">
-							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)">收款</a></li>
+							<li><a role="menuitem">收款</a></li>
 							<li><a role="menuitem" >结清</a></li>
 							<li ><a role="menuitem">调整</a></li>
 						</ul>

@@ -721,6 +721,40 @@ app.get(config.baseUrl + '/contact/list/all', function (req, res){
   });
 });
 
+app.get(config.baseUrl + '/contact/list/page/:pn', function (req, res){
+  var u = check_login(res);
+  var pageNumber = req.params.pn;
+  var query = new AV.Query('Contact');
+  query.equalTo("owner",u);
+  
+  var totalPageNum = 1;
+  var resultsMap = {};
+  query.count().then(function(count){
+    totalPageNum = parseInt((count-1)/ mconfig.pageSize) + 1;
+    resultsMap['totalPageNum'] = totalPageNum;
+    resultsMap['totalNum'] = count;
+    resultsMap['pageSize'] = mconfig.pageSize;
+  }).then(function(){
+    if(pageNumber > resultsMap.totalPageNum){
+        resultsMap['values'] = [];
+        mutil.renderData(res, resultsMap);
+    }else{
+      query.skip(pageNumber*mconfig.pageSize - mconfig.pageSize);
+      query.limit(mconfig.pageSize);
+      query.find({
+        success: function(lpbList){
+          resultsMap['values'] = lpbList;
+          mutil.renderData(res, resultsMap);
+        },
+        error: function(error){
+          mutil.renderError(res, error);
+        }
+      });
+    }
+  });
+});
+
+
 //删除一个联系人
 app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);

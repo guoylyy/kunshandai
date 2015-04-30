@@ -20,6 +20,7 @@ function updateContact(contact, reqBody){
     contact.set('address', reqBody.address);
     contact.set('wechat', reqBody.wechat);
     contact.set('mobilePhoneNumber', reqBody.mobilePhoneNumber);
+    contact.set('sendSmsOrNot', reqBody.sendSmsOrNot);
     return contact;
 };
 

@@ -359,7 +359,7 @@ function generateLoanRecord(floan, res){
     lrRelation.add(rlr);
     floan.save().then(function(data){
       mutil.renderData(res,{
-        loanId: transformLoan(floan),
+        loanId: transformLoan(data),
         loanRecord: rlr
       });
     },function(error){
@@ -979,7 +979,12 @@ function transformContact(c){
   return {
     id: c.id,
     name: c.get('name'),
-    email: c.get('email')
+    email: c.get('email'),
+    certificateNum: c.get('certificateNum'),
+    address: c.get('address'),
+    qq: c.get('qq'),
+    wechat: c.get('wechat'),
+    mobilePhoneNumber: c.get('mobilePhoneNumber')
   };
 };
 

@@ -973,6 +973,9 @@ function transformLoan(l){
 
 function transformLoanDetails(l){
   var m = transformLoan(l);
+  if(m == undefined){
+    return {};
+  }
   m['spanMonth'] = l.get('spanMonth');
   m['startDate'] = formatTime(l.get('startDate'));
   m['endDate'] = formatTime(l.get('endDate'));

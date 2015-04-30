@@ -707,7 +707,7 @@ app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, 
 });
 
 //获取一个用户所有联系人
-app.get(config.baseUrl + '/contact/all', function (req, res){
+app.get(config.baseUrl + '/contact/list/all', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
   query.equalTo("owner",u);

@@ -1320,22 +1320,20 @@ traits:
                       "code": 200
                     }
 
-
-
-  /all:
-    description: |
-      获取一个用户所有联系人（未分页）
-    get:
-      responses:
-        200:
-          body:
-            application/json:
-              schema: |
-                {
-                  "data":"[....]",
-                  "code":200
-                }
-  
+  /list:
+    /all:
+      description: |
+        获取一个用户所有联系人（未分页）
+      get:
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data":"[....]",
+                    "code":200
+                  }
   /certificate/{certificateNum}:
     description: |
       通过证件号获取一个用户

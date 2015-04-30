@@ -52,6 +52,7 @@
 		<thead>
 			<tr>
 				<th>合同编号</th>
+				<th>收款人</th>
 				<th>贷款金额</th>
 				<th>当前/总期</th>
 				<th>应收日期</th>
@@ -62,6 +63,7 @@
 		<tbody>
 			<tr ng-repeat="loan in loans">
 				<td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.serialNumber}}</a></td>
+				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>

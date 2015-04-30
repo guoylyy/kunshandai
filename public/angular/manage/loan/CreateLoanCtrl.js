@@ -187,10 +187,10 @@ define(['app',"underscore"],function(app,_) {
 				controller:'ActiveLoanCtrl',
 				size:'lg',
 				resolve:{
-					payment:function(){
+					payments:function(){
 						return LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
 							$scope.loanInfo.payment = data;
-							return data[0];
+							return data;
 						})
 					},
 					loanId:function(){
@@ -237,7 +237,7 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.pawn = PawnService.getLocal($scope.loanInfo.loanType);
 
-		$scope.pawnInfos = _.pairs($scope.pwan);
+		$scope.pawnInfos = _.pairs($scope.pawn);
 
 	}]);
 });

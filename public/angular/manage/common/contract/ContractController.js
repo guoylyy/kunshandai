@@ -9,15 +9,9 @@ define(['app','underscore'],function(app,_){
 
 		$scope.pwanInfo				= pwan;
 
-		$scope.br = {
-			name:loan.loaner.name,
-			attachments:attachments.br,
-		}
+		$scope.br = _.extend({attachments:attachments.br},loan.loaner)
 
-		$scope.gr = {
-			name:loan.assurer.name,
-			attachments:attachments.gr,
-		}
+		$scope.gr = _.extend({attachments:attachments.gr},loan.assurer)
 
 	})
 })

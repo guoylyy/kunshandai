@@ -127,6 +127,16 @@ define(['app'],function(app){
 		    	}
 		    })
 
+		    .state('fianceStatistics',{
+		    	url:"/manage/fianceStatistics",
+		    	views:{
+		    		"main":{
+		    			templateUrl:  "/angular/manage/index/index.html",
+		    			controller: 'IndexController'
+		    		}
+		    	}
+		    })
+
 		    .state('draftLoans',{
 		    	url:"#loan/draft?page",
 		    	views:{

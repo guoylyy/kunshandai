@@ -1335,6 +1335,48 @@ traits:
                     "data":"[....]",
                     "code":200
                   }
+    /page/{pn}:
+      get:
+        description: |
+          分页获取联系人数据
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "data": {
+                          "totalPageNum": 1,
+                          "totalNum": 10,
+                          "pageSize": 10,
+                          "values": [
+                              {
+                                  "address": "",
+                                  "email": "",
+                                  "certificateType": "",
+                                  "name": "dsfsadfas",
+                                  "sendSmsOrNot": false,
+                                  "attachments": {
+                                      "__type": "Relation",
+                                      "className": "_File"
+                                  },
+                                  "certificateNum": "",
+                                  "qq": "",
+                                  "wechat": "",
+                                  "owner": {
+                                      "__type": "Pointer",
+                                      "className": "_User",
+                                      "objectId": "552f6a6de4b0c29c3ca3a046"
+                                  },
+                                  "objectId": "5541a2f8e4b0679ef5c0e805",
+                                  "createdAt": "2015-04-30T03:35:20.645Z",
+                                  "updatedAt": "2015-04-30T04:13:25.995Z"
+                              }
+                          ]
+                      },
+                      "code": 200
+                  }              
+
   /certificate/{certificateNum}:
     description: |
       通过证件号获取一个用户

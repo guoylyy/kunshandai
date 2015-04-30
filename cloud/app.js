@@ -672,11 +672,12 @@ app.get(config.baseUrl + '/contact/:id', function (req, res){
   query.equalTo("owner",u);
   query.equalTo("objectId",req.params.id);
   query.find({
-    success: function(contact){
-      if(contact.certificateNum ){
-        mutil.renderData(res, contact);
-      }else{
+    success: function(contacts){
+      //console.log(rc);
+      if(contacts.length == 0){
         mutil.renderError(res, {code:404, message:'contact not found'});
+      }else{
+        mutil.renderData(res, contacts[0]);
       }
     },
     error: function(error){

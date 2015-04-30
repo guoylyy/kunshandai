@@ -151,8 +151,8 @@
 							<div class="panel-heading">抵押物信息</div>
 						    <div class="panel-body">
 						    	<div class="row">
-									<div class="col-md-6" ng-repeat="pwanInfo in pwanInfos" >
-										<strong>{{pwanInfo[1].text}}: </strong> <label>{{pwanInfo[1].value}}</label>
+									<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos" >
+										<strong>{{pawnInfo[1].text}}: </strong> <label>{{pawnInfo[1].value}}</label>
 									</div>
 								</div>
 						    </div>
@@ -165,7 +165,7 @@
 					    		<ul class="list-group">
 									<li class="list-group-item" ng-repeat="a in loanInfo.attachments" >
 										<a href="{{a.url}}" target="_blank">
-											{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+											{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
 										</a>
 									</li>
 								</ul>
@@ -187,7 +187,7 @@
 						    	<ul class="list-group">
 									<li class="list-group-item" ng-repeat="a in br.attachments" >
 										<a href="{{a.url}}" target="_blank">
-											{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+											{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
 										</a>
 									</li>
 								</ul>
@@ -202,7 +202,7 @@
 						    		<ul class="list-group">
 										<li class="list-group-item" ng-repeat="a in gr.attachments" >
 											<a href="{{a.url}}" target="_blank">
-												{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+												{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
 											</a>
 									</ul>
 						    </div>

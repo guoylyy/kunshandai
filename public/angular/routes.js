@@ -73,11 +73,11 @@ define(['app'],function(app){
 		    				return data;
 		    			})
 		    		},
-		    		pwan:function(PwanService,$stateParams){
-		    			return PwanService.getPawn($stateParams.id).then(function(data){
-		    				return data;
-		    			})
-		    		},
+		    		// pawn:function(loan,PawnService,$stateParams){
+		    		// 	return PawnService.getPawn(loan.pawn.id).then(function(data){
+		    		// 		return data;
+		    		// 	})
+		    		// },
 		    		attachments:function($q,LoanService,ContactService,$stateParams){
 		    			var attachments = {};
 

@@ -4,9 +4,9 @@ define(['app',"underscore"],function(app,_) {
 
 	return app.controller('CreateLoanCtrl', 
 		["$scope","$rootScope","$location","$q","LoanService","ContactService",'DictService','$state',
-		'loanTypes','repayTypes','steps','$modal','SweetAlert','PwanService',
+		'loanTypes','repayTypes','steps','$modal','SweetAlert','PawnService',
 		function($scope,$rootScope,$location,$q,LoanService,ContactService,DictService,$state,loanTypes,
-			repayTypes,steps,$modal,SweetAlert,PwanService){
+			repayTypes,steps,$modal,SweetAlert,PawnService){
 		
 
 		$scope.loanTypes = (typeof loanTypes !== 'undefined' )? loanTypes : {};
@@ -101,7 +101,7 @@ define(['app',"underscore"],function(app,_) {
 			
 
 			$q.all([ContactService.create(loaner), ContactService.create(assurer),
-				LoanService.create(loan),PwanService.create($scope.pwan,$scope.loanInfo.attachments)])
+				LoanService.create(loan),PawnService.create($scope.pwan,$scope.loanInfo.attachments)])
 
 			.then(function(results){
 				
@@ -235,9 +235,9 @@ define(['app',"underscore"],function(app,_) {
 		
 		$scope.loanInfo = LoanService.getLocal();
 
-		$scope.pwan = PwanService.getLocal($scope.loanInfo.loanType);
+		$scope.pawn = PawnService.getLocal($scope.loanInfo.loanType);
 
-		$scope.pwanInfos = _.pairs($scope.pwan);
+		$scope.pawnInfos = _.pairs($scope.pwan);
 
 	}]);
 });

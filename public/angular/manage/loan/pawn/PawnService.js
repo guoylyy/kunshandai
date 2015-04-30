@@ -1,5 +1,5 @@
 define(['app'],function(app){
-	return app.factory('PwanService', ['$http','$q','ApiURL', function($http,$q,ApiURL){
+	return app.factory('PawnService', ['$http','$q','ApiURL', function($http,$q,ApiURL){
 		
 		var pawnUrl = "/loanPawn";
 

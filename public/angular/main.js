@@ -80,7 +80,7 @@ require([
 		 'manage/loan/CreateLoanCtrl',
 		 'manage/loan/draft/DraftLoanCtrl',
 		 'manage/loan/LoanService',
-		 'manage/loan/pwan/PwanService',
+		 'manage/loan/pawn/PawnService',
 
 		 'manage/collect/CollectProcessCtrl',
 		 'manage/collect/CollectController',

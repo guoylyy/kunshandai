@@ -1,5 +1,5 @@
 define(['app','underscore'],function(app,_){
-	return app.controller('ContractController', function($scope,loan,paybacks,payments,pwan,attachments){
+	return app.controller('ContractController', function($scope,loan,paybacks,payments,attachments,PawnService){
 		
 		$scope.loanInfo 			= _.extend({actived:(loan.status.value != 0)},loan);
 		
@@ -7,7 +7,14 @@ define(['app','underscore'],function(app,_){
 
 		$scope.loanInfo.payments 	= payments;
 
-		$scope.pwanInfo				= pwan;
+
+		$scope.$watch("loanInfo",function(){
+			if($scope.loanInfo){
+				return PawnService.getPawn($scope.loanInfo.pawn.objectId).then(function(data){
+					$scope.loanInfo.attachments	= data;
+				})
+			}
+		});
 
 		$scope.br = _.extend({attachments:attachments.br},loan.loaner)
 

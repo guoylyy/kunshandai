@@ -714,7 +714,11 @@ app.get(config.baseUrl + '/contact/list/all', function (req, res){
   query.equalTo("owner",u);
   query.find({
     success: function(results){
-      mutil.renderData(res, results); 
+      var rclist = [];
+      for (var i = 0; i < results.length; i++) {
+        rclist.push(transformContact(results[i]));
+      };
+      mutil.renderData(res, rclist); 
     },
     error: function(error){
       mutil.renderError(res, error);
@@ -1034,6 +1038,10 @@ function transformContact(c){
   if(!c){
     return null;
   }
+  var mobilePhoneNumber = "";
+  if(c.get('mobilePhoneNumber')){
+    mobilePhoneNumber = c.get('mobilePhoneNumber');
+  }
   return {
     id: c.id,
     name: c.get('name'),
@@ -1042,9 +1050,15 @@ function transformContact(c){
     address: c.get('address'),
     qq: c.get('qq'),
     wechat: c.get('wechat'),
-    mobilePhoneNumber: c.get('mobilePhoneNumber')
+    certificateType: c.get('certificateType'),
+    mobilePhoneNumber: mobilePhoneNumber,
+    sendSmsOrNot: c.get('sendSmsOrNot'),
+    createdAt: c.createdAt,
+    updatedAt: c.updatedAt
   };
 };
+
+
 
 function formatTime(t) {
     var date = moment(t).format('YYYY-MM-DD HH:mm:ss');

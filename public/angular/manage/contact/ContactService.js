@@ -71,6 +71,7 @@ define(['../../app'],function(app){
 				var sendContact = _.extend({},contact);
 
 				sendContact.attachments = _.pluck(sendContact.attachments,'objectId');
+				console.log(sendContact.attachments);
 
 				var deferred = $q.defer();
 

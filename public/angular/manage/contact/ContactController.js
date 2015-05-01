@@ -1,5 +1,5 @@
 define(['app'], function(app) {
-  return app.controller('ContactController', ['$scope', 'contacts', 'SweetAlert', '$modal', 'ContactService', '$timeout', 
+  return app.controller('ContactController', ['$scope', 'contacts', 'SweetAlert', '$modal', 'ContactService', '$timeout',
     function($scope, contacts, SweetAlert, $modal, ContactService, $timeout) {
 
       $scope.contacts = contacts;
@@ -25,8 +25,9 @@ define(['app'], function(app) {
           confirmButtonColor: '#DD6B55',
           showCancelButton: true
         }, function() {
-        	ContactService.remove(contactId);
-        	refreshData();
+          ContactService.remove(contactId).then(function() {
+            refreshData();
+          });
         });
       }
 
@@ -65,22 +66,29 @@ define(['app'], function(app) {
         });
 
         contactModal.result.then(function(edited) {
+          console.log(edited);
           if (controlName == 'create') {
-            ContactService.create(edited);
+            ContactService.create(edited).then(function() {
+              refreshData();
+            });
           } else if (controlName == 'edit') {
-            ContactService.update(edited);
+            ContactService.update(edited).then(function() {
+              refreshData();
+            });
           }
-          refreshData();
         }, function() {
 
         })
       }
 
-      var refreshData = function (){
-      	ContactService.getAll().then(function (data){
-      		$scope.contacts = data;
-      		$scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
-      		$timeout(function (){ $scope.$apply(); }, 0)});
+      var refreshData = function() {
+        ContactService.getAll().then(function(data) {
+          $scope.contacts = data;
+          $scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
+          $timeout(function() {
+            $scope.$apply();
+          }, 0)
+        });
       }
     }
   ])

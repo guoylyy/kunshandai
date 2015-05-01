@@ -16,12 +16,11 @@ define(['app','underscore'],function(app,_){
 		}
 
 		$scope.finishEdit = function(){
-			
-			$modalInstance.close();
+			$modalInstance.close($scope.contact);
 		}
 
 		$scope.finishCreate = function(){
-			$modalInstance.close();
+			$modalInstance.close($scope.contact);
 		}
 
 	})

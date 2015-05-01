@@ -10,11 +10,12 @@ define(['../../app'],function(app){
 			certificateType:'',
 			name:'',
 			certificateNum:'',
-			mobilePhoneNum:'',
+			mobilePhoneNumber:'',
 			email:'',
 			qq:'',
 			wechat:'',
 			address:'',
+			sendSmsOrNot: false,
 			attachments:[]	
 		}, 
 
@@ -65,6 +66,32 @@ define(['../../app'],function(app){
 				
 				return deferred.promise;
 
+			},
+			update : function(contact){
+				var sendContact = _.extend({},contact);
+
+				sendContact.attachments = _.pluck(sendContact.attachments,'objectId');
+
+				var deferred = $q.defer();
+
+				$http.put(ApiURL+contactUrl+"/"+contact.objectId,JSON.stringify(sendContact)).then(function(res){
+			
+					deferred.resolve(res.data.data);
+			
+				},function(res){
+					deferred.reject(res.data);
+				});
+				
+				return deferred.promise;
+			},
+			remove : function(id){
+				var deferred = $q.defer();
+				$http.delete(ApiURL+contactUrl+"/"+id).then(function(res){
+					deferred.resolve(res.data.data);
+				},function(){
+					deferred.reject(res);
+				});
+				return deferred.promise;
 			},
 			get: function(id){
 				var deferred = $q.defer();

@@ -35,15 +35,15 @@
 		<tbody>
 			<tr ng-repeat="contact in currContacts">
 				<td>{{contact.name}}</td>
-				<td>{{contact.mobilePhoneNum}}</td>
-				<td>{{contact.certificationNum}}</td>
-				<td>
+				<td>{{contact.mobilePhoneNumber}}</td>
+				<td>{{contact.certificateNum}}</td>
+				<td style="width: 70px;">
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu"  role="menu">
 							<li><a role="menuitem" ng-click="view(contact.objectId)">查看</a></li>
 							<li><a role="menuitem" ng-click="edit(contact.objectId)">编辑</a></li>
-							<li><a role="menuitem"  ng-click="delete(contact.objectId)">删除</a></li>
+							<li><a role="menuitem" ng-click="remove(contact.objectId)">删除</a></li>
 						</ul>
 					</div>
 				</td>

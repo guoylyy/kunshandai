@@ -1044,7 +1044,7 @@ function transformContact(c){
   }
   return {
     id: c.id,
-    ObjectId: c.id,
+    objectId: c.id,
     name: c.get('name'),
     email: c.get('email'),
     certificateNum: c.get('certificateNum'),

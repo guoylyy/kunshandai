@@ -22,8 +22,9 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label">*身份证</label>
-								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum">
+								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum" ui-validate="'$value !== br.certificateNum'" ui-validate-watch=" 'br.certificateNum'" >
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gid.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.gid.$error.validator">担保人不能是本人</div>
 									<div class="text-danger" ng-show="moreInfoForm.gid.$error.required">请填担保人姓名</div>
 								</div>
 							</div>

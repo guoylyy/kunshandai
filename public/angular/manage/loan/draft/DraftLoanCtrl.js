@@ -18,7 +18,7 @@ define(['app'],function(app){
 		$scope.deleteLoan = function(loanId){
 
 			SweetAlert.swal({
-			   title: "确定删除该合同?",
+			   title: "确定删除该项目?",
 			   text: "删除后将不可恢复",
 			   type: "warning",
 			   showCancelButton: true,

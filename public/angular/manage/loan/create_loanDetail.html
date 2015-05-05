@@ -68,7 +68,7 @@
 							<div class="form-group">
 								<label>*截止日期</label>
 								<div class="input-group">
-									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions"ng-required="true"  close-text="关闭" name="endDate" ng-disabled="true"/>
+									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭" name="endDate" ng-disabled="true"/>
 
 									<span class="input-group-btn">
 										<button type="button" class="btn btn-default" ng-click="open($event,'openedend')">
@@ -205,9 +205,9 @@
 							<div class="form-group">
 								<label>*{{!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')? '首次':''}}还款日期</label>
 								<div class="input-group">
-									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.firstPayDate" is-open="calendar.openedPay"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭"  required name="firstPayDate" show-weeks="false" ui-validate="{rangeStart:'$value >= loanInfo.startDate',rangeEnd:' $value <= loanInfo.endDate'}" ui-validate-watch=" 'loanInfo'" ng-disabled="(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')"/>
+									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.firstPayDate" is-open="calendar.openedPay"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭"  required name="firstPayDate" show-weeks="false" ui-validate="{rangeStart:'$value >= loanInfo.startDate',rangeEnd:' $value <= loanInfo.endDate'}" ui-validate-watch=" 'loanInfo'" disabled="true"/>
 									<span class="input-group-btn">
-										<button type="button" class="btn btn-default" ng-click="open($event,'openedPay')" ng-disabled="(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')"><i class="glyphicon glyphicon-calendar"></i></button>
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedPay')" disabled="true"><i class="glyphicon glyphicon-calendar"></i></button>
 									</span>
 								</div>
 
@@ -227,7 +227,7 @@
 									>
 									<span class="input-group-addon">月</span>
 								</div>
-								<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">
+								<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">																<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.validator">还款周期填写有误</div>
 									<div class="text-danger" ng-show="loanForm.payCircle.$error.required">请填写还款周期</div>
 								</div>
 							</div>
@@ -236,11 +236,12 @@
 							<div class="form-group">
 								<label>*还款总次数</label>
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="还款总期数" number-input name="payTotalCircle" ng-model="loanInfo.payTotalCircle" required ng-disabled="loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx'">
+									<input type="text" class="form-control" placeholder="还款总期数" number-input name="payTotalCircle" ng-model="loanInfo.payTotalCircle" ui-validate="'loanInfo.spanMonth % loanInfo.payCircle === 0'" ui-validate-watch=" 'loanInfo'" required disabled="true">
 									<span class="input-group-addon">期</span>
 								</div>
-								<div ng-show="loanForm.$submitted || loanForm.payTotalCircle.$touched">
-									<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.required">请填写还款总期数</div>
+								<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">
+<!-- 									<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.validator">还款周期填写有误</div>
+ -->									<!-- <div class="text-danger" ng-show="loanForm.payTotalCircle.$error.required">请填写还款总期数</div> -->
 								</div>
 							</div>
 						</div>
@@ -251,8 +252,8 @@
 				</div>
 
 				<div class="ks-panel panel panel-default">
-					<div class="panel-heading">贷款计算
-						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="count()" style="margin-top:-5px;">计算</button>
+					<div class="panel-heading">还款明细
+						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="count()" style="margin-top:-5px;">显示</button>
 					</div>
 
 					<div class="panel-body" >

@@ -1,15 +1,15 @@
 
 		<div class="ks-dividing">
-			<h4>合同详情</h4>
+			<h4>项目详情</h4>
 		</div>
 		<div class="row">
 			<div class="col-md-11">
-				<h4>合同编号: {{loanInfo.serialNumber}}</h4>
+				<h4>项目编号: {{loanInfo.serialNumber}}</h4>
 			</div>
 			<div class=" col-md-1">
 			<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
 			<button class="btn btn-success " ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
-<!-- 			<button class="btn btn-info " type="submit" onclick="window.print()">打印合同</button> -->
+<!-- 			<button class="btn btn-info " type="submit" onclick="window.print()">打印项目</button> -->
 			</div>
 		</div>
 		<div class="ks-panel panel panel-primary">
@@ -26,7 +26,6 @@
 											<th>首次还款日期</th>
 											<th>还款周期（月/次）</th>
 											<th>还款总次数（次）</th>
-
 										</tr>
 									</thead>
 									<tbody>
@@ -80,7 +79,7 @@
 				    	<p>微 信 : {{br.wechat}}</p>
 			    	</div>
 		    		<div class="col-md-6">
-	    				<div ng-show="br.hasGr || loanInfo.assurer.name !== ''">
+	    				<div ng-show="br.hasGr && loanInfo.assurer.name !== ''">
 					    	<p class="ks-heading">担保人信息:</p>
 					    	<p>姓 名 : {{gr.name}}</p>
 					    	<p>身份证: {{gr.certificateNum}}</p>

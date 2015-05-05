@@ -1,5 +1,19 @@
 
-
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group">
+			<label class="control-label">*{{pawn.pawnType.text}}</label>
+			<ul class="list-inline">
+				 <li class="btn-group">
+					<label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items">{{i}}</label>
+				</li>
+				<li>
+					<input type="text" class="form-control input-sm" placeholder="自定义" ng-model="pawn.pawnType.value[pawn.pawnType.items.length]" name="pawnTypeOther" style="height:28px;">
+				</li>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row">
 	<div class="col-md-4">
 		<div class="form-group">

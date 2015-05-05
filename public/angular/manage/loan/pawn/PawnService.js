@@ -7,7 +7,7 @@ define(['app'],function(app){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['过户','装GPS','押车','押车证']
+					items:['合同公证','律师公证','预售登录','押车证']
 				},
 				carNum:{
 					text:"车牌号",
@@ -47,7 +47,7 @@ define(['app'],function(app){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['网签','他项权证','押车证']
+					items:['合同公证','律师见证','预售登录','押产证','网签']
 				},
 				houseCertificate:{
 					text:'房产证号',
@@ -87,7 +87,18 @@ define(['app'],function(app){
 				}
 
 			};
-
+		var pawnTypeTransform = function(data){
+			var i = 0;
+			var pawnTypeValue  = '';
+			for(i = 0;i < data.pawnType.items.length;i++){
+				if(data.pawnType.value[i]){
+					pawnTypeValue += data.pawnType.items[i]+" ";
+				}
+			}
+			pawnTypeValue += data.pawnType.value[i];
+			data.pawnType.value = pawnTypeValue;
+			return data;
+		}
 		return {
 
 			getLocal:function(type){
@@ -105,6 +116,8 @@ define(['app'],function(app){
 				var sendAttachment = {}
 
 				sendAttachment = _.pluck(attachments,'objectId');
+
+				data = pawnTypeTransform(data);
 
 				var deferred = $q.defer();
 

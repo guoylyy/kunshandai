@@ -1,19 +1,19 @@
 <div class="ks-dividing">
-	<h4 ng-show="('draftLoans' | isState)">放款管理->待放款合同</h4>
+	<h4 ng-show="('draftLoans' | isState)">放款管理->待放款项目</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="btn-group btn-group-middle" >
-			<button type="button" class="btn btn-default" ui-sref="draftLoans" ui-sref-active="active">待放款合同</button>
+			<button type="button" class="btn btn-default" ui-sref="draftLoans" ui-sref-active="active">待放款项目</button>
 
 		</div>
 	</div>
 	<div class="col-md-6">
 		<div class="input-group">
 			<div class="input-group-btn">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">合同号 <span class="caret"></span></button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">项目号 <span class="caret"></span></button>
 				<ul class="dropdown-menu dropdown-menu-right" role="menu">
-					<li><a href="#">合同号</a></li>
+					<li><a href="#">项目号</a></li>
 					<li><a href="#">借款人</a></li>
 					<li><a href="#">担保人</a></li>
 				</ul>
@@ -31,7 +31,7 @@
 		<div class="panel-body">
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
-					<li>合同新建时间:</li>
+					<li>项目新建时间:</li>
 					<li><a >所有</a></li>
 					<li><a >小于一个月</a></li>
 					<li><a >1~3个月</a></li>
@@ -48,7 +48,7 @@
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th>合同编号</th>
+				<th>项目编号</th>
 				<th>贷款人</th>
 				<th>贷款金额（元）</th>
 				<th>创建时间</th>

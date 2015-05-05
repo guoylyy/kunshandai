@@ -71,17 +71,7 @@ define(['app',"underscore"],function(app,_) {
 		}
 
 		var payTotalCircleChange = function(){
-			// if($scope.loanInfo.payCircle && $scope.loanInfo.spanMonth && $scope.loanInfo.firstPayDate){
-				
-			// 	var endDate =  new Date($scope.loanInfo.endDate);
-			// 	var firstPayDate = new Date($scope.loanInfo.firstPayDate);
-				
-			// 	var years = endDate.getFullYear() - firstPayDate.getFullYear();
-			// 	var Months = endDate.getMonth() - firstPayDate.getMonth();
-
-			// 	$scope.loanInfo.payTotalCircle = parseInt( (years * 12 + Months)/ $scope.loanInfo.payCircle) + 1;
-			// }
-			// 
+			
 			if($scope.loanInfo.payCircle && $scope.loanInfo.spanMonth){
 				var ptc = $scope.loanInfo.spanMonth % $scope.loanInfo.payCircle;
 				if(ptc === 0){

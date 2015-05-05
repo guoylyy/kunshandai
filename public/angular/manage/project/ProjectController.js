@@ -13,9 +13,44 @@ define(['app'],function(app) {
 		$scope.loanTypes 	= loanTypes;
 		$scope.timeRanges 	= timeRanges;
 
+		$scope.search = {
+			type:{
+				text:'',
+				value:''
+			},
+			keyword:''
+		}
+
+		$scope.$watch('search',function(){
+			if($stateParams.keyword){
+				$scope.search.keyword = $stateParams.keyword;
+			}
+			if($stateParams.type){
+				$scope.changeSearchType($stateParams.type);
+			}else{
+				$scope.changeSearchType('id');
+			}
+		})
 
 		$scope.pageChanged = function(){
 			$state.go($state.current, {page:$scope.currentPage}, {reload: true});
+		}
+
+		$scope.changeSearchType = function(type){
+			if(type === 'id'){
+				$scope.search.type.value = 'id';
+				$scope.search.type.text = '项目号';
+			}else{
+				$scope.search.type.value = 'name';
+				$scope.search.type.text = '贷款人';
+			}
+		}
+
+		$scope.startSearch = function(){
+			$state.go(
+				"searchProjects",
+				{keyword:$scope.search.keyword,type:$scope.search.type.value},
+				{reload: true});
 		}
 
 	}])

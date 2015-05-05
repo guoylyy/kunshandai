@@ -308,7 +308,17 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				});
 
 				return deferred.promise;
-			}
+			},
+			search:function(type,keyword){
+				var deferred = $q.defer();
+				var params = {key:keyword,type:type};
+				$http.get(ApiURL + loanUrl+"/search",{params:params}).then(function(res){
+					deferred.resolve(res.data.data);
+				},function(getCountResult){
+					deferred.reject(res);
+				});
+				
+				return deferred.promise;
 		}
 
 		return LoanService;

@@ -4,6 +4,7 @@
 	<h4 ng-show="('badbillProjects' | isState)">项目检视->坏账项目</h4>
 	<h4 ng-show="('completedProjects' | isState)">项目检视->结清项目</h4>
 	<h4 ng-show="('allProjects' | isState)">项目检视->所有项目</h4>
+	<h4 ng-show="('searchProjects' | isState)">项目检视->搜索</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
@@ -17,22 +18,21 @@
 	</div>
 	<div class="col-md-6">
 		<div class="input-group">
-			<div class="input-group-btn">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">项目号 <span class="caret"></span></button>
+			<div class="input-group-btn" dropdown>
+				<button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>{{search.type.text}}<span class="caret"></span></button>
 				<ul class="dropdown-menu dropdown-menu-right" role="menu">
-					<li><a href="#">项目号</a></li>
-					<li><a href="#">借款人</a></li>
-					<li><a href="#">担保人</a></li>
+					<li><a ng-click="changeSearchType('id')">项目号</a></li>
+					<li><a ng-click="changeSearchType('name')">贷款人</a></li>
 				</ul>
 			</div>
-			<input type="text" class="form-control" aria-label="Text input with dropdown button">
+			<input type="text" class="form-control" aria-label="Text input with dropdown button" ng-model="search.keyword">
 			<span class="input-group-btn">
-				<button class="btn btn-primary" type="button">搜索</button>
+				<button class="btn btn-primary" type="button" ng-click="startSearch()">搜索</button>
 			</span>
 		</div>
 	</div>
 </div>
-<div class="ks-panel">
+<div class="ks-panel" ng-show="!('searchProjects' | isState)">
 	<div class="panel panel-default">
 		<div class="panel-heading">筛选条件</div>
 		<div class="panel-body"> 

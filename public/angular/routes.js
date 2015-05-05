@@ -224,6 +224,28 @@ define(['app'],function(app){
 		    		}
 		    	}
 		    })
+		    .state('searchProjects',{
+		    	url:"#projects/search?page&type&keyword",
+		    	views:{
+		    		"main":{
+		    			templateUrl: "/angular/manage/project/project.html",
+		    			resolve:{
+							loans:function(LoanService,$stateParams){
+					    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
+					    			return data;
+					    		})
+					    	},
+							loanTypes:function(DictService){
+								return DictService.get('loanTypes');
+							},
+							timeRanges:function(DictService){
+								return DictService.get("timeRanges");
+							}	
+						},
+		    			controller: "ProjectController"
+		    		}
+		    	}
+		    })
 		    .state('contact',{
 		    	url:"#contact",
 		    	views:{

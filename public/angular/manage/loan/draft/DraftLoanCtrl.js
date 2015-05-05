@@ -37,8 +37,8 @@ define(['app'],function(app){
 			});
 		}
 
-		$scope.activeLoan = function(loanId){
-
+		$scope.activeLoan = function(loanId,numberWithName){
+			console.log(numberWithName);
 			var activeModal = $modal.open({
 				templateUrl: '/angular/manage/common/active/activeLoanModal.html',
 				size:'lg',
@@ -49,6 +49,9 @@ define(['app'],function(app){
 					},
 					loanId:function(){
 						return loanId;
+					},
+					numberWithName: function(){
+						return numberWithName;
 					}
 				}
 			});

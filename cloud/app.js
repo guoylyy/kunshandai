@@ -358,11 +358,13 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
         if(floan.attributes.status != mconfig.loanStatus.draft.value){
           mutil.renderError(res,{code:400, message:"项目已经处于还款状态!"});
         }else{
-          floan.set('loaner',loaner);
-          floan.set('numberWithName', loaner.get('name') + floan.get('number'));
-          var query = floan.relation("loanRecords").query();
-          query.destroyAll().then(function(){
-            generateLoanRecord(floan,res);
+          loaner.fetch().then(function(rloaner){
+            floan.set('loaner',loaner);
+            floan.set('numberWithName', rloaner.get('name') + floan.get('serialNumber'));
+            var query = floan.relation("loanRecords").query();
+            query.destroyAll().then(function(){
+              generateLoanRecord(floan,res);
+            });
           });
         }
       }else{
@@ -379,7 +381,7 @@ function generateLoanRecord(floan, res){
     lrRelation.add(rlr);
     floan.save().then(function(data){
       mutil.renderData(res,{
-        loanId: transformLoan(data),
+        loan: transformLoan(data),
         loanRecord: rlr
       });
     },function(error){
@@ -1028,7 +1030,8 @@ function transformLoan(l){
       payWay: mconfig.getConfigMapByValue('payBackWays', l.get('payWay')),
       status: mconfig.getConfigMapByValue('loanStatus', l.get('status')),
       payStatus: payStatus,
-      serialNumber: l.get('serialNumber')
+      serialNumber: l.get('serialNumber'),
+      numberWithName: l.get('numberWithName')
   };
   return result;
 };
@@ -1038,7 +1041,6 @@ function transformLoanDetails(l){
   if(m == undefined){
     return {};
   }
-  m['numberWithName'] = l.get('numberWithName');
   m['spanMonth'] = l.get('spanMonth');
   m['startDate'] = formatTime(l.get('startDate'));
   m['endDate'] = formatTime(l.get('endDate'));

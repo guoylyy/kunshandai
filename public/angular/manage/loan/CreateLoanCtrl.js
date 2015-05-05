@@ -149,8 +149,10 @@ define(['app',"underscore"],function(app,_) {
 
 				// console.log(results[0], results[1], results[2],results[3]);
 
-				return LoanService.generate(contract);
-			
+				LoanService.generate(contract).then(function(rc){
+					$scope.loanInfo['numberWithName'] = rc.data.data.loan.numberWithName;
+				});
+				
 			}).then(function(){
 						
 				$state.go('contractCreated');
@@ -230,6 +232,9 @@ define(['app',"underscore"],function(app,_) {
 					},
 					loanId:function(){
 						 return $scope.loanInfo.objectId;
+					},
+					numberWithName:function(){
+						return $scope.loanInfo.numberWithName;
 					}
 				}
 			});

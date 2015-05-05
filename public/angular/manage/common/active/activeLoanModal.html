@@ -4,11 +4,11 @@
 </div>
 <div class="modal-body">
 <div class="ks-panel">
-  <h4><a class="text-info" href="/loan?id={{loanId}}" target="_blank">项目编号: {{loanId}}</a></h4>
+  <h4><a class="text-info" href="/loan?id={{loanId}}" target="_blank">项目编号: {{numberWithName}}</a></h4>
   <div class="ks-divider"></div>
   
   <div ng-repeat="payment in payments">
-    <h4>放款金额: {{payment.outMoney | number:2 }} 元</h3>
+    <h4>放款金额: {{payment.outMoney | number:2 }} 元</h4>
     <div class="ks-divider"></div>
     <h4>收入明细:</h4>
     <table class="table table-striped">

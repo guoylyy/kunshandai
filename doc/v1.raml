@@ -984,6 +984,26 @@ traits:
                       "code": 500,
                       "message": "项目状态错误"
                     }
+  /search:
+    description: |
+      根据姓名和ID搜索项目
+    queryParameters:
+      type:
+        description:|
+          查询类型  name:名字 | id:主键
+        type: string
+      key:
+        description: |
+          查询匹配字段
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            schema: |
+              {
+                
+              }
 
 /loanPawn:
   description: |

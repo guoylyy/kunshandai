@@ -96,7 +96,8 @@ define(['app',"underscore"],function(app,_) {
 				return;
 			}
 			var date = new Date($scope.loanInfo.startDate);
-			date.setMonth(date.getMonth()+ parseInt($scope.loanInfo.spanMonth));	
+			date.setMonth(date.getMonth()+ parseInt($scope.loanInfo.spanMonth));
+			date.setDate(date.getDate() - 1);	
 			$scope.loanInfo.endDate = date;
 			if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
 				$scope.loanInfo.firstPayDate = $scope.loanInfo.endDate ;

@@ -90,7 +90,7 @@ define(['app'],function(app){
 		    					attachments.br = attachdata;
 
 		    				}).then(function(){
-		    					if(loanData.assurer.id){
+		    					if(loanData.assurer && loanData.assurer.id){
 			    					
 			    					ContactService.getAttachments(loanData.assurer.id).then(function(attachdata){
 			    						attachments.gr = attachdata;
@@ -100,8 +100,6 @@ define(['app'],function(app){
 		    						defferrd.resolve(attachments);
 		    					}
 		    				})
-		    				
-		    				
 		    			})
 
 		    			return defferrd.promise;

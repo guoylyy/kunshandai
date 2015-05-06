@@ -319,8 +319,10 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				});
 				
 				return deferred.promise;
+			}
 		}
 
 		return LoanService;
-	}]);
+}]);
+
 });

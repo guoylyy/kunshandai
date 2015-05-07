@@ -45,6 +45,12 @@ define(['app'],function(app){
 
 		$stateProvider
 			//acount module routes
+			.state('home',{
+				url:"/home",
+		    	controller:function(){
+					document.location.reload(true);
+				}
+			})
 		    .state('login', {
 		    	url: "/login",
 		    	templateUrl: "angular/account/login/login.html",
@@ -117,148 +123,98 @@ define(['app'],function(app){
 
 		    .state('index',{
 		    	url:"/manage",
-		    	views:{
-		    		"main":{
-		    			templateUrl:  "/angular/manage/index/index.html",
-		    			controller: 'IndexController'
-		    		}
-		    	}
+    			templateUrl:  "/angular/manage/index/index.html",
+    			controller: 'IndexController'
 		    })
 
 		    .state('fianceStatistics',{
 		    	url:"/manage/fianceStatistics",
-		    	views:{
-		    		"main":{
-		    			templateUrl:  "/angular/manage/index/index.html",
-		    			controller: 'IndexController'
-		    		}
-		    	}
+		    	templateUrl:  "/angular/manage/index/index.html",
+		    	controller: 'IndexController'
 		    })
 
 		    .state('draftLoans',{
 		    	url:"#loan/draft?page",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/loan/draft/draft.html",
-		    			resolve:{
-		    				draftLoans:function(LoanService,$stateParams){
-		    					return LoanService.getDraft($stateParams.page || 1).then(function(data){
-		    						return data;
-		    					});
-		    				}	
-		    			},
-		    			controller: "DraftLoanCtrl"
-		    		}
-		    	}
-		    	
+    			templateUrl: "/angular/manage/loan/draft/draft.html",
+    			resolve:{
+    				draftLoans:function(LoanService,$stateParams){
+    					return LoanService.getDraft($stateParams.page || 1).then(function(data){
+    						return data;
+    					});
+    				}	
+    			},
+    			controller: "DraftLoanCtrl"
 		    })
 		    .state('collectPending',{
 		    	url:"#collect/pending?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/collect/collect.html",
-		    			resolve:resolveObject("LoanService.getUnpayedList"),
-		    			controller: "CollectController"
-		    		}
-		    	}
+    			templateUrl: "/angular/manage/collect/collect.html",
+    			resolve:resolveObject("LoanService.getUnpayedList"),
+    			controller: "CollectController"
 		    })
 		    .state('collectDone',{
 		    	url:"#collect/done?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/collect/collect.html",
-		    			resolve:resolveObject("LoanService.getPayedList"),
-		    			controller: "CollectController"
-		    		}
-		    	}
+    			templateUrl: "/angular/manage/collect/collect.html",
+    			resolve:resolveObject("LoanService.getPayedList"),
+    			controller: "CollectController"
 		    })
 
 		    .state('allProjects',{
 		    	url:"#projects/all?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/project/project.html",
-		    			resolve:resolveObject("LoanService.getLoans"),
-		    			controller: "ProjectController"
-		    		}
-		    	}
+    			templateUrl: "/angular/manage/project/project.html",
+    			resolve:resolveObject("LoanService.getLoans"),
+    			controller: "ProjectController"
 		    })
  			.state('normalProjects',{
 		    	url:"#projects/normal?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/project/project.html",
-		    			resolve:resolveObject("LoanService.getNormalLoans"),
-		    			controller: "ProjectController"
-		    		}
-		    	}
-		    	
+    			templateUrl: "/angular/manage/project/project.html",
+    			resolve:resolveObject("LoanService.getNormalLoans"),
+    			controller: "ProjectController"
 		    })
  			.state('overdueProjects',{
 		    	url:"#projects/overdue?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/project/project.html",
-		    			resolve:resolveObject("LoanService.getOverdueLoans"),
-		    			controller: "ProjectController"
-		    		}
-		    	}
+    			templateUrl: "/angular/manage/project/project.html",
+    			resolve:resolveObject("LoanService.getOverdueLoans"),
+    			controller: "ProjectController"
 		    })
  			.state('badbillProjects',{
 		    	url:"#projects/badbill?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/project/project.html",
-		    			resolve:resolveObject("LoanService.getBadbillLoans"),
-		    			controller: "ProjectController"
-		    		}
-		    	}
+    			templateUrl: "/angular/manage/project/project.html",
+    			resolve:resolveObject("LoanService.getBadbillLoans"),
+    			controller: "ProjectController"
 		    })
  		    .state('completedProjects',{
 		    	url:"#projects/completed?page&startDate&endDate&loanType",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/project/project.html",
-		    			resolve:resolveObject("LoanService.getCompletedLoans"),
-		    			controller: "ProjectController"
-		    		}
-		    	}
+    			templateUrl: "/angular/manage/project/project.html",
+    			resolve:resolveObject("LoanService.getCompletedLoans"),
+    			controller: "ProjectController"
 		    })
 		    .state('searchProjects',{
 		    	url:"#projects/search?page&type&keyword",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/project/project.html",
-		    			resolve:{
-							loans:function(LoanService,$stateParams){
-					    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
-					    			return data;
-					    		})
-					    	},
-							loanTypes:function(DictService){
-								return DictService.get('loanTypes');
-							},
-							timeRanges:function(DictService){
-								return DictService.get("timeRanges");
-							}	
-						},
-		    			controller: "ProjectController"
-		    		}
-		    	}
+				templateUrl: "/angular/manage/project/project.html",
+				resolve:{
+					loans:function(LoanService,$stateParams){
+			    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
+			    			return data;
+			    		})
+			    	},
+					loanTypes:function(DictService){
+						return DictService.get('loanTypes');
+					},
+					timeRanges:function(DictService){
+						return DictService.get("timeRanges");
+					}	
+				},
+				controller: "ProjectController"
 		    })
 		    .state('contact',{
 		    	url:"#contact",
-		    	views:{
-		    		"main":{
-		    			templateUrl: "/angular/manage/contact/contact.html",
-		    			resolve:{
-							contacts:function(ContactService){
-				    			return ContactService.getAll();
-				    		}
-		    			},
-		    			controller: "ContactController"
+    			templateUrl: "/angular/manage/contact/contact.html",
+    			resolve:{
+					contacts:function(ContactService){
+		    			return ContactService.getAll();
 		    		}
-		    	}
+    			},
+    			controller: "ContactController"
 		    })
   			.state('createLoan',{
 		    	url:"/createLoan",
@@ -312,9 +268,7 @@ define(['app'],function(app){
 
 		    }).state('manage',{
 		    	url:"/manage",
-		    	views:{
-		    		"main":{templateUrl: "/angular/manage/index/index.html"}
-		    	}
+		    	templateUrl: "/angular/manage/index/index.html"
 		    });
 
 	}]);

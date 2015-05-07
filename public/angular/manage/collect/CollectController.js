@@ -18,11 +18,11 @@ define(['app'],function(app) {
 
 			$scope.currentState = $state.current;
 
-			$scope.template = {
-				processCompleteUrl	:'/angular/manage/collect/template/processComplete.html',
-				processListUrl		:'/angular/manage/collect/template/processList.html',
-				processPayUrl		:'/angular/manage/collect/template/processPay.html'
-			}
+			// $scope.template = {
+			// 	processCompleteUrl	:'/angular/manage/collect/template/processComplete.html',
+			// 	processListUrl		:'/angular/manage/collect/template/processList.html',
+			// 	processPayUrl		:'/angular/manage/collect/template/processPay.html'
+			// }
 			
 			var collectModal = function(loanId,processName){
 				var collectModal = $modal.open({

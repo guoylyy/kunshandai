@@ -323,5 +323,6 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 		}
 
 		return LoanService;
-	}]);
+}]);
+
 });

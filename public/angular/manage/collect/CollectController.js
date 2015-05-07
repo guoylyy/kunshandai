@@ -68,7 +68,5 @@ define(['app'],function(app) {
 			$scope.complete = function(loanId){
 				collectModal(loanId,'complete');
 			}
-
-
 	}]);
 });

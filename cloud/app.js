@@ -68,9 +68,15 @@ app.get('/index',function(req, res){
   res.render('guest_layout.ejs');
 });
 app.get('/login', function(req, res){
+  if(account.isLogin()){
+     res.redirect('/manage');
+  }
   res.render('account.ejs');
 });
 app.get('/signup', function(req, res){
+  if(account.isLogin()){
+     res.redirect('/manage');
+  }
   res.render('account.ejs');
 });
 app.get('/manage', function(req, res){

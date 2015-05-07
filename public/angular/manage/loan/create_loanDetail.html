@@ -68,10 +68,10 @@
 							<div class="form-group">
 								<label>*截止日期</label>
 								<div class="input-group">
-									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭" name="endDate" ng-disabled="true"/>
+									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭" name="endDate" disabled="true"/>
 
 									<span class="input-group-btn">
-										<button type="button" class="btn btn-default" ng-click="open($event,'openedend')">
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedend')" disabled="true">
 											<i class="glyphicon glyphicon-calendar"></i>
 										</button>
 									</span>

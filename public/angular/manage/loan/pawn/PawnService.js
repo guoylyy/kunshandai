@@ -102,9 +102,9 @@ define(['app'],function(app){
 		return {
 
 			getLocal:function(type){
-				if(type === 'fcdy' || type === 'mfdy'){
+				if(type === ('fcdy' || 'mfdy')){
 					return house;
-				}else if(type === 'qcdy' || type === 'mcdy'){
+				}else if(type === ('qcdy' || 'mcdy')){
 					return car;	
 				}else{
 					return '';
@@ -113,6 +113,10 @@ define(['app'],function(app){
 			
 			create:function(data,attachments){
 				
+				if(data === ''){
+					return '';
+				}
+
 				var sendAttachment = {}
 
 				sendAttachment = _.pluck(attachments,'objectId');

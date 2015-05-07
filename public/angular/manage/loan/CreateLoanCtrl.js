@@ -135,7 +135,10 @@ define(['app',"underscore"],function(app,_) {
 				assurer.objectId 	= contract.assurerId 	= results[1].objectId;
 				loan.objectId 		= contract.loanId 		= results[2].id;
 									  loan.serialNumber		= results[2].serialNumber;
-									  contract.loanPawnId	= results[3].objectId;
+				
+				if(results[3] && results[3].objectId){
+ 					contract.loanPawnId	= results[3].objectId;
+				}					  
 
 				// console.log(results[0], results[1], results[2],results[3]);
 

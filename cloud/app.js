@@ -74,14 +74,30 @@ app.get('/signup', function(req, res){
   res.render('account.ejs');
 });
 app.get('/manage', function(req, res){
-  res.render('manage.ejs');
+  var user = account.isLogin();
+  if(!user){
+    res.redirect('/login');
+  }
+  res.render('manage.ejs',{user:user.attributes});
 });
 app.get('/loan', function(req, res){
-  res.render('empty_layout.ejs');
+  var user = account.isLogin();
+  if(!user){
+    res.redirect('/login');
+  }
+  res.render('empty_layout.ejs',{user:user.attributes});
 });
 app.get('/createLoan', function(req, res){
-  res.render('create_loan.ejs');
+ var user = account.isLogin();
+  if(!user){
+    res.redirect('/login');
+  }
+  res.render('create_loan.ejs',{user:user.attributes});
 });
+app.get('/help', function(req, res){
+  res.render('help.ejs');
+});
+
 
 /***************************************************
  * 账号相关的操作

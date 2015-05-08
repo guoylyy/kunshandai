@@ -71,14 +71,11 @@ define(['../../app'],function(app){
 				var sendContact = _.extend({},contact);
 
 				sendContact.attachments = _.pluck(sendContact.attachments,'objectId');
-				console.log(sendContact.attachments);
 
 				var deferred = $q.defer();
 
 				$http.put(ApiURL+contactUrl+"/"+contact.objectId,JSON.stringify(sendContact)).then(function(res){
-			
 					deferred.resolve(res.data.data);
-			
 				},function(res){
 					deferred.reject(res.data);
 				});

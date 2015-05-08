@@ -188,10 +188,15 @@ table td,table th{
 	margin-left: -20px;
 	background:url(../images/f_logo.png);
 }
+
+/*modify bootstrap*/
+dl dt,dl dd{
+	padding-bottom: 5px;
+	font-size: 14px;
+}
 .nav-stacked li span{
 	margin-left: 110px;
 }
-/*modify bootstrap*/
 .modal-header{
 	background-color: #6b2347;
 	color: #ffffff;

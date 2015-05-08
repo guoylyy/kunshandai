@@ -52,6 +52,15 @@ define(['app'], function(app) {
                 return ContactService.getModel();
               }
             },
+            attachments:function(){
+              if(contactId){
+                ContactService.getAttachments(contactId).then(function(data){
+                  return data;
+                },function(){
+
+                })
+              }
+            },
             control: function() {
               var control = {
                 view: false,

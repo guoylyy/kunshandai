@@ -14,6 +14,7 @@
             <dd>{{contact.name}}</dd>
             <dt>身份证:</dt>
             <dd>{{contact.certificateNum}}</dd>
+            <div class="ks-divider"></div>
             <dt>手机号:</dt>
             <dd>{{contact.mobilePhoneNumber}}</dd>
             <dt>邮箱:</dt>
@@ -24,7 +25,24 @@
             <dd>{{contact.wechat}}</dd>
             <dt>地址:</dt>
             <dd>{{contact.address}}</dd>
+            <div class="ks-divider"></div>
+            <label>{{sendSmsOrNot ? '接受短信通知':'不接受短信通知'}}</label>
+            <div class="ks-divider"></div>
           </dl>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <strong>附件 </strong>
+          </div>
+          <ul class="list-group">
+            <li class="list-group-item" ng-show="contact.attachments" ng-repeat="attachment in contact.attachments">
+              <a href="{{attachment.url}}" target="_blank">
+                {{attachment.name}}
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -107,7 +125,7 @@
           <ul class="list-group">
             <li class="list-group-item" ng-show="contact.attachments" ng-repeat="attachment in contact.attachments">
               <a class="glyphicon glyphicon-remove text-danger ks-right" ng-click="removeAttachment($index)"></a>
-              <a ng-href="attachment.url" target="_blank">
+              <a href="{{attachment.url}}" target="_blank">
                 {{attachment.name}}
               </a>
             </li>

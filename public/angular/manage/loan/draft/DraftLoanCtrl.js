@@ -1,4 +1,4 @@
-define(['app'],function(app){
+define(['app','underscore'],function(app,_){
 	return app.controller('DraftLoanCtrl', ['$scope','$state','$stateParams','LoanService','draftLoans','SweetAlert', '$modal',
 		function($scope,$state,$stateParams,LoanService,draftLoans,SweetAlert,$modal){
 		
@@ -37,8 +37,7 @@ define(['app'],function(app){
 			});
 		}
 
-		$scope.activeLoan = function(loanId,numberWithName){
-			console.log(numberWithName);
+		$scope.activeLoan = function(loanId){
 			var activeModal = $modal.open({
 				templateUrl: '/angular/manage/common/active/activeLoanModal.html',
 				size:'lg',
@@ -47,11 +46,9 @@ define(['app'],function(app){
 					payments:function(){
 						return LoanService.getPayments(loanId);
 					},
-					loanId:function(){
-						return loanId;
-					},
-					numberWithName: function(){
-						return numberWithName;
+					loan:function(){
+						var index =_.findIndex($scope.loans,{objectId:loanId})
+						return $scope.loans[index];
 					}
 				}
 			});

@@ -8,42 +8,7 @@
 
 		</div>
 	</div>
-	<div class="col-md-6">
-		<div class="input-group">
-			<div class="input-group-btn">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">项目号 <span class="caret"></span></button>
-				<ul class="dropdown-menu dropdown-menu-right" role="menu">
-					<li><a href="#">项目号</a></li>
-					<li><a href="#">借款人</a></li>
-					<li><a href="#">担保人</a></li>
-				</ul>
-			</div>
-			<input type="text" class="form-control" aria-label="Text input with dropdown button">
-			<span class="input-group-btn">
-				<button class="btn btn-primary" type="button">搜索</button>
-			</span>
-		</div>
-	</div>
 </div>
-<!-- <div class="ks-panel">
-	<div class="panel panel-default">
-		<div class="panel-heading">筛选条件 - 待确定!</div>
-		<div class="panel-body">
-			<div class="ks-condition">
-				<ul class="ks-list-unstyled">
-					<li>项目新建时间:</li>
-					<li><a >所有</a></li>
-					<li><a >小于一个月</a></li>
-					<li><a >1~3个月</a></li>
-					<li><a >3~6个月</a></li>
-					<li><a >6~9个月</a></li>
-					<li><a >9~12个月</a></li>
-					<li><a >大于12个月</a></li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div> -->
 <div class="ks-panel">
 	<table class="table table-striped">
 		<thead>
@@ -66,20 +31,10 @@
 				<td>{{loan.loanType.text}}</td>
 				<td>{{loan.payWay.text}}</td>
 				<td>
-				  <!--  <span class="dropdown" dropdown on-toggle="toggled(open)">
-				      <a href class="dropdown-toggle" dropdown-toggle>
-				        Click me for a dropdown, yo!
-				      </a>
-				      <ul class="dropdown-menu">
-				        <li ng-repeat="choice in items">
-				          <a href>{{choice}}</a>
-				        </li>
-				      </ul>
-				    </span> -->
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a role="menuitem" ng-click="activeLoan(loan.id,loan.numberWithName)">放款</a></li>
+							<li><a role="menuitem" ng-click="activeLoan(loan.id)">放款</a></li>
 							<li><a role="menuitem" ng-click="deleteLoan(loan.id)" class="text-danger">删除</a></li>
 						</ul>
 					</div>

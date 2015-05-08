@@ -1,11 +1,11 @@
 define(['app'],function(app){
-	return app.controller('ActiveLoanCtrl',function($scope,$modalInstance,LoanService,payments,loanId,numberWithName){
+	return app.controller('ActiveLoanCtrl',function($scope,$modalInstance,LoanService,payments,loan){
 		
 		$scope.payments = payments;
 
-		$scope.loanId = loanId;
+		$scope.loan = loan;
 
-		$scope.numberWithName = numberWithName;
+		$scope.loanData = {};
 
 		$scope.activeModalCancel = function(){
 				

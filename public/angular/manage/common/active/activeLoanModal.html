@@ -4,37 +4,87 @@
 </div>
 <div class="modal-body">
 <div class="ks-panel">
-  <h4><a class="text-info" href="/loan?id={{loanId}}" target="_blank">项目编号: {{numberWithName}}</a></h4>
+  <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
   <div class="ks-divider"></div>
   
   <div ng-repeat="payment in payments">
-    <h4>放款金额: {{payment.outMoney | number:2 }} 元</h4>
-    <div class="ks-divider"></div>
-    <h4>收入明细:</h4>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>利息（元）</th>
-          <th>履约保证金（元）</th>
-           <th>服务费（元）</th>
-          <th>其他费用（元）</th>
-          <th>暂收金额（元）</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>{{-payment.interestsMoney | number:2}}</td>
-          <td>{{-payment.assureCost | number:2}}</td>
-          <td>{{-payment.serviceCost | number:2}}</td>
-          <td>{{-payment.otherCost | number:2}}</td>
-          <td>{{-payment.keepCost | number:2}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>科目</th>
+            <th>借方</th>
+            <th>贷方</th>
+            <th>余额</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">贷款金额（元）</th>
+            <td></td>
+            <td>{{payment.outMoney | number:2 }}</td>
+            <td>{{-payment.outMoney | number:2 }}</td>
+          </tr>
+          <tr>
+            <th scope="row">利息（元）</th>
+            <td>{{-payment.interestsMoney | number:2}}</td>
+            <td></td>
+            <td>{{-payment.outMoney-payment.interestsMoney | number:2}}</td>
+          </tr>
+          <tr>
+            <th scope="row">履约保证金（元）</th>
+            <td>{{-payment.interestsMoney | number:2}}</td>
+            <td></td>
+            <td>{{-payment.outMoney-payment.assureCost-payment.interestsMoney | number:2}}</td>
+          </tr>
+          <tr>
+            <th scope="row">服务费（元）</th>
+            <td>{{-payment.serviceCost | number:2}}</td>
+            <td></td>
+            <td>{{-payment.outMoney-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
+          </tr>
+          <tr>
+            <th scope="row">其他费用（元）</th>
+            <td>{{-payment.otherCost | number:2}}</td>
+            <td></td>
+            <td>{{-payment.outMoney-payment.otherCost-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
+          </tr>
+          <tr>
+            <th scope="row">暂收（元）</th>
+            <td>{{-payment.keepCost | number:2}}</td>
+            <td></td>
+            <td>{{-payment.outMoney-payment.keepCost-payment.otherCost-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
+          </tr>
+          <tr>
+            <th scope="row">本次放款（元）</th>
+            <td></td>
+            <td></td>
+            <td>{{-payment.outMoney-payment.keepCost-payment.otherCost-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+<form name="loanForm" ng-submit="loanForm.$valid && activeModalFinish(loan.id)">
+  <div class="row">
+     <div class="col-md-offset-8 col-md-4">
+      <div class="form-group has-success">
+        <label class="control-label">本次放款（元）</label>
+        <div class="input-group has-danger">
+          <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+          <input type="text" class="form-control" placeholder="放款金额" name="amount" float-number-input ng-model="loanData.amount"
+          ng-init="loanData.amount = payment.outMoney + payment.keepCost + payment.otherCost+ payment.serviceCost+payment.assureCost+payment.interestsMoney "required >
+          <span class="input-group-addon">元</span>
+        </div>
+        <div ng-show="loanForm.$submitted || loanForm.amount.$touched">
+          <div class="text-danger" ng-show="loanForm.amount.$error.required">请填写放款金额</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-warning" ng-click="activeModalCancel()">取消放款</button>
-  <button type="button" class="btn btn-success" ng-click="activeModalFinish(loanId)">放款完成</button>
+  <button type="submit" class="btn btn-success">放款完成</button>
 </div>
+</form>

@@ -7,6 +7,8 @@ define(['app'],function(app){
 
 		$scope.loanData = {};
 
+		$scope.status = {loaning:false};
+
 		$scope.activeModalCancel = function(){
 				
 				$modalInstance.dismiss('cancel');
@@ -14,12 +16,15 @@ define(['app'],function(app){
 
 		$scope.activeModalFinish = function(loanId){
 			
+			$scope.status.loaning = true;
+
 			LoanService.assure(loanId).then(function(res){
 			
 				$modalInstance.close(true);
 
 			},function(res){
 				
+				$scope.status.loaning = false;
 				$modalInstance.close(false);
 			
 			});

@@ -250,7 +250,7 @@ define(['app',"underscore"],function(app,_) {
 				resolve:{
 					payments:function(){
 						return LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
-							$scope.loanInfo.payment = data;
+							$scope.loanInfo.payments = data;
 							return data;
 						})
 					},
@@ -265,7 +265,7 @@ define(['app',"underscore"],function(app,_) {
 				
 				if(actived){
 					LoanService.getPaybacks($scope.loanInfo.objectId).then(function(paybacks){
-						$scope.loanInfo.paybacks  = paybacks;
+						$scope.loanInfo.paybacks = paybacks;
 						SweetAlert.success("放款完成");
 					},function(){
 						SweetAlert.success("获取还款信息失败");

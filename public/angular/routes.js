@@ -52,7 +52,8 @@ define(['app'],function(app){
 	    			 return DictService.get('payBackWays');
 	    		}
 		    }
-		}
+		};
+		
 		$stateProvider
 			//acount module routes
 			.state('home',{

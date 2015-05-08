@@ -61,7 +61,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="loan in loans">
+			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
 				<td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>

@@ -85,6 +85,6 @@
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-warning" ng-click="activeModalCancel()">取消放款</button>
-  <button type="submit" class="btn btn-success">放款完成</button>
+  <button type="submit" class="btn btn-success" ng-disabled="status.loaning">放款完成</button>
 </div>
 </form>

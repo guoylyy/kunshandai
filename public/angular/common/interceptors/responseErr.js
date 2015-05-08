@@ -34,7 +34,7 @@ define(['../../app'],function(app){
 					alert("地址未找到");
 				}
 				else{
-					return $q.reject(response.data.message);
+					return $q.reject("未知错误");
 				}
 			}
 		}

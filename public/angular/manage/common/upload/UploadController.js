@@ -48,9 +48,10 @@ define(['app','underscore'],function(app,_){
 				function(){ 
 				   $modalInstance.dismiss('cancel');
 				});
-		    	}else{
-		    		$modalInstance.dismiss('cancel');
-		    	}
+	    	}else{
+	    		$modalInstance.dismiss('cancel');
+	    	}
+		   
 		   };
 	});
 });

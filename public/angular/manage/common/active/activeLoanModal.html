@@ -1,4 +1,4 @@
-
+<form name="loanForm" ng-submit="loanForm.$valid && activeModalFinish(loan.id)">
 <div class="modal-header">
   <h4 class="modal-title">放款详情</h4>
 </div>
@@ -9,7 +9,7 @@
   
   <div ng-repeat="payment in payments">
   <div class="table-responsive">
-      <table class="table table-bordered">
+      <table class="table table-bordered table-striped">
         <thead>
           <tr>
             <th>科目</th>
@@ -64,7 +64,6 @@
         </tbody>
       </table>
   </div>
-<form name="loanForm" ng-submit="loanForm.$valid && activeModalFinish(loan.id)">
   <div class="row">
      <div class="col-md-offset-8 col-md-4">
       <div class="form-group has-success">
@@ -81,6 +80,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 </div>
 <div class="modal-footer">

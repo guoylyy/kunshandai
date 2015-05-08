@@ -31,8 +31,6 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label class="control-label">*担保人</label><br>
-								<!-- <input type="radio" name="hasGr" ng-model="br.hasGr" value="true" required> 有
-								<input type="radio" name="hasGr" ng-model="br.hasGr" value="false" required> 无 -->
 								<a ng-init="br.hasGr=false" ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.hasGr.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
@@ -108,7 +106,7 @@
 		<div ng-include="template.grUrl"></div>
 	</div>
 	
-	<div ng-show="loanInfo.loanType === 'fcdy' || loanInfo.loanType === 'mfdy' || loanInfo.loanType === 'qcdy' || loanInfo.loanType === 'mcdy'">
+	<div ng-init="pType = loanInfo.loanType" ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
 	<div class="ks-dividing">
 		<h4>抵押物</h4>
 	</div>
@@ -116,10 +114,10 @@
 		<div class="col-md-8">
 			<div class="ks-panel panel panel-default">
 				<div class="panel-heading">抵押物信息</div>
-				<div class="panel-body" ng-if="loanInfo.loanType === 'fcdy' || loanInfo.loanType === 'mfdy'">
+				<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
 					<div ng-include="template.houseUrl"></div>
 				</div>
-				<div class="panel-body" ng-if="loanInfo.loanType === 'qcdy' || loanInfo.loanType === 'mcdy'">
+				<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
 					<div ng-include="template.carUrl"></div>
 				</div>
 			</div>
@@ -129,8 +127,8 @@
 				<div class="panel-heading">抵押物附件</div>
 				<div class="panel-body">
 					<ul class="list-group">
-						<li class="list-group-item" ng-show="loanInfo.attachments" ng-repeat="a in loanInfo.attachments">
-							<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('loan',$index)"></a>
+						<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
+							<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('pawn',$index)"></a>
 							<a ng-href="a.url" target="_blank">
 								{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
 							</a>
@@ -145,10 +143,10 @@
 	<div class="ks-divider"></div>
 	<div class="container-fluid" >
 		<div class="col-md-6 ">
-			<button type="button" class="btn btn-primary"  ng-click="nav('prev')">上一步</button>
+			<button type="button" class="btn btn-primary"  ng-click="nav('prev')" ng-disabled="status.loanCreating">上一步</button>
 		</div>
 		<div class="col-md-6" >
-			<button type="submit" class="btn btn-primary ks-right">生成项目 </button>
+			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating">生成项目 </button>
 		</div>
 	</div>
 	</div>

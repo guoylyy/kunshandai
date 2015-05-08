@@ -13,14 +13,14 @@
 	                  <div class="bs-wizard-info text-center">填写贷款信息</div>
 	                </div>
 
-	                <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(stepActive[1]||stepActive[2])}">
+	                <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(('createLoanContact' | isState)||('contractCreated' | isState))}">
 	                  <div class="text-center bs-wizard-stepnum" >步骤二</div>
 	                  <div class="progress"><div class="progress-bar"></div></div>
 	                  <div  class="bs-wizard-dot" ></div>
 	                  <div class="bs-wizard-info text-center">填写借款人、担保人信息</div>
 	                </div>
 	                
-	                <div class="col-xs-4 bs-wizard-step" ng-class="{active:stepActive[2]}">
+	                <div class="col-xs-4 bs-wizard-step" ng-class="{active:('contractCreated' | isState)}">
 	                  <div class="text-center bs-wizard-stepnum">完成</div>
 	                  <div class="progress"><div class="progress-bar"></div></div>
 	                  <div  class="bs-wizard-dot"></div>

@@ -43,6 +43,16 @@ define(['app'],function(app){
 			}
 		};
 
+		var resolveSelectItems = function(){
+			return {
+	    		loanTypes:function(DictService){
+	    			 return DictService.get('loanTypes');
+	    		},
+	    		repayTypes:function(DictService){
+	    			 return DictService.get('payBackWays');
+	    		}
+		    }
+		}
 		$stateProvider
 			//acount module routes
 			.state('home',{
@@ -219,51 +229,21 @@ define(['app'],function(app){
   			.state('createLoan',{
 		    	url:"/createLoan",
 		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
-		    	resolve:{
-		    		loanTypes:function(DictService){
-		    			 return DictService.get('loanTypes');
-		    		},
-		    		repayTypes:function(DictService){
-		    			 return DictService.get('payBackWays');
-		    		},
-		    		steps:function(){
-		    			return [true,false,false];
-		    		}
-		    	},
+		    	resolve:resolveSelectItems(),
 		    	controller: "CreateLoanCtrl"
 
 		    })
 		    .state('createLoanContact',{
 		    	url:"#contact",
 		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
-		    	resolve:{
-		    		loanTypes:function(){
-		    			 return '';
-		    		},
-		    		repayTypes:function(){
-		    			 return '';
-		    		},
-		    		steps:function(){
-		    			return [false,true,false];
-		    		}
-		    	},
+		    	resolve:resolveSelectItems(),
 		    	controller:"CreateLoanCtrl"
 
 		    })
 		 	 .state('contractCreated',{
 		    	url:"#contract",
 		    	templateUrl: "/angular/manage/common/contract/contract.html",
-		    	resolve:{
-		    		loanTypes:function(){
-		    			 return '';
-		    		},
-		    		repayTypes:function(){
-		    			 return '';
-		    		},
-		    		steps:function(){
-		    			return [false,false,true];
-		    		}
-		    	},
+		    	resolve:resolveSelectItems(),
 		    	controller: "CreateLoanCtrl"
 
 		    }).state('manage',{

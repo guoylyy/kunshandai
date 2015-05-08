@@ -7,15 +7,17 @@ define(['app','underscore'],function(app,_){
 
 		$scope.loanInfo.payments 	= payments;
 
+		$scope.pawn = {};
+
 
 		$scope.$watch("loanInfo",function(){
 			if($scope.loanInfo){
 				PawnService.getPawn($scope.loanInfo.pawn.objectId).then(function(data){
-					$scope.loanInfo.attachments	= data;
+					$scope.pawn.attachments	= data;
 				})
 
 				PawnService.getPawnInfo($scope.loanInfo.pawn.objectId).then(function(data){
-					$scope.pawnInfos = _.pairs(data);
+					$scope.pawnInfos = _.unzip(_.pairs(data))[1];
 				})
 			}
 		});

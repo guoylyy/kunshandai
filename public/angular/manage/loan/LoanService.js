@@ -244,13 +244,20 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 					// _.extend(localLoan,res.data.data);
 					deferred.resolve(res.data.data);
 				},function(res){
-					deferred.reject(res.data);
+					deferred.reject(res);
 				});
 
 				return deferred.promise;
 			},
 			generate: function(contract){
-				return $http.post(ApiURL+loanUrl+"/generate_bill",JSON.stringify(contract));
+				var deferred = $q.defer();
+				$http.post(ApiURL+loanUrl+"/generate_bill",JSON.stringify(contract))
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				});
+				return deferred.promise;
 			},
 			assure: function(loanId){
 				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));

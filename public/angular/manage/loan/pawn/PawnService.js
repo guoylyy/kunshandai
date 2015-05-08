@@ -7,39 +7,48 @@ define(['app'],function(app){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['合同公证','律师公证','预售登录','押车证']
+					items:['合同公证','律师公证','预售登录','押车证'],
+					order:0
 				},
 				carNum:{
 					text:"车牌号",
-					value:''
+					value:'',
+					order:1,
 				},
 				engineNum:{
 					text:'发动机号',
-					value:''
+					value:'',
+					order:2
 				},
 				frameNum:{
 					text:'车架号',
-					value:''
+					value:'',
+					order:3
 				},
 				owner:{
 					text:'车主',
-					value:''
+					value:'',
+					order:4
 				},
 				color:{
 					text:'颜色',
-					value:''
+					value:'',
+					order:5
 				},
 				drivingLicense:{
 					text:'行驶证号',
-					value:''
+					value:'',
+					order:6
 				},
 				brand:{
 					text:'汽车品牌',
-					value:''
+					value:'',
+					order:7
 				},
 				price:{
 					text:'评估价格',
-					value:''
+					value:'',
+					order:8
 				}
 			},
 
@@ -47,43 +56,53 @@ define(['app'],function(app){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['合同公证','律师见证','预售登录','押产证','网签']
+					items:['合同公证','律师见证','预售登录','押产证','网签'],
+					order:0
 				},
 				houseCertificate:{
 					text:'房产证号',
-					value:''
+					value:'',
+					order:1
 				},
 				landCertificate:{
 					text:'土地证号',
-					value:''
+					value:'',
+					order:2
 				},
 				owner:{
 					text:'业主',
-					value:''
+					value:'',
+					order:3
 				},
 				area:{
 					text:'房屋面积(平方米)',
-					value:''
+					value:'',
+					order:4
 				},
 				city:{
 					text:'所在城市',
-					value:''
+					value:'',
+					order:5
 				},
 				zone:{
 					text:'小区',
-					value:''
+					value:'',
+					order:6
 				},
 				buildingNum:{
 					text:'楼号',
-					value:''
+					value:'',
+					order:7
 				},
 				roomNum:{
 					text:'室号',
-					value:''
+					value:'',
+					order:8
 				},
 				price:{
 					text:'评估价格',
-					value:''
+					value:'',
+					order:9
 				}
 
 			};
@@ -102,30 +121,31 @@ define(['app'],function(app){
 		return {
 
 			getLocal:function(type){
-				if(type === ('fcdy' || 'mfdy')){
+				if(typeof type === 'object'){
+					type = type.value;
+				}
+				if(type === 'fcdy' || type === 'mfdy'){
 					return house;
-				}else if(type === ('qcdy' || 'mcdy')){
+				}else if(type === 'qcdy' || type === 'mcdy'){
 					return car;	
 				}else{
 					return '';
 				}
 			},
 			
-			create:function(data,attachments){
+			create:function(data){
 				
 				if(data === ''){
 					return '';
 				}
 
-				var sendAttachment = {}
-
-				sendAttachment = _.pluck(attachments,'objectId');
-
-				data = pawnTypeTransform(data);
+				var attachments = _.extend({},data.attachments);
+				var attachmentIds = _.pluck(attachments,'objectId');
+				var sendData = _.omit(data,'attachments');
+				sendData = pawnTypeTransform(sendData);
 
 				var deferred = $q.defer();
-
-				$http.post(ApiURL+pawnUrl,JSON.stringify({data:data,attachments:sendAttachment})).then(function(res){
+				$http.post(ApiURL+pawnUrl,JSON.stringify({data:sendData,attachments:attachmentIds})).then(function(res){
 
 					deferred.resolve(res.data.data);
 

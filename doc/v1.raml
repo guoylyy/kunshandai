@@ -480,7 +480,7 @@ traits:
                     "code": 404,
                     "message": "找不到对象!"
                   }
-  /{filter}/{pn}:
+  /list/{filter}/{pn}:
     get:
       description: |
         分页获取该用户所有项目
@@ -593,6 +593,12 @@ traits:
         firstPayDate:
           description: 首次还款时间
           type: string
+        isEmailRemind:
+          description: 是否邮件提醒
+          type: boolean
+        isSmsRemind:
+          description: 是否短信提醒
+          type: boolean
       responses:
         200:
           body:
@@ -715,6 +721,9 @@ traits:
       queryParameters:
         loanId:
           type: string
+        outMoney:
+          type: number
+          description: 实际放款金额
       responses:
         200:
           body:
@@ -906,7 +915,7 @@ traits:
       /finishBill:
         get:
           description: |
-            查看目前结清的账单
+            查看结清账单
           queryParameters:
             payDate:
               type: date
@@ -985,25 +994,197 @@ traits:
                       "message": "项目状态错误"
                     }
   /search:
-    description: |
-      根据姓名和ID搜索项目
-    queryParameters:
-      type:
-        description:|
-          查询类型  name:名字 | id:主键
-        type: string
-      key:
+    get:
+      description: |
+        根据姓名和ID搜索项目
+      queryParameters:
+        type:
+          description: |
+            查询类型  name:名字 | id:主键
+          type: string
+        key:
+          description: |
+            查询匹配字段
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  
+                }
+  /statictics:
+    /income:
+      get:
         description: |
-          查询匹配字段
-        type: string
-    responses:
-      200:
-        body:
-          application/json:
-            schema: |
-              {
-                
-              }
+          获取收入统计信息
+        queryParameters:
+          startDate:
+            type: date
+            example: | 
+              2015-05-01
+          endDate:
+            type: date
+            example: |
+              2015-05-31
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "data": {
+                          "sum": 100,
+                          "startsWith": 1430409600000,
+                          "endsWith": 1433087999999,
+                          "typeStatictics": {
+                              "fcdy": {
+                                  "value": "fcdy",
+                                  "text": "房产抵押",
+                                  "sum": 0
+                              },
+                              "qcdy": {
+                                  "value": "qcdy",
+                                  "text": "汽车抵押",
+                                  "sum": 100
+                              },
+                              "mfdy": {
+                                  "value": "mfdy",
+                                  "text": "买房抵押",
+                                  "sum": 0
+                              },
+                              "mcdy": {
+                                  "value": "mcdy",
+                                  "text": "买车抵押",
+                                  "sum": 0
+                              },
+                              "wdy": {
+                                  "value": "wdy",
+                                  "text": "无抵押",
+                                  "sum": 0
+                              },
+                              "qtdy": {
+                                  "value": "qtdy",
+                                  "text": "其他抵押",
+                                  "sum": 0
+                              }
+                          },
+                          "wayStattictics": {
+                              "debx": {
+                                  "value": "debx",
+                                  "text": "等额本息",
+                                  "sum": 100
+                              },
+                              "xxhb": {
+                                  "value": "xxhb",
+                                  "text": "先息后本",
+                                  "sum": 0
+                              },
+                              "zqcxhb": {
+                                  "value": "zqcxhb",
+                                  "text": "周期初息后本",
+                                  "sum": 0
+                              },
+                              "zqmxhb": {
+                                  "value": "zqmxhb",
+                                  "text": "周期末息后本",
+                                  "sum": 0
+                              },
+                              "dqhbfx": {
+                                  "value": "dqhbfx",
+                                  "text": "到期还本付息",
+                                  "sum": 0
+                              }
+                          }
+                      },
+                      "code": 200
+                  }
+    /outcome:
+      get:
+        description: |
+          获取支出统计信息
+        queryParameters:
+          startDate:
+            type: date
+            example: | 
+              2015-05-01
+          endDate:
+            type: date
+            example: |
+              2015-05-31
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "data": {
+                          "sum": 100,
+                          "startsWith": 1430409600000,
+                          "endsWith": 1433087999999,
+                          "typeStatictics": {
+                              "fcdy": {
+                                  "value": "fcdy",
+                                  "text": "房产抵押",
+                                  "sum": 0
+                              },
+                              "qcdy": {
+                                  "value": "qcdy",
+                                  "text": "汽车抵押",
+                                  "sum": 100
+                              },
+                              "mfdy": {
+                                  "value": "mfdy",
+                                  "text": "买房抵押",
+                                  "sum": 0
+                              },
+                              "mcdy": {
+                                  "value": "mcdy",
+                                  "text": "买车抵押",
+                                  "sum": 0
+                              },
+                              "wdy": {
+                                  "value": "wdy",
+                                  "text": "无抵押",
+                                  "sum": 0
+                              },
+                              "qtdy": {
+                                  "value": "qtdy",
+                                  "text": "其他抵押",
+                                  "sum": 0
+                              }
+                          },
+                          "wayStattictics": {
+                              "debx": {
+                                  "value": "debx",
+                                  "text": "等额本息",
+                                  "sum": 100
+                              },
+                              "xxhb": {
+                                  "value": "xxhb",
+                                  "text": "先息后本",
+                                  "sum": 0
+                              },
+                              "zqcxhb": {
+                                  "value": "zqcxhb",
+                                  "text": "周期初息后本",
+                                  "sum": 0
+                              },
+                              "zqmxhb": {
+                                  "value": "zqmxhb",
+                                  "text": "周期末息后本",
+                                  "sum": 0
+                              },
+                              "dqhbfx": {
+                                  "value": "dqhbfx",
+                                  "text": "到期还本付息",
+                                  "sum": 0
+                              }
+                          }
+                      },
+                      "code": 200
+                  }
 
 /loanPawn:
   description: |
@@ -1432,6 +1613,44 @@ traits:
                 {
                   "message": "contact not found",
                   "code": 404
+                }
+
+  /search:
+    get:
+      description: 根据名字或者身份证搜索用户
+      queryParameters:
+        type:
+          description: |
+            查询类型  name:名字 | certificate:身份证号
+          type: string
+        key:
+          description: |
+            查询匹配字段
+          type: string
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                  "data": [
+                    {
+                      "id": "5545adaae4b019255be3abdf",
+                      "objectId": "5545adaae4b019255be3abdf",
+                      "name": "郭意亮",
+                      "email": "",
+                      "certificateNum": "522601199110290816",
+                      "address": "",
+                      "qq": "",
+                      "wechat": "",
+                      "certificateType": "",
+                      "mobilePhoneNumber": "",
+                      "sendSmsOrNot": false,
+                      "createdAt": "2015-05-03T05:10:02.445Z",
+                      "updatedAt": "2015-05-03T05:10:02.445Z"
+                    }
+                  ],
+                  "code": 200
                 }
   
 /attachment:

@@ -57,7 +57,7 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 			},
 			getLoanList = function(page,filter,startDate,endDate,loanType){
 				var params = {startDate:startDate,endDate:endDate,loanType:loanType};
-				return $http.get(ApiURL+loanUrl+"/"+filter+"/"+page,{params:params})
+				return $http.get(ApiURL+loanUrl+"/list/"+filter+"/"+page,{params:params})
 				.then(function(res){
 					return res.data.data;
 				},function(res){

@@ -133,9 +133,29 @@ var loanListTypes = {
 	},
 	all: {
 		value: 'all',
-		text: '正常项目'
+		text: '所有项目'
 	}
 };
+
+var interestCalTypes = {
+	dayInterest: {
+		value: 'dayInterest',
+		text: '按天计息'
+	},
+	monthInterest: {
+		value: 'monthInterest',
+		text: '当月收全息'
+	},
+	circleInterest: {
+		value: 'circleInterest',
+		text: '当期收全息'
+	},
+	allInterest: {
+		value: 'allInterest',
+		text: '收全息'
+	}
+};
+
 
 
 function convertDictToList(key){
@@ -187,6 +207,16 @@ function getKeyValueList(obj){
 	return rlist;
 }
 
+function getSumMap(obj){
+	var keys = Object.keys(obj);
+	for (var i = 0; i < keys.length; i++) {
+		obj[keys[i]]['sum'] = 0;
+	};
+	return obj;
+}
+
+exports.interestCalTypes = interestCalTypes;
+exports.getSumMap = getSumMap;
 exports.loanListTypes = loanListTypes;
 exports.getConfigMapByValue = getConfigMapByValue;
 exports.convertDictToList = convertDictToList;

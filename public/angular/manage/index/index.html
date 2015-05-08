@@ -1,43 +1,61 @@
 <div class="ks-dividing">
-	<h4>账户总览</h4>
+  <h4>账户总览</h4>
 </div>
 
 <div class="row" style="margin-bottom:5px;">
   <div class="col-md-6">
     <div class="btn-group btn-group-middle" >
-      <button type="button" class="btn btn-default" ui-sref="index" ui-sref-active="active">项目统计</button>
-      <button type="button" class="btn btn-default" ui-sref="fianceStatistics"  ui-sref-active="active">财务统计
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="col-md-12 well well-reset">
-      您的 &nbsp;
-     <div class="btn-group" dropdown is-open="status.isopen">
-        <select name="" id="" class="form-control">
-          <option value="">每天</option>
-          <option value="">每月</option>
-          <option value="">每年</option>
-        </select>
-      </div>
-      &nbsp;账户总览
+      <button type="button" class="btn btn-default" ui-sref="index" ui-sref-active="active">项目情况统计</button>
+      <button type="button" class="btn btn-default" ui-sref="fianceStatistics"  ui-sref-active="active">财务统计</button>
     </div>
   </div>
 </div>
 
 <div class="ks-panel" >
   <div class="panel panel-default">
-    <div class="panel-heading">放款信息</div>
-    <div class="panel-body"> 
+    <div class="panel-heading">放款资金统计</div>
+    <div class="panel-body">
       <div class="row">
         <div class="col-md-12">
-            <p class="ks-statics-font">
-              今日共新增放款 <span class="ks-hlight-text">18</span> 项目，共计 <span class="ks-hlight-text">18</span>
-               元，其中待放款 <span class="ks-hlight-text">18</span> 项
-            </p>
+          <div class="col-md-12 well well-reset">
+            您的 &nbsp;
+            <div class="btn-group" dropdown is-open="status.isopen">
+              <select name="" id="" class="form-control">
+                <option value="">每月</option>
+                <option value="">每年</option>
+              </select>
+            </div>
+            &nbsp;放款总览&nbsp;&nbsp;&nbsp;&nbsp;
+            <div class="btn-group" dropdown is-open="status.isopen">
+              <select name="" id="" class="form-control">
+                <option value="">2015</option>
+              </select>
+            </div>
+            年
+            <div class="btn-group" dropdown is-open="status.isopen">
+              <select name="" id="" class="form-control">
+                <option value="">1</option>
+                <option value="">2</option>
+                <option value="">3</option>
+                <option value="">4</option>
+              </select>
+            </div>
+            月
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <p class="ks-statics-font">
+            <span class="ks-hlight-text">2015</span>
+            年
+            <span class="ks-hlight-text">5</span>
+            月共新增放款
+            <span class="ks-hlight-text">18</span>
+            项，共计
+            <span class="ks-hlight-text">199312.0</span>
+            元
+          </p>
         </div>
       </div>
       <div class="row">
@@ -52,17 +70,21 @@
   </div>
 </div>
 
-
 <div class="ks-panel">
   <div class="panel panel-default">
-    <div class="panel-heading">收款信息</div>
-    <div class="panel-body"> 
+    <div class="panel-heading">收款资金统计</div>
+    <div class="panel-body">
       <div class="row">
         <div class="col-md-12">
-            <p class="ks-statics-font">
-              今日共新增放款 <span class="ks-hlight-text">18</span> 项目，共计 <span class="ks-hlight-text">18</span>
-               元，其中待放款 <span class="ks-hlight-text">18</span> 项
-            </p>
+          <p class="ks-statics-font">
+            今日共新增放款
+            <span class="ks-hlight-text">18</span>
+            项目，共计
+            <span class="ks-hlight-text">18</span>
+            元，其中待放款
+            <span class="ks-hlight-text">18</span>
+            项
+          </p>
         </div>
       </div>
       <div class="row">

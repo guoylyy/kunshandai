@@ -67,8 +67,8 @@
 </form>
 
 <!-- 收款界面 -->
+<form name="payForm" ng-submit="payForm.$valid && pay()">
 <div ng-show="process.pay">
- <form name="payForm" ng-submit="payForm.$valid && pay()">
   <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -206,11 +206,12 @@
   <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
   <button type="submit" class="btn btn-success">完成收款</button>
 </div>
-</form>
 </div>
+</form>
+
 <!-- 结清界面 -->
-<div ng-show="process.complete">
  <form name="completeForm" ng-submit="completeForm.$valid && completeLoan()">
+<div ng-show="process.complete">
   <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -404,5 +405,5 @@
   <div class="modal-footer">
     <button type="submit" class="btn btn-success" ng-disabled="!billGenerated">完成结清</button>
   </div>
-</form>
 </div>
+</form>

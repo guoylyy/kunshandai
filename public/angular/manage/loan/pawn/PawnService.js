@@ -1,4 +1,4 @@
-define(['app'],function(app){
+define(['app','underscore'],function(app,_){
 	return app.factory('PawnService', ['$http','$q','ApiURL', function($http,$q,ApiURL){
 		
 		var pawnUrl = "/loanPawn";
@@ -61,12 +61,14 @@ define(['app'],function(app){
 				},
 				houseCertificate:{
 					text:'房产证号',
-					value:'',
+					value:[],
+					characters:['房产证','字第','号'],
 					order:1
 				},
 				landCertificate:{
 					text:'土地证号',
-					value:'',
+					value:[],
+					characters:['国有','第','号'],
 					order:2
 				},
 				owner:{
@@ -108,14 +110,16 @@ define(['app'],function(app){
 			};
 		var pawnTypeTransform = function(data){
 			var i = 0;
-			var pawnTypeValue  = '';
+			var pawnTypeValue  = [];
 			for(i = 0;i < data.pawnType.items.length;i++){
 				if(data.pawnType.value[i]){
-					pawnTypeValue += data.pawnType.items[i]+" ";
+					pawnTypeValue[i] = data.pawnType.items[i];
+				}else{
+					pawnTypeValue[i] = '';
 				}
 			}
-			pawnTypeValue += data.pawnType.value[i];
-			data.pawnType.value = pawnTypeValue;
+			pawnTypeValue[i] = data.pawnType.value[i];
+			data.pawnType.value = _.compact(pawnTypeValue);
 			return data;
 		}
 		return {

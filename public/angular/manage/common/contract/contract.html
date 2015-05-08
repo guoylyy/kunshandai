@@ -76,7 +76,7 @@
 				<p>微 信 : {{br.wechat}}</p>
 			</div>
 			<div class="col-md-6">
-				<div ng-show="loanInfo.assurer && loanInfo.assurer.name !== ''">
+				<div ng-show="loanInfo.assurer.name && loanInfo.assurer.name !== ''">
 					<p class="ks-heading">担保人信息:</p>
 					<p>姓 名 : {{gr.name}}</p>
 					<p>身份证: {{gr.certificateNum}}</p>
@@ -84,7 +84,8 @@
 					<p>邮 箱 : {{gr.email}}</p>
 					<p>微 信 : {{gr.wechat}}</p>
 				</div>
-				<div ng-show="loanInfo.assurer && loanInfo.assurer.name == ''">
+				<div ng-show="!loanInfo.assurer.name || loanInfo.assurer.name == ''">
+					<p class="ks-heading">担保人信息:</p>
 					<strong>无担保人</strong>
 				</div>
 			</div>
@@ -155,8 +156,16 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos | orderBy:'order' " >
-								<strong>{{pawnInfo.text}}: </strong> <label>{{pawnInfo.value}}</label>
-								<label ng-show="!pawnInfo.value">无</label>
+								<label ng-if="pawnInfo.text === '房产证号' || pawnInfo.text === '土地证号'">
+									<strong>{{pawnInfo.text}}: </strong> 
+									<ins>{{pawnInfo.characters[0]}} {{pawnInfo.value[0]}} {{pawnInfo.characters[1]}} {{pawnInfo.value[1]}} {{pawnInfo.characters[2]}}</ins>
+								</label>
+								<label ng-if="pawnInfo.text === '抵押方式'">
+									<strong>{{pawnInfo.text}}: </strong> <ins ng-repeat="i in pawnInfo.value"> {{i}}{{' '}}</ins>
+								</label>
+								<label ng-if="pawnInfo.text !== '抵押方式' && pawnInfo.text !== '房产证号' && pawnInfo.text !== '土地证号'">
+									<strong>{{pawnInfo.text}}: </strong> <ins>{{pawnInfo.value || '无'}}</ins>
+								</label>
 							</div>
 						</div>
 					</div>

@@ -24,7 +24,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
-				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.serialNumber}}</a></td>
+				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.numberWithName}}</a></td>
 				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.createdAt | date:"yyyy-MM-dd" }}</td>

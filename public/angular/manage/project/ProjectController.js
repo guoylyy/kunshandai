@@ -53,5 +53,38 @@ define(['app'],function(app) {
 				{reload: true});
 		}
 
+		$scope.collectModal = function(loanId,processName){
+				var collectModal = $modal.open({
+					templateUrl: '/angular/manage/collect/collectModal.html',
+					controller:'CollectProcessCtrl',
+					size:'lg',
+					backdrop: true,
+            		windowClass: 'modal',
+					resolve:{
+						loan:function(){
+							return LoanService.getLoan(loanId);
+						},
+						paybacks:function(){
+							return LoanService.getPaybacks(loanId);
+						},
+						process:function(){
+							var process =  {
+									list:false,
+									pay:false,
+									complete:false
+								}
+							process[processName] = true;
+							return process;
+						}
+					}
+				});
+
+				collectModal.result.then(function(succ){
+					if(succ){
+						$state.reload();
+					}
+				});
+			}
+
 	}])
 })

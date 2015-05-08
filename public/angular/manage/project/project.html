@@ -77,8 +77,8 @@
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu"  role="menu">
-							<li><a role="menuitem">收款</a></li>
-							<li><a role="menuitem" >结清</a></li>
+							<li><a role="menuitem" ng-click="collectModal(loan.id,'list')">收款</a></li>
+							<li><a role="menuitem" ng-click="collectModal(loan.id,'complete')">结清</a></li>
 							<li ><a role="menuitem">调整</a></li>
 						</ul>
 					</div>

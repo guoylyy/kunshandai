@@ -9,7 +9,7 @@
       <h4 class="modal-title">收款</h4>
     </div>
     <div class="modal-body">
-      <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.serialNumber}}</a></h4>
+      <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
       <div class="ks-divider"></div>
       <div class="row" style="font-size:14px;">
         <div class="col-md-3">
@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-3">
           <div>贷款人: {{loan.loaner.name}}</div>
-          <div>担保人: {{loan.assurer.name}}</div>
+          <div>担保人: {{loan.assurer.name || '无'}}</div>
         </div>
         <div class="col-md-3">
           <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>

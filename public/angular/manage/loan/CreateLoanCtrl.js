@@ -38,7 +38,7 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.selected = {};
 
-		$scope.unique 	= {};
+		$scope.unique 	= {br:true,gr:true};
 
 		$scope.checkContactUnique = function(name){
 			
@@ -49,6 +49,11 @@ define(['app',"underscore"],function(app,_) {
 				return;
 			}
 			
+			if($scope[name] && $scope.selected[name] && $scope[name].certificateNum === $scope.selected[name].certificateNum){
+				$scope.unique[name] = true;
+				return;
+			}
+		
 			ContactService.getByCertification(id).then(function(data){
 				$scope.unique[name] = false;
 			},function(){

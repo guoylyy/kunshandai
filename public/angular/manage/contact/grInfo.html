@@ -26,7 +26,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label">*身份证</label>
-								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum" ui-validate="{notSame:'$value !== br.certificateNum',uniqueId:'unique.gr'}" ui-validate-watch="{'br.certificateNum','unique.gr'}" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-blur="checkContactUnique('gr')">
+								<input type="text" class="form-control" placeholder="身份证" name="gid" ng-model="gr.certificateNum" ui-validate="{notSame:'$value !== br.certificateNum',uniqueId:'unique.gr'}" ui-validate-watch="{notSame:'br.certificateNum',uniqueId:'unique.gr'}" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-blur="checkContactUnique('gr')">
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.gid.$touched"  >
 									<div class="text-danger" ng-show="moreInfoForm.gid.$error.notSame">担保人不能是本人</div>
 									<div class="text-danger" ng-show="moreInfoForm.gid.$error.required">请填担保人身份证</div>
@@ -62,6 +62,8 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					<div class="row"> 
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>QQ</label>
@@ -76,6 +78,14 @@
 								<label>微信</label>
 								<input type="text" class="form-control" placeholder="微信" ng-model="gr.wechat">
 
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>地址</label>
+								<input type="text" class="form-control" placeholder="地址" ng-model="gr.address" name="gaddress">
 							</div>
 						</div>
 					</div>

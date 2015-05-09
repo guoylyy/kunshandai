@@ -1,5 +1,5 @@
 <form name="moreInfoForm" novalidate ng-submit="moreInfoForm.$valid && createContract()">
-<!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
+<pre>{{moreInfoForm.$error | json}}</pre>
 	<div class="container-fluid">
 	<div class="ks-dividing">
 		<h4>借款人</h4>
@@ -86,6 +86,14 @@
 							<div class="form-group">
 								<label>微信</label>
 								<input type="text" class="form-control" placeholder="微信" ng-model="br.wechat">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>地址</label>
+								<input type="text" class="form-control" placeholder="地址" ng-model="br.address" name="baddress">
 							</div>
 						</div>
 					</div>

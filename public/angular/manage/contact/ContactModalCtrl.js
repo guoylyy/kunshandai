@@ -29,10 +29,14 @@ define(['app','underscore'],function(app,_){
 		}
 
 		$scope.checkContactUnique = function(){
-
+			if($scope.oldCertificateNum === $scope.contact.certificateNum){
+				$scope.unique = true;
+				return;
+			}
 			var id = $scope.contact.certificateNum;
 			if(!id){
 				$scope.unique = true;
+				return;
 			}
 			return ContactService.getByCertification(id).then(function(data){
 				$scope.unique = false;

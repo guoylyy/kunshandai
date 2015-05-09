@@ -653,6 +653,19 @@ traits:
         loanPawnId:
           required: true
           type: string
+        isModifiedLoan:
+          required: true
+          type: boolean
+        preLoanData:
+          required: true
+          type: string
+          example: |
+            {
+              "loanId" : "fdafdsafas",
+              "finishBill" : {},
+              "finishPayedMoney":9992.10,
+              "version" : 0
+            }
       responses:
         200:
           body:

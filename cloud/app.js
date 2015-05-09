@@ -234,6 +234,8 @@ app.get(config.baseUrl + '/loan/search', function(req, res){
   var type = req.query.type;
   var key = req.query.key;
   query.equalTo('owner', u);
+  query.include('loaner');
+  query.include('assurer');
   query.ascending('currPayDate');
   if(type == 'name'){
     query.startsWith('numberWithName', key);
@@ -381,10 +383,13 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
   var loan = AV.Object.createWithoutData('Loan',loanId);
   var loaner = AV.Object.createWithoutData('Contact',loanerId);
   
+  var isModifiedLoan = req.body.isModifiedLoan;
+
   loan.fetch().then(function(floan){
     if(floan.get('status') == undefined){
       mutil.renderError(res, {code:404, message:'找不到对象!'});
     }else{
+      floan.set('isModifiedLoan', isModifiedLoan);
       //判断是否已经有放款记录,如果有删除掉
       if(assurerId){
         var assurer = AV.Object.createWithoutData('Contact',assurerId);
@@ -393,6 +398,12 @@ app.post(config.baseUrl + '/loan/generate_bill', function (req, res){
       if(loanPawnId){
         var pawn = AV.Object.createWithoutData('LoanPawn', req.body.loanPawnId);
         floan.set('pawn', pawn);
+      }
+      if(isModifiedLoan){
+        floan.set('preLoanData', req.body.preLoanData);
+        floan.set('version', req.body.preLoanData.version + 1);
+      }else{
+        floan.set('version', 0);
       }
       if(loaner){
         if(floan.attributes.status != mconfig.loanStatus.draft.value){
@@ -844,7 +855,6 @@ app.get(config.baseUrl + '/contact/:id', function (req, res){
   query.equalTo("objectId",req.params.id);
   query.find({
     success: function(contacts){
-      //console.log(rc);
       if(contacts.length == 0){
         mutil.renderError(res, {code:404, message:'contact not found'});
       }else{
@@ -1193,7 +1203,10 @@ function transformLoan(l){
       status: mconfig.getConfigMapByValue('loanStatus', l.get('status')),
       payStatus: payStatus,
       serialNumber: l.get('serialNumber'),
-      numberWithName: l.get('numberWithName')
+      numberWithName: l.get('numberWithName'),
+      preLoanData : l.get('preLoanData'),
+      isModifiedLoan: l.get('isModifiedLoan'),
+      version : l.get('version')
   };
   return result;
 };

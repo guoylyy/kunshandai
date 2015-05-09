@@ -31,7 +31,9 @@ define(['../../app'],function(app){
 				if(response.status === 501){
 					window.location = "/login";
 				}else if(response.status === 404){
-					alert("地址未找到");
+					// alert("地址未找到");
+					return response;
+					// return $q.reject("未找到资源");
 				}
 				else{
 					return $q.reject("未知错误");

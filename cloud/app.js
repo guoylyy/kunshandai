@@ -70,12 +70,14 @@ app.get('/index',function(req, res){
 app.get('/login', function(req, res){
   if(account.isLogin()){
      res.redirect('/manage');
+     return;
   }
   res.render('account.ejs');
 });
 app.get('/signup', function(req, res){
   if(account.isLogin()){
      res.redirect('/manage');
+     return;
   }
   res.render('account.ejs');
 });
@@ -83,6 +85,7 @@ app.get('/manage', function(req, res){
   var user = account.isLogin();
   if(!user){
     res.redirect('/login');
+    return;
   }
   res.render('manage.ejs',{user:user.attributes});
 });
@@ -90,6 +93,7 @@ app.get('/loan', function(req, res){
   var user = account.isLogin();
   if(!user){
     res.redirect('/login');
+    return;
   }
   res.render('empty_layout.ejs',{user:user.attributes});
 });
@@ -97,6 +101,7 @@ app.get('/createLoan', function(req, res){
  var user = account.isLogin();
   if(!user){
     res.redirect('/login');
+    return;
   }
   res.render('create_loan.ejs',{user:user.attributes});
 });

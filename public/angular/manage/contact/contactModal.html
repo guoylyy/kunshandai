@@ -26,7 +26,8 @@
             <dt>地址:</dt>
             <dd>{{contact.address}}</dd>
             <div class="ks-divider"></div>
-            <label>{{sendSmsOrNot ? '接受短信通知':'不接受短信通知'}}</label>
+            <dt>接受短信通知:</dt>
+            <dd>{{contact.sendSmsOrNot ? '是':'否'}}</dd>
             <div class="ks-divider"></div>
           </dl>
         </div>
@@ -51,18 +52,21 @@
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">姓名</label>
-            <input type="text" class="form-control" placeholder="姓名" ng-model="contact.name" name="bname" required>
+            <input type="text" class="form-control" placeholder="姓名" ng-model="contact.name" ng-pattern="/^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/" name="bname" required>
             <div ng-show="editForm.$submitted || editForm.bname.$touched">
               <div class="text-danger" ng-show="editForm.bname.$error.required">请填姓名</div>
+              <div class="text-danger" ng-show="editForm.bname.$error.pattern">请填写正确的姓名</div>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">身份证</label>
-            <input type="text" class="form-control" placeholder="身份证" ng-model="contact.certificateNum" name="id" required>
+            <input type="text" class="form-control" placeholder="身份证" ng-model="contact.certificateNum" name="id" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" required ng-blur="checkContactUnique()" ui-validate="'unique'" ui-validate-watch="'unique'">
             <div ng-show="editForm.$submitted || editForm.id.$touched">
               <div class="text-danger" ng-show="editForm.id.$error.required">请填身份证</div>
+              <div class="text-danger" ng-show="editForm.id.$error.pattern">请填写正确的身份证号</div>
+              <div class="text-danger" ng-show="editForm.id.$error.validator">已存在相同身份证的客户</div>
             </div>
           </div>
         </div>

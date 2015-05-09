@@ -1,4 +1,5 @@
 <form name="moreInfoForm" novalidate ng-submit="moreInfoForm.$valid && createContract()">
+<!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
 	<div class="container-fluid">
 	<div class="ks-dividing">
 		<h4>借款人</h4>
@@ -6,32 +7,39 @@
 	<div class="row">
 		<div class="col-md-8">
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">借款人信息</div>
-				<!-- <span><a class="text-info ks-right small">从客户中选择</a></span> -->
+				<div class="panel-heading">借款人信息
+					<span><a class="text-info ks-right small" ng-init="brSelect=true" ng-click="brSelect=!brSelect">从客户中选择</a></span>
+				</div>
 				<div class="panel-body">
+					<div class="row">
+						 <alert type="warning" close="closed = true" ng-show="!closed && br.objectId && !status.loanCreating" >{{'您已从客户中选择借款人，此处修改将更新到联系人信息，若新建客户请重置'}}</alert>
+					</div>
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
-								<label class="control-label">*姓名</label>
-								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" required>
+								<label class="control-label">*姓名</label>;
+								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" ng-pattern="/^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/" required>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bname.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填借款人姓名</div>
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.pattern">请填正确的借款人姓名</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
 								<label class="control-label">*身份证</label>
-								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" required>
+								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-blur="checkContactUnique('br')" ui-validate="{uniqueId:'unique.br'}" ui-validate-watch="'unique.br'" required>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bid.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填借款人身份证</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.pattern">请填写正确的身份证号</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.uniqueId">已存在相同身份证的客户</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
 								<label class="control-label">*担保人</label><br>
-								<a ng-init="br.hasGr=false" ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
+								<a ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.hasGr.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
 								</div>
@@ -85,19 +93,47 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4" >
+			<script type="text/ng-template" id="contactTemplate.html">
+			  <a>
+			       <span bind-html-unsafe="match.model.name"></span>
+			        <span bind-html-unsafe="match.model.certificateNum | typeaheadHighlight:query"></span>
+			  </a>
+			</script>
+			</script>
+			<div class="ks-panel panel panel-default" collapse="brSelect">
+				<div class="panel-heading">从客户中选择借款人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
+				<div class="panel-body">
+					<div class="input-group">
+						<div class="input-group-btn" dropdown>
+							<button type="button" class="btn btn-default dropdown-toggle" ng-init="brsearchType='name'" dropdown-toggle >{{brsearchType === 'name'? '姓名':'身份证'}}<span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:73px;">
+								<li><a ng-click="brsearchType='name'">姓名</a></li>
+								<li><a ng-click="brsearchType='certificate'">身份证</a></li>
+							</ul>
+							
+						</div>
+						<input type="text" class="form-control"  ng-model="selected.br" typeahead="contact as contact.name for contact in searchContacts(brsearchType,$viewValue) | filter:{name:$viewValue}" typeahead-loading="loadingContacts"  typeahead-template-url="contactTemplate.html" >
+						<span class="input-group-btn">
+								<button class="btn btn-primary" type="button" ng-click="resetContact('br')">重置</button>
+						</span>
+					</div>
+				</div>
+			</div>
+
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">借款人附件</div>
+				<div class="panel-heading">借款人附件
+					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('借款人')" style="margin-top:-5px;">上传</button>
+				</div>
 				<div class="panel-body">
 					<ul class="list-group">
 						<li class="list-group-item" ng-show="br.attachments" ng-repeat="a in br.attachments">
 							<a class="glyphicon glyphicon-remove text-danger ks-right" ng-click="removeAttach('br',$index)"></a>
-							<a ng-href="a.url" target="_blank">
-								{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+							<a href="{{a.url}}" target="_blank">
+									{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
 							</a>
 						</li>
 					</ul>
-					<button type="button" class="btn btn-default ks-right" ng-click="uploadAttachment('借款人')">上传新的资料</button>
 				</div>
 			</div>
 		</div>
@@ -124,7 +160,10 @@
 		</div>
 		<div class="col-md-4">
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">抵押物附件</div>
+				<div class="panel-heading">抵押物附件
+					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('抵押物')" style="margin-top:-5px;">上传</button>
+
+				</div>
 				<div class="panel-body">
 					<ul class="list-group">
 						<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
@@ -134,7 +173,6 @@
 							</a>
 						</li>
 					</ul>
-					<button type="button" class="btn btn-default ks-right" ng-click="uploadAttachment('抵押物')">上传新的资料</button>
 				</div>
 			</div>
 		</div>

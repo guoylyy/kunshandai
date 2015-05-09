@@ -6,6 +6,7 @@ define(['../../app'],function(app){
 		var contactUrl = '/contact',
 
 		    model = {
+		    id:'',
 			objectId:'',
 			certificateType:'',
 			name:'',
@@ -27,6 +28,26 @@ define(['../../app'],function(app){
 			return _.extend({},model);
 		}	
 
+		var updateAttachments = function(contactId,attachmetn_ids){
+			var attachDeferred = $q.defer(),
+			 	totalNum = attachmetn_ids.length,
+			 	addNum 	 = 0,
+				attachmentId = '';
+			for(var i = 0 ; i < totalNum ; i++){
+				
+				$http.post(ApiURL+contactUrl+"/"+contactId+"/attachments/"+attachmetn_ids[i]).then(function(res){
+					addNum += 1;
+					if(addNum == totalNum){
+						attachDeferred.resolve("附件新增成功");
+					}
+				},function(res){
+					attachDeferred.resolve("附件新增失败");
+				});
+			}
+
+			return attachDeferred.promise;
+		};
+
 		var ContactService = {
 			
 			getLoaner: function(){
@@ -35,52 +56,59 @@ define(['../../app'],function(app){
 			getAssurer: function(){
 				return assurer;
 			},
-			getModel:function(){
+			getModel:function(name){
 				return getModel();
-			},
-			//这个目前不用
-			getLocalContact:function(name){
-				if(!localContacts[name]){
-					var newContact = getModel();
-					addLocalContact(name,newContact);
-					return newContact;
-				}else{
-					return localContact[name];
-				}
 			},
 			create : function(contact){
 				
 				var sendContact = _.extend({},contact);
+				var deferred = $q.defer();
 
 				sendContact.attachments = _.pluck(sendContact.attachments,'objectId');
-
-				var deferred = $q.defer();
 
 				$http.post(ApiURL+contactUrl,JSON.stringify(sendContact)).then(function(res){
-			
 					deferred.resolve(res.data.data);
-			
 				},function(res){
 					deferred.reject(res.data);
 				});
-				
 				return deferred.promise;
-
 			},
 			update : function(contact){
-				var sendContact = _.extend({},contact);
-
-				sendContact.attachments = _.pluck(sendContact.attachments,'objectId');
-
+				var sendContact = angular.copy(contact);
 				var deferred = $q.defer();
+				for(var i = 0;i < sendContact.attachments.length;i++){
+					if(!sendContact.attachments[i].newUpload){
+						sendContact.attachments[i] = '';
+					}
+				}
+				sendContact.attachments = _.pluck(_.compact(sendContact.attachments),'objectId');
 
 				$http.put(ApiURL+contactUrl+"/"+contact.objectId,JSON.stringify(sendContact)).then(function(res){
-					deferred.resolve(res.data.data);
+					//更新附件
+					if(sendContact.attachments.length > 0 ){
+						updateAttachments(contact.objectId,sendContact.attachments).then(function(reason){
+							deferred.resolve(res.data.data);
+						},function(){
+							deferred.reject("更新附件失败");
+						})
+					}else{
+						deferred.resolve(res.data.data);
+					}
+					
 				},function(res){
-					deferred.reject(res.data);
+					deferred.reject("更新客户失败");
 				});
-				
 				return deferred.promise;
+			},
+			deleteAttachment : function(contactId,attchmentId){
+				var attachDeferred = $q.defer();
+
+				$http.delete(ApiURL+contactUrl+"/"+contactId+"/attachments/"+attchmentId).then(function(res){
+					attachDeferred.resolve("附件删除成功");
+				},function(res){
+					attachDeferred.resolve("附件删除失败");
+				});
+				return attachDeferred.promise;
 			},
 			remove : function(id){
 				var deferred = $q.defer();
@@ -104,6 +132,33 @@ define(['../../app'],function(app){
 				var deferred = $q.defer();
 
 				$http.get(ApiURL+contactUrl+"/list/all").then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				});
+				return deferred.promise;
+			},
+			getByCertification:function(certificateNum){
+				if(!certificateNum){
+					return;
+				}
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+contactUrl+"/certificate/"+certificateNum).then(function(res){
+					if(res.status === 404){
+						deferred.reject(res);
+					}else{
+						deferred.resolve(res.data.data);
+					}
+				},function(res){
+					deferred.reject(res);
+				});
+				return deferred.promise;
+			},
+			search: function(type,key){
+				var deferred = $q.defer();
+				var params = {type:type,key:key};
+				$http.get(ApiURL+contactUrl+"/list/search",{params:params}).then(function(res){
 					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);

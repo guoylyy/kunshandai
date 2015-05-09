@@ -45,6 +45,7 @@ define(['app','underscore'],function(app,_){
 		                    var index = _.findIndex(files,{'$$hashKey':config.file.$$hashKey});
 		                    files[index].objectId = data.data.id;
 		                    files[index].url = data.data.url;
+		                    files[index].newUpload = true;
 		                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 
 		                }).error(function(data, status, headers, config){

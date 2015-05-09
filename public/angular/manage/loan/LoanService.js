@@ -36,10 +36,8 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 
 				//format string to float
 				loan.amount = Number.parseFloat(loan.amount);
-				loan.interests = Number.parseFloat(loan.interests) / 100;
 				loan.assureCost = Number.parseFloat(loan.assureCost);
 				loan.serviceCost = Number.parseFloat(loan.serviceCost);
-				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent) / 1000;
 				loan.otherCost = Number.parseFloat(loan.otherCost);
 				loan.keepCost = Number.parseFloat(loan.keepCost);
 				
@@ -53,6 +51,11 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				loan.endDate = new Date(loan.endDate);
 				loan.firstPayDate = new Date(loan.firstPayDate);
 
+				return loan;
+			},
+			dataTransform = function(loan){
+				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent) / 1000;
+				loan.interests = Number.parseFloat(loan.interests) / 100;
 				return loan;
 			},
 			getLoanList = function(page,filter,startDate,endDate,loanType){
@@ -226,7 +229,7 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				
 				var deferred = $q.defer();
 
-				$http.post(ApiURL+loanUrl+"/create_loan",JSON.stringify(typeTransform(loan)))
+				$http.post(ApiURL+loanUrl+"/create_loan",JSON.stringify(dataTransform(typeTransform(loan))))
 				.then(function(res){
 					// _.extend(localLoan,res.data.data);
 					deferred.resolve(res.data.data);

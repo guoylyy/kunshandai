@@ -75,13 +75,13 @@ define(['app'], function(app) {
         });
 
         contactModal.result.then(function(edited) {
-          console.log(edited);
-          if (controlName == 'create') {
+
+          if (!contactId) {
             ContactService.create(edited).then(function() {
               refreshData();
             });
-          } else if (controlName == 'edit') {
-            ContactService.update(edited).then(function() {
+          } else {
+              ContactService.update(edited).then(function() {
               refreshData();
             });
           }

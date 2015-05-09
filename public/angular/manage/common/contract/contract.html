@@ -55,10 +55,10 @@
 
 
 				<tr>
-					<td>{{loanInfo.interests * 100}}</td>
+					<td>{{loanInfo.interests*100}}</td>
 					<td>{{loanInfo.assureCost | number:2}}</td>
 					<td>{{loanInfo.serviceCost | number:2}}</td>
-					<td>{{loanInfo.overdueCostPercent * 1000}}</td>
+					<td>{{loanInfo.overdueCostPercent*1000}}</td>
 					<td>{{loanInfo.otherCost | number:2}}</td>
 					<td>{{loanInfo.keepCost | number:2}}</td>
 				</tr>
@@ -76,7 +76,7 @@
 				<p>微 信 : {{br.wechat}}</p>
 			</div>
 			<div class="col-md-6">
-				<div ng-show="loanInfo.assurer.name && loanInfo.assurer.name !== ''">
+				<div ng-show="loanInfo.assurer">
 					<p class="ks-heading">担保人信息:</p>
 					<p>姓 名 : {{gr.name}}</p>
 					<p>身份证: {{gr.certificateNum}}</p>
@@ -84,7 +84,7 @@
 					<p>邮 箱 : {{gr.email}}</p>
 					<p>微 信 : {{gr.wechat}}</p>
 				</div>
-				<div ng-show="!loanInfo.assurer.name || loanInfo.assurer.name == ''">
+				<div ng-show="!loanInfo.assurer">
 					<p class="ks-heading">担保人信息:</p>
 					<strong>无担保人</strong>
 				</div>
@@ -208,7 +208,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-6" ng-show="loanInfo.assurer">
 				<div class="ks-panel panel panel-default">
 					<div class="panel-heading">担保人附件</div>
 					<div class="panel-body">

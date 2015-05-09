@@ -1,0 +1,36 @@
+<form name="editForm">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">选择客户</h4>
+  </div>
+  <div class="modal-body">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">姓名</label>
+            <input type="text" class="form-control" placeholder="姓名" ng-model="contact.name" name="bname" required>
+            <div ng-show="editForm.$submitted || editForm.bname.$touched">
+              <div class="text-danger" ng-show="editForm.bname.$error.required">请填姓名</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label class="control-label">身份证</label>
+            <input type="text" class="form-control" placeholder="身份证" ng-model="contact.certificateNum" name="id" required>
+            <div ng-show="editForm.$submitted || editForm.id.$touched">
+              <div class="text-danger" ng-show="editForm.id.$error.required">请填身份证</div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="cancel()" ng-show="control.view">关闭</button>
+    <button type="submit" class="btn btn-success" ng-click="finishEdit()" ng-show="control.edit" ng-disabled="editForm.$invalid">完成编辑</button>
+    <button type="submit" class="btn btn-warning" ng-click="select()" ng-show="control.view">选择</button>
+  </div>
+</form>

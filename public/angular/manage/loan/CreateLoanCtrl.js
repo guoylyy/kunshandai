@@ -36,6 +36,35 @@ define(['app',"underscore"],function(app,_) {
 		// 状态记录
 		$scope.status	= {};
 
+		$scope.selected = {};
+
+		$scope.unique 	= {};
+
+		$scope.checkContactUnique = function(name){
+			
+			var id = $scope[name].certificateNum;
+			
+			if(!id){
+				$scope.unique[name] = true;
+				return;
+			}
+			
+			ContactService.getByCertification(id).then(function(data){
+				$scope.unique[name] = false;
+			},function(){
+				$scope.unique[name] = true;
+			})
+		}
+
+		$scope.resetContact = function(name){
+			if(name === 'br'){
+				$scope.br = _.extend($scope.br,ContactService.getModel());
+			}else if(name === 'gr'){
+				$scope.gr = _.extend($scope.gr,ContactService.getModel());
+			}
+			$scope.selected = {};
+		}
+
 		$scope.nav = function(direction){
 			if(direction === 'prev'){
 				$state.go('createLoan');
@@ -55,6 +84,23 @@ define(['app',"underscore"],function(app,_) {
 		$scope.$watch('loanInfo.payWay',function(){
 			circleChange();
 			dateChange();
+		})
+
+		$scope.$watch('selected.br',function(){
+			if(typeof $scope.selected.br === 'object'){
+				$scope.br = _.extend($scope.br,$scope.selected.br);
+				ContactService.getAttachments($scope.br.objectId).then(function(data){
+					$scope.br.attachments = data;
+				});
+			}
+		})
+		$scope.$watch('selected.gr',function(){
+			if(typeof $scope.selected.gr === 'object'){
+				$scope.gr = _.extend($scope.gr,$scope.selected.gr);
+				ContactService.getAttachments($scope.gr.objectId).then(function(data){
+					$scope.gr.attachments = data;
+				});
+			}
 		})
 
 		$scope.$watch('loanInfo.spanMonth',function(){
@@ -134,27 +180,60 @@ define(['app',"underscore"],function(app,_) {
 			
 			var contract 		= {};
 
-			$q.all([ContactService.create($scope.br),
-					LoanService.create($scope.loanInfo)])
-			.then(function(results){
-				
-				contract.loanerId 	= results[0].objectId;	
-				contract.loanId 	= results[1].id;
-				$scope.br 		= _.extend($scope.br,results[0]);
-					  
+			
+			LoanService.create($scope.loanInfo)
+			.then(function(data){
+
+				contract.loanId 	= data.id;
+			
+			//新建借款人客户或更新客户
 			}).then(function(){
-				if($scope.br.hasGr){
-					var grDeferred = $q.defer();
-					ContactService.create($scope.gr).then(function(data){
-						$scope.gr 			= _.extend($scope.gr,data);
-						contract.assurerId 	= data.objectId;
-						grDeferred.resolve();
-					},function(){
-						grDeferred.reject("创建担保人失败");
+				var loanDeferred = $q.defer();
+				//更新
+				if($scope.br.objectId){
+					ContactService.update($scope.br).then(function(data){
+						$scope.br 			= _.extend($scope.br,_.omit(data,'attachments'));
+						contract.loanerId 	= data.objectId;
+						loanDeferred.resolve("updated loaner");
 					})
 
+				}else{
+
+					ContactService.create($scope.br).then(function(data){
+						$scope.br 			= _.extend($scope.br,_.omit(data,'attachments'));
+						contract.loanerId 	= data.objectId;
+						loanDeferred.resolve("created loaner");
+					})
+				}
+
+				return loanDeferred.promise;
+
+			}).then(function(){
+				
+				if($scope.br.hasGr){
+					
+					var grDeferred = $q.defer();
+					
+					if($scope.gr.objectId){
+						ContactService.update($scope.gr).then(function(data){
+							$scope.gr 			= _.extend($scope.gr,_.omit(data,'attachments'));
+							contract.assurerId 	= data.objectId;
+							grDeferred.resolve();
+						},function(){
+							grDeferred.reject("创建担保人失败");
+						})
+					}else{
+						ContactService.create($scope.gr).then(function(data){
+							$scope.gr 			= _.extend($scope.gr,_.omit(data,'attachments'));
+							contract.assurerId 	= data.objectId;
+							grDeferred.resolve();
+						},function(){
+							grDeferred.reject("创建担保人失败");
+						})
+					}
 					return grDeferred.promise;
 				}else{
+					
 					contract.assurerId = null;
 					return;
 				}
@@ -212,6 +291,7 @@ define(['app',"underscore"],function(app,_) {
 				}
 			});
 			modalInstance.result.then(function (fileList) {
+
 		      	if(type === '借款人'){
 					$scope.br.attachments 	= _.union($scope.br.attachments,fileList);
 				}else if(type === '担保人'){
@@ -227,16 +307,31 @@ define(['app',"underscore"],function(app,_) {
 
 		//删除附件
 		$scope.removeAttach = function(type,index){
-			if(type === 'br'){
-				delete($scope.br.attachments[index]);
-				$scope.br.attachments = _.compact($scope.br.attachments);
-			}else if(type === 'gr'){
-				delete($scope.gr.attachments[index]);
-				$scope.gr.attachments = _.compact($scope.gr.attachments);
-			}else if(type === 'pawn'){
-				delete($scope.pawn.attachments[index]);
-				$scope.pawn.attachments = _.compact($scope.pawn.attachments);
-			}
+			SweetAlert.swal({
+	          title: '确定删除该附件?',
+	          text: '删除后将不可恢复',
+	          type: 'warning',
+	          confirmButtonColor: '#DD6B55',
+	          showCancelButton: true
+	        }, function() {
+	          	if(type === 'br'){
+					if($scope.br.objectId){
+						ContactService.deleteAttachment($scope.br.objectId,$scope.br.attachments[index].objectId);
+					}
+					delete($scope.br.attachments[index]);
+					$scope.br.attachments = _.compact($scope.br.attachments);
+				}else if(type === 'gr'){
+					if($scope.gr.objectId){
+						ContactService.deleteAttachment($scope.gr.objectId,$scope.gr.attachments[index].objectId);
+					}
+					delete($scope.gr.attachments[index]);
+					$scope.gr.attachments = _.compact($scope.gr.attachments);
+				}else if(type === 'pawn'){
+					delete($scope.pawn.attachments[index]);
+					$scope.pawn.attachments = _.compact($scope.pawn.attachments);
+				}
+	        });
+			
 			
 		}
 
@@ -276,6 +371,12 @@ define(['app',"underscore"],function(app,_) {
 
 			})
 
+		}
+
+		$scope.searchContacts = function(type,key){
+			return ContactService.search(type,key).then(function(data){
+				return data;
+			})
 		}
 	}]);
 });

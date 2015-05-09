@@ -169,6 +169,8 @@ function convertDictToList(key){
 		return getKeyValueList(loanPayBackStatus);
 	}else if(key=='fileTypes'){
 		return getKeyValueList(fileTypes);
+	}else if(key=='interestCalTypes'){
+		return getKeyValueList(interestCalTypes);
 	}
 	return null;
 }
@@ -183,6 +185,8 @@ function getConfigMapByValue(key, value){
 		obj = loanStatus;
 	}else if(key=='loanPayBackStatus'){
 		obj = loanPayBackStatus;
+	}else if(key=='interestCalTypes'){
+		obj = interestCalTypes;
 	}
 	if(!obj){
 		return null;

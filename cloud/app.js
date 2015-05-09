@@ -184,7 +184,24 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function (req, res){
   });
 });
 
+//更新用户信息
 app.put(config.baseUrl + '/account/:id', function (req, res){
+  //姓名 - 邮箱 - 个人title - 性别 - qq - wechat
+  var u = check_login(res);
+  var user = AV.Object.createWithoutData('_User', req.params.id);
+  user.fetch().then(function(ruser){
+    ruser.set('name', req.body.name);
+    ruser.set('email', req.body.email);
+    ruser.set('title', req.body.title);
+    ruser.set('gender', req.body.gender);
+    ruser.set('qq', req.body.qq);
+    ruser.set('wechat', req.body.wechat);
+    ruser.save().then(function(suser){
+      mutil.renderData(res, suser);
+    },function(error){
+      mutil.renderError(res, error);
+    });
+  })
   mutil.renderSuccess(res);
 });
 
@@ -273,6 +290,7 @@ app.delete(config.baseUrl + '/loan/:id', function (req, res){
   });
 });
 
+//更新项目 - draft 项目可以更新
 app.put(config.baseUrl + '/loan/:id', function (req, res){
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
@@ -419,7 +437,7 @@ function generateLoanRecord(floan, res){
 app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   var u = check_login(res);
   var loanId = req.body.loanId;
-  var outMoney = 100; //实际放款金额
+  var outMoney = parseFloat(req.body.outMoney); //实际放款金额
   //生成放款记录
   var loan = AV.Object.createWithoutData('Loan', loanId);
   loan.fetch().then(function(floan){
@@ -629,7 +647,15 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
   //接受项目id，获取结清账单
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.loanId);
+  var payDate = new moment(req.body.payDate);
   loan.fetch().then(function(rLoan){
+    var loanStartDate = new moment(rLoan.get('startDate'));
+    if(payDate.diff(loanStartDate) <= 0){
+      return mutil.renderError(res, {code:500, message:'还款时间不能早于项目开始时间!'});
+    }
+    if(!req.query.interestCalType){
+      return mutil.renderError(res, {code:500, message:'缺少还款类型!'}); 
+    }
     if(rLoan.get('owner').id != u.id){
       mutil.renderError(res, {code:500, message:'访问了没有权限的项目!'});
     }else{
@@ -644,7 +670,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
         for (var i = 0; i < pbs.length; i++) {
           totalInterests += pbs[i].get('interestsMoney');
           totalPayMoney  += pbs[i].get('payMoney');
-          if(pbs[i].get('order') > currentStep){
+          if(pbs[i].get('order') > currentStep && pbs[i].get('status') == mconfig.loanPayBackStatus.paying.value){
             currentStep = pbs[i].get('order');
           }
         };
@@ -655,7 +681,14 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
           interestCalType: req.query.interestCalType
         };
         var rc = mloan.calculateFinishBillParms(rLoan, params);
-        rc.income.amount = totalPayMoney;
+
+        rc.income.amount = totalPayMoney;//还款中未还的金额
+        //这两种还款需要加入本金
+        if(rLoan.get('payWay') == mconfig.payBackWays.zqcxhb.value || 
+              rLoan.get('payWay') == mconfig.payBackWays.zqmxhb.value){
+          rc.income.amount = rLoan.get('amount');
+        }
+        console.log(rc);
         mutil.renderData(res, rc);  
       },function(error){
         mutil.renderError(res, error);

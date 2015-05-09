@@ -639,22 +639,25 @@
   "message": "这是最后一期还款，请跳转到结清"
 }
 </code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan_payBack__loanId__finishBill"><span class="parent">/loan/payBack/{loanId}</span>/finishBill</a> <span class="methods"><a href="#_loan_payBack__loanId__finishBill_get"><span class="badge badge_get">get</span></a> <a href="#_loan_payBack__loanId__finishBill_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__loan_payBack__loanId__finishBill" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#_loan_payBack__loanId__finishBill_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>查看结清账单</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#_loan_payBack__loanId__finishBill_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"><p>结清接口</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan_payBack__loanId__finishBill_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/loan/payBack/{loanId}</span>/finishBill</h4></div><div class="modal-body"><div class="alert alert-info"><p>查看结清账单</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_loan_payBack__loanId__finishBill_get_request" data-toggle="tab">Request</a></li><li><a href="#_loan_payBack__loanId__finishBill_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan_payBack__loanId__finishBill_get_request"><h3>URI Parameters</h3><ul><li><strong>loanId</strong>: <em>required (string )</em></li></ul><h3>Query Parameters</h3><ul><li><strong>payDate</strong>: <em>(date )</em><p><strong>Example</strong>:</p><pre><code>"2014-10-10"
-</code></pre></li></ul></div><div class="tab-pane" id="_loan_payBack__loanId__finishBill_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+</code></pre></li><li><strong>interestCalType</strong>: <em>(string )</em><p>计算利息的方式</p><p><strong>Example</strong>:</p><pre>interestCalTypes 去 dict/key 接口取字典表
+</pre></li></ul></div><div class="tab-pane" id="_loan_payBack__loanId__finishBill_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
   "data": {
-    "income": {
+    "income": { 
       "amount": 0, 
-      "overdueMoney": 0  
+      "overdueMoney": 0,
+      "interest": 0  
     },
-    "outcome": {
+    "outcome": { 
       "assureCost": 0, 
-      "keepCost": 0 
+      "keepCost": 0,
+      "interest" : 0 
     }
   },
   "code": 200
 }
 </code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
   "code": 500,
-  "message": "访问了没有权限的项目"
+  "message": "访问了没有权限的项目/缺少还款类型/还款时间不能早于项目开始时间"
 }
 </code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan_payBack__loanId__finishBill_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/loan/payBack/{loanId}</span>/finishBill</h4></div><div class="modal-body"><div class="alert alert-info"><p>结清接口</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_loan_payBack__loanId__finishBill_post_request" data-toggle="tab">Request</a></li><li><a href="#_loan_payBack__loanId__finishBill_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan_payBack__loanId__finishBill_post_request"><h3>URI Parameters</h3><ul><li><strong>loanId</strong>: <em>required (string )</em></li></ul><h3>Query Parameters</h3><ul><li><strong>data</strong>: <em>(string )</em><p><strong>Example</strong>:</p><pre>{
     "payBackDate":"2014-10-10",

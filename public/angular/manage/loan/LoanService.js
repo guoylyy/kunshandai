@@ -147,10 +147,10 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 			};
 			//到期本息
 			loanPayBackFactory.payBackInit.dqhbfx = function(loan){
-			    var baseMoney = loan.amount;
+			    var baseMoney = parseInt(loan.amount);
 			    var d = moment(loan.firstPayDate).format();
 			    var overdueMoney = 0;
-			    var interestsMoney = loan.amount* loan.interests * loan.payCircle * loan.payTotalCircle;
+			    var interestsMoney = baseMoney * loan.interests * loan.spanMonth;
 			    return [generateLoanPayBack(interestsMoney+ baseMoney, interestsMoney, d, 1)];
 			};
 

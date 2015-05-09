@@ -653,6 +653,19 @@ traits:
         loanPawnId:
           required: true
           type: string
+        isModifiedLoan:
+          required: true
+          type: boolean
+        preLoanData:
+          required: true
+          type: string
+          example: |
+            {
+              "loanId" : "fdafdsafas",
+              "finishBill" : {},
+              "finishPayedMoney":9992.10,
+              "version" : 0
+            }
       responses:
         200:
           body:
@@ -921,6 +934,12 @@ traits:
               type: date
               example: |
                 "2014-10-10"
+            interestCalType:
+              type: string
+              description: |
+                计算利息的方式 
+              example: |
+                interestCalTypes 去 dict/key 接口取字典表
           responses:
             200:
               body:
@@ -928,13 +947,15 @@ traits:
                   schema: |
                     {
                       "data": {
-                        "income": {
+                        "income": { 
                           "amount": 0, 
-                          "overdueMoney": 0  
+                          "overdueMoney": 0,
+                          "interest": 0  
                         },
-                        "outcome": {
+                        "outcome": { 
                           "assureCost": 0, 
-                          "keepCost": 0 
+                          "keepCost": 0,
+                          "interest" : 0 
                         }
                       },
                       "code": 200
@@ -945,7 +966,7 @@ traits:
                   schema: |
                     {
                       "code": 500,
-                      "message": "访问了没有权限的项目"
+                      "message": "访问了没有权限的项目/缺少还款类型/还款时间不能早于项目开始时间"
                     }
         post:
           description: |

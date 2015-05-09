@@ -18,7 +18,7 @@ define(['app'],function(app){
 			
 			$scope.status.loaning = true;
 
-			LoanService.assure(loanId).then(function(res){
+			LoanService.assure(loanId,$scope.loanData.amount).then(function(res){
 			
 				$modalInstance.close(true);
 

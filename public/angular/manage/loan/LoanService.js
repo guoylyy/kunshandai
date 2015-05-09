@@ -262,8 +262,16 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				});
 				return deferred.promise;
 			},
-			assure: function(loanId){
-				return $http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId}));
+			assure: function(loanId,outMoney){
+				outMoney = parseFloat(outMoney);
+				var deferred = $q.defer();
+				$http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId,outMoney:outMoney}))
+				.then(function(res){
+					deferred.resolve(res.data.data);
+				},function(){
+					deferred.reject('放款失败');
+				});
+				return deferred.promise;
 			},
 			countPaymoney:function(payBackId,payDate){
 				var payDate = new Date(payDate);

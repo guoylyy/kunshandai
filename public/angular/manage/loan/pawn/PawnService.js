@@ -147,6 +147,7 @@ define(['app','underscore'],function(app,_){
 				var attachmentIds = _.pluck(attachments,'objectId');
 				var sendData = _.omit(data,'attachments');
 				sendData = pawnTypeTransform(sendData);
+				// sendData.pawnType.value =  _.compact(sendData.pawnType.value);
 
 				var deferred = $q.defer();
 				$http.post(ApiURL+pawnUrl,JSON.stringify({data:sendData,attachments:attachmentIds})).then(function(res){

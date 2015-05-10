@@ -40,6 +40,20 @@ define(['app',"underscore"],function(app,_) {
 
 		$scope.unique 	= {br:true,gr:true};
 
+		$scope.$watchCollection('pawn.pawnType.value',function(){
+			if($scope.pawn && $scope.pawn.pawnType){
+				console.log($scope.pawn.pawnType.value);
+				var required = true;
+				for(var i = 0;i <= $scope.pawn.pawnType.items.length; i++){
+					if($scope.pawn.pawnType.value[i]){
+						required = false;
+						break;
+					}
+				}
+			}
+			$scope.pawnTypeRequired =  required;
+		});
+
 		$scope.checkContactUnique = function(name){
 			
 			var id = $scope[name].certificateNum;

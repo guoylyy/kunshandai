@@ -283,12 +283,12 @@
             <label class="control-label">利息计算方式</label>
             <div class="input-group">
               <label class="radio-inline" ng-repeat="i in interestCalTypes">
-                 <input type="radio" ng-model="completeCount.interestType"  ng-value="i.value" name="interestTypeGroup" >{{i.text}}
+                 <input type="radio" ng-model="completeCount.interestType"  ng-value="i.value" name="interestTypeGroup" ng-required="!completeCount.interestType" >{{i.text}}
               </label>
             </div>
-            <input type="hidden" name="interestType" value="{{completeCount.interestType}}" required>
+            <!-- <input type="hidden" name="interestType" value="{{completeCount.interestType}}" > -->
             <div ng-show="completeForm.$submitted || completeForm.interestType.$touched ||  completeForm.completeDate.$touched">
-              <div class="text-danger" ng-show="completeForm.interestType.$error.required">请选择利息计算方式</div>
+              <div class="text-danger" ng-show="completeForm.interestTypeGroup.$error.required">请选择利息计算方式</div>
             </div>
           </div>
         </div>

@@ -3,13 +3,18 @@
 	<div class="col-md-12">
 		<div class="form-group">
 			<label class="control-label">*{{pawn.pawnType.text}}</label>
+			<pre>{{moreInfoForm.typeRquired.$error | json}}</pre>
 			<ul class="list-inline">
 				 <li class="btn-group">
-					<label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items">{{i}}</label>
+					<label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items" >{{i}}</label>
 				</li>
 				<li>
-					<input type="text" class="form-control input-sm" placeholder="自定义" ng-model="pawn.pawnType.value[pawn.pawnType.items.length]" name="pawnTypeOther" style="height:28px;">
+					<input type="text" class="form-control input-sm" placeholder="自定义" ng-model="pawn.pawnType.value[pawn.pawnType.items.length]" style="height:28px;">
 				</li>
+			</div>
+			<intput type="hidden" name="typeRquired" ng-model="pawnTypeRequired" ui-validate="'$value === false'">
+			<div ng-show="moreInfoForm.$submitted">
+				<div class="text-danger" ng-show="moreInfoForm.typeRquired.$error.validator">请填{{pawn.pawnType.text}}</div>
 			</div>
 		</div>
 	</div>

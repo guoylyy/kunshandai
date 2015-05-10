@@ -30,8 +30,8 @@ define(['app'], function(app) {
               refreshData();  
             }else{
               SweetAlert.swal({
-                title: data.message,
-                text: '',
+                title: '删除失败',
+                text: data.message,
                 type: 'warning',
                 confirmButtonColor: '#DD6B55',
                 showCancelButton: false

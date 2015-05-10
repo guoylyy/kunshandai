@@ -5,6 +5,10 @@ define(['app','underscore'],function(app,_){
 
 		$scope.control = control;
 
+		$scope.unique = true;
+
+		$scope.waitingResponse = false;
+
 		if($scope.control.edit || $scope.control.view) {
 			ContactService.getAttachments($scope.contact.objectId).then(function (data){
 				$scope.contact.attachments = data;
@@ -29,19 +33,20 @@ define(['app','underscore'],function(app,_){
 		}
 
 		$scope.checkContactUnique = function(){
-			if($scope.oldCertificateNum === $scope.contact.certificateNum){
-				$scope.unique = true;
-				return;
-			}
+			$scope.waitingResponse = true;
+			
 			var id = $scope.contact.certificateNum;
-			if(!id){
+			if(!id || $scope.oldCertificateNum === $scope.contact.certificateNum){
 				$scope.unique = true;
-				return;
+				$scope.waitingResponse = false;
+				return $scope.unique;
 			}
 			return ContactService.getByCertification(id).then(function(data){
 				$scope.unique = false;
+				$scope.waitingResponse = false;
 			},function(){
 				$scope.unique = true;
+				$scope.waitingResponse = false;
 			});
 		}
 

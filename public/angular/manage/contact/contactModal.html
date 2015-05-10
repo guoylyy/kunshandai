@@ -62,7 +62,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label class="control-label">身份证</label>
-            <input type="text" class="form-control" placeholder="身份证" ng-model="contact.certificateNum" name="id" ng-init="oldCertificateNum = contact.certificateNum" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" required ng-blur="checkContactUnique()" ui-validate="'unique'" ui-validate-watch="'unique'">
+            <input type="text" class="form-control" placeholder="身份证" ng-model="contact.certificateNum" name="id" ng-init="oldCertificateNum = contact.certificateNum" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" required  ng-blur="checkContactUnique()" ui-validate="'unique'" ui-validate-watch="'unique'" >
             <div ng-show="editForm.$submitted || editForm.id.$touched">
               <div class="text-danger" ng-show="editForm.id.$error.required">请填身份证</div>
               <div class="text-danger" ng-show="editForm.id.$error.pattern">请填写正确的身份证号</div>
@@ -140,7 +140,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" ng-click="cancel()" ng-show="control.view">关闭</button>
-    <button type="submit" class="btn btn-success" ng-click="finishEdit()" ng-show="control.edit" ng-disabled="editForm.$invalid">完成编辑</button>
+    <button type="submit" class="btn btn-success" ng-click="finishEdit()" ng-show="control.edit" ng-disabled="editForm.$invalid || waitingResponse">完成编辑</button>
     <button type="button" class="btn btn-warning" ng-click="startEdit()" ng-show="control.view">编辑</button>
     <button type="button" class="btn btn-warning" ng-click="finishCreate()" ng-show="control.create" ng-disabled="editForm.$invalid">立即新建</button>
   </div>

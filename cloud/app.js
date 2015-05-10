@@ -36,7 +36,7 @@ if (__production) {
     app.set('views', 'cloud/views');
 }
 // app.set('views', 'app/angular/account');
-// app.engine('.html', ejs.renderFile);
+// app.engine('html', ejs.renderFile);
 app.set('view engine', 'ejs');        //将渲染引擎设为html
 app.use(express.bodyParser());        // 读取请求body的中间件
 app.use(expressValidator);
@@ -89,6 +89,15 @@ app.get('/manage', function(req, res){
   }
   res.render('manage.ejs',{user:user.attributes});
 });
+app.get('/manage/*', function(req, res){
+  var user = account.isLogin();
+  if(!user){
+    res.redirect('/login');
+    return;
+  }
+  res.render('manage.ejs',{user:user.attributes});
+});
+
 app.get('/loan', function(req, res){
   var user = account.isLogin();
   if(!user){
@@ -118,6 +127,12 @@ app.get('/help', function(req, res){
   res.render('help.ejs');
 });
 
+// app.use('/styles',express.static('public/styles'));
+// app.use(express.static('public/lib'));
+// app.all('/*', function(req, res, next) { 
+//     // res.render('empty_layout.ejs');
+//     res.sendFile('index.html', { root: __dirname + '/html' });
+// });
 
 /***************************************************
  * 账号相关的操作

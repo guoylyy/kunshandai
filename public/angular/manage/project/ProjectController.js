@@ -1,8 +1,8 @@
 'use strict';
 
 define(['app'],function(app) {
-	return app.controller('ProjectController', ['$scope','$state','$stateParams','loans','loanTypes','timeRanges','$modal','LoanService',
-	 function($scope,$state,$stateParams,loans,loanTypes,timeRanges,$modal,LoanService){
+	return app.controller('ProjectController', ['$scope','$state','$stateParams','loans','loanTypes','timeRanges','$modal','LoanService','DictService',
+	 function($scope,$state,$stateParams,loans,loanTypes,timeRanges,$modal,LoanService,DictService){
 		
 		$scope.currentState	= $state.current;
 		
@@ -75,6 +75,9 @@ define(['app'],function(app) {
 								}
 							process[processName] = true;
 							return process;
+						},
+						interestCalTypes:function(){
+							return DictService.get('interestCalTypes');
 						}
 					}
 				});

@@ -138,6 +138,17 @@ define(['../../app'],function(app){
 				});
 				return deferred.promise;
 			},
+			getByPage: function(page) {
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+contactUrl+"/list/page/"+page).then(function(res){
+					deferred.resolve(res.data.data);
+				}, function(res){
+					deferred.reject(res);
+				});
+
+				return deferred.promise;
+			},
 			getByCertification:function(certificateNum){
 				if(!certificateNum){
 					return;

@@ -1,13 +1,36 @@
 define(['app'], function(app) {
-  return app.controller('ContactController', ['$scope', 'contacts', 'SweetAlert', '$modal', 'ContactService', '$timeout',
-    function($scope, contacts, SweetAlert, $modal, ContactService, $timeout) {
+  return app.controller('ContactController', ['$scope', 'contacts', 'SweetAlert', '$modal', 'ContactService', '$state', '$stateParams',
+    function($scope, contacts, SweetAlert, $modal, ContactService, $state, $stateParams) {
+      $scope.currentState = $state.current;
 
-      $scope.contacts = contacts;
+      if($scope.currentState.name == 'contact') {
+        $scope.contacts = contacts.values;
 
-      $scope.totalNum = $scope.contacts.length;
-      $scope.currPage = 1;
-      $scope.numPerPage = 10;
-      $scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
+        $scope.currPage = $stateParams.page || 1;
+        $scope.totalNum = contacts.totalNum;
+        $scope.pageSize = contacts.pageSize;
+      }else if($scope.currentState.name == 'searchContact'){
+        $scope.contacts = contacts;
+      }
+
+      $scope.search = {
+        type: {
+          text: '',
+          value: ''
+        },
+        keyword: ''
+      };
+
+      $scope.$watch('search',function(){
+        if($stateParams.keyword){
+          $scope.search.keyword = $stateParams.keyword;
+        }
+        if($stateParams.type){
+          $scope.changeSearchType($stateParams.type);
+        }else{
+          $scope.changeSearchType('name');
+        }
+      })
 
       $scope.view = function(contactId, controlName) {
         openContactModal(contactId, 'view');
@@ -27,7 +50,7 @@ define(['app'], function(app) {
         }, function() {
           ContactService.remove(contactId).then(function(data) {
             if(data.code == 200){
-              refreshData();  
+                $state.go($state.current, {page:$scope.currPage}, {reload: true});
             }else{
               SweetAlert.swal({
                 title: '删除失败',
@@ -46,7 +69,31 @@ define(['app'], function(app) {
       }
 
       $scope.pageChanged = function() {
-        $scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
+        $state.go($state.current, {page:$scope.currPage}, {reload: true});
+      }
+
+      $scope.changeSearchType = function(type){
+        if (type === 'name') {
+          $scope.search.type.value = 'name';
+          $scope.search.type.text = '姓名';
+        } else if(type === 'certificate') {
+          $scope.search.type.value = 'certificate';
+          $scope.search.type.text = '身份证';
+        }
+      }
+
+      $scope.startSearch = function(){
+        if($scope.search.keyword == '') {
+          $state.go(
+          "contact",
+          {page:1},
+          {reload: true});
+        }else{
+          $state.go(
+          "searchContact",
+          {keyword:$scope.search.keyword,type:$scope.search.type.value},
+          {reload: true});
+        }
       }
 
       var openContactModal = function(contactId, controlName) {
@@ -85,29 +132,18 @@ define(['app'], function(app) {
         });
 
         contactModal.result.then(function(edited) {
-
           if (!contactId) {
-            ContactService.create(edited).then(function() {
-              refreshData();
+            ContactService.create(edited).then(function(res) {
+              $state.go($state.current, {page:$scope.currPage}, {reload: true});
             });
           } else {
-              ContactService.update(edited).then(function() {
-              refreshData();
+            ContactService.update(edited).then(function(res) {
+              $state.go($state.current, {page:$scope.currPage}, {reload: true});
             });
           }
         }, function() {
 
         })
-      }
-
-      var refreshData = function() {
-        ContactService.getAll().then(function(data) {
-          $scope.contacts = data;
-          $scope.currContacts = $scope.contacts.slice(($scope.currPage - 1) * $scope.numPerPage, $scope.currPage * $scope.numPerPage);
-          $timeout(function() {
-            $scope.$apply();
-          }, 0)
-        });
       }
     }
   ])

@@ -281,6 +281,10 @@ define(['app','underscore'],function(app,_){
 		 	.state('manage',{
 		    	url:"/manage",
 		    	templateUrl: "/angular/manage/index/index.html"
+		    })
+		    .state('help',{
+		    	url:"/help",
+		    	templateUrl: "/angular/common/template/help.html"
 		    });
 
 	}]);

@@ -489,8 +489,19 @@
 }
 </code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel__loan_generate_bill"><span class="parent">/loan</span>/generate_bill</a> <span class="methods"><a href="#_loan_generate_bill_post"><span class="badge badge_post">post</span></a></span></h4></div><div id="panel__loan_generate_bill" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>生成放款账单（目前只支持xxhb）（新建贷款第二步）</p></div><div class="list-group"><div onclick="window.location.href = '#_loan_generate_bill_post'" class="list-group-item"><span class="badge badge_post">post</span><div class="method_description"></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="_loan_generate_bill_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post</span> <span class="parent">/loan</span>/generate_bill</h4></div><div class="modal-body"><ul class="nav nav-tabs"><li class="active"><a href="#_loan_generate_bill_post_request" data-toggle="tab">Request</a></li><li><a href="#_loan_generate_bill_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_loan_generate_bill_post_request"><h3>Query Parameters</h3><ul><li><strong>loanId</strong>: <em>required (string )</em></li><li><strong>loanerId</strong>: <em>required (string )</em></li><li><strong>assurerId</strong>: <em>(string )</em></li><li><strong>loanPawnId</strong>: <em>required (string )</em></li><li><strong>isModifiedLoan</strong>: <em>required (boolean )</em></li><li><strong>preLoanData</strong>: <em>required (string )</em><p><strong>Example</strong>:</p><pre>{
   "loanId" : "fdafdsafas",
-  "finishBill" : {},
-  "finishPayedMoney":9992.10,
+  "finishBill" : {
+    "income": { 
+      "amount": 0, 
+      "overdueMoney": 0,
+      "interest": 0  
+    },
+    "outcome": { 
+      "assureCost": 0, 
+      "keepCost": 0,
+      "interest" : 0 
+    },
+    "sum":0
+  },
   "version" : 0
 }
 </pre></li></ul></div><div class="tab-pane" id="_loan_generate_bill_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
@@ -657,7 +668,8 @@
       "assureCost": 0, 
       "keepCost": 0,
       "interest" : 0 
-    }
+    },
+    "sum":0
   },
   "code": 200
 }
@@ -675,7 +687,8 @@
       "outcome": {
         "assureCost": 0, //退还的保证金
         "keepCost": 0 //退还的暂存金额
-      }
+      },
+      "sum": 0 //总结清支付费用
     }
 }
 </pre></li></ul></div><div class="tab-pane" id="_loan_payBack__loanId__finishBill_post_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
@@ -951,6 +964,10 @@
 </code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
   "code": 404,
   "message": "contact not found"
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/500" target="_blank">500</a></h2><h3>Body</h3><p><strong>Type: application/json</strong></p><p><strong>Example</strong>:</p><pre><code>{
+  "code": 404,
+  "message": "该联系人还有项目，不能删除!"
 }
 </code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="_contact__id__put"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_put">put</span> <span class="parent">/contact</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>用户更新一个联系人</p></div><ul class="nav nav-tabs"><li class="active"><a href="#_contact__id__put_request" data-toggle="tab">Request</a></li><li><a href="#_contact__id__put_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="_contact__id__put_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (string )</em></li></ul><h3>Query Parameters</h3><ul><li><strong>data</strong>: <em>(string )</em><p>以json形式传输联系人信息创建联系人,直接发送下面的json，不用加data</p><p><strong>Example</strong>:</p><pre>{
   "name":"test",

@@ -704,7 +704,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
               rLoan.get('payWay') == mconfig.payBackWays.zqmxhb.value){
           rc.income.amount = rLoan.get('amount');
         }
-        console.log(rc);
+        rc = mloan.calBillSum(rc);
         mutil.renderData(res, rc);  
       },function(error){
         mutil.renderError(res, error);
@@ -723,6 +723,7 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
     }else{
       rLoan.set('finishBill', req.body.payBackData);
       rLoan.set('status', mconfig.loanStatus.completed.value);
+      rLoan.set('payedMoney', rLoan.get('payedMoney') + req.body.payBackData.sum);
       var relation = rLoan.relation('loanPayBacks');
       var q = relation.query();
       q.notEqualTo('status',mconfig.loanPayBackStatus.completed.value);
@@ -732,7 +733,7 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
             //最后一期算结清的钱
             if(list[i].order == rLoan.get('payTotalCircle')){
               list[i].set('status',mconfig.loanPayBackStatus.completed.value);
-              list[i].set('payBackMoney',req.body.payBackData.income.amount);  
+              list[i].set('payBackMoney',req.body.payBackData.sum);  
             }else{
               list[i].set('status',mconfig.loanPayBackStatus.closed.value);
               list[i].set('payBackMoney',0);
@@ -853,6 +854,44 @@ app.put(config.baseUrl + '/contact/:id', function (req, res){
   });
 });
 
+//删除一个联系人
+app.delete(config.baseUrl + '/contact/:id', function (req, res){
+  var u = check_login(res);
+  var contact = AV.Object.createWithoutData('Contact',req.params.id);
+  var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('loaner', contact);
+  var loanAssurerQuery = new AV.Query('Loan');
+  loanAssurerQuery.equalTo('assurer', contact);
+  //判断是不是在联系人列表中
+  loanQuery.count().try(function(loanerCount){
+    if(loanerCount > 0){
+      return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
+    }else{
+      return loanAssurerQuery.count();
+    }
+  }).try(function(assurerCount){
+    console.log(assurerCount);
+    if(assurerCount > 0){
+      return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
+    }else{
+      return AV.Promise.as(true);
+    }
+  }).catch(function(error) {
+    return AV.Promise.as(false);
+  }).try(function(rc){
+    if(!rc){
+      return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
+    }else{
+      return AV.Object.destroyAll([contact]);
+    }
+  }).catch(function(error){
+    return mutil.renderErrorData(res, error);
+  }).try(function(rc){
+    return mutil.renderSuccess(res);
+  });
+});
+
+
 app.get(config.baseUrl + '/contact/:id', function (req, res){
   var u = check_login(res);
   var query = new AV.Query('Contact');
@@ -882,7 +921,7 @@ app.get(config.baseUrl + '/contact/certificate/:certificateNum', function (req, 
   query.find({
     success: function(results){
       if(results.length==0){
-        mutil.renderError(res,{code:404, message:'contact not found'});
+        mutil.renderErrorData(res,{code:404, message:'contact not found'});
       }else{
         mutil.renderData(res, results);  
       }
@@ -958,26 +997,6 @@ app.get(config.baseUrl + '/contact/list/page/:pn', function (req, res){
           mutil.renderError(res, error);
         }
       });
-    }
-  });
-});
-
-//删除一个联系人
-app.delete(config.baseUrl + '/contact/:id', function (req, res){
-  var u = check_login(res);
-  var query = new AV.Query('Contact');
-  query.equalTo("owner",u);
-  query.equalTo("objectId",req.params.id);
-  query.destroyAll({
-    success: function(rc){
-      if(rc==undefined){
-        mutil.renderError(res, {code:404, message:'contact not found'});
-      }else{
-        mutil.renderSuccess(res);
-      }
-    },
-    error: function(error){
-      mutil.renderError(res, error);
     }
   });
 });

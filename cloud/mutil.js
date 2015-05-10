@@ -52,6 +52,9 @@ function renderResult(res, result, code) {
 function renderData(res, data) {
   res.status(200).json({data: data, code:200});
 }
+function renderErrorData(res, data){
+  res.status(200).json(data);
+}
 function renderDataWithCode(res, data, code) {
   res.status(code).json({data: data, code:code});
 }
@@ -59,6 +62,7 @@ function wrapperStrToDate(dateStr){
   return new Date(dateStr);
 }
 
+exports.renderErrorData = renderErrorData;
 exports.doErr=doErr;
 exports.renderDataWithCode = renderDataWithCode;
 exports.renderNotFound=renderNotFound;

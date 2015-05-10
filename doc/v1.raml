@@ -662,8 +662,19 @@ traits:
           example: |
             {
               "loanId" : "fdafdsafas",
-              "finishBill" : {},
-              "finishPayedMoney":9992.10,
+              "finishBill" : {
+                "income": { 
+                  "amount": 0, 
+                  "overdueMoney": 0,
+                  "interest": 0  
+                },
+                "outcome": { 
+                  "assureCost": 0, 
+                  "keepCost": 0,
+                  "interest" : 0 
+                },
+                "sum":0
+              },
               "version" : 0
             }
       responses:
@@ -956,7 +967,8 @@ traits:
                           "assureCost": 0, 
                           "keepCost": 0,
                           "interest" : 0 
-                        }
+                        },
+                        "sum":0
                       },
                       "code": 200
                     }
@@ -985,7 +997,8 @@ traits:
                       "outcome": {
                         "assureCost": 0, //退还的保证金
                         "keepCost": 0 //退还的暂存金额
-                      }
+                      },
+                      "sum": 0 //总结清支付费用
                     }
                 }
           responses:
@@ -1404,6 +1417,14 @@ traits:
                 {
                   "code": 404,
                   "message": "contact not found"
+                }
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "code": 404,
+                  "message": "该联系人还有项目，不能删除!"
                 }
 
     put:

@@ -25,8 +25,18 @@ define(['app'], function(app) {
           confirmButtonColor: '#DD6B55',
           showCancelButton: true
         }, function() {
-          ContactService.remove(contactId).then(function() {
-            refreshData();
+          ContactService.remove(contactId).then(function(data) {
+            if(data.code == 200){
+              refreshData();  
+            }else{
+              SweetAlert.swal({
+                title: data.message,
+                text: '',
+                type: 'warning',
+                confirmButtonColor: '#DD6B55',
+                showCancelButton: false
+              });
+            }
           });
         });
       }

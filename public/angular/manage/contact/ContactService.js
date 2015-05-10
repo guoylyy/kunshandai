@@ -113,8 +113,8 @@ define(['../../app'],function(app){
 			remove : function(id){
 				var deferred = $q.defer();
 				$http.delete(ApiURL+contactUrl+"/"+id).then(function(res){
-					deferred.resolve(res.data.data);
-				},function(){
+					deferred.resolve(res.data);
+				},function(res){
 					deferred.reject(res);
 				});
 				return deferred.promise;
@@ -123,8 +123,8 @@ define(['../../app'],function(app){
 				var deferred = $q.defer();
 				$http.get(ApiURL+contactUrl+"/"+id).then(function(res){
 					deferred.resolve(res.data.data);
-				},function(){
-					deferred.reject(res);
+				},function(res){
+					deferred.reject(res.data);
 				});
 				return deferred.promise;
 			},
@@ -145,7 +145,7 @@ define(['../../app'],function(app){
 				var deferred = $q.defer();
 
 				$http.get(ApiURL+contactUrl+"/certificate/"+certificateNum).then(function(res){
-					if(res.status === 404){
+					if(res.data.code === 404){
 						deferred.reject(res);
 					}else{
 						deferred.resolve(res.data.data);

@@ -154,7 +154,7 @@ define(['app','underscore'],function(app,_){
 		    })
 
 		    .state('draftLoans',{
-		    	url:"#loan/draft?page",
+		    	url:"/manage/loan/draft?page",
     			templateUrl: "/angular/manage/loan/draft/draft.html",
     			resolve:{
     				draftLoans:function(LoanService,$stateParams){
@@ -166,50 +166,50 @@ define(['app','underscore'],function(app,_){
     			controller: "DraftLoanCtrl"
 		    })
 		    .state('collectPending',{
-		    	url:"#collect/pending?page&startDate&endDate&loanType",
+		    	url:"/manage/collect/pending?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getUnpayedList"),
     			controller: "CollectController"
 		    })
 		    .state('collectDone',{
-		    	url:"#collect/done?page&startDate&endDate&loanType",
+		    	url:"/manage/collect/done?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getPayedList"),
     			controller: "CollectController"
 		    })
 
 		    .state('allProjects',{
-		    	url:"#projects/all?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/all?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getLoans"),
     			controller: "ProjectController"
 		    })
  			.state('normalProjects',{
-		    	url:"#projects/normal?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/normal?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getNormalLoans"),
     			controller: "ProjectController"
 		    })
  			.state('overdueProjects',{
-		    	url:"#projects/overdue?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/overdue?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getOverdueLoans"),
     			controller: "ProjectController"
 		    })
  			.state('badbillProjects',{
-		    	url:"#projects/badbill?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/badbill?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getBadbillLoans"),
     			controller: "ProjectController"
 		    })
  		    .state('completedProjects',{
-		    	url:"#projects/completed?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/completed?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getCompletedLoans"),
     			controller: "ProjectController"
 		    })
 		    .state('searchProjects',{
-		    	url:"#projects/search?page&type&keyword",
+		    	url:"/manage/projects/search?page&type&keyword",
 				templateUrl: "/angular/manage/project/project.html",
 				resolve:{
 					loans:function(LoanService,$stateParams){
@@ -227,7 +227,7 @@ define(['app','underscore'],function(app,_){
 				controller: "ProjectController"
 		    })
 		    .state('contact',{
-		    	url:"#contact?page",
+		    	url:"/manage/contact?page",
     			templateUrl: "/angular/manage/contact/contact.html",
     			resolve:{
 						contacts:function(ContactService, $stateParams){
@@ -239,7 +239,7 @@ define(['app','underscore'],function(app,_){
     			controller: "ContactController"
 		    })
 		    .state('searchContact',{
-		    	url:"#contact/search?type&keyword",
+		    	url:"/manage/contact/search?type&keyword",
     			templateUrl: "/angular/manage/contact/contact.html",
     			resolve:{
 						contacts:function(ContactService, $stateParams){

@@ -145,7 +145,7 @@ define(['../../app'],function(app){
 				var deferred = $q.defer();
 
 				$http.get(ApiURL+contactUrl+"/certificate/"+certificateNum).then(function(res){
-					if(res.status === 404){
+					if(res.data.code === 404){
 						deferred.reject(res);
 					}else{
 						deferred.resolve(res.data.data);

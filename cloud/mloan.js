@@ -195,8 +195,18 @@ var finishBillParms = {
         assureCost : 0,
         keepCost : 0,
         interest : 0
-    }
+    },
+    sum: 0
 };
+function calBillSum(bill){
+    var income = bill.income;
+    var outcome = bill.outcome;
+    var sum = (income.amount + income.overdueMoney + income.interest) - 
+                (outcome.assureCost + outcome.keepCost + outcome.interest);
+    bill.sum = sum;
+    return bill;            
+}
+
 function fillBasicMap(loanObj){
     var rc = finishBillParms;
     rc.outcome.assureCost = loanObj.get('assureCost');
@@ -479,6 +489,7 @@ function bindPawnAttachments(pawn, attachmentIds){
     }
 };
 
+exports.calBillSum = calBillSum;
 exports.calculateFinishBillParms = calculateFinishBillParms;
 exports.calculateOverdueMoney = calculateOverdueMoney;
 exports.updateLoan = updateLoan;

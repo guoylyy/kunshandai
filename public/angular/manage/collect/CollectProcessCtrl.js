@@ -132,7 +132,7 @@ define(['app','underscore'],function(app,_) {
 		$scope.completeLoan = function(){
 
 			LoanService.completeLoan($scope.loan.id,$scope.completeCount.date,$scope.completeData)
-			.then(function(){
+			.then(function(finishBill){
 				SweetAlert.swal({
 				   title: "结清成功",
 				   text: "",
@@ -140,7 +140,7 @@ define(['app','underscore'],function(app,_) {
 				   confirmButtonText: "好的",
 				   closeOnConfirm: true}, 
 				function(){ 
-				   $modalInstance.close(true);
+				   $modalInstance.close($scope.completeData);
 				});
 				
 			},function(){

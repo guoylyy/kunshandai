@@ -7,8 +7,8 @@
   <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
   <div class="ks-divider"></div>
   
-  <div ng-repeat="payment in payments">
-   <ui-include src="'angular/manage/common/partial/payment.html'"></ui-include>
+  <div ng-repeat="payment in payments" ng-init="loan.preLoanData.finishPayedMoney = loan.preLoanData.finishPayedMoney || 0">
+   <ui-include src="'/angular/manage/common/partial/payment.html'"></ui-include>
   <div class="row">
      <div class="col-md-offset-8 col-md-4">
       <div class="form-group has-success">
@@ -16,7 +16,7 @@
         <div class="input-group has-danger">
           <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
           <input type="text" class="form-control" placeholder="放款金额" name="amount" float-number-input ng-model="loanData.amount"
-          ng-init="loanData.amount = payment.outMoney + payment.keepCost + payment.otherCost+ payment.serviceCost+payment.assureCost+payment.interestsMoney "required >
+          ng-init="loanData.amount = (payment.outMoney + payment.keepCost + payment.otherCost + payment.serviceCost + payment.assureCost+payment.interestsMoney - loan.preLoanData.finishPayedMoney | number:2)" required>
           <span class="input-group-addon">元</span>
         </div>
         <div ng-show="loanForm.$submitted || loanForm.amount.$touched">

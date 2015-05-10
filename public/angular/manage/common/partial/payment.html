@@ -45,11 +45,17 @@
         <td></td>
         <td>{{row6 = row5 - payment.keepCost | number:2}}</td>
       </tr>
+      <tr ng-show="loan.isModifiedLoan" class="warning">
+        <th scope="row">上期结余 <a class="text-info small" href="/loan?id={{loan.preLoanData.loanId}}" target="_blank">详情</a></th>
+        <td>{{loan.preLoanData.finishPayedMoney | number:2}}</td>
+        <td></td>
+        <td>{{row7 = row6 + loan.preLoanData.finishPayedMoney | number:2}}</td>
+      </tr>
       <tr>
         <th scope="row">放款金额（元）</th>
         <td></td>
         <td></td>
-        <td>{{row6 | number:2}}</td>
+        <td>{{row7 || row6 | number:2}}</td>
       </tr>
     </tbody>
   </table>

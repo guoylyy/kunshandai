@@ -1,6 +1,6 @@
 'use strict'
 
-define(['app'],function(app){
+define(['app','underscore'],function(app,_){
 	
 	return app.config(['$stateProvider','$urlRouterProvider','$locationProvider',
 		function($stateProvider,$urlRouterProvider,$locationProvider){
@@ -42,8 +42,17 @@ define(['app'],function(app){
 				}	
 			}
 		};
+		var resolveLoan = function(){
+			return{
+				loan:function(LoanService,$stateParams){
+	    			return LoanService.getLoan($stateParams.id).then(function(data){
+	    				return data;
+	    			})
+		    	}
+			}
+		},
 
-		var resolveSelectItems = function(){
+		resolveSelectItems = function(){
 			return {
 	    		loanTypes:function(DictService){
 	    			 return DictService.get('loanTypes');
@@ -261,7 +270,29 @@ define(['app'],function(app){
 		    	resolve:resolveSelectItems(),
 		    	controller: "CreateLoanCtrl"
 
-		    }).state('manage',{
+		    })
+		 	 // 调整项目
+		 	.state('modifyProject',{
+		    	url:"/loan/:id/modify",
+		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
+		    	resolve:_.extend(resolveLoan(),resolveSelectItems()),
+		    	controller: "ModifyLoanCtrl"
+
+		    })
+		    .state('modifyProjectMore',{
+		    	url:"#more",
+		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
+		    	resolve:{},
+		    	controller: "ModifyLoanMoreCtrl"
+
+		    })
+		    .state('modifyProjectFinal',{
+		    	url:"#final",
+		    	templateUrl: "/angular/manage/common/contract/contract.html",
+		    	resolve:resolveSelectItems(),
+		    	controller: "ModifyLoanFinalCtrl"
+		    })
+		 	.state('manage',{
 		    	url:"/manage",
 		    	templateUrl: "/angular/manage/index/index.html"
 		    });

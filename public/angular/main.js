@@ -79,6 +79,7 @@ require([
 		 'manage/common/contract/ContractController',
 		
 		 'manage/loan/CreateLoanCtrl',
+		 'manage/loan/ModifyLoanCtrl',
 		 'manage/loan/draft/DraftLoanCtrl',
 		 'manage/loan/LoanService',
 		 'manage/loan/pawn/PawnService',

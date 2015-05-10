@@ -1,4 +1,4 @@
-<form name="moreInfoForm" novalidate ng-submit="moreInfoForm.$valid && createContract()">
+<form name="moreInfoForm" novalidate ng-submit="moreInfoForm.$valid &&  nav('final')">
 <!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
 	<div class="container-fluid">
 	<div class="ks-dividing">
@@ -39,7 +39,7 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label class="control-label">*担保人</label><br>
-								<a ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
+								<a ng-init="br.hasGr = (br.hasGr || loanInfo.assurer)"ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.hasGr.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
 								</div>
@@ -150,7 +150,7 @@
 		<div ng-include="template.grUrl"></div>
 	</div>
 	
-	<div ng-init="pType = loanInfo.loanType" ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
+	<div ng-init="pType = loanInfo.loanType || loanInfo.loanType" ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
 	<div class="ks-dividing">
 		<h4>抵押物</h4>
 	</div>
@@ -159,10 +159,12 @@
 			<div class="ks-panel panel panel-default">
 				<div class="panel-heading">抵押物信息</div>
 				<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
-					<div ng-include="template.houseUrl"></div>
+					<!-- <div ng-include="template.houseUrl"></div> -->
+					<ui-include src="'/angular/manage/loan/pawn/house_pawn.html'"></ui-include>
 				</div>
 				<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
-					<div ng-include="template.carUrl"></div>
+					<!-- <div ng-include="template.carUrl"></div> -->
+					<ui-include src="'/angular/manage/loan/pawn/car_pawn.html'"></ui-include>
 				</div>
 			</div>
 		</div>
@@ -192,7 +194,7 @@
 			<button type="button" class="btn btn-primary"  ng-click="nav('prev')" ng-disabled="status.loanCreating">上一步</button>
 		</div>
 		<div class="col-md-6" >
-			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating">生成项目 </button>
+			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating">{{('createLoanContact' | isState)?'生成项目':'结清并生成新的项目'}}</button>
 		</div>
 	</div>
 	</div>

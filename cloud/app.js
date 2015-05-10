@@ -499,6 +499,7 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
           lrRelation.query().find().then(function(lrs){
             if(lrs.length == 1){
               var record = lrs[0];
+              console.log(outMoney);
               record.set('outMoney', outMoney);
               record.set('payDate', new Date());
               record.set('loan', floan);

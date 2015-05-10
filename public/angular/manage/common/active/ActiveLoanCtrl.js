@@ -17,8 +17,9 @@ define(['app'],function(app){
 		$scope.activeModalFinish = function(loanId){
 			
 			$scope.status.loaning = true;
-			
-			LoanService.assure(loanId,$scope.loanData.amount).then(function(res){
+			console.log($scope.loanData);
+			var amount = parseFloat($scope.loanData.amount.replace(',',''));
+			LoanService.assure(loanId, amount).then(function(res){
 			
 				$modalInstance.close(true);
 

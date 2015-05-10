@@ -263,7 +263,7 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				return deferred.promise;
 			},
 			assure: function(loanId,outMoney){
-				outMoney = parseFloat(outMoney);
+				//var outMoney = parseFloat(outMoney);
 				var deferred = $q.defer();
 				$http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId,outMoney:outMoney}))
 				.then(function(res){

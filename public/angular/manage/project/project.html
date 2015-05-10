@@ -79,7 +79,7 @@
 						<ul class="dropdown-menu">
 							<li><a role="menuitem" ng-click="collectModal(loan.id,'list')" ng-show="loan.status.value === 1">收款</a></li>
 							<li><a role="menuitem" ng-click="collectModal(loan.id,'complete')" ng-show="loan.status.value === 1">结清</a></li>
-							<li ><a role="menuitem" ng-show="loan.status.value === 1">调整</a></li>
+							<li ><a role="menuitem" ng-show="loan.status.value === 1" href="/loan/{{loan.id}}/modify" target="_blank">调整</a></li>
 						</ul>
 					</div>
 				</td>

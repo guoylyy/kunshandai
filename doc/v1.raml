@@ -662,8 +662,19 @@ traits:
           example: |
             {
               "loanId" : "fdafdsafas",
-              "finishBill" : {},
-              "finishPayedMoney":9992.10,
+              "finishBill" : {
+                "income": { 
+                  "amount": 0, 
+                  "overdueMoney": 0,
+                  "interest": 0  
+                },
+                "outcome": { 
+                  "assureCost": 0, 
+                  "keepCost": 0,
+                  "interest" : 0 
+                },
+                "sum":0
+              },
               "version" : 0
             }
       responses:

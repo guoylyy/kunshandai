@@ -11,7 +11,7 @@ define(['app','underscore'],function(app,_){
 
 
 		$scope.$watch("loanInfo",function(){
-			if($scope.loanInfo){
+			if($scope.loanInfo && $scope.loanInfo.pawn){
 				PawnService.getPawn($scope.loanInfo.pawn.objectId).then(function(data){
 					$scope.pawn.attachments	= data;
 				})

@@ -97,6 +97,15 @@ app.get('/loan', function(req, res){
   }
   res.render('empty_layout.ejs',{user:user.attributes});
 });
+app.get('/loan/:id/modify', function(req, res){
+  var user = account.isLogin();
+  if(!user){
+    res.redirect('/login');
+    return;
+  }
+  res.render('modify_loan.ejs',{user:user.attributes});
+});
+
 app.get('/createLoan', function(req, res){
  var user = account.isLogin();
   if(!user){

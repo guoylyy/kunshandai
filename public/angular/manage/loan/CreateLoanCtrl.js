@@ -84,13 +84,6 @@ define(['app',"underscore"],function(app,_) {
 			$scope.selected = {};
 		}
 
-		$scope.nav = function(direction){
-			if(direction === 'prev'){
-				$state.go('createLoan');
-			}else if(direction === 'next'){
-				$state.go('createLoanContact');
-			}
-		}
 
 		$scope.count = function(){
 			var loan = angular.copy($scope.loanInfo);
@@ -104,24 +97,7 @@ define(['app',"underscore"],function(app,_) {
 			circleChange();
 			dateChange();
 		})
-
-		$scope.$watch('selected.br',function(){
-			if(typeof $scope.selected.br === 'object'){
-				$scope.br = _.extend($scope.br,$scope.selected.br);
-				ContactService.getAttachments($scope.br.objectId).then(function(data){
-					$scope.br.attachments = data;
-				});
-			}
-		})
-		$scope.$watch('selected.gr',function(){
-			if(typeof $scope.selected.gr === 'object'){
-				$scope.gr = _.extend($scope.gr,$scope.selected.gr);
-				ContactService.getAttachments($scope.gr.objectId).then(function(data){
-					$scope.gr.attachments = data;
-				});
-			}
-		})
-
+		
 		$scope.$watch('loanInfo.spanMonth',function(){
 			circleChange();
 			dateChange();
@@ -140,6 +116,24 @@ define(['app',"underscore"],function(app,_) {
 			payTotalCircleChange();
 			dateChange();
 		})
+		$scope.$watch('selected.br',function(){
+			if(typeof $scope.selected.br === 'object'){
+				$scope.br = _.extend($scope.br,$scope.selected.br);
+				ContactService.getAttachments($scope.br.objectId).then(function(data){
+					$scope.br.attachments = data;
+				});
+			}
+		})
+		$scope.$watch('selected.gr',function(){
+			if(typeof $scope.selected.gr === 'object'){
+				$scope.gr = _.extend($scope.gr,$scope.selected.gr);
+				ContactService.getAttachments($scope.gr.objectId).then(function(data){
+					$scope.gr.attachments = data;
+				});
+			}
+		})
+
+		
 
 		$scope.afterStartDate = function(value){
 			return new Date(value) > new Date($scope.startDate);
@@ -193,12 +187,12 @@ define(['app',"underscore"],function(app,_) {
 		}
 
 		//生成合同
-		$scope.createContract = function(){
+		var createContract = function(){
 			
 			$scope.status.loanCreating = true;
 			
 			var contract 		= {};
-
+			
 			
 			LoanService.create($scope.loanInfo)
 			.then(function(data){
@@ -353,7 +347,7 @@ define(['app',"underscore"],function(app,_) {
 			
 			
 		}
-
+		
 		//放款
 		$scope.activeLoan = function(){
 			
@@ -397,5 +391,16 @@ define(['app',"underscore"],function(app,_) {
 				return data;
 			})
 		}
+
+		$scope.nav = function(direction){
+			if(direction === 'prev'){
+				$state.go('createLoan');
+			}else if(direction === 'next'){
+				$state.go('createLoanContact');
+			}else if(direction === 'final'){
+				createContract();
+			}
+		}
+
 	}]);
 });

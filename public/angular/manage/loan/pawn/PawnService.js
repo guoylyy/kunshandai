@@ -122,6 +122,27 @@ define(['app','underscore'],function(app,_){
 			data.pawnType.value = _.compact(pawnTypeValue);
 			return data;
 		}
+
+		var pawnTypeTransformReverse = function(data){
+			var i = 0;
+			var valueLength = data.pawnType.value.length;
+			var itemLength  = data.pawnType.items.length;
+			var pawnTypeValueReverse  = [];
+			for(i = 0;i < valueLength;i++){
+				
+				var index = _.indexOf(data.pawnType.items,data.pawnType.value[i]);
+				
+				if(index >= 0){
+					pawnTypeValueReverse[index] = true;
+				}else{
+					pawnTypeValueReverse[itemLength] = items,data.pawnType.value[i];
+				}
+			}
+
+			data.pawnType.value = pawnTypeValueReverse;
+			return data;
+		}
+
 		return {
 
 			getLocal:function(type){
@@ -145,7 +166,7 @@ define(['app','underscore'],function(app,_){
 
 				var attachments = _.extend({},data.attachments);
 				var attachmentIds = _.pluck(attachments,'objectId');
-				var sendData = _.omit(data,'attachments');
+				var sendData = _.omit(data,['attachments','local']);
 				sendData = pawnTypeTransform(sendData);
 				// sendData.pawnType.value =  _.compact(sendData.pawnType.value);
 
@@ -173,13 +194,16 @@ define(['app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
-			getPawnInfo:function(pawnId){
+			getPawnInfo:function(pawnId,transform){
 				var deferred = $q.defer();
 
 				$http.get(ApiURL+pawnUrl+"/"+pawnId).then(function(res){
-
-					deferred.resolve(res.data.data.data);
-
+					var data = res.data.data.data;
+					if(transform){
+						data = pawnTypeTransformReverse(data);
+					}
+					
+					deferred.resolve(data);
 				},function(res){
 					deferred.reject(res);
 				})

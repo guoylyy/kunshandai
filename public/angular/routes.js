@@ -218,11 +218,25 @@ define(['app'],function(app){
 				controller: "ProjectController"
 		    })
 		    .state('contact',{
-		    	url:"#contact",
+		    	url:"#contact?page",
     			templateUrl: "/angular/manage/contact/contact.html",
     			resolve:{
-					contacts:function(ContactService){
-		    			return ContactService.getAll();
+						contacts:function(ContactService, $stateParams){
+		    			return ContactService.getByPage($stateParams.page || 1).then(function(data){
+    						return data;
+    					});
+		    		}
+    			},
+    			controller: "ContactController"
+		    })
+		    .state('searchContact',{
+		    	url:"#contact/search?type&keyword",
+    			templateUrl: "/angular/manage/contact/contact.html",
+    			resolve:{
+						contacts:function(ContactService, $stateParams){
+		    			return ContactService.search($stateParams.type,$stateParams.keyword).then(function(data){
+			    			return data;
+			    		})
 		    		}
     			},
     			controller: "ContactController"

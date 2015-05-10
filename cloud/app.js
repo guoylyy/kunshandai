@@ -862,27 +862,31 @@ app.delete(config.baseUrl + '/contact/:id', function (req, res){
   var loanAssurerQuery = new AV.Query('Loan');
   loanAssurerQuery.equalTo('assurer', contact);
   //判断是不是在联系人列表中
-  loanQuery.count().then(function(loanerCount){
+  loanQuery.count().try(function(loanerCount){
     if(loanerCount > 0){
-      return mutil.renderError(res, {code:500, message:'该联系人还有关联的项目，不能删除!'})
+      return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
     }else{
       return loanAssurerQuery.count();
     }
-  }).then(function(assurerCount){
+  }).try(function(assurerCount){
     console.log(assurerCount);
     if(assurerCount > 0){
-      return mutil.renderError(res, {code:500, message:'该联系人还有关联的项目，不能删除!'})
+      return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
+    }else{
+      return AV.Promise.as(true);
+    }
+  }).catch(function(error) {
+    return AV.Promise.as(false);
+  }).try(function(rc){
+    if(!rc){
+      return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
     }else{
       return AV.Object.destroyAll([contact]);
     }
-  }).then(function(rc){
-    if(rc==undefined){
-      return mutil.renderError(res, {code:404, message:'contact not found'});
-    }else{
-      return mutil.renderSuccess(res);
-    }
-  }).catch(function(error) {
-    return mutil.renderError(res, error);
+  }).catch(function(error){
+    return mutil.renderErrorData(res, error);
+  }).try(function(rc){
+    return mutil.renderSuccess(res);
   });
 });
 

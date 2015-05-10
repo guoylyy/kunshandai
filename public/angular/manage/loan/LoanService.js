@@ -337,6 +337,26 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				});
 
 				return deferred.promise;
+			},
+			statictics:function(type, startDate, endDate){
+				var deferred = $q.defer();
+
+				var params = {startDate:startDate,endDate:endDate};
+				if(type == 'income') {
+					$http.get(ApiURL + loanUrl+"/statictics/income",{params:params}).then(function(res){
+						deferred.resolve(res.data.data);
+					},function(getCountResult){
+						deferred.reject(res);
+					});
+				}else if(type === 'outcome') {
+					$http.get(ApiURL + loanUrl+"/statictics/outcome",{params:params}).then(function(res){
+						deferred.resolve(res.data.data);
+					},function(getCountResult){
+						deferred.reject(res);
+					});
+				}
+
+				return deferred.promise;
 			}
 		}
 

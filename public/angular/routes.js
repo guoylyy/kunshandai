@@ -142,8 +142,46 @@ define(['app','underscore'],function(app,_){
 		     // manage module routes
 
 		    .state('index',{
-		    	url:"/manage",
+		    	url:"/manage?startDate&endDate",
     			templateUrl:  "/angular/manage/index/index.html",
+    			resolve: {
+    				incomeStatistics: function(LoanService, $stateParams){
+    					if(!$stateParams.startDate || !$stateParams.endDate) {
+    						var currDate = new Date();
+    						var startDate = new Date(currDate.getFullYear(),
+    																		 currDate.getMonth(),
+    																		 1);
+    						var endDate = new Date(currDate.getFullYear(),
+    																	 currDate.getMonth(),
+    																	 new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDate());
+    						return LoanService.statictics('income', startDate, endDate).then(function(data){
+	    						return data;
+	    					});
+    					}else{
+								return LoanService.statictics('income', $stateParams.startDate, $stateParams.endDate).then(function(data){
+	    						return data;
+	    					});
+    					}
+    				},
+    				outcomeStatistics: function(LoanService, $stateParams){
+    					if(!$stateParams.startDate || !$stateParams.endDate) {
+    						var currDate = new Date();
+    						var startDate = new Date(currDate.getFullYear(),
+    																		 currDate.getMonth(),
+    																		 1);
+    						var endDate = new Date(currDate.getFullYear(),
+    																	 currDate.getMonth(),
+    																	 new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDate());
+    						return LoanService.statictics('outcome', startDate, endDate).then(function(data){
+	    						return data;
+	    					});
+    					}else{
+								return LoanService.statictics('outcome', $stateParams.startDate, $stateParams.endDate).then(function(data){
+	    						return data;
+	    					});
+    					}
+    				}
+    			},
     			controller: 'IndexController'
 		    })
 

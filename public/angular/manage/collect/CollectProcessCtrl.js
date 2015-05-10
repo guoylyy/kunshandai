@@ -1,7 +1,7 @@
 
 define(['app','underscore'],function(app,_) {
 	return app.controller('CollectProcessCtrl', 
-		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process){
+		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process,interestCalTypes){
 		
 		$scope.loan 	= loan;
 		$scope.paybacks = paybacks;
@@ -13,6 +13,8 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.process 	= process;
 
+		$scope.interestCalTypes = interestCalTypes;
+
 		$scope.calendar	= {
 			opened:false
 		}
@@ -20,6 +22,7 @@ define(['app','underscore'],function(app,_) {
 		$scope.total = {};
 
 		$scope.completeData = {income:0,outcome:0};
+		$scope.completeCount = {date:'',interestType:''};
 
 		$scope.payData;
 
@@ -31,19 +34,30 @@ define(['app','underscore'],function(app,_) {
 			// }
 		})
 
-		var completeInputs = ['completeData.income.amount','completeData.income.overdueMoney','completeData.outcome.assureCost','completeData.outcome.keepCost'];
+		var completeInputs = ['completeData.income.amount','completeData.income.overdueMoney','completeData.income.interest',
+		'completeData.outcome.assureCost','completeData.outcome.keepCost','completeData.outcome.interest'];
 
 		$scope.$watchGroup(completeInputs,function(){
 			if($scope.total && $scope.completeData){
-				$scope.total.income = parseFloat($scope.completeData.income.amount) + parseFloat($scope.completeData.income.overdueMoney);
-				$scope.total.outcome = parseFloat($scope.completeData.outcome.assureCost) + parseFloat($scope.completeData.outcome.keepCost);	
+
+				$scope.total.income = parseFloat($scope.completeData.income.amount) 
+										+ parseFloat($scope.completeData.income.overdueMoney) 
+										+ parseFloat($scope.completeData.income.interest);
+
+				$scope.total.outcome = parseFloat($scope.completeData.outcome.assureCost) 
+										+ parseFloat($scope.completeData.outcome.keepCost)
+										+ parseFloat($scope.completeData.outcome.interest);	
+
+				$scope.completeData.sum = $scope.total.income-$scope.total.outcome;
 			}
 		})
 
-		var payInputs = ['payData.payMoney','payData.overdueMoney']
+		var payInputs = ['payData.payMoney','payData.overdueMoney','payData.interestsMoney']
 		$scope.$watchGroup(payInputs,function(){
 			if($scope.total && $scope.payData){
-				$scope.total.income = parseFloat($scope.payData.payMoney) + parseFloat($scope.payData.overdueMoney);
+				$scope.total.income = parseFloat($scope.payData.payMoney) 
+									+ parseFloat($scope.payData.overdueMoney)
+									+ parseFloat($scope.payData.interestsMoney);
 			}
 		})
 
@@ -59,9 +73,10 @@ define(['app','underscore'],function(app,_) {
 			}
 		});
 
-		$scope.$watch("completeDate",function(){
-			if($scope.completeDate){
-				LoanService.countCompleteMoney($scope.loan.id,$scope.completeDate)
+		var countCompleteWatch = ['completeCount.date','completeCount.interestType'];
+		$scope.$watchGroup(countCompleteWatch,function(){
+			if($scope.completeCount.date && $scope.completeCount.interestType){
+				LoanService.countCompleteMoney($scope.loan.id,$scope.completeCount.date,$scope.completeCount.interestType)
 				.then(function(res){
 					$scope.completedBill = res;
 					$scope.completeData ={
@@ -116,7 +131,7 @@ define(['app','underscore'],function(app,_) {
 		
 		$scope.completeLoan = function(){
 
-			LoanService.completeLoan($scope.loan.id,$scope.completeDate,$scope.completeData)
+			LoanService.completeLoan($scope.loan.id,$scope.completeCount.date,$scope.completeData)
 			.then(function(){
 				SweetAlert.swal({
 				   title: "结清成功",

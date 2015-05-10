@@ -1,0 +1,39 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>科目</th>
+        <th>借方</th>
+        <th>贷方</th>
+        <th>余额</th>
+      </tr>
+    </thead>
+    <tbody ng-init="total = completedBill.income.amount + completedBill.income.overdueMoney 
+     + completedBill.income.interest - completedBill.outcome.assureCost - completedBill.outcome.keepCost - completedBill.outcome.interest">
+      <tr>
+        <th scope="row">应收本金（元）</th>
+        <td></td>
+        <td>{{payBill.payMoney | number:2 }}</td>
+        <td>{{row1 = payBill.payMoney | number:2 }}</td>
+      </tr>
+      <tr>
+        <th scope="row">应收逾期费用（元）</th>
+        <td></td>
+        <td>{{payBill.overdueMoney | number:2}}</td>
+        <td>{{row2 = row1 + payBill.overdueMoney   | number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">利息（元）</th>
+        <td></td>
+        <td>{{payBill.interestsMoney | number:2}}</td>
+        <td>{{row3 = row2 + payBill.interestsMoney| number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">收款金额（元）</th>
+        <td></td>
+        <td></td>
+        <td>{{row3 | number:2}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

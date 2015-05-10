@@ -293,10 +293,10 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 					$log.error(res);
 				});
 			},
-			countCompleteMoney:function(loanId,payDate){
+			countCompleteMoney:function(loanId,payDate,interestCalType){
 				var deferred = $q.defer();
 				var payDate = new Date(payDate);
-				var params = {payDate:payDate};
+				var params = {payDate:payDate,interestCalType:interestCalType};
 				$http.get(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",{params:params})
 				.then(function(res){
 					deferred.resolve(res.data.data);

@@ -1,0 +1,50 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>科目</th>
+        <th>借方</th>
+        <th>贷方</th>
+        <th>余额</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">应收本金（元）</th>
+        <td></td>
+        <td>{{completedBill.income.amount | number:2 }}</td>
+        <td>{{completedBill.income.amount | number:2 }}</td>
+      </tr>
+      <tr>
+        <th scope="row">逾期违约金（元）</th>
+        <td></td>
+        <td>{{completedBill.income.overdueMoney | number:2}}</td>
+        <td>{{row2 = completedBill.income.overdueMoney + completedBill.income.amount | number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">利息（元）</th>
+        <td>{{completedBill.outcome.interest | number:2}}</td>
+        <td>{{completedBill.income.interest | number:2}}</td>
+        <td>{{row3 = row2 - completedBill.outcome.interest +  completedBill.income.interest| number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">履约保证金（元）</th>
+        <td>{{completedBill.outcome.assureCost | number:2}}</td>
+        <td></td>
+        <td>{{row4 = row3 - completedBill.outcome.assureCost | number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">暂收金额（元）</th>
+        <td>{{completedBill.outcome.keepCost  | number:2}}</td>
+        <td></td>
+        <td>{{row5 = row4 - completedBill.outcome.keepCost| number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">结清金额（元）</th>
+        <td></td>
+        <td></td>
+        <td>{{row5 | number:2}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

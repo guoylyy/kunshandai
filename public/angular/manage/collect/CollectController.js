@@ -3,8 +3,8 @@
 define(['app'],function(app) {
 
 	return app.controller('CollectController', ["$scope","$state","$stateParams","$location",
-		'loans','loanTypes','timeRanges','$modal','LoanService',
-			function($scope,$state,$stateParams,$location,loans,loanTypes,timeRanges,$modal,LoanService){
+		'loans','loanTypes','timeRanges','$modal','LoanService','DictService',
+			function($scope,$state,$stateParams,$location,loans,loanTypes,timeRanges,$modal,LoanService,DictService){
 
 			$scope.totalLoans = loans.totalNum;
 
@@ -46,6 +46,9 @@ define(['app'],function(app) {
 								}
 							process[processName] = true;
 							return process;
+						},
+						interestCalTypes:function(){
+							return DictService.get('interestCalTypes');
 						}
 					}
 				});

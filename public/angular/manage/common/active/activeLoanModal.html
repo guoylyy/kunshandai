@@ -8,62 +8,7 @@
   <div class="ks-divider"></div>
   
   <div ng-repeat="payment in payments">
-  <div class="table-responsive">
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>科目</th>
-            <th>借方</th>
-            <th>贷方</th>
-            <th>余额</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">贷款金额（元）</th>
-            <td></td>
-            <td>{{payment.outMoney | number:2 }}</td>
-            <td>{{-payment.outMoney | number:2 }}</td>
-          </tr>
-          <tr>
-            <th scope="row">利息（元）</th>
-            <td>{{-payment.interestsMoney | number:2}}</td>
-            <td></td>
-            <td>{{-payment.outMoney-payment.interestsMoney | number:2}}</td>
-          </tr>
-          <tr>
-            <th scope="row">履约保证金（元）</th>
-            <td>{{-payment.assureCost | number:2}}</td>
-            <td></td>
-            <td>{{-payment.outMoney-payment.assureCost-payment.interestsMoney | number:2}}</td>
-          </tr>
-          <tr>
-            <th scope="row">服务费（元）</th>
-            <td>{{-payment.serviceCost | number:2}}</td>
-            <td></td>
-            <td>{{-payment.outMoney-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
-          </tr>
-          <tr>
-            <th scope="row">其他费用（元）</th>
-            <td>{{-payment.otherCost | number:2}}</td>
-            <td></td>
-            <td>{{-payment.outMoney-payment.otherCost-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
-          </tr>
-          <tr>
-            <th scope="row">暂收（元）</th>
-            <td>{{-payment.keepCost | number:2}}</td>
-            <td></td>
-            <td>{{-payment.outMoney-payment.keepCost-payment.otherCost-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
-          </tr>
-          <tr>
-            <th scope="row">本次放款（元）</th>
-            <td></td>
-            <td></td>
-            <td>{{-payment.outMoney-payment.keepCost-payment.otherCost-payment.serviceCost-payment.assureCost-payment.interestsMoney | number:2}}</td>
-          </tr>
-        </tbody>
-      </table>
-  </div>
+   <ui-include src="'angular/manage/common/partial/payment.html'"></ui-include>
   <div class="row">
      <div class="col-md-offset-8 col-md-4">
       <div class="form-group has-success">

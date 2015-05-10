@@ -1405,6 +1405,14 @@ traits:
                   "code": 404,
                   "message": "contact not found"
                 }
+        500:
+          body:
+            application/json:
+              example: |
+                {
+                  "code": 404,
+                  "message": "该联系人还有项目，不能删除!"
+                }
 
     put:
       description: |

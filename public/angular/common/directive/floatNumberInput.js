@@ -29,7 +29,6 @@ define(['app'],function(app){
 					var floatvar = parseFloat(val);
 					if (!isNaN(floatvar)) {
 						floatvar = floatvar.toFixed(2);
-						
 						ngModelCtrl.$setViewValue(floatvar.toString());
 						ngModelCtrl.$render();
 					}

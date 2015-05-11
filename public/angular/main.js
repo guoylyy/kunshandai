@@ -19,6 +19,7 @@ require.config({
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
 		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',	
 		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
+		angularBusy:'../lib/angular-busy/dist/angular-busy',
 		text:'../lib/requirejs-text/text',
 		moment:'../lib/moment/moment'
 		
@@ -50,6 +51,9 @@ require.config({
 			deps:['angular']
 		},
 		'angularSweetAlert':{
+			deps:['angular']
+		},
+		'angularBusy':{
 			deps:['angular']
 		},
 		'highcharts-ng':{

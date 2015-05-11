@@ -137,7 +137,7 @@
         </div>
       </div>
     <div class="ks-divider"></div>
-    <div class="panel panel-success" ng-show="billGenerated">
+    <fieldset class="panel panel-success" ng-disabled="!billGenerated" ng-show="billGenerated" cg-busy="countPromise">
          <div class="panel-heading">收款账单</div>
            <div class="panel-body">
               <div class="row">
@@ -198,7 +198,7 @@
                 </div>
               </div>
            </div>
-         </div>
+         </fieldset>
   </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
@@ -295,7 +295,7 @@
       </div>
 
      <div class="ks-divider"></div>
-      <div class="panel panel-success" ng-show="billGenerated">
+      <div class="panel panel-success" ng-show="billGenerated" cg-busy="countPromise">
        <div class="panel-heading">结清账单</div>
          <div class="panel-body">
             <div class="row">

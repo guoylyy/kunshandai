@@ -10,6 +10,7 @@ define(['app','underscore'],function(app,_){
 		return{
 			login : function(user,rememberMe){
 				var deferred = $q.defer();
+				user = _.pick(user,'mobilePhoneNumber','password');
 				$http.post(
 					ApiURL+accountUrl+"/login",
 					JSON.stringify(user)

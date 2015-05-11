@@ -274,13 +274,18 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				return deferred.promise;
 			},
 			countPaymoney:function(payBackId,payDate){
-				var payDate = new Date(payDate);
-				return $http.post(ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",JSON.stringify({payBackDate:payDate}))
+				var payDate = new Date(payDate),
+					deferred = $q.defer();
+
+				$http.post(ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",JSON.stringify({payBackDate:payDate}))
 				.then(function(res){
-					return res.data.data;
+					deferred.resolve(res.data.data);
 				},function(res){
 					$log.error(res);
+					deferred.reject(res);
 				});
+
+				return deferred.promise;
 			},
 			payMoney:function(payBackId,payDate,payMoney){
 				var payDate = new Date(payDate);

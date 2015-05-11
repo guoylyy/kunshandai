@@ -63,7 +63,7 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.$watch("payDate",function(){
 			if($scope.payDate){
-				LoanService.countPaymoney($scope.paybackId,$scope.payDate)
+				$scope.countPromise = LoanService.countPaymoney($scope.paybackId,$scope.payDate)
 				.then(function(result){
 					$scope.payBill = result;
 					$scope.payData = _.extend({},result);
@@ -76,8 +76,8 @@ define(['app','underscore'],function(app,_) {
 		var countCompleteWatch = ['completeCount.date','completeCount.interestType'];
 		$scope.$watchGroup(countCompleteWatch,function(){
 			if($scope.completeCount.date && $scope.completeCount.interestType){
-				LoanService.countCompleteMoney($scope.loan.id,$scope.completeCount.date,$scope.completeCount.interestType)
-				.then(function(res){
+				$scope.countPromise = LoanService.countCompleteMoney($scope.loan.id,$scope.completeCount.date,$scope.completeCount.interestType);
+				$scope.countPromise.then(function(res){
 					$scope.completedBill = res;
 					$scope.completeData ={
 						outcome:_.extend({},res.outcome),

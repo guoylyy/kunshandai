@@ -3,17 +3,24 @@
  */
 'use strict';
 
-define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angularFileUpload','angularSweetAlert', 'highcharts-ng'],function(angular){
+define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angularFileUpload','angularSweetAlert', 'highcharts-ng','angularBusy'],function(angular){
 	
-	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','ui.utils','angularFileUpload','oitozero.ngSweetAlert','highcharts-ng'])
+	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','ui.utils','angularFileUpload','oitozero.ngSweetAlert','highcharts-ng','cgBusy'])
 	.config(['$httpProvider',function($httpProvider) {
 		$httpProvider.interceptors.push('sessionAuth');
 		$httpProvider.interceptors.push('responseErr');
 	}])
-	.run(function($rootScope,$state, $urlRouter,$window,AccountService) {
-    	$rootScope.$on('$locationChangeSuccess', function(evt) {
+	.value('cgBusyDefaults',{
+	  message:'请求数据中...',
+	  backdrop: true,
+	  // templateUrl: 'my_custom_template.html',
+	  delay: 0,
+	  minDuration: 0
+	})
+	.run(function($rootScope,$state, $urlRouter,$window,$location,AccountService) {
+    	$rootScope.$on('$locationChangeStart', function(evt) {
       	// Halt state change from even starting
-      	evt.preventDefault();
+      	
       	// Perform custom logic
       	// 
       	
@@ -40,16 +47,16 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 				$window.sessionStorage['loginStatus'] = JSON.stringify(loginStatus);
 				//记住登录状态
 				if(userInfo){
-					//记住状态期限外
-					if(now > userInfo.expires){
+					//记住状态期限内
+					if(now < userInfo.expires){
 						AccountService.login(userInfo).then(function(){
-							$urlRouter.sync();
+							// $urlRouter.sync();
 						},function(){
 							console.log("自动登录失败");
 						});
 
 					}else{
-						window.location = '/login';
+						window.location = '/login';	
 					}
 
 				}else{
@@ -59,19 +66,25 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 				if(window.location.pathname == '/login' 
 					|| window.location.pathname == '/signup'  
 					|| window.location.pathname == '/retrieve_password'){
+
 					window.location = '/manage';		
+				}else{
+					// $urlRouter.sync();	
 				}
-				$urlRouter.sync();
+				
 			}
 		}else{
 
 			if(window.location.pathname == '/login' 
 				|| window.location.pathname == '/signup' 
 				|| window.location.pathname == '/retrieve_password'){
-				$urlRouter.sync();
+				// $urlRouter.sync();
 			}else{
-				$state.go('login');
+				// $state.go('login');
 				window.location = '/login';
+				// $location.path('/login');
+			
+				return;
 			}
 		}
 		

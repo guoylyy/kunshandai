@@ -124,7 +124,7 @@
           <div class="form-group has-warning">
             <label class="control-label">*收款日期</label>
             <div class="input-group">
-              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate" is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="payDate"/>
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate" is-open="calendar.opened" datepicker-options="dateOptions"  close-text="关闭" name="payDate" required/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
@@ -202,7 +202,7 @@
   </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
-  <button type="submit" class="btn btn-success">完成收款</button>
+  <button type="submit" class="btn btn-success" ng-disabled="payForm.$invalid">完成收款</button>
 </div>
 </div>
 </form>

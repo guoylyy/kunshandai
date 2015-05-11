@@ -263,7 +263,7 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				return deferred.promise;
 			},
 			assure: function(loanId,outMoney){
-				outMoney = parseFloat(outMoney);
+				//var outMoney = parseFloat(outMoney);
 				var deferred = $q.defer();
 				$http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId,outMoney:outMoney}))
 				.then(function(res){
@@ -335,6 +335,26 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				},function(getCountResult){
 					deferred.reject(res);
 				});
+
+				return deferred.promise;
+			},
+			statictics:function(type, startDate, endDate){
+				var deferred = $q.defer();
+
+				var params = {startDate:startDate,endDate:endDate};
+				if(type == 'income') {
+					$http.get(ApiURL + loanUrl+"/statictics/income",{params:params}).then(function(res){
+						deferred.resolve(res.data.data);
+					},function(getCountResult){
+						deferred.reject(res);
+					});
+				}else if(type === 'outcome') {
+					$http.get(ApiURL + loanUrl+"/statictics/outcome",{params:params}).then(function(res){
+						deferred.resolve(res.data.data);
+					},function(getCountResult){
+						deferred.reject(res);
+					});
+				}
 
 				return deferred.promise;
 			}

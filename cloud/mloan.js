@@ -251,7 +251,7 @@ function convertParameters(loan, currentDate, currentStep){
 
     //逾期天数
     map['od'] = currDate.diff(endDate, 'days') > 0 ? currDate.diff(endDate, 'days'):0; 
-    console.log(map);
+    //console.log(map);
     return map;
 }
 loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, data){

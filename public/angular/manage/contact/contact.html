@@ -10,8 +10,8 @@
       <div class="input-group-btn" dropdown>
         <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle >{{search.type.text}}<span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:73px;">
-          <li><a ng-click="changeSearchType('certificate')">身份证</a></li>
           <li><a ng-click="changeSearchType('name')">姓名</a></li>
+          <li><a ng-click="changeSearchType('certificate')">身份证</a></li>   
         </ul>
       </div>
       <input type="text" class="form-control" aria-label="Text input with dropdown button" ng-model="search.keyword">

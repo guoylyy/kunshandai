@@ -1,18 +1,45 @@
-define(['../app'],function(app){
+define(['app','underscore'],function(app,_){
 
-	return app.factory('AccountService', ['$http', 'ApiURL',
-		function($http,ApiURL){
+	return app.factory('AccountService', ['$http','ApiURL', '$q','$window',
+		function($http,ApiURL,$q,$window){
 		
 		var accountUrl = '/account';
 
 		var logined = false;
 		
 		return{
-			login : function(user){
-				return $http.post(ApiURL+accountUrl+"/login",JSON.stringify(user));
+			login : function(user,rememberMe){
+				var deferred = $q.defer();
+				$http.post(
+					ApiURL+accountUrl+"/login",
+					JSON.stringify(user)
+				).then(function(res){
+					var resUser = res.data;
+					resUser.password = user.password;
+					//设置自动登录
+					if(rememberMe){
+						// var userInfo = $window.sessionStorage['userInfo'];
+						var  expiresDate = new Date();
+						expiresDate.setDate(expiresDate.getDate() + 7);
+						resUser.expires = expiresDate;
+						$window.sessionStorage['userInfo'] = JSON.stringify(_.pick(resUser,'mobilePhoneNumber','password','expires'));
+					}
+					//设置登录状态
+					var sessionExpiresTime = new Date();
+						sessionExpiresTime.setHours(sessionExpiresTime.getHours() + 1);
+					var loginStatus = {logined:true,sessionExpires:sessionExpiresTime};	
+					$window.sessionStorage['loginStatus'] = JSON.stringify(loginStatus);
+
+					deferred.resolve(resUser);
+				},function(){
+					deferred.reject("登录失败");
+				});
+				return deferred.promise;
 			},
 			logout : function(){
 				logined = false;
+				$window.sessionStorage['loginStatus'] = JSON.stringify({logined:false});
+				delete($window.sessionStorage['userInfo']);
 				return $http.get(ApiURL+accountUrl+"/logout");
 			},
 			isLogin: function(){

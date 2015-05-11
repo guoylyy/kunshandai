@@ -68,60 +68,27 @@ app.get('/index',function(req, res){
   res.render('guest_layout.ejs');
 });
 app.get('/login', function(req, res){
-  if(account.isLogin()){
-     res.redirect('/manage');
-     return;
-  }
   res.render('account.ejs');
 });
 app.get('/signup', function(req, res){
-  if(account.isLogin()){
-     res.redirect('/manage');
-     return;
-  }
   res.render('account.ejs');
 });
 app.get('/manage', function(req, res){
-  var user = account.isLogin();
-  if(!user){
-    res.redirect('/login');
-    return;
-  }
-  res.render('manage.ejs',{user:user.attributes});
+  res.render('manage.ejs');
 });
 app.get('/manage/*', function(req, res){
-  var user = account.isLogin();
-  if(!user){
-    res.redirect('/login');
-    return;
-  }
-  res.render('manage.ejs',{user:user.attributes});
+  res.render('manage.ejs');
 });
 
 app.get('/loan', function(req, res){
-  var user = account.isLogin();
-  if(!user){
-    res.redirect('/login');
-    return;
-  }
-  res.render('empty_layout.ejs',{user:user.attributes});
+  res.render('empty_layout.ejs');
 });
 app.get('/loan/:id/modify', function(req, res){
-  var user = account.isLogin();
-  if(!user){
-    res.redirect('/login');
-    return;
-  }
-  res.render('modify_loan.ejs',{user:user.attributes});
+  res.render('modify_loan.ejs');
 });
 
 app.get('/createLoan', function(req, res){
- var user = account.isLogin();
-  if(!user){
-    res.redirect('/login');
-    return;
-  }
-  res.render('create_loan.ejs',{user:user.attributes});
+  res.render('create_loan.ejs');
 });
 app.get('/help', function(req, res){
   res.render('help.ejs');

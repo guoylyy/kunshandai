@@ -7,7 +7,8 @@ define(['app','../AccountService'],function(app) {
 
 				$scope.account = {
 					mobilePhoneNumber:'',
-					password:''
+					password:'',
+					rememberMe:false
 				};
 				
 				$scope.rememberMe = false;
@@ -16,7 +17,7 @@ define(['app','../AccountService'],function(app) {
 					$scope.err = null;
 					$scope.logining = true;
 
-					AccountService.login($scope.account).then(function(res){
+					AccountService.login($scope.account,$scope.account.rememberMe).then(function(res){
 							window.location = '/manage';
 						},
 						function(err){

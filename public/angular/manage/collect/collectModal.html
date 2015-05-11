@@ -41,12 +41,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="payback in paybacks">
+            <tr ng-repeat="payback in paybacks" ng-class="{warning:(payback.status == 1),success:(payback.status == 3)}">
               <td><input type="radio" name="payback" value="{{payback.objectId}}" 
                 ng-model="$parent.paybackId" ng-disabled="payback.status !== 1" required></td>
                 <td>{{payback.order}}</td>
                 <td>{{payback.payMoney | number:2}}</td>
-                <td>{{payback.payDate}}</td>
+                <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
                 <td ng-show="payback.status === 1" class="text-info">正在还</td>
                 <td ng-show="payback.status === 2" >未还</td>
                 <td ng-show="payback.status === 3"class="text-success">已还</td>
@@ -110,7 +110,7 @@
         <tr>
           <td>{{selectedPayback.order}}</td>
           <td>{{selectedPayback.payMoney | number:2}}</td>
-          <td>{{selectedPayback.payDate}}</td>
+          <td>{{selectedPayback.payDate | date:"yyyy-MM-dd"}}</td>
           <td ng-show="selectedPayback.status === 1" class="text-info">正在还</td>
           <td ng-show="selectedPayback.status === 2" >未还</td>
           <td ng-show="selectedPayback.status === 3"class="text-success">已还</td>

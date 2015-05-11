@@ -43,7 +43,7 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>利率（‰/月）</th>
+					<th>利率（%/月）</th>
 					<th>履约保证金（元）</th>
 					<th>服务费（元）</th>
 					<th>逾期违约金（‰/月）</th>
@@ -117,7 +117,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="p in loanInfo.paybacks" ng-class="{success:(p.status == 1),info:(status == 2)}">
+				<tr ng-repeat="p in loanInfo.paybacks" ng-class="{warning:(p.status == 1),success:(p.status == 3)}">
 					<td>{{p.order}}</td>
 					<td>{{p.payMoney | number:2}}</td>
 					<td>{{p.payDate | date:"yyyy-MM-dd" }}</td>

@@ -11,7 +11,7 @@ define(['../../app'],function(app){
 			certificateType:'',
 			name:'',
 			certificateNum:'',
-			mobilePhoneNumber:'',
+			mobilePhoneNum:'',
 			email:'',
 			qq:'',
 			wechat:'',

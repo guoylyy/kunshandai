@@ -69,25 +69,51 @@
 		<div class="row">
 			<div class="col-md-6">
 				<p class="ks-heading">借款人信息:</p>
-				<p>姓 名 : {{br.name}}</p>
-				<p>身份证: {{br.certificateNum}}</p>
-				<p>电 话 : {{br.mobilePhoneNum}}</p>
-				<p>邮 箱 : {{br.email}}</p>
-				<p>微 信 : {{br.wechat}}</p>
+				<div class="row">
+					<div class="col-md-4">
+						  <p><label>姓 名 :</label><span>{{br.name}}</span></p>
+						  <p><label>电 话 :</label><span>{{br.mobilePhoneNum? br.mobilePhoneNum:'未填'}}</span></p>
+						  <p><label>微 信 :</label><span>{{br.wechat? br.wechat:'未填'}}</span></p>
+					</div>
+					<div class="col-md-6">
+						  <p><label>身份证 :</label><span>{{br.certificateNum}}</span></p>
+						  <p><label>邮 箱  :</label><span>{{br.email? br.email:'未填'}}</span></p>
+						  <p><label>Q  Q  :</label><span>{{br.qq? br.qq:'未填'}}</span></p>
+					</div>
+				</div>
+				<p><label>地 址 :</label><span>{{br.address? br.address:'未填'}}</span></p>
 			</div>
 			<div class="col-md-6">
 				<div ng-show="loanInfo.assurer">
 					<p class="ks-heading">担保人信息:</p>
-					<p>姓 名 : {{gr.name}}</p>
-					<p>身份证: {{gr.certificateNum}}</p>
-					<p>电 话 : {{gr.mobilePhoneNum}}</p>
-					<p>邮 箱 : {{gr.email}}</p>
-					<p>微 信 : {{gr.wechat}}</p>
+					<div class="row">
+						<div class="col-md-4">
+							  <p><label>姓 名 :</label><span>{{gr.name}}</span></p>
+							  <p><label>电 话 :</label><span>{{gr.mobilePhoneNum? gr.mobilePhoneNum:'未填'}}</span></p>
+							  <p><label>微 信 :</label><span>{{gr.wechat? gr.wechat:'未填'}}</span></p>
+						</div>
+						<div class="col-md-6">
+							  <p><label>身份证 :</label><span>{{gr.certificateNum}}</span></p>
+							  <p><label>邮 箱  :</label><span>{{gr.email? gr.email:'未填'}}</span></p>
+							  <p><label>Q  Q  :</label><span>{{gr.qq? gr.qq:'未填'}}</span></p>
+						</div>
+					</div>
+					<p><label>地 址 :</label><span>{{gr.address? gr.address:'未填'}}</span></p>
 				</div>
 				<div ng-show="!loanInfo.assurer">
 					<p class="ks-heading">担保人信息:</p>
 					<strong>无担保人</strong>
 				</div>
+			</div>
+		</div>
+		<div class="ks-divider"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<p class="ks-heading">通知:</p>
+				<ul class="list-inline">
+				  <li><span>短信通知:{{loanInfo.isSmsRemind? '是':'否'}}</span></li>
+				  <li><span>邮件通知:{{loanInfo.isEmailRemind? '是':'否'}}</span></li>
+				</ul>
 			</div>
 		</div>
 

@@ -39,7 +39,18 @@
 						<div class="col-md-2">
 							<div class="form-group">
 								<label class="control-label">*担保人</label><br>
-								<a ng-init="br.hasGr = (br.hasGr || loanInfo.assurer)"ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a>
+								<!-- <a ng-init="br.hasGr = (br.hasGr || loanInfo.assurer)"ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a> -->
+								<ul class="list-inline">
+									 <li>
+										<!-- <label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items"  >{{i}}</label> -->
+										<label class="radio-inline">
+							                 <input type="radio" ng-model="br.hasGr" ng-value="false" name="hasGr" required>无
+							             </label>
+							             <label class="radio-inline">
+							                 <input type="radio" ng-model="br.hasGr" ng-value="true" name="hasGr" required>有
+							             </label>
+									</li>
+								</ul>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.hasGr.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
 								</div>
@@ -146,47 +157,73 @@
 			</div>
 		</div>
 	</div>
-	<div  ui-toggle="br.hasGr">
+	<div  collapse="!br.hasGr">
 		<div ng-include="template.grUrl"></div>
 	</div>
 	
 	<div ng-init="pType = loanInfo.loanType || loanInfo.loanType" ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
-	<div class="ks-dividing">
-		<h4>抵押物</h4>
-	</div>
-	<div class="row" >
-		<div class="col-md-8">
-			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">抵押物信息</div>
-				<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
-					<!-- <div ng-include="template.houseUrl"></div> -->
-					<ui-include src="'/angular/manage/loan/pawn/house_pawn.html'"></ui-include>
-				</div>
-				<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
-					<!-- <div ng-include="template.carUrl"></div> -->
-					<ui-include src="'/angular/manage/loan/pawn/car_pawn.html'"></ui-include>
+		<div class="ks-dividing">
+			<h4>抵押物</h4>
+		</div>
+		<div class="row" >
+			<div class="col-md-8">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物信息</div>
+					<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
+						<!-- <div ng-include="template.houseUrl"></div> -->
+						<ui-include src="'/angular/manage/loan/pawn/house_pawn.html'"></ui-include>
+					</div>
+					<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
+						<!-- <div ng-include="template.carUrl"></div> -->
+						<ui-include src="'/angular/manage/loan/pawn/car_pawn.html'"></ui-include>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">抵押物附件
-					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('抵押物')" style="margin-top:-5px;">上传</button>
+			<div class="col-md-4">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物附件
+						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('抵押物')" style="margin-top:-5px;">上传</button>
 
-				</div>
-				<div class="panel-body">
-					<ul class="list-group">
-						<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
-							<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('pawn',$index)"></a>
-							<a ng-href="a.url" target="_blank">
-								{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
-							</a>
-						</li>
-					</ul>
+					</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
+								<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('pawn',$index)"></a>
+								<a ng-href="a.url" target="_blank">
+									{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="ks-divider"></div>
+	<div>
+		<div class="ks-dividing">
+			<h4>通知</h4>
+		</div>
+		<div class="row" >
+			<div class="col-md-8">
+				<ul class="list-inline">
+					 <li>
+						<label class="checkbox-inline">
+			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" >短信提醒
+			             </label>
+			             <label class="checkbox-inline">
+			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >邮件提醒
+			             </label>
+					</li>
+				</ul>
+				<div ng-show="loanInfo.isSmsRemind && !br.mobilePhoneNum ">
+					<div class="text-warning">借款人手机号未填,无法接受短信提醒</div>
+				</div>
+				<div ng-show="loanInfo.isEmailRemind && !br.email">
+					<div class="text-warning">借款人邮箱未填,无法接受短信提醒</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="ks-divider"></div>
 	<div class="container-fluid" >

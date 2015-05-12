@@ -26,6 +26,8 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				keepCostDesc:'',
 				payWay:'',
 				firstPayDate:'',
+				isEmailRemind:true,
+				isSmsRemind:true,
 				paybacks:[]
 			},
 			

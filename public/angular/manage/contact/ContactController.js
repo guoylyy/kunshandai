@@ -1,4 +1,4 @@
-define(['app'], function(app) {
+define(['app','underscore'], function(app,_) {
   return app.controller('ContactController', ['$scope', 'contacts', 'SweetAlert', '$modal', 'ContactService', '$state', '$stateParams',
     function($scope, contacts, SweetAlert, $modal, ContactService, $state, $stateParams) {
       $scope.currentState = $state.current;
@@ -104,18 +104,10 @@ define(['app'], function(app) {
           resolve: {
             contact: function() {
               if (contactId) {
-                return ContactService.get(contactId);
+                return  ContactService.get(contactId);
+                
               } else {
                 return ContactService.getModel();
-              }
-            },
-            attachments:function(){
-              if(contactId){
-                ContactService.getAttachments(contactId).then(function(data){
-                  return data;
-                },function(){
-
-                })
               }
             },
             control: function() {

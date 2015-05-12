@@ -1,4 +1,4 @@
-define(['../../app'],function(app){
+define(['app','underscore'],function(app,_){
 
 	return app.factory('ContactService', ['$http','$q','ApiURL',
 		function($http,$q,ApiURL){
@@ -122,7 +122,7 @@ define(['../../app'],function(app){
 			get: function(id){
 				var deferred = $q.defer();
 				$http.get(ApiURL+contactUrl+"/"+id).then(function(res){
-					deferred.resolve(res.data.data);
+					deferred.resolve(_.omit(res.data.data,'attachments'));
 				},function(res){
 					deferred.reject(res.data);
 				});

@@ -10,7 +10,7 @@ define(['app','underscore'],function(app,_){
 		$scope.waitingResponse = false;
 
 		if($scope.control.edit || $scope.control.view) {
-			ContactService.getAttachments($scope.contact.objectId).then(function (data){
+			$scope.attachPromise = ContactService.getAttachments($scope.contact.objectId).then(function (data){
 				$scope.contact.attachments = data;
 			});
 		}

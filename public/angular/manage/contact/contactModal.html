@@ -33,11 +33,11 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" cg-busy="attachPromise">
           <div class="form-group">
             <strong>附件 </strong>
           </div>
-          <ul class="list-group">
+          <ul class="list-group" >
             <li class="list-group-item" ng-show="contact.attachments" ng-repeat="attachment in contact.attachments">
               <a href="{{attachment.url}}" target="_blank">
                 {{attachment.name}}

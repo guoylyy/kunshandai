@@ -20,7 +20,7 @@ define(['app','underscore'],function(app,_){
 			attachments:[]	
 		}, 
 
-			loaner = _.extend({},model),
+			loaner = _.extend({hasGr:false},model),
 
 			assurer = _.extend({},model);
 

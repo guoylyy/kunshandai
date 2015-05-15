@@ -92,7 +92,6 @@ define(['app','underscore'],function(app,_) {
 			$scope.selectedPayback = paybacks[_.findIndex(paybacks,{objectId:$scope.paybackId})];
 
 			if($scope.selectedPayback.order == $scope.paybacks.length){
-				// SweetAlert.error("该功能暂不开放","需要后台结清接口");
 				$scope.loanCompleted = true;
 			}else{
 				$scope.loanCompleted = false;

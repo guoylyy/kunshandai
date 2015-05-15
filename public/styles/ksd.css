@@ -103,6 +103,9 @@ table td,table th{
 	list-style: none;
 	padding-left: 5px;
 }
+.ks-condition .ks-list-unstyled{
+	padding-top: 4px;
+}
 .ks-condition .ks-list-unstyled li{
 	float: left;
 	margin-right: 1.5em;
@@ -111,11 +114,31 @@ table td,table th{
 	text-decoration: none;
 }
 .ks-condition{
-	padding-bottom: 25px;
+	padding-bottom: 10px;
 	clear: both;
 }
 .ks-condition .label{
 	font-size: 12px;
+}
+.ks-condition .input-group > input{
+	height: 25px;
+	width: 90px !important;
+	font-size: 10px !important;
+}
+.ks-condition .dropdown-menu{
+	/*left: -80px !important;*/
+	margin-left: -230px;
+}
+/*.ks-condition span{
+	height: 25px;
+	padding: 0px !important;
+}*/
+.ks-condition .input-group-addon{
+	height: 25px;
+	padding: 0px 5px !important;
+}
+.ks-condition .input-group > span > button{
+	height: 25px;
 }
 .ks-panel table{
 	border:1px solid #ddd;

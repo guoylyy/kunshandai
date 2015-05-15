@@ -9,22 +9,6 @@
 
 		</div>
 	</div>
-	<!-- <div class="col-md-6">
-		<div class="input-group">
-			<div class="input-group-btn">
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">项目号 <span class="caret"></span></button>
-				<ul class="dropdown-menu dropdown-menu-right" role="menu">
-					<li><a href="#">项目号</a></li>
-					<li><a href="#">借款人</a></li>
-					<li><a href="#">担保人</a></li>
-				</ul>
-			</div>
-			<input type="text" class="form-control" aria-label="Text input with dropdown button">
-			<span class="input-group-btn">
-				<button class="btn btn-primary" type="button">搜索</button>
-			</span>
-		</div>
-	</div> -->
 </div>
 <div class="ks-panel">
 	<div class="panel panel-default">
@@ -32,10 +16,25 @@
 		
 		<div class="panel-body"> 
 			<div class="ks-condition">
-				<ul class="ks-list-unstyled">
-					<li>收款时间:</li>
-					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
-				</ul>
+				<div class="row">
+					<div class="col-md-9">
+						<ul class="ks-list-unstyled">
+							<li>收款时间:</li>
+							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+						</ul>
+					</div>
+					<div class="col-md-pull-1 col-md-3">
+						<div class="input-group" style="padding-left:10px;">
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedstart" close-text="关闭" name="startDate" ng-click="open($event,'openedstart')" ng-model="condition.startDate"/>
+							<span class="input-group-addon">-</span>
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedend" close-text="关闭" name="endDate" ng-click="open($event,'openedend')" ng-model="condition.endDate"/>
+							<span class="input-group-btn">
+								<button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			
 			</div>
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">

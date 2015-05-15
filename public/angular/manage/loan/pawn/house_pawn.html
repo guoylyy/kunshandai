@@ -27,10 +27,11 @@
 			<label class="control-label">*{{pawn.houseCertificate.text}}</label>
 			<!-- <input type="text" class="form-control" placeholder="{{pawn.houseCertificate.text}}" ng-model="pawn.houseCertificate.value" name="houseCertificate" required> -->
 			<div class="input-group">
-				  <span class="input-group-addon">{{pawn.houseCertificate.characters[0]}}</span>
 				  <input type="text" class="form-control" name="houseCertificate1" ng-model="pawn.houseCertificate.value[0]" required>
+				  <span class="input-group-addon">{{pawn.houseCertificate.characters[0]}}</span>
+				  <input type="text" class="form-control" name="houseCertificate1" ng-model="pawn.houseCertificate.value[1]" required>
 				  <span class="input-group-addon">{{pawn.houseCertificate.characters[1]}}</span>
-				  <input type="text" class="form-control" name="houseCertificate2" ng-model="pawn.houseCertificate.value[1]" required>
+				  <input type="text" class="form-control" name="houseCertificate2" ng-model="pawn.houseCertificate.value[2]" required>
 				  <span class="input-group-addon">{{pawn.houseCertificate.characters[2]}}</span>
 			</div>
 			<div ng-show="moreInfoForm.$submitted || moreInfoForm.houseCertificate.$touched">

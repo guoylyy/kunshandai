@@ -3,11 +3,8 @@
 	<div class="col-md-12">
 		<div class="form-group">
 			<label class="control-label">*{{pawn.pawnType.text}}</label>
-			<!-- <pre>{{moreInfoForm.typeRquired.$error | json}}</pre> -->
 			<ul class="list-inline">
-				 <!-- <li class="btn-group"> -->
 				 <li>
-					<!-- <label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items" >{{i}}</label> -->
 					<label class="checkbox-inline" ng-repeat="i in pawn.pawnType.items">
 		                 <input type="checkbox" ng-model="pawn.pawnType.value[$index]" >{{i}}
 		             </label>

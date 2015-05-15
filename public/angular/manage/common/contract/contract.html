@@ -167,7 +167,7 @@
 							<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos | orderBy:'order' " >
 								<label ng-if="pawnInfo.text === '房产证号' || pawnInfo.text === '土地证号'">
 									<strong>{{pawnInfo.text}}: </strong> 
-									<ins>{{pawnInfo.value[0]}} {{pawnInfo.characters[0]}} {{pawnInfo.value[1]}} {{pawnInfo.characters[1]}} {{pawnInfo.value[2]}} {{pawnInfo.characters[2]}}</ins>
+									<ins>{{pawnInfo.value[0]}}</ins> {{pawnInfo.characters[0]}} <ins>{{pawnInfo.value[1]}}</ins> {{pawnInfo.characters[1]}} <ins>{{pawnInfo.value[2]}}</ins> {{pawnInfo.characters[2]}}
 								</label>
 								<label ng-if="pawnInfo.text === '抵押方式'">
 									<strong>{{pawnInfo.text}}: </strong> <ins ng-repeat="i in pawnInfo.value"> {{i}}{{' '}}</ins>

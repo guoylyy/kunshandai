@@ -29,13 +29,14 @@
 			<div class="input-group">
 				  <input type="text" class="form-control" name="houseCertificate1" ng-model="pawn.houseCertificate.value[0]" required>
 				  <span class="input-group-addon">{{pawn.houseCertificate.characters[0]}}</span>
-				  <input type="text" class="form-control" name="houseCertificate1" ng-model="pawn.houseCertificate.value[1]" required>
+				  <input type="text" class="form-control" name="houseCertificate2" ng-model="pawn.houseCertificate.value[1]" required>
 				  <span class="input-group-addon">{{pawn.houseCertificate.characters[1]}}</span>
-				  <input type="text" class="form-control" name="houseCertificate2" ng-model="pawn.houseCertificate.value[2]" required>
+				  <input type="text" class="form-control" name="houseCertificate3" ng-model="pawn.houseCertificate.value[2]" required>
 				  <span class="input-group-addon">{{pawn.houseCertificate.characters[2]}}</span>
 			</div>
 			<div ng-show="moreInfoForm.$submitted || moreInfoForm.houseCertificate.$touched">
-				<div class="text-danger" ng-show="moreInfoForm.houseCertificate1.$error.required || moreInfoForm.houseCertificate2.$error.required">请填{{pawn.houseCertificate.text}}</div>
+				<div class="text-danger" ng-show="moreInfoForm.houseCertificate1.$error.required 
+				|| moreInfoForm.houseCertificate2.$error.required || moreInfoForm.houseCertificate3.$error.required">请填{{pawn.houseCertificate.text}}</div>
 			</div>
 		</div>
 	</div>
@@ -45,10 +46,11 @@
 			<label class="control-label">*{{pawn.landCertificate.text}}</label>
 			<!-- <input type="text" class="form-control" placeholder="{{pawn.landCertificate.text}}" ng-model="pawn.landCertificate.value" name="landCertificate" required> -->
 			<div class="input-group">
+			 	  <input type="hidden" class="form-control" name="landCertificate0" ng-model="pawn.landCertificate.value[0]" value="">
 				  <span class="input-group-addon">{{pawn.landCertificate.characters[0]}}</span>
-				  <input type="text" class="form-control" name="landCertificate1" ng-model="pawn.landCertificate.value[0]" required>
+				  <input type="text" class="form-control" name="landCertificate1" ng-model="pawn.landCertificate.value[1]" required>
 				  <span class="input-group-addon">{{pawn.landCertificate.characters[1]}}</span>
-				  <input type="text" class="form-control" name="landCertificate2" ng-model="pawn.landCertificate.value[1]" required>
+				  <input type="text" class="form-control" name="landCertificate2" ng-model="pawn.landCertificate.value[2]" required>
 				  <span class="input-group-addon">{{pawn.landCertificate.characters[2]}}</span>
 			</div>
 			<div ng-show="moreInfoForm.$submitted || moreInfoForm.landCertificate.$touched">

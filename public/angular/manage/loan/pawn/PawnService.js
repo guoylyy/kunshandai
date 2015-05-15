@@ -46,7 +46,7 @@ define(['app','underscore'],function(app,_){
 					order:7
 				},
 				price:{
-					text:'评估价格',
+					text:'评估价格（万元）',
 					value:'',
 					order:8
 				}
@@ -102,7 +102,7 @@ define(['app','underscore'],function(app,_){
 					order:8
 				},
 				price:{
-					text:'评估价格',
+					text:'评估价格（万元）',
 					value:'',
 					order:9
 				}

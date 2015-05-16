@@ -74,13 +74,13 @@
 				<td>{{loan.loanType.text}}</td>
 				<td>{{loan.payStatus.text}}</td>
 				<td >
-					<div class="dropdown" dropdown ng-show="loan.status.value !== 2">
+					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu">
 							<li><a role="menuitem" ng-click="collectModal(loan.id,'list')" ng-show="loan.status.value === 1">收款</a></li>
 							<li><a role="menuitem" ng-click="collectModal(loan.id,'complete')" ng-show="loan.status.value === 1">结清</a></li>
-							<li ><a role="menuitem" ng-show="loan.status.value === 1" href="/loan/{{loan.id}}/modify" target="_blank">调整</a></li>
-							<li ><a role="menuitem" href="/createProject?ref={{loan.id}}" target="_blank">新签</a></li>
+							<li><a role="menuitem" href="/loan/{{loan.id}}/modify" target="_blank" ng-show="loan.status.value === 1" >调整</a></li>
+							<li><a role="menuitem" href="/createProject?ref={{loan.id}}" target="_blank">新签</a></li>
 						</ul>
 					</div>
 				</td>

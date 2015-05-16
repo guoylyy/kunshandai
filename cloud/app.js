@@ -514,16 +514,20 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function (req, res){
   }else{
     query.include('loanPayBacks');
     query.notEqualTo('status', mconfig.loanStatus.draft.value); //贷款抵押类型过滤
-    var now = moment();
-    if(req.params.listType == mconfig.loanListTypes.normal.value){
-      query.lessThanOrEqualTo('currPayDate', now.add(1, 'month').toDate());
-    }else if(req.params.listType == mconfig.loanListTypes.overdue.value){
-      query.greaterThan('currPayDate', now.add(1, 'month').toDate());
-      query.lessThanOrEqualTo('currPayDate', now.add(3, 'month').toDate());
-    }else if(req.params.listType == mconfig.loanListTypes.badbill.value){
-      query.greaterThan('currPayDate', now.add(3, 'month').toDate());
-    }else if(req.params.listType == mconfig.loanListTypes.completed.value){
+    var now1month = (new moment()).add(1,'month').toDate();
+    var now3month = (new moment()).add(3,'month').toDate();
+    if(req.params.listType == mconfig.loanListTypes.completed.value){
       query.equalTo('status', mconfig.loanStatus.completed.value);
+    }else{
+      query.notEqualTo('status', mconfig.loanStatus.completed.value);
+    }
+    if(req.params.listType == mconfig.loanListTypes.normal.value){
+      query.lessThanOrEqualTo('currPayDate', now1month);
+    }else if(req.params.listType == mconfig.loanListTypes.overdue.value){
+      query.greaterThan('currPayDate', now1month);
+      query.lessThanOrEqualTo('currPayDate', now3month);
+    }else if(req.params.listType == mconfig.loanListTypes.badbill.value){
+      query.greaterThan('currPayDate', now3month);
     }
   }
   listLoan(res, query, pageNumber);
@@ -1159,6 +1163,7 @@ function listLoan(res, query, pageNumber){
           success: function(results){
             var rlist = [];
             for (var i = 0; i < results.length; i++) {
+              //console.log(results[i].get('currPayDate'));
               rlist.push(transformLoan(results[i]));
             };
             resultsMap['values'] = rlist;
@@ -1179,6 +1184,7 @@ function transformLoan(l){
   var loaner = l.get('loaner');
   var assurer = l.get('assurer');
   var pawn = l.get('pawn');
+  var payStatus = {};
   if(!pawn){
     pawn = null;
   }
@@ -1192,17 +1198,22 @@ function transformLoan(l){
   if(l.get('status') == mconfig.loanStatus.completed.value){
     payStatus = mconfig.loanListTypes.completed;
   }else{
-    var now = new moment();
-    var diffMonth = now.diff(moment(l.get('currPayDate')), 'month');
-    if(diffMonth <= 0){
+    var now1month = (new moment()).add(1,'month').toDate();
+    var now3month = (new moment()).add(3,'month').toDate();
+    //var diffMonth = now.diff(moment(l.get('currPayDate')), 'month');
+    var currDate = l.get('currPayDate');
+
+    if(currDate <= now1month){
       //正常
       payStatus = mconfig.loanListTypes.normal;
-    }else if(diffMonth>=1 && diffMonth<=3){
+    }else if(currDate > now1month && currDate<= now3month){
       //逾期
       payStatus = mconfig.loanListTypes.overdue;
-    }else if(diffMonth>3){
+    }else if(currDate > now1month){
       //坏账
       payStatus = mconfig.loanListTypes.badbill;
+    }else{
+      console.log(currDate);
     }
   }
   var result = {

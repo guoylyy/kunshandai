@@ -159,6 +159,10 @@
                     <div ng-show="payForm.$submitted || payForm.payMoney.$touched">
                       <div class="text-danger" ng-show="payForm.payMoney.$error.required">请填写实收金额</div>
                     </div>
+                     <div >
+                      <div class="text-danger" ng-show="payData.payMoney < payBill.payMoney ">小于应收金额</div>
+                      <div class="text-warning" ng-show="payData.payMoney > payBill.payMoney ">大于应收金额</div>
+                    </div>
                   </div>
                  </div> 
                 <div class="col-md-3">
@@ -172,6 +176,10 @@
                     <div ng-show="payForm.$submitted || payForm.overdueMoney.$touched">
                       <div class="text-danger" ng-show="payForm.overdueMoney.$error.required">请填写实收违约金</div>
                     </div>
+                     <div>
+                      <div class="text-danger" ng-show="payData.overdueMoney < payBill.overdueMoney ">小于应收违约金</div>
+                      <div class="text-warning" ng-show="payData.overdueMoney > payBill.overdueMoney ">大于应收违约金</div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -184,6 +192,10 @@
                     </div>
                     <div ng-show="payForm.$submitted || payForm.interest.$touched">
                       <div class="text-danger" ng-show="payForm.interest.$error.required">请填写实收利息</div>
+                    </div>
+                     <div >
+                      <div class="text-danger" ng-show="payData.interest < payBill.interestsMoney ">小于应收利息</div>
+                      <div class="text-warning" ng-show="payData.interest > payBill.interestsMoney ">大于应收利息</div>
                     </div>
                   </div>
                 </div>
@@ -319,6 +331,10 @@
                     <div ng-show="completeForm.$submitted || completeForm.amount.$touched">
                       <div class="text-danger" ng-show="completeForm.amount.$error.required">请填写实收金额</div>
                     </div>
+                     <div >
+                      <div class="text-danger" ng-show="completeData.income.amount < completedBill.income.amount ">小于应收本金</div>
+                      <div class="text-warning" ng-show="completeData.income.amount > completedBill.income.amount ">大于应收本金</div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -331,6 +347,10 @@
                     <div ng-show="completeForm.$submitted || completeForm.overdueMoney.$touched">
                       <div class="text-danger" ng-show="completeForm.overdueMoney.$error.required">请填写实收逾期费用</div>
                     </div>
+                    <div>
+                      <div class="text-danger" ng-show="completeData.income.overdueMoney < completedBill.income.overdueMoney ">小于应收逾期费用</div>
+                      <div class="text-warning" ng-show="completeData.income.overdueMoney > completedBill.income.overdueMoney ">大于应收逾期费用</div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -341,7 +361,11 @@
                       <span class="input-group-addon">元</span>
                     </div>
                     <div ng-show="completeForm.$submitted || completeForm.ininterest.$touched">
-                      <div class="text-danger" ng-show="completeForm.ininterest.$error.required">请填写实收逾期费用</div>
+                      <div class="text-danger" ng-show="completeForm.ininterest.$error.required">请填写实收利息</div>
+                    </div>
+                    <div>
+                      <div class="text-danger" ng-show="completeData.income.interest < completedBill.income.interest ">小于应收利息</div>
+                      <div class="text-warning" ng-show="completeData.income.interest > completedBill.income.interest ">大于应收利息</div>
                     </div>
                   </div>
                 </div>
@@ -352,6 +376,7 @@
                       <input type="text" class="form-control"  ng-value="total.income | number:2" disabled="true">
                       <span class="input-group-addon">元</span>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -370,6 +395,10 @@
                     <div ng-show="completeForm.$submitted || completeForm.assureCost.$touched">
                       <div class="text-danger" ng-show="completeForm.assureCost.$error.required">请填写实付保证金</div>
                     </div>
+                    <div>
+                      <div class="text-warning" ng-show="completeData.outcome.assureCost < completedBill.outcome.assureCost ">小于应付保证金</div>
+                      <div class="text-danger" ng-show="completeData.outcome.assureCost > completedBill.outcome.assureCost ">大于应付保证金</div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -382,6 +411,10 @@
                     <div ng-show="completeForm.$submitted || completeForm.keepCost.$touched">
                       <div class="text-danger" ng-show="completeForm.keepCost.$error.required">请填写实付暂收费用</div>
                     </div>
+                     <div>
+                      <div class="text-warning" ng-show="completeData.outcome.keepCost < completedBill.outcome.keepCost ">小于应付暂收费用</div>
+                      <div class="text-danger" ng-show="completeData.outcome.keepCost > completedBill.outcome.keepCost ">大于应付暂收费用</div>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-3">
@@ -392,7 +425,11 @@
                       <span class="input-group-addon">元</span>
                     </div>
                     <div ng-show="completeForm.$submitted || completeForm.outinterest.$touched">
-                      <div class="text-danger" ng-show="completeForm.outinterest.$error.required">请填写实收逾期费用</div>
+                      <div class="text-danger" ng-show="completeForm.outinterest.$error.required">请填写实付利息</div>
+                    </div>
+                     <div>
+                      <div class="text-warning" ng-show="completeData.outcome.interest < completedBill.outcome.interest ">小于应付利息</div>
+                      <div class="text-danger" ng-show="completeData.outcome.interest > completedBill.outcome.interest ">大于应付利息</div>
                     </div>
                   </div>
                 </div>

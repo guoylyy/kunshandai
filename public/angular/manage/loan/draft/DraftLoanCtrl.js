@@ -41,7 +41,7 @@ define(['app','underscore'],function(app,_){
 			var activeModal = $modal.open({
 				templateUrl: '/angular/manage/common/active/activeLoanModal.html',
 				size:'lg',
-				controller:'ActiveLoanCtrl',
+				controller:'ActiveLoanModalCtrl',
 				resolve:{
 					payments:function(){
 						return LoanService.getPayments(loanId);

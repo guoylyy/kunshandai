@@ -23,10 +23,10 @@ define(['app',"underscore"],function(app,_) {
 				
 				if(!$scope.loanInfo.objectId){
 					$scope.loanInfo = _.extend($scope.loanInfo,loan);
+					$scope.loanInfo.overdueCostPercent = $scope.loanInfo.overdueCostPercent * 1000;
+					$scope.loanInfo.interests = $scope.loanInfo.interests * 100;
 				}
-
-				$scope.loanInfo.overdueCostPercent = $scope.loanInfo.overdueCostPercent * 1000;
-				$scope.loanInfo.interests = $scope.loanInfo.interests * 100;
+				
 			}
 
 			init();
@@ -425,7 +425,7 @@ define(['app',"underscore"],function(app,_) {
 					if(direction === 'prev'){
 						if($state.current.name === 'createProjectMore'){
 							$state.go('createProject',{ref:$stateParams.ref});	
-						}else if($state.current.name === 'modifyProject'){
+						}else if($state.current.name === 'modifyProjectMore'){
 							$state.go('modifyProject',{id:$stateParams.id});	
 						}
 					}

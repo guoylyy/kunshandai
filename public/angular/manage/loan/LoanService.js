@@ -224,11 +224,18 @@ define(['app','underscore','moment'],function(app,_,moment){
 				return getPaybackList(page,startDate,endDate,loanType,3);
 			},
 			getPaybacks: function(loanId){
-				return $http.get(ApiURL+loanUrl+"/"+loanId+"/paybacks").then(function(res){
-					return res.data.data;
+				var deferred = $q.defer();
+				
+				$http.get(
+					ApiURL+loanUrl+"/"+loanId+"/paybacks"
+				).then(function(res){
+					deferred.resolve(res.data.data);
 				},function(res){
 					$log.error(res);
+					deferred.reject(res);
 				});
+
+				return deferred.promise;
 			},
 			getPayments:function(loanId){
 				var deferred = $q.defer();
@@ -251,8 +258,10 @@ define(['app','underscore','moment'],function(app,_,moment){
 				
 				var deferred = $q.defer();
 
-				$http.post(ApiURL+loanUrl+"/create_loan",JSON.stringify(dataTransform(typeTransform(loan))))
-				.then(function(res){
+				$http.post(
+					ApiURL+loanUrl+"/create_loan",
+					JSON.stringify(dataTransform(typeTransform(loan)))
+				).then(function(res){
 					// _.extend(localLoan,res.data.data);
 					deferred.resolve(res.data.data);
 				},function(res){
@@ -276,8 +285,10 @@ define(['app','underscore','moment'],function(app,_,moment){
 			},
 			generate: function(contract){
 				var deferred = $q.defer();
-				$http.post(ApiURL+loanUrl+"/generate_bill",JSON.stringify(contract))
-				.then(function(res){
+				$http.post(
+					ApiURL+loanUrl+"/generate_bill",
+					JSON.stringify(contract)
+				).then(function(res){
 					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);
@@ -287,8 +298,15 @@ define(['app','underscore','moment'],function(app,_,moment){
 			assure: function(loanId,outMoney){
 				//var outMoney = parseFloat(outMoney);
 				var deferred = $q.defer();
-				$http.post(ApiURL+loanUrl+"/assure_bill",JSON.stringify({loanId:loanId,outMoney:outMoney}))
-				.then(function(res){
+				$http.post(
+					ApiURL+loanUrl+"/assure_bill",
+					JSON.stringify(
+						{
+							loanId:loanId,
+							outMoney:outMoney
+						}
+					)
+				).then(function(res){
 					deferred.resolve(res.data.data);
 				},function(){
 					deferred.reject('放款失败');
@@ -299,8 +317,10 @@ define(['app','underscore','moment'],function(app,_,moment){
 				var payDate = new Date(payDate),
 					deferred = $q.defer();
 
-				$http.post(ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",JSON.stringify({payBackDate:payDate}))
-				.then(function(res){
+				$http.post(
+					ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",
+					JSON.stringify({payBackDate:payDate})
+				).then(function(res){
 					var bill = numberFormat(res.data.data);
 					deferred.resolve(bill);
 				},function(res){
@@ -314,8 +334,16 @@ define(['app','underscore','moment'],function(app,_,moment){
 				var payDate = new Date(payDate);
 				var payMoney = Number.parseFloat(payMoney);
 
-				return $http.post(ApiURL+loanUrl+"/payBack/"+payBackId,JSON.stringify({paybackid:payBackId,payBackDate:payDate,payBackMoney:payMoney}))
-				.then(function(res){
+				return $http.post(
+					ApiURL+loanUrl+"/payBack/"+payBackId,
+					JSON.stringify(
+						{
+							paybackid:payBackId,
+							payBackDate:payDate,
+							payBackMoney:payMoney
+						}
+					)
+				).then(function(res){
 					return res.data.data;
 				},function(res){
 					$log.error(res);
@@ -325,8 +353,10 @@ define(['app','underscore','moment'],function(app,_,moment){
 				var deferred = $q.defer();
 				var payDate = new Date(payDate);
 				var params = {payDate:payDate,interestCalType:interestCalType};
-				$http.get(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",{params:params})
-				.then(function(res){
+				$http.get(
+					ApiURL+loanUrl+"/payBack/"+loanId+"/finish",
+					{params:params}
+				).then(function(res){
 					var bill = numberFormat(res.data.data);
 					deferred.resolve(bill);
 				},function(res){
@@ -346,8 +376,15 @@ define(['app','underscore','moment'],function(app,_,moment){
 				payData.outcome.assureCost = parseFloat(payData.outcome.assureCost);
 				payData.outcome.keepCost = parseFloat(payData.outcome.keepCost);
 
-				$http.post(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",JSON.stringify({payBackDate:payDate,payBackData:payData}))
-				.then(function(res){
+				$http.post(
+					ApiURL+loanUrl+"/payBack/"+loanId+"/finish",
+					JSON.stringify(
+						{
+							payBackDate:payDate,
+							payBackData:payData
+						}
+					)
+				).then(function(res){
 					deferred.resolve(res.data.data);
 				},function(res){
 					$log.error(res);
@@ -359,7 +396,10 @@ define(['app','underscore','moment'],function(app,_,moment){
 			search:function(type,keyword){
 				var deferred = $q.defer();
 				var params = {key:keyword,type:type};
-				$http.get(ApiURL + loanUrl+"/search",{params:params}).then(function(res){
+				$http.get(
+					ApiURL + loanUrl+"/search",
+					{params:params}
+				).then(function(res){
 					deferred.resolve(res.data.data);
 				},function(getCountResult){
 					deferred.reject(res);
@@ -372,13 +412,19 @@ define(['app','underscore','moment'],function(app,_,moment){
 
 				var params = {startDate:startDate,endDate:endDate};
 				if(type == 'income') {
-					$http.get(ApiURL + loanUrl+"/statictics/income",{params:params}).then(function(res){
+					$http.get(
+						ApiURL + loanUrl+"/statictics/income",
+						{params:params}
+					).then(function(res){
 						deferred.resolve(res.data.data);
 					},function(getCountResult){
 						deferred.reject(res);
 					});
 				}else if(type === 'outcome') {
-					$http.get(ApiURL + loanUrl+"/statictics/outcome",{params:params}).then(function(res){
+					$http.get(
+						ApiURL + loanUrl+"/statictics/outcome",
+						{params:params}
+					).then(function(res){
 						deferred.resolve(res.data.data);
 					},function(getCountResult){
 						deferred.reject(res);

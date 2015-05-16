@@ -44,9 +44,10 @@ define(['app','underscore'],function(app,_){
 				   showCancelButton: true,
 				   confirmButtonColor: "#DD6B55",
 				   confirmButtonText: "确定",
-				   closeOnConfirm: true}, 
-				function(){ 
-				   $modalInstance.dismiss('cancel');
+				},function(isConfirm){ 
+					if(isConfirm){
+						$modalInstance.dismiss('cancel');	
+					}
 				});
 	    	}else{
 	    		$modalInstance.dismiss('cancel');

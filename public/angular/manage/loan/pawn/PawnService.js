@@ -135,7 +135,7 @@ define(['app','underscore'],function(app,_){
 				if(index >= 0){
 					pawnTypeValueReverse[index] = true;
 				}else{
-					pawnTypeValueReverse[itemLength] = items,data.pawnType.value[i];
+					pawnTypeValueReverse[itemLength] = data.pawnType.value[i];
 				}
 			}
 

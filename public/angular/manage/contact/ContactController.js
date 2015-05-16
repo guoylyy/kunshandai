@@ -47,20 +47,23 @@ define(['app','underscore'], function(app,_) {
           type: 'warning',
           confirmButtonColor: '#DD6B55',
           showCancelButton: true
-        }, function() {
-          ContactService.remove(contactId).then(function(data) {
-            if(data.code == 200){
-                $state.go($state.current, {page:$scope.currPage}, {reload: true});
-            }else{
-              SweetAlert.swal({
-                title: '删除失败',
-                text: data.message,
-                type: 'warning',
-                confirmButtonColor: '#DD6B55',
-                showCancelButton: false
-              });
-            }
-          });
+        }, function(isConfirm) {
+          if(isConfirm){
+             ContactService.remove(contactId).then(function(data) {
+              if(data.code == 200){
+                  $state.go($state.current, {page:$scope.currPage}, {reload: true});
+              }else{
+                SweetAlert.swal({
+                  title: '删除失败',
+                  text: data.message,
+                  type: 'warning',
+                  confirmButtonColor: '#DD6B55',
+                  showCancelButton: false
+                });
+              }
+            });
+          }
+         
         });
       }
 

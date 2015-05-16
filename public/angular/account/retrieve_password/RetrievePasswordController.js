@@ -47,8 +47,7 @@ define(['app','underscore'],function(app,_) {
                text: "赶快用新的密码登录吧!",
                type: "success",
                confirmButtonText: "好，现在就去",
-               closeOnConfirm: false}, 
-            function(){ 
+          }, function(){ 
                window.location = '/login';
             });
             

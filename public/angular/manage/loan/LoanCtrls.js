@@ -291,23 +291,26 @@ define(['app',"underscore"],function(app,_) {
 		          type: 'warning',
 		          confirmButtonColor: '#DD6B55',
 		          showCancelButton: true
-		        }, function() {
-		          	if(type === 'br'){
-						if($scope.br.objectId){
-							ContactService.deleteAttachment($scope.br.objectId,$scope.br.attachments[index].objectId);
+		        }, function(isConfirm) {
+		        	if(isConfirm){
+		        		if(type === 'br'){
+							if($scope.br.objectId){
+								ContactService.deleteAttachment($scope.br.objectId,$scope.br.attachments[index].objectId);
+							}
+							delete($scope.br.attachments[index]);
+							$scope.br.attachments = _.compact($scope.br.attachments);
+						}else if(type === 'gr'){
+							if($scope.gr.objectId){
+								ContactService.deleteAttachment($scope.gr.objectId,$scope.gr.attachments[index].objectId);
+							}
+							delete($scope.gr.attachments[index]);
+							$scope.gr.attachments = _.compact($scope.gr.attachments);
+						}else if(type === 'pawn'){
+							delete($scope.pawn.attachments[index]);
+							$scope.pawn.attachments = _.compact($scope.pawn.attachments);
 						}
-						delete($scope.br.attachments[index]);
-						$scope.br.attachments = _.compact($scope.br.attachments);
-					}else if(type === 'gr'){
-						if($scope.gr.objectId){
-							ContactService.deleteAttachment($scope.gr.objectId,$scope.gr.attachments[index].objectId);
-						}
-						delete($scope.gr.attachments[index]);
-						$scope.gr.attachments = _.compact($scope.gr.attachments);
-					}else if(type === 'pawn'){
-						delete($scope.pawn.attachments[index]);
-						$scope.pawn.attachments = _.compact($scope.pawn.attachments);
-					}
+		        	}
+		          	
 		        });
 				
 				
@@ -338,8 +341,22 @@ define(['app',"underscore"],function(app,_) {
 				if(!valid){
 					return;
 				}
-				LoanHelper.config($scope);
-				LoanHelper.createLoan();
+				SweetAlert.swal({
+		          title: '确定生成项目?',
+		          text: '生成后不能修改项目',
+		          type: 'warning',
+		          confirmButtonColor: '#DD6B55',
+		          confirmButtonText: "确定",
+		          cancelButtonText: "返回修改",
+		          showCancelButton: true
+		        }, function(isConfirm) {
+		        	if(isConfirm){
+		         		LoanHelper.config($scope);
+						LoanHelper.createLoan();
+		        	}
+		        	
+		        });
+				
 			}
 
 		}]),

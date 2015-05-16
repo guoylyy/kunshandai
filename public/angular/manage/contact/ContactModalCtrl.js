@@ -73,9 +73,11 @@ define(['app','underscore'],function(app,_){
 	          type: 'warning',
 	          confirmButtonColor: '#DD6B55',
 	          showCancelButton: true
-	        }, function() {
-	          		ContactService.deleteAttachment($scope.contact.objectId,$scope.contact.attachments[$index].objectId);
+	        }, function(isConfirm) {
+	        	if(isConfirm){
+	        		ContactService.deleteAttachment($scope.contact.objectId,$scope.contact.attachments[$index].objectId);
 					$scope.contact.attachments.splice($index, 1);
+	        	}
 	        });
 	      	
 			

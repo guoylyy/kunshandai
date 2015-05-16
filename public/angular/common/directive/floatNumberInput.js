@@ -15,12 +15,9 @@ define(['app'],function(app){
 					}
 					var clean = val.replace( /[^0-9.]+/g, '');
 					if (val !== clean) {
+						ngModelCtrl.$setViewValue(clean);
+						ngModelCtrl.$render();
 						
-							ngModelCtrl.$setViewValue(clean);
-							ngModelCtrl.$render();
-						
-					}else{
-
 					}
 					return clean;
 				});

@@ -13,13 +13,13 @@
         <th scope="row">应收本金（元）</th>
         <td></td>
         <td>{{completedBill.income.amount | number:2 }}</td>
-        <td>{{completedBill.income.amount | number:2 }}</td>
+        <td>{{row1 = completedBill.income.amount | number:2 }}</td>
       </tr>
       <tr>
         <th scope="row">逾期违约金（元）</th>
         <td></td>
         <td>{{completedBill.income.overdueMoney | number:2}}</td>
-        <td>{{row2 = completedBill.income.overdueMoney + completedBill.income.amount | number:2}}</td>
+        <td>{{row2 = completedBill.income.overdueMoney + row1 | number:2}}</td>
       </tr>
       <tr>
         <th scope="row">利息（元）</th>

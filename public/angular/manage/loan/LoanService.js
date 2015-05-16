@@ -1,6 +1,6 @@
 'use strict';
 
-define(['../../app','underscore','moment'],function(app,_,moment){
+define(['app','underscore','moment'],function(app,_,moment){
 
 	return app.factory('LoanService', ['$http','$q','ApiURL','$log',
 		function($http,$q,ApiURL,$log){
@@ -26,8 +26,8 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				keepCostDesc:'',
 				payWay:'',
 				firstPayDate:'',
-				isEmailRemind:true,
-				isSmsRemind:true,
+				isEmailRemind:false,
+				isSmsRemind:false,
 				paybacks:[]
 			},
 			
@@ -54,6 +54,16 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				loan.firstPayDate = new Date(loan.firstPayDate);
 
 				return loan;
+			},
+			numberFormat = function(data){
+				_.mapObject(data,function(val,key){
+					if(typeof val === 'object'){
+						numberFormat(data[key]);
+					}else if(typeof val === 'number'){
+						data[key] = Number.parseFloat(val.toFixed(2));
+					}
+				});
+				return data;
 			},
 			dataTransform = function(loan){
 				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent) / 1000;
@@ -221,12 +231,17 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				});
 			},
 			getPayments:function(loanId){
-				return $http.get(ApiURL+loanUrl+"/"+loanId+"/payments")
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+loanUrl+"/"+loanId+"/payments")
 				.then(function(res){
-					return res.data.data;
+					deferred.resolve(numberFormat(res.data.data));
 				},function(res){
 					$log.error(res);
+					deferred.reject(res);
 				});
+
+				return deferred.promise;
 
 			},
 			getCountResult:function(loan){
@@ -286,7 +301,8 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 
 				$http.post(ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",JSON.stringify({payBackDate:payDate}))
 				.then(function(res){
-					deferred.resolve(res.data.data);
+					var bill = numberFormat(res.data.data);
+					deferred.resolve(bill);
 				},function(res){
 					$log.error(res);
 					deferred.reject(res);
@@ -311,7 +327,8 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				var params = {payDate:payDate,interestCalType:interestCalType};
 				$http.get(ApiURL+loanUrl+"/payBack/"+loanId+"/finish",{params:params})
 				.then(function(res){
-					deferred.resolve(res.data.data);
+					var bill = numberFormat(res.data.data);
+					deferred.resolve(bill);
 				},function(res){
 					$log.error(res);
 					deferred.reject(res);

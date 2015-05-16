@@ -84,11 +84,11 @@ app.get('/loan', function(req, res){
   res.render('empty_layout.ejs');
 });
 app.get('/loan/:id/modify', function(req, res){
-  res.render('modify_loan.ejs');
+  res.render('loan_form.ejs');
 });
 
-app.get('/createLoan', function(req, res){
-  res.render('create_loan.ejs');
+app.get('/createProject', function(req, res){
+  res.render('loan_form.ejs');
 });
 app.get('/help', function(req, res){
   res.render('help.ejs');

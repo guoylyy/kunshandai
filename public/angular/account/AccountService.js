@@ -23,13 +23,13 @@ define(['app','underscore'],function(app,_){
 						var  expiresDate = new Date();
 						expiresDate.setDate(expiresDate.getDate() + 7);
 						resUser.expires = expiresDate;
-						$window.sessionStorage['userInfo'] = JSON.stringify(_.pick(resUser,'mobilePhoneNumber','password','expires'));
+						$window.localStorage['userInfo'] = JSON.stringify(_.pick(resUser,'mobilePhoneNumber','password','expires'));
 					}
 					//设置登录状态
 					var sessionExpiresTime = new Date();
 						sessionExpiresTime.setHours(sessionExpiresTime.getHours() + 1);
 					var loginStatus = {logined:true,sessionExpires:sessionExpiresTime};	
-					$window.sessionStorage['loginStatus'] = JSON.stringify(loginStatus);
+					$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
 
 					deferred.resolve(resUser);
 				},function(){
@@ -39,8 +39,8 @@ define(['app','underscore'],function(app,_){
 			},
 			logout : function(){
 				logined = false;
-				$window.sessionStorage['loginStatus'] = JSON.stringify({logined:false});
-				delete($window.sessionStorage['userInfo']);
+				$window.localStorage['loginStatus'] = JSON.stringify({logined:false});
+				delete($window.localStorage['userInfo']);
 				return $http.get(ApiURL+accountUrl+"/logout");
 			},
 			isLogin: function(){

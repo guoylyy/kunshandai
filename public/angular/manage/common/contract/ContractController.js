@@ -1,7 +1,9 @@
 define(['app','underscore'],function(app,_){
-	return app.controller('ContractController', function($scope,loan,paybacks,payments,attachments,PawnService){
+	return app.controller('ContractController', function($scope,loan,paybacks,payments,attachments,LoanService,PawnService){
 		
-		$scope.loanInfo 			= _.extend({actived:(loan.status.value != 0)},loan);
+		$scope.loanInfo 			= _.extend(LoanService.getLocal(),loan);
+		
+		$scope.loanInfo.actived		= (loan.status.value != 0);
 		
 		$scope.loanInfo.paybacks 	= paybacks;
 

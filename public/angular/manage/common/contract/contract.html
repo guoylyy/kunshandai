@@ -6,7 +6,7 @@
 	<div class="col-md-11">
 		<h4>项目编号: {{loanInfo.numberWithName}}</h4>
 	</div>
-	<div class=" col-md-1" ng-show="('contractCreated' | isState)">
+	<div class=" col-md-1" ng-show="('createProjectFinal' | isState) || ('loan' | isState)" ng-controller="ActiveLoanCtrl">
 		<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
 		<button class="btn btn-success " ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
 	</div>

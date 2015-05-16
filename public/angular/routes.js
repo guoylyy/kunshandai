@@ -41,13 +41,19 @@ define(['app','underscore'],function(app,_){
 					return DictService.get("timeRanges");
 				}	
 			}
-		};
-		var resolveLoan = function(){
+		},
+		resolveLoan = function(){
 			return{
 				loan:function(LoanService,$stateParams){
-	    			return LoanService.getLoan($stateParams.id).then(function(data){
-	    				return data;
-	    			})
+					var loanId = $stateParams.ref || $stateParams.id
+					if(loanId){
+						return LoanService.getLoan(loanId).then(function(data){
+		    				return data;
+		    			})
+					}else{
+						return null;
+					}
+	    			
 		    	}
 			}
 		},
@@ -288,40 +294,34 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "ContactController"
 		    })
-  			.state('createLoan',{
-		    	url:"/createLoan",
-		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
-		    	resolve:resolveSelectItems(),
-		    	controller: "CreateLoanCtrl"
-
+  			.state('createProject',{
+		    	url:"/createProject?ref",
+    			templateUrl: "/angular/manage/loan/create_loanDetail.html",
+    			resolve:_.extend(resolveSelectItems(),resolveLoan()),
+    			controller: "LoanFormCtrl"
 		    })
-		    .state('createLoanContact',{
-		    	url:"#contact",
-		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
-		    	resolve:resolveSelectItems(),
-		    	controller:"CreateLoanCtrl"
-
+		    .state('createProjectMore',{
+		    	url:"/createProject?ref#more",
+				templateUrl: "/angular/manage/loan/create_loanInfo.html",
+		    	controller:"LoanContactFormCtrl"
 		    })
-		 	 .state('contractCreated',{
-		    	url:"#contract",
+		 	 .state('createProjectFinal',{
+		    	url:"/createProject?ref#projectDetail",
 		    	templateUrl: "/angular/manage/common/contract/contract.html",
-		    	resolve:resolveSelectItems(),
-		    	controller: "CreateLoanCtrl"
-
+		    	controller: "LoanDetailCtrl"
 		    })
 		 	 // 调整项目
 		 	.state('modifyProject',{
 		    	url:"/loan/:id/modify",
 		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
-		    	resolve:_.extend(resolveLoan(),resolveSelectItems()),
-		    	controller: "ModifyLoanCtrl"
+		    	resolve:_.extend(resolveSelectItems(),resolveLoan()),
+		    	controller: "LoanFormCtrl"
 
 		    })
 		    .state('modifyProjectMore',{
 		    	url:"#more",
 		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
-		    	resolve:{},
-		    	controller: "ModifyLoanMoreCtrl"
+		    	controller: "LoanContactFormCtrl"
 
 		    })
 		    .state('modifyProjectFinal',{

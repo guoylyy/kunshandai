@@ -1,4 +1,4 @@
-<form name="loanForm" novalidate ng-submit="loanForm.$valid && nav('next')">
+<form name="loanForm" novalidate>
 	<div class="container-fluid">
 		<div class="col-md-6">
 
@@ -282,10 +282,6 @@
 		</div>
 	</div>
 	<div class="ks-divider"></div>
-	<div class="container-fluid">
-		<div class="col-md-6 "></div>
-		<div class="col-md-6" >
-			<button type="submit" class="btn btn-primary ks-right">下一步 </button>
-		</div>
+	<ui-include src="'/angular/manage/loan/ctrls.html'"></ui-include>
 	</div>
 </form>

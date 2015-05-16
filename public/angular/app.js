@@ -24,8 +24,8 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
       	// Perform custom logic
       	// 
       	
-		var userInfo 	= $window.sessionStorage['userInfo'];
-		var loginStatus = $window.sessionStorage['loginStatus'];
+		var userInfo 	= $window.localStorage['userInfo'];
+		var loginStatus = $window.localStorage['loginStatus'];
 		if(userInfo){
 			userInfo = JSON.parse(userInfo);
 			userInfo.expires  = new Date(userInfo.expires);
@@ -35,7 +35,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 			loginStatus.sessionExpires = new Date(loginStatus.sessionExpires);
 		}else{
 			loginStatus = {logined:false};
-			$window.sessionStorage['loginStatus'] = JSON.stringify(loginStatus);
+			$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
 		}
 
 		var now 		= new Date();
@@ -44,7 +44,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 		    //session过期
 			if(now > loginStatus.sessionExpires){
 				loginStatus.logined = false;
-				$window.sessionStorage['loginStatus'] = JSON.stringify(loginStatus);
+				$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
 				//记住登录状态
 				if(userInfo){
 					//记住状态期限内

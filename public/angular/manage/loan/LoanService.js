@@ -176,12 +176,17 @@ define(['../../app','underscore','moment'],function(app,_,moment){
 				return localLoan;
 			},
 			getLoan:function(loanId){
-				return $http.get(ApiURL+loanUrl+"/"+loanId)
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+loanUrl+"/"+loanId)
 				.then(function(res){
-					return typeTransform(res.data.data);
+					deferred.resolve(typeTransform(res.data.data));
 				},function(res){
 					$log.error(res);
+					deferred.reject(res);
 				});
+
+				return deferred.promise;
 			},
 			getNormalLoans:function(page,startDate,endDate,loanType){
 				return getLoanList(page,"normal",startDate,endDate,loanType);

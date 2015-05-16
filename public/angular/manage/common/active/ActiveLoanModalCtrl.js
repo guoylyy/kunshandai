@@ -1,5 +1,5 @@
 define(['app'],function(app){
-	return app.controller('ActiveLoanCtrl',function($scope,$modalInstance,LoanService,payments,loan){
+	return app.controller('ActiveLoanModalCtrl',function($scope,$modalInstance,LoanService,payments,loan){
 		
 		$scope.payments = payments;
 

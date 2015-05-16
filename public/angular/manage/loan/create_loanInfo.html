@@ -1,4 +1,4 @@
-<form name="moreInfoForm" novalidate ng-submit="moreInfoForm.$valid &&  nav('final')">
+<form name="moreInfoForm" novalidate>
 <!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
 	<div class="container-fluid">
 	<div class="ks-dividing">
@@ -158,7 +158,7 @@
 		</div>
 	</div>
 	<div  collapse="!br.hasGr">
-		<div ng-include="template.grUrl"></div>
+		<ui-include src="'/angular/manage/contact/grInfo.html'"></ui-include>
 	</div>
 	
 	<div ng-init="pType = loanInfo.loanType || loanInfo.loanType" ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
@@ -226,13 +226,8 @@
 		</div>
 	</div>
 	<div class="ks-divider"></div>
-	<div class="container-fluid" >
-		<div class="col-md-6 ">
-			<button type="button" class="btn btn-primary"  ng-click="nav('prev')" ng-disabled="status.loanCreating">上一步</button>
-		</div>
-		<div class="col-md-6" >
-			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating">{{('createLoanContact' | isState)?'生成项目':'结清并生成新的项目'}}</button>
-		</div>
-	</div>
+	
+	<ui-include src="'/angular/manage/loan/ctrls.html'"></ui-include>
+	
 	</div>
 </form>

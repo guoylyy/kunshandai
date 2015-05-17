@@ -633,9 +633,53 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
 
 });
 
+
+app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function (req, res){
+  var u = check_login(res);
+  var ids = req.body.payBackIds;
+  var payBackDate = req.body.payBackDate;
+  var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('owner', u);
+
+  var payBackQuery = new AV.Query('LoanPayBack');
+  payBackQuery.containedIn('objectId', ids);
+  payBackQuery.matchesQuery('loan',loanQuery);
+  console.log('start to merge bill');
+
+  var loanObject = AV.Object.createWithoutData('Loan', req.params.id);
+  loanObject.fetch().then(function(loan){
+    //console.log(loan);
+    payBackQuery.find().then(function(rs){
+      var overdueMoney = 0;
+      var payMoney = 0;
+      var interest = 0;
+      for (var i = 0; i < rs.length; i++) {
+        //console.log(rs[i]);
+        if(rs[i].get('order') == loan.get('payTotalCircle')){
+          //throw error
+          mutil.renderError(res, {code:500, message:'含有最后一期还款，请跳转到结清'});
+          break;
+        }
+        overdueMoney = overdueMoney + calculateOverdueMoney(rs[i], rs[i].get('payDate'), payBackDate);
+        payMoney = payMoney + rs[i].get('payMoney');
+        interest = interest + rs[i].get('interestsMoney');
+      };
+      var bill = {
+        amount : payMoney,
+        interest: interest,
+        overdueMoney: overdueMoney,
+        payMoney : payMoney + overdueMoney
+      };
+      mutil.renderData(res, bill);
+    });
+  });
+
+});
+
+
 //计算还款金额: 每次应还的钱
 app.post(config.baseUrl + '/loan/payBack/:id/bill', function (req, res){
-  var payDate = req.body.payDate;
+  //var payDate = req.body.payDate;
   //根据还款时间计算应还金额
   //判断是按天计算利息还是按月计算违约金 
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', req.params.id);
@@ -771,6 +815,7 @@ app.get(config.baseUrl + '/loan/statictics/outcome', function (req, res){
   };
   return classficStatictics(res, query, map, 'outMoney');
 });
+
 //统计收到的还款金额
 app.get(config.baseUrl + '/loan/statictics/income', function (req, res){
   var u = check_login(res);

@@ -480,6 +480,31 @@ traits:
                     "code": 404,
                     "message": "找不到对象!"
                   }
+    /mergePayBack/bill:
+      post:
+        queryParameters:
+          data:
+            type: string
+            description : 发送合并付款的 paybackid 和 实际付款时间
+            example: |
+              {
+                "payBackIds":["5557b39ee4b06f7d8f37507a","5557b39ee4b06f7d8f375079"],
+                "payBackDate":"2015-05-20"
+              }
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                    "data": {
+                      "amount": 67200,
+                      "interest": 7200,
+                      "overdueMoney": 0,
+                      "payMoney": 67200
+                    },
+                    "code": 200
+                  }
   /list/{filter}/{pn}:
     get:
       description: |

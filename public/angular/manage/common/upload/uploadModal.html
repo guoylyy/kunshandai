@@ -1,47 +1,47 @@
 
-      <div class="modal-header">
-        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
-        <!-- <span aria-hidden="true">&times;</span></button> -->
-        <h4 class="modal-title">上传{{type}}附件</h4>
+<div class="modal-header">
+  <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"> -->
+  <!-- <span aria-hidden="true">&times;</span></button> -->
+  <h4 class="modal-title">上传{{type}}附件</h4>
+</div>
+<div class="modal-body">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>文件名</th>
+        <th>文件类型</th>
+         <th>文件大小(M)</th>
+        <th>上传状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="file in fileList">
+        <td>{{file.name}}</td>
+        <td>{{file.type}}</td>
+        <td>{{file.size/1000000 | number:2}}</td>
+        <td  class="text-success" ng-show="!fileStatus[file.$$hashKey].error">
+          {{fileStatus[file.$$hashKey].percent}}%
+        </td>
+        <td class="text-danger" ng-show="fileStatus[file.$$hashKey].error">上传失败</td>
+        <td></td>              
+      </tr>
+    </tbody>
+  </table>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3">
+       <select class="form-control" ng-model="attachmentType" ng-options="attachType.value as attachType.text for attachType in attchTypes" required name="fileType"></select>
       </div>
-      <div class="modal-body">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>文件名</th>
-              <th>文件类型</th>
-               <th>文件大小(M)</th>
-              <th>上传状态</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="file in fileList">
-              <td>{{file.name}}</td>
-              <td>{{file.type}}</td>
-              <td>{{file.size/1000000 | number:2}}</td>
-              <td  class="text-success" ng-show="!fileStatus[file.$$hashKey].error">
-                {{fileStatus[file.$$hashKey].percent}}%
-              </td>
-              <td class="text-danger" ng-show="fileStatus[file.$$hashKey].error">上传失败</td>
-              <td></td>              
-            </tr>
-          </tbody>
-        </table>
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-3">
-             <select class="form-control" ng-model="attachmentType" ng-options="attachType.value as attachType.text for attachType in attchTypes" required name="fileType"></select>
-            </div>
-            <div class="col-md-9">
-              <div ng-file-drop ng-file-select ng-model="files" ng-file-chang="fileDropped($files,$event)" ng-multiple="true" drop-available="dropSupported" class="ks-drop-box">
-                <div>将文件拖动到此上传 或 点击此处选择文件</div>
-                </div>
-            </div>
+      <div class="col-md-9">
+        <div ng-file-drop ng-file-select ng-model="files" ng-file-chang="fileDropped($files,$event)" ng-multiple="true" drop-available="dropSupported" class="ks-drop-box">
+          <div>将文件拖动到此上传 或 点击此处选择文件</div>
           </div>
-        </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-warning" ng-click="cancel()">取消上传</button>
-        <button type="button" class="btn btn-success" ng-click="finish()">完成上传</button>
-      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" ng-click="cancel()">取消上传</button>
+  <button type="button" class="btn btn-success" ng-click="finish()">完成上传</button>
+</div>

@@ -20,7 +20,6 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 	.run(function($rootScope,$state, $urlRouter,$window,$location,AccountService) {
     	$rootScope.$on('$locationChangeStart', function(evt) {
       	// Halt state change from even starting
-      	
       	// Perform custom logic
       	// 
       	
@@ -56,20 +55,26 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 						});
 
 					}else{
+						evt.preventDefault();
 						window.location = '/login';	
+						return;
 					}
 
 				}else{
+					evt.preventDefault();
 					window.location = '/login';	
 				}
 			}else{
 				if(window.location.pathname == '/login' 
 					|| window.location.pathname == '/signup'  
 					|| window.location.pathname == '/retrieve_password'){
-
+					
+					evt.preventDefault();
 					window.location = '/manage';		
+					return;
 				}else{
-					// $urlRouter.sync();	
+					// $urlRouter.sync();
+					return;
 				}
 				
 			}
@@ -81,6 +86,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 				// $urlRouter.sync();
 			}else{
 				// $state.go('login');
+				evt.preventDefault();
 				window.location = '/login';
 				// $location.path('/login');
 			

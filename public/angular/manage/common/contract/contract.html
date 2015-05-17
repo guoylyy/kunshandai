@@ -3,12 +3,12 @@
 	<h4>项目详情</h4>
 </div>
 <div class="row">
-	<div class="col-md-11">
+	<div class="col-md-10">
 		<h4>项目编号: {{loanInfo.numberWithName}}</h4>
 	</div>
-	<div class=" col-md-1" ng-show="('createProjectFinal' | isState) || ('loan' | isState)" ng-controller="ActiveLoanCtrl">
-		<button class="btn btn-warning " ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
-		<button class="btn btn-success " ng-show="loanInfo.actived" ng-disabled="true">放款成功</button>
+	<div class=" col-md-2" ng-show="('createProjectFinal' | isState) || ('loan' | isState)" ng-controller="ActiveLoanCtrl">
+		<button class="btn btn-warning ks-right" ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
+		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">正在收款</button>
 	</div>
 </div>
 <div class="ks-panel panel panel-primary">

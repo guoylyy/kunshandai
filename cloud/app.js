@@ -58,11 +58,7 @@ app.get('/', function (req,res){
   res.redirect('/home');
 });
 app.get('/home',function(req, res){
-  if(account.isLogin()){
     res.redirect('/manage');
-  }else{
-    res.redirect('/login');
-  }
 });
 app.get('/index',function(req, res){
   res.render('guest_layout.ejs');

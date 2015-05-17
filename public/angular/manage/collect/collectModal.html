@@ -98,7 +98,7 @@
       <div>还款总期数: {{loan.payTotalCircle}}</div>
     </div>
   </div>
-  <div class="ks-panel">
+  <div class="ks-panel" ng-show="!billGenerated">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -109,7 +109,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="selectedPayback in selectedPaybacks">
+        <tr ng-repeat="selectedPayback in selectedPaybacks" >
           <td>{{selectedPayback.order}}</td>
           <td>{{selectedPayback.payMoney | number:2}}</td>
           <td>{{selectedPayback.payDate | date:"yyyy-MM-dd"}}</td>

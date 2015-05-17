@@ -82,5 +82,17 @@ define(['app','underscore'],function(app,_){
 	      	
 			
 		}
+
+		$scope.viewMsgTemplate = function(){
+			var modalInstance = $modal.open({
+			  templateUrl: '/angular/manage/common/notification/notification.html',
+			  size: 'md',
+			  controller:function($scope,$modalInstance){
+			  	$scope.close = function(){
+			  		$modalInstance.close();
+			  	}
+			  }
+			});
+		}
 	})
 })

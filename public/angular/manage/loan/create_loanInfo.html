@@ -209,12 +209,16 @@
 				<ul class="list-inline">
 					 <li>
 						<label class="checkbox-inline">
-			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" >短信提醒
+			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" > 短信提醒
 			             </label>
-			             <label class="checkbox-inline">
+			             <span class="label label-info" ng-click="viewMsgTemplate()" style="cursor:pointer;">查看模板</span>
+					</li>
+					<li>
+						<label class="checkbox-inline">
 			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >邮件提醒
 			             </label>
 					</li>
+
 				</ul>
 				<div ng-show="loanInfo.isSmsRemind && !br.mobilePhoneNum ">
 					<div class="text-warning">借款人手机号未填,无法接受短信提醒</div>

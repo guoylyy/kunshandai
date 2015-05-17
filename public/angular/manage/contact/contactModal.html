@@ -27,7 +27,7 @@
             <dd>{{contact.address}}</dd>
             <div class="ks-divider"></div>
             <dt>接受短信通知:</dt>
-            <dd>{{contact.sendSmsOrNot ? '是':'否'}}</dd>
+            <dd>{{contact.sendSmsOrNot ? '是':'否'}} <span class="label label-info" ng-click="viewMsgTemplate()" style="cursor:pointer;" ng-show="contact.sendSmsOrNot">查看模板</span></dd>
             <div class="ks-divider"></div>
           </dl>
         </div>
@@ -116,6 +116,7 @@
             <label class="checkbox-inline">
               <input type="checkbox" ng-model="contact.sendSmsOrNot"> 是否接收短信通知
             </label>
+            <span class="label label-info" ng-click="viewMsgTemplate()" style="cursor:pointer;">查看模板</span>
           </div>
         </div>
       </div>
@@ -139,7 +140,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="cancel()" ng-show="control.view">关闭</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()" ng-show="control.view || control.edit">关闭</button>
     <button type="submit" class="btn btn-success" ng-click="finishEdit()" ng-show="control.edit" ng-disabled="editForm.$invalid || waitingResponse">完成编辑</button>
     <button type="button" class="btn btn-warning" ng-click="startEdit()" ng-show="control.view">编辑</button>
     <button type="button" class="btn btn-warning" ng-click="finishCreate()" ng-show="control.create" ng-disabled="editForm.$invalid">立即新建</button>

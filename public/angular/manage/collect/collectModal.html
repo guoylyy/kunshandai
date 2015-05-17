@@ -41,9 +41,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="payback in paybacks" ng-class="{warning:(payback.status == 1),success:(payback.status == 3)}">
+            <tr ng-repeat="payback in paybacks" ng-class="{warning:($parent.select.payBackIds[$index]),success:(payback.status == 3)}">
               <td><input type="checkbox" name="payback" value="{{payback.objectId}}" 
-                ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''" ng-disabled="(payback.status == 3)"></td>
+                ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''" 
+                ng-disabled="(!(payback.status == 1) && !($parent.select.payBackIds[$index - 1]) )|| (payback.status == 3) || ($parent.select.payBackIds[$index + 1])"></td>
                 <td>{{payback.order}}</td>
                 <td>{{payback.payMoney | number:2}}</td>
                 <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>

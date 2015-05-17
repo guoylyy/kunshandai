@@ -28,7 +28,8 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.select = {payBackIds:[]};
 
-		$scope.$watchCollection("select.payBackIds",function(){
+		$scope.$watchCollection("select.payBackIds",function(newIds,oldIds){
+			
 			$scope.payBackIds = _.compact($scope.select.payBackIds);
 			console.log($scope.payBackIds);
 		})

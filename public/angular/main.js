@@ -21,7 +21,8 @@ require.config({
 		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
 		angularBusy:'../lib/angular-busy/dist/angular-busy',
 		text:'../lib/requirejs-text/text',
-		moment:'../lib/moment/moment'
+		moment:'../lib/moment/moment',
+		moment_zh_cn:'../lib/moment/locale/zh-cn'
 		
 	},
 	shim:{

@@ -1,10 +1,10 @@
 'use strict';
 
-define(['app','underscore','moment'],function(app,_,moment){
+define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 
 	return app.factory('LoanService', ['$http','$q','ApiURL','$log',
 		function($http,$q,ApiURL,$log){
-		
+
 		var loanUrl = '/loan';
 
 		var model = {
@@ -63,6 +63,14 @@ define(['app','underscore','moment'],function(app,_,moment){
 						data[key] = Number.parseFloat(val.toFixed(2));
 					}
 				});
+				return data;
+			},
+			daysAdd = function(data){
+				
+				_.each(data,function(ele,index){
+					moment.locale('zh-cn');
+					data[index]['nowToPayDate'] = moment(data[index]['payDate']).fromNow();
+				})
 				return data;
 			},
 			dataTransform = function(loan){
@@ -217,11 +225,18 @@ define(['app','underscore','moment'],function(app,_,moment){
 				return getLoanList(page,"completed",startDate,endDate,loanType);
 			},
 			getUnpayedList:function(page,startDate,endDate,loanType){
-				return getPaybackList(page,startDate,endDate,loanType,1);
-
+				var deferred = $q.defer();
+				getPaybackList(page,startDate,endDate,loanType,1)
+				.then(function(res){
+					res.values  = daysAdd(res.values);
+					deferred.resolve(res);
+				},function(res){
+					deferred.reject(res);
+				});
+				return deferred.promise;
 			},
 			getPayedList:function(page,startDate,endDate,loanType){
-				return getPaybackList(page,startDate,endDate,loanType,3);
+				 return getPaybackList(page,startDate,endDate,loanType,3);
 			},
 			getPaybacks: function(loanId){
 				var deferred = $q.defer();

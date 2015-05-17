@@ -40,7 +40,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 
 		var now 		= new Date();
 
-		if(loginStatus.logined){
+		if(loginStatus.logined || userInfo){
 		    //session过期
 			if(now > loginStatus.sessionExpires){
 				loginStatus.logined = false;

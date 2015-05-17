@@ -345,6 +345,28 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 
 				return deferred.promise;
 			},
+			countMultiPaymoney:function(loanId,payBackIds,payDate){
+				payDate = new Date(payDate);
+				var deferred = $q.defer();
+				$http.post(
+					ApiURL+loanUrl+"/"+loanId+"/mergePayBack/bill",
+					JSON.stringify(
+						{
+							payBackIds:payBackIds,
+							payBackDate:payDate
+						}
+					)
+				).then(function(res){
+					var bill = numberFormat(res.data.data);
+					deferred.resolve(bill);
+				},function(res){
+					$log.error(res);
+					deferred.reject(res);
+				});
+
+				return deferred.promise;
+
+			},
 			payMoney:function(payBackId,payDate,payMoney){
 				var payDate = new Date(payDate);
 				var payMoney = Number.parseFloat(payMoney);

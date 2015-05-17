@@ -26,12 +26,11 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.payData;
 
-		$scope.$watch("paybacks",function(){
-			// if($scope.paybacks && $scope.paybacks.length == 1){
-			// 	$scope.process.complete = true;
-			// 	$scope.process.pay = false;
-			// 	$scope.process.list = false;
-			// }
+		$scope.select = {payBackIds:[]};
+
+		$scope.$watchCollection("select.payBackIds",function(){
+			$scope.payBackIds = _.compact($scope.select.payBackIds);
+			console.log($scope.payBackIds);
 		})
 
 		var completeInputs = ['completeData.income.amount','completeData.income.overdueMoney','completeData.income.interest',
@@ -63,13 +62,24 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.$watch("payDate",function(){
 			if($scope.payDate){
-				$scope.countPromise = LoanService.countPaymoney($scope.paybackId,$scope.payDate)
-				.then(function(result){
-					$scope.payBill = result;
-					$scope.payData = _.extend({},result);
-					$scope.billGenerated = true;
+				if($scope.payBackIds.length > 1){
+					$scope.countPromise = LoanService.countMultiPaymoney($scope.loan.id,$scope.payBackIds,$scope.payDate)
+					.then(function(result){
+						$scope.payBill = result;
+						$scope.payData = _.extend({},result);
+						$scope.billGenerated = true;
 
-				});
+					});
+				}else if($scope.payBackIds.length == 1){
+					$scope.countPromise = LoanService.countPaymoney($scope.payBackIds[0],$scope.payDate)
+					.then(function(result){
+						$scope.payBill = result;
+						$scope.payData = _.extend({},result);
+						$scope.billGenerated = true;
+
+					});
+				}
+				
 			}
 		});
 
@@ -89,21 +99,26 @@ define(['app','underscore'],function(app,_) {
 		});
 
 		$scope.startCollect = function(){
-			$scope.selectedPayback = paybacks[_.findIndex(paybacks,{objectId:$scope.paybackId})];
-
-			if($scope.selectedPayback.order == $scope.paybacks.length){
-				$scope.loanCompleted = true;
-			}else{
-				$scope.loanCompleted = false;
-			}
-			$scope.process.list = false;
-			$scope.process.pay = true;
+			// $scope.selectedPayback = paybacks[_.findIndex(paybacks,{objectId:$scope.paybackId})];
+			$scope.selectedPaybacks = _.filter(paybacks, function(o){ return _.indexOf($scope.payBackIds, o.objectId) != -1});
+			
+			// if($scope.selectedPaybacks[$scope.selectedPaybacks.length - 1].order == $scope.paybacks.length){
+			// 	$scope.loanCompleted = true;
+			// }else{
+			// 	$scope.loanCompleted = false;
+			// }
+			$scope.loanCompleted 	= false;
+			$scope.process.list 	= false;
+			$scope.process.pay 		= true;
 			
 		}
 
 		$scope.back = function(){
+			$scope.payDate = '';
 			$scope.process.list = true;
 			$scope.process.pay = false;
+			$scope.billGenerated = false;
+
 		}
 		$scope.openCld = function($event){
 			
@@ -113,11 +128,16 @@ define(['app','underscore'],function(app,_) {
 		}
 
 		$scope.pay = function(){
-			LoanService.payMoney($scope.paybackId,$scope.payDate,$scope.total.income)
-			.then(function(){
-				SweetAlert.success("收款成功","");
-				$modalInstance.close(true);
-			});
+			if($scope.payBackIds.length == 1){
+				LoanService.payMoney($scope.payBackIds[0],$scope.payDate,$scope.total.income)
+				.then(function(){
+					SweetAlert.success("收款成功","");
+					$modalInstance.close(true);
+				});
+			}else{
+				alert("还不支持多期付款");
+			}
+			
 		}
 
 		$scope.startComplete = function(){

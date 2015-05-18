@@ -1,13 +1,13 @@
 define(['app','underscore'],function(app,_){
 	return app.factory('PawnService', ['$http','$q','ApiURL', function($http,$q,ApiURL){
-		
+
 		var pawnUrl = "/loanPawn";
 
 		var car 	= {
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['合同公证','律师公证','预售登录','他项权证','网签','押产证'],
+					items:['合同公证','律师见证','他项权证','过户','装GPS','押车','押产证'],
 					order:0
 				},
 				carNum:{
@@ -56,7 +56,7 @@ define(['app','underscore'],function(app,_){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['合同公证','律师见证','他项权证','过户','装GPS','押车','押产证'],
+					items:['合同公证','律师公证','预售登录','他项权证','网签','押产证'],
 					order:0
 				},
 				houseCertificate:{
@@ -129,9 +129,9 @@ define(['app','underscore'],function(app,_){
 			var itemLength  = data.pawnType.items.length;
 			var pawnTypeValueReverse  = [];
 			for(i = 0;i < valueLength;i++){
-				
+
 				var index = _.indexOf(data.pawnType.items,data.pawnType.value[i]);
-				
+
 				if(index >= 0){
 					pawnTypeValueReverse[index] = true;
 				}else{
@@ -152,14 +152,14 @@ define(['app','underscore'],function(app,_){
 				if(type === 'fcdy' || type === 'mfdy'){
 					return house;
 				}else if(type === 'qcdy' || type === 'mcdy'){
-					return car;	
+					return car;
 				}else{
 					return '';
 				}
 			},
-			
+
 			create:function(data){
-				
+
 				if(data === ''){
 					return '';
 				}
@@ -202,7 +202,7 @@ define(['app','underscore'],function(app,_){
 					if(transform){
 						data = pawnTypeTransformReverse(data);
 					}
-					
+
 					deferred.resolve(data);
 				},function(res){
 					deferred.reject(res);

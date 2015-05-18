@@ -1,45 +1,51 @@
 'use strict'
 
 define(['app','underscore'],function(app,_){
-	
+
 	return app.config(['$stateProvider','$urlRouterProvider','$locationProvider',
 		function($stateProvider,$urlRouterProvider,$locationProvider){
-		
-		 
+
+
 		$locationProvider.html5Mode({
 		  enabled: true,
 		  requireBase: false
 		});
 
-		var resolveLoans = function(fn,DictService,$stateParams){
-		    var startDate, endDate,loanType;
+		var resolveLoans = function(fn,LoanService,DictService,$stateParams,$state){
+		    var startDate, endDate, endTimeRS, endTimeRE, loanType;
 			if(!$stateParams.startDate){
 				var timeRanges = DictService.get('timeRanges');
 				startDate = timeRanges[0].startDate;
 				endDate = timeRanges[0].endDate;
 				$stateParams.startDate = startDate;
 				$stateParams.endDate = endDate;
-			} 
+				if(fn === LoanService.getLoans){
+					endTimeRS = new Date(parseInt(startDate));
+					endTimeRE = new Date(parseInt(endDate));
+					$stateParams.endTimeRS = startDate;
+					$stateParams.endTimeRE = endDate;
+				}
+			}
 		    startDate = new Date(parseInt($stateParams.startDate));
 		    endDate = new Date(parseInt($stateParams.endDate));
 		    loanType = $stateParams.loanType;
 		    $stateParams.page = $stateParams.page || 1
-		    return fn.call(this,$stateParams.page,startDate,endDate,loanType).then(function(data){
+		    return fn.call(this,$stateParams.page,startDate,endDate,loanType,endTimeRS,endTimeRE).then(function(data){
 		    	return data;
 		    });
-			
+
 		};
 		var resolveObject = function(fn){
 			return {
-				loans:function(DictService,LoanService,$stateParams){
-		    		return resolveLoans(eval(fn),DictService,$stateParams);
+				loans:function(DictService,LoanService,$stateParams,$state){
+		    		return resolveLoans(eval(fn),LoanService,DictService,$stateParams,$state);
 		    	},
 				loanTypes:function(DictService){
 					return DictService.get('loanTypes');
 				},
 				timeRanges:function(DictService){
 					return DictService.get("timeRanges");
-				}	
+				}
 			}
 		},
 		resolveLoan = function(){
@@ -53,7 +59,7 @@ define(['app','underscore'],function(app,_){
 					}else{
 						return null;
 					}
-	    			
+
 		    	}
 			}
 		},
@@ -68,7 +74,7 @@ define(['app','underscore'],function(app,_){
 	    		}
 		    }
 		};
-		
+
 		$stateProvider
 			//acount module routes
 			.state('home',{
@@ -85,7 +91,7 @@ define(['app','underscore'],function(app,_){
 		    .state('signup', {
 		    	url: "/signup",
 		    	templateUrl: "angular/account/signup/signup.html"
-		      
+
 		    })
 		    .state('loan',{
 		    	url:'/loan?id',
@@ -117,13 +123,13 @@ define(['app','underscore'],function(app,_){
 		    			var defferrd = $q.defer();
 
 		    			LoanService.getLoan($stateParams.id).then(function(loanData){
-		    				
+
 		    				 ContactService.getAttachments(loanData.loaner.id).then(function(attachdata){
 		    					attachments.br = attachdata;
 
 		    				}).then(function(){
 		    					if(loanData.assurer && loanData.assurer.id){
-			    					
+
 			    					ContactService.getAttachments(loanData.assurer.id).then(function(attachdata){
 			    						attachments.gr = attachdata;
 			    						defferrd.resolve(attachments);
@@ -205,7 +211,7 @@ define(['app','underscore'],function(app,_){
     					return LoanService.getDraft($stateParams.page || 1).then(function(data){
     						return data;
     					});
-    				}	
+    				}
     			},
     			controller: "DraftLoanCtrl"
 		    })
@@ -223,7 +229,7 @@ define(['app','underscore'],function(app,_){
 		    })
 
 		    .state('allProjects',{
-		    	url:"/manage/projects/all?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/all?page&startDate&endDate&loanType&endTimeRS&endTimeRE",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getLoans"),
     			controller: "ProjectController"
@@ -266,7 +272,7 @@ define(['app','underscore'],function(app,_){
 					},
 					timeRanges:function(DictService){
 						return DictService.get("timeRanges");
-					}	
+					}
 				},
 				controller: "ProjectController"
 		    })
@@ -342,6 +348,3 @@ define(['app','underscore'],function(app,_){
 	}]);
 
 });
-
-
-

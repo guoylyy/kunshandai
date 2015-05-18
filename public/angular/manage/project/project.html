@@ -35,13 +35,47 @@
 <div class="ks-panel" ng-show="!('searchProjects' | isState)">
 	<div class="panel panel-default">
 		<div class="panel-heading">筛选条件</div>
-		<div class="panel-body"> 
-			<!-- <div class="ks-condition">
-				<ul class="ks-list-unstyled">
-					<li>收款时间:</li>
-					<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
-				</ul>
-			</div> -->
+		<div class="panel-body">
+			<div class="ks-condition">
+				<div class="row">
+					<div class="col-md-9">
+						<ul class="ks-list-unstyled">
+							<li>收款时间:</li>
+							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+						</ul>
+					</div>
+					<div class="col-md-pull-1 col-md-3">
+						<div class="input-group" style="padding-left:10px;">
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedstart" close-text="关闭" name="startDate" ng-click="open($event,'openedstart')" ng-model="condition.startDate"/>
+							<span class="input-group-addon">-</span>
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedend" close-text="关闭" name="endDate" ng-click="open($event,'openedend')" ng-model="condition.endDate"/>
+							<span class="input-group-btn">
+								<button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ks-condition" ng-show="('allProjects' | isState)">
+				<div class="row">
+					<div class="col-md-9">
+						<ul class="ks-list-unstyled">
+							<li>截止时间:</li>
+							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({endTimeRS:timeRange.startDate,endTimeRE:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+						</ul>
+					</div>
+					<div class="col-md-pull-1 col-md-3">
+						<div class="input-group" style="padding-left:10px;">
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedendTimeS" close-text="关闭" name="endTimeRS" ng-click="open($event,'openedendTimeS')" ng-model="condition.endTimeRS"/>
+							<span class="input-group-addon">-</span>
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedendTimeE" close-text="关闭" name="endTimeRE" ng-click="open($event,'openedendTimeE')" ng-model="condition.endTimeRE"/>
+							<span class="input-group-btn">
+								<button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>贷款类型:</li>

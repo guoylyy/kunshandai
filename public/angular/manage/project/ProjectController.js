@@ -1,17 +1,26 @@
 'use strict';
 
-define(['app'],function(app) {
+define(['app','underscore'],function(app) {
 	return app.controller('ProjectController', ['$scope','$state','$stateParams','loans','loanTypes','timeRanges','$modal','LoanService','DictService',
 	 function($scope,$state,$stateParams,loans,loanTypes,timeRanges,$modal,LoanService,DictService){
-		
+
 		$scope.currentState	= $state.current;
-		
+
 		$scope.currentPage 	= $stateParams.page || 1;
 		$scope.totalLoans 	= loans.totalNum;
 
 		$scope.loans 		= loans.values;
 		$scope.loanTypes 	= loanTypes;
 		$scope.timeRanges 	= timeRanges;
+
+		$scope.calendar 	= {};
+
+		$scope.condition 	= {
+			startDate:new Date(parseInt($stateParams.startDate)),
+			endDate:new Date(parseInt($stateParams.endDate)),
+			endTimeRS:new Date(parseInt($stateParams.endTimeRS)),
+			endTimeRE:new Date(parseInt($stateParams.endTimeRE))
+		};
 
 		$scope.search = {
 			type:{
@@ -86,6 +95,25 @@ define(['app'],function(app) {
 					if(succ){
 						$state.reload();
 					}
+				});
+			}
+
+			//控制几个日历开关状态
+			$scope.open = function($event,opened) {
+					$event.preventDefault();
+					$event.stopPropagation();
+				 	_.each($scope.calendar,function(val,key){
+						$scope.calendar[key] = false;
+					})
+					$scope.calendar[opened] = true;				
+			}
+
+			$scope.customTime = function(){
+				$state.go($state.current.name,{
+					startDate:(new Date($scope.condition.startDate)).getTime(),
+					endDate:(new Date($scope.condition.endDate)).getTime(),
+					endTimeRS:(new Date($scope.condition.endTimeRS)).getTime(),
+					endTimeRE:(new Date($scope.condition.endTimeRE)).getTime()
 				});
 			}
 

@@ -438,6 +438,7 @@ function updateLoan(loan, reqBody){
     loan.set('endDate', mutil.wrapperStrToDate(reqBody.endDate)); //合同相关
     loan.set('payCircle', reqBody.payCircle); //还款周期,每几月还一次
     loan.set('payTotalCircle', reqBody.payTotalCircle); //共需要还几期
+    loan.set('currPayStep', 1); //设置当前期数
     loan.set('interests', reqBody.interests);
     loan.set('assureCost', reqBody.assureCost);
     loan.set('serviceCost', reqBody.serviceCost);
@@ -453,6 +454,7 @@ function updateLoan(loan, reqBody){
     loan.set('keepCostDesc', reqBody.keepCostDesc);
 
     loan.set('payedMoney', 0);
+
     //还款时间
     //根据还款类型确认初次还款日期
     loan.set('currPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));

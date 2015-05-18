@@ -594,7 +594,7 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
       if(p.get('order') == loan.get('payTotalCircle')){
         mutil.renderError(res, {code:500, message:'这是最后一期还款，请跳转到结清'});
       }else{
-        loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
+        
         p.set('payBackMoney', req.body.payBackMoney);
         p.set('payBackDate', new Date(req.body.payBackDate));
         p.set('status',mconfig.loanPayBackStatus.completed.value);
@@ -603,6 +603,10 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
           query.equalTo('order', p.get('order') + 1);
           query.equalTo('loan', p.get('loan'));
           query.ascending('payDate');
+
+          loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
+          loan.set('currPayStep', p.get('order') + 1);
+
           query.find({
             success:function(pbs){
               if(pbs.length == 1){
@@ -715,12 +719,15 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack', function (req, res){
         rs[i].set('description', payText);
         if(rs[i].get('order') == order){  
           rs[i].set('payBackMoney', req.body.payBackMoney);  
-          loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
           rs[i].save().then(function(p){
             var query = new AV.Query('LoanPayBack');
             query.equalTo('order', p.get('order') + 1);
             query.equalTo('loan', p.get('loan'));
             query.ascending('payDate');
+
+            loan.set('currPayStep', p.get('order') + 1);
+            loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
+
             query.find({
               success:function(pbs){
                 if(pbs.length == 1){
@@ -840,12 +847,16 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
     }else{
       rLoan.set('finishBill', req.body.payBackData);
       rLoan.set('status', mconfig.loanStatus.completed.value);
+      rLoan.set('finishDate', new Date(req.body.payBackDate));
       rLoan.set('payedMoney', rLoan.get('payedMoney') + req.body.payBackData.sum);
+      rLoan.set('currPayStep', rLoan.get('payTotalCircle'));
       var relation = rLoan.relation('loanPayBacks');
       var q = relation.query();
       q.notEqualTo('status',mconfig.loanPayBackStatus.completed.value);
       q.find().then(function(list){
+        console.log('save loan...');
         rLoan.save().then(function(ll){
+          console.log('save paybacks...');
           for (var i = 0; i < list.length; i++) {
             //最后一期算结清的钱
             if(list[i].order == rLoan.get('payTotalCircle')){
@@ -855,7 +866,7 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function (req, res){
               list[i].set('status',mconfig.loanPayBackStatus.closed.value);
               list[i].set('payBackMoney',0);
             }
-            list[i].set('payBackDate',req.body.payBackDate);
+            list[i].set('payBackDate',new Date(req.body.payBackDate));
             list[i].save();
           };
           mutil.renderSuccess(res);
@@ -1355,7 +1366,11 @@ function transformLoan(l){
       numberWithName: l.get('numberWithName'),
       preLoanData : l.get('preLoanData'),
       isModifiedLoan: l.get('isModifiedLoan'),
-      version : l.get('version')
+      version : l.get('version'),
+      currPayDate: l.get('currPayDate'),
+      spanMonth: l.get('spanMonth'),
+      currPayStep: l.get('currPayStep'),
+      finishDate: l.get('finishDate')
   };
   return result;
 };
@@ -1365,7 +1380,7 @@ function transformLoanDetails(l){
   if(m == undefined || l == undefined){
     return {};
   }
-  m['spanMonth'] = l.get('spanMonth');
+  //m['spanMonth'] = l.get('spanMonth');
   m['startDate'] = formatTime(l.get('startDate'));
   m['endDate'] = formatTime(l.get('endDate'));
   m['payCircle'] = l.get('payCircle');

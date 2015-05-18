@@ -525,8 +525,8 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function (req, res){
     }else if(req.params.listType == mconfig.loanListTypes.badbill.value){
       query.greaterThan('currPayDate', now3month);
     }else if (req.params.listType == mconfig.loanListTypes.all.value){
-      query.greaterThanOrEqualTo('currPayDate', new Date(req.query.startDate));
-      query.lessThanOrEqualTo('currPayDate', new Date(req.query.endDate));
+      query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));
+      query.lessThanOrEqualTo('endDate', new Date(req.query.endDate));
     }
   }
   listLoan(res, query, pageNumber);

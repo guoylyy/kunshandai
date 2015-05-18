@@ -670,7 +670,7 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function (req, res){
       };
       var bill = {
         amount : payMoney - interest,
-        interest: interest,
+        interestsMoney: interest,
         overdueMoney: overdueMoney,
         payMoney : payMoney + overdueMoney
       };

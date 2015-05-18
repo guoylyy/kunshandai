@@ -3,12 +3,12 @@
     <thead>
       <tr>
         <th>科目</th>
-        <th>借方</th>
-        <th>贷方</th>
+        <th>支出</th>
+        <th>收入</th>
         <th>余额</th>
       </tr>
     </thead>
-    <tbody ng-init="total = completedBill.income.amount + completedBill.income.overdueMoney 
+    <tbody ng-init="total = completedBill.income.amount + completedBill.income.overdueMoney
      + completedBill.income.interest - completedBill.outcome.assureCost - completedBill.outcome.keepCost - completedBill.outcome.interest">
       <tr>
         <th scope="row">应收本金（元）</th>

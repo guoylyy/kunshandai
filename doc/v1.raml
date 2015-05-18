@@ -548,6 +548,13 @@ traits:
       description: |
         分页获取该用户所有项目
         filter: draft:draft项目 | overdue: 逾期 | normal:正常 | badbill:坏账 | all：所有 | completed：已结清
+      queryParameters:
+        startDate:
+          type: date
+          description: all 的时候发送
+        endDate:
+          type: date
+          description: all 的时候发送
       responses:
         200:
           body:
@@ -913,8 +920,10 @@ traits:
                                   "payTotalCircle": 3,
                                   "payCurrCircle": 1,
                                   "payDate": "2015-04-22T00:00:00+08:00",
+                                  "payBackDate": "2015-04-22T00:00:00+08:00",
                                   "amount": 100000,
                                   "payMoney": 633333.3333333334,
+                                  "payBackMoney": 3213123.00,
                                   "serialNumber": 10001,
                                   "loaner": {
                                     "name" : "fdsfa",

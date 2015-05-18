@@ -52,10 +52,10 @@
 				<th>项目编号</th>
 				<th>贷款金额</th>
 				<th>当前/总期</th>
-				<th ng-show="('collectPending' | isState)">应收日期</th>
-				<th ng-show="('collectPending' | isState)">应收金额</th>
-        <th ng-show="!('collectPending' | isState)">实收日期</th>
-				<th ng-show="!('collectPending' | isState)">实收金额</th>
+				<th>应收日期</th>
+				<th>应收金额</th>
+        <th ng-show="('collectDone' | isState)">实收日期</th>
+				<th ng-show="('collectDone' | isState)">实收金额</th>
 				<th ng-show="('collectPending' | isState)">距收款日期</th>
 				<th>操作</th>
 			</tr>
@@ -67,6 +67,8 @@
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney | number:2}}</td>
+        <td ng-show="('collectDone' | isState)">{{loan.payBackDate | date: "yyyy-MM-dd"}}</td>
+				<td ng-show="('collectDone' | isState)">{{loan.payBackMoney | number:2}}</td>
 				<td ng-show="('collectPending' | isState)">{{loan.nowToPayDate}}</td>
 				<td>
 					<div class="dropdown" dropdown>

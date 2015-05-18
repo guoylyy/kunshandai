@@ -8,8 +8,8 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 		var loanUrl = '/loan';
 
 		var model = {
-				objectId:'', 
-				loanType:'', 
+				objectId:'',
+				loanType:'',
 				amount:'',    			//number
 				spanMonth:'', 			//number
 				startDate:'',
@@ -30,7 +30,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				isSmsRemind:false,
 				paybacks:[]
 			},
-			
+
 
 			localLoan = _.extend({},model),
 
@@ -42,12 +42,12 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				loan.serviceCost = Number.parseFloat(loan.serviceCost);
 				loan.otherCost = Number.parseFloat(loan.otherCost);
 				loan.keepCost = Number.parseFloat(loan.keepCost);
-				
+
 				//format string to number
 				loan.spanMonth = Number.parseInt(loan.spanMonth);
 				loan.payCircle = Number.parseInt(loan.payCircle);
 				loan.payTotalCircle = Number.parseInt(loan.payTotalCircle);
-				
+
 				//format string to date
 				loan.startDate = new Date(loan.startDate);
 				loan.endDate = new Date(loan.endDate);
@@ -66,7 +66,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				return data;
 			},
 			daysAdd = function(data){
-				
+
 				_.each(data,function(ele,index){
 					moment.locale('zh-cn');
 					data[index]['nowToPayDate'] = moment(data[index]['payDate']).fromNow();
@@ -126,9 +126,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			    var overdueMoney = 0;
 			    var rlist = [];
 			    for (var i = 1; i <= loan.payTotalCircle; i++) {
-			       
+
 			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-			   
+
 			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
 			            d, i));
 			    };
@@ -142,24 +142,24 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			    var overdueMoney = 0;
 			    var rlist = [];
 			    for (var i = 1; i <= loan.payTotalCircle; i++) {
-			        
+
 			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-			        
+
 			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
 			            d, i));
 			    };
 			    return rlist;
 			};
-			//周期末息后本 
+			//周期末息后本
 			loanPayBackFactory.payBackInit.zqmxhb = function(loan){
 			    var baseMoney = 0; //每期还本金
 			    var interestsMoney = loan.amount * loan.interests * loan.payCircle;
 			    var overdueMoney = 0;
 			    var rlist = [];
 			    for (var i = 1; i <= loan.payTotalCircle; i++) {
-			        
+
 			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-			        
+
 			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
 			            d, i));
 			    };
@@ -240,7 +240,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			},
 			getPaybacks: function(loanId){
 				var deferred = $q.defer();
-				
+
 				$http.get(
 					ApiURL+loanUrl+"/"+loanId+"/paybacks"
 				).then(function(res){
@@ -270,7 +270,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				return calculatePayBackMoney(loan);
 			},
 			create : function(loan){
-				
+
 				var deferred = $q.defer();
 
 				$http.post(
@@ -367,6 +367,27 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				return deferred.promise;
 
 			},
+			multiPayMoney:function(loanId,payBackIds,payDate,payMoney){
+				payDate = new Date(payDate);
+				var deferred = $q.defer();
+				$http.post(
+					ApiURL+loanUrl+"/"+loanId+"/mergePayBack",
+					JSON.stringify(
+						{
+							payBackIds:payBackIds,
+							payBackDate:payDate,
+							payBackMoney:payMoney
+						}
+					)
+				).then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					$log.error(res);
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
 			payMoney:function(payBackId,payDate,payMoney){
 				var payDate = new Date(payDate);
 				var payMoney = Number.parseFloat(payMoney);
@@ -405,9 +426,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			},
 			completeLoan:function(loanId,payDate,payData){
 				var deferred = $q.defer();
-			
+
 				var payDate = new Date(payDate);
-				
+
 				payData.income.amount = parseFloat(payData.income.amount);
 				payData.income.overdueMoney = parseFloat(payData.income.overdueMoney);
 				payData.outcome.assureCost = parseFloat(payData.outcome.assureCost);

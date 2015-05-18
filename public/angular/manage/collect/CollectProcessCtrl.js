@@ -1,8 +1,8 @@
 
 define(['app','underscore'],function(app,_) {
-	return app.controller('CollectProcessCtrl', 
+	return app.controller('CollectProcessCtrl',
 		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process,interestCalTypes){
-		
+
 		$scope.loan 	= loan;
 		$scope.paybacks = paybacks;
  		$scope.format 	= "yyyy-MM-dd";
@@ -38,13 +38,13 @@ define(['app','underscore'],function(app,_) {
 		$scope.$watchGroup(completeInputs,function(){
 			if($scope.total && $scope.completeData){
 
-				$scope.total.income = parseFloat($scope.completeData.income.amount) 
-										+ parseFloat($scope.completeData.income.overdueMoney) 
+				$scope.total.income = parseFloat($scope.completeData.income.amount)
+										+ parseFloat($scope.completeData.income.overdueMoney)
 										+ parseFloat($scope.completeData.income.interest);
 
-				$scope.total.outcome = parseFloat($scope.completeData.outcome.assureCost) 
+				$scope.total.outcome = parseFloat($scope.completeData.outcome.assureCost)
 										+ parseFloat($scope.completeData.outcome.keepCost)
-										+ parseFloat($scope.completeData.outcome.interest);	
+										+ parseFloat($scope.completeData.outcome.interest);
 
 				$scope.completeData.sum = $scope.total.income-$scope.total.outcome;
 			}
@@ -53,7 +53,7 @@ define(['app','underscore'],function(app,_) {
 		var payInputs = ['payData.payMoney','payData.overdueMoney','payData.interestsMoney']
 		$scope.$watchGroup(payInputs,function(){
 			if($scope.total && $scope.payData){
-				$scope.total.income = parseFloat($scope.payData.payMoney) 
+				$scope.total.income = parseFloat($scope.payData.payMoney)
 									+ parseFloat($scope.payData.overdueMoney)
 									+ parseFloat($scope.payData.interestsMoney);
 			}
@@ -78,7 +78,7 @@ define(['app','underscore'],function(app,_) {
 
 					});
 				}
-				
+
 			}
 		});
 
@@ -100,7 +100,7 @@ define(['app','underscore'],function(app,_) {
 		$scope.startCollect = function(){
 			// $scope.selectedPayback = paybacks[_.findIndex(paybacks,{objectId:$scope.paybackId})];
 			$scope.selectedPaybacks = _.filter(paybacks, function(o){ return _.indexOf($scope.payBackIds, o.objectId) != -1});
-			
+
 			// if($scope.selectedPaybacks[$scope.selectedPaybacks.length - 1].order == $scope.paybacks.length){
 			// 	$scope.loanCompleted = true;
 			// }else{
@@ -109,7 +109,7 @@ define(['app','underscore'],function(app,_) {
 			$scope.loanCompleted 	= false;
 			$scope.process.list 	= false;
 			$scope.process.pay 		= true;
-			
+
 		}
 
 		$scope.back = function(){
@@ -120,7 +120,7 @@ define(['app','underscore'],function(app,_) {
 
 		}
 		$scope.openCld = function($event){
-			
+
 			$event.preventDefault();
     		$event.stopPropagation();
 			$scope.calendar.opened = true;
@@ -134,19 +134,24 @@ define(['app','underscore'],function(app,_) {
 					$modalInstance.close(true);
 				});
 			}else{
-				alert("还不支持多期付款");
+				LoanService.multiPayMoney($scope.loan.id,$scope.payBackIds,$scope.payDate,$scope.total.income)
+				.then(function(){
+					SweetAlert.success("收款成功","");
+					$modalInstance.close(true);
+				});
 			}
-			
+
 		}
 
+
 		$scope.startComplete = function(){
-			
+
 			$scope.process.complete = true;
 			$scope.process.pay = false;
 			$scope.process.list = false;
 		}
 
-		
+
 		$scope.completeLoan = function(){
 
 			LoanService.completeLoan($scope.loan.id,$scope.completeCount.date,$scope.completeData)
@@ -156,11 +161,11 @@ define(['app','underscore'],function(app,_) {
 				   text: "",
 				   type: "success",
 				   confirmButtonText: "好的",
-				   closeOnConfirm: true}, 
-				function(){ 
+				   closeOnConfirm: true},
+				function(){
 				   $modalInstance.close($scope.completeData);
 				});
-				
+
 			},function(){
 				SweetAlert.error("结清失败","服务器开小差了");
 			});

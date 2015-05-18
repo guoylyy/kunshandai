@@ -78,12 +78,10 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				loan.interests = Number.parseFloat(loan.interests) / 100;
 				return loan;
 			},
-			getLoanList = function(page,filter,startDate,endDate,loanType,endTimeRS,endTimeRE){
+			getLoanList = function(page,filter,startDate,endDate,loanType){
 				var params = {
 					startDate:startDate,
 					endDate:endDate,
-					endTimeRS:endTimeRS,
-					endTimeRE:endTimeRE,
 					loanType:loanType
 				};
 				return $http.get(ApiURL+loanUrl+"/list/"+filter+"/"+page,{params:params})
@@ -215,17 +213,34 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			getNormalLoans:function(page,startDate,endDate,loanType){
 				return getLoanList(page,"normal",startDate,endDate,loanType);
 			},
-			getLoans:function(page,startDate,endDate,loanType,endTimeRS,endTimeRE){
-				return getLoanList(page,"all",startDate,endDate,loanType,endTimeRS,endTimeRE);
+			getLoans:function(page,startDate,endDate,loanType){
+				return getLoanList(page,"all",startDate,endDate,loanType);
 			},
 			getDraft:function(page,startDate,endDate,loanType){
 				return getLoanList(page,"draft",startDate,endDate,loanType);
 			},
 			getBadbillLoans:function(page,startDate,endDate,loanType){
-				return getLoanList(page,"badbill",startDate,endDate,loanType);
+				var deferred = $q.defer();
+				 getLoanList(page,"badbill",startDate,endDate,loanType)
+				.then(function(res){
+					res = daysAdd(res.values);
+					deferred.resolve(res);
+				},function(res){
+					deferred.reject(res);
+				});
+
+				return deferred.promise;
 			},
 			getOverdueLoans:function(page,startDate,endDate,loanType){
-				return getLoanList(page,"overdue",startDate,endDate,loanType);
+					var deferred = $q.defer();
+					getLoanList(page,"overdue",startDate,endDate,loanType)
+					.then(function(res){
+						res = daysAdd(res.values);
+						deferred.resolve(res);
+					},function(){
+						deferred.reject(res);
+					});
+					return deferred.promise;
 			},
 			getCompletedLoans:function(page,startDate,endDate,loanType){
 				return getLoanList(page,"completed",startDate,endDate,loanType);

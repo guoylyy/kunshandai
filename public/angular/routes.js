@@ -11,34 +11,34 @@ define(['app','underscore'],function(app,_){
 		  requireBase: false
 		});
 
-		var resolveLoans = function(fn,LoanService,DictService,$stateParams,$state){
-		    var startDate, endDate, endTimeRS, endTimeRE, loanType;
+		var resolveLoans = function(fn,LoanService,DictService,$stateParams){
+		    var startDate, endDate, loanType;
 			if(!$stateParams.startDate){
 				var timeRanges = DictService.get('timeRanges');
 				startDate = timeRanges[0].startDate;
 				endDate = timeRanges[0].endDate;
 				$stateParams.startDate = startDate;
 				$stateParams.endDate = endDate;
-				if(fn === LoanService.getLoans){
-					endTimeRS = new Date(parseInt(startDate));
-					endTimeRE = new Date(parseInt(endDate));
-					$stateParams.endTimeRS = startDate;
-					$stateParams.endTimeRE = endDate;
-				}
+				// if(fn === LoanService.getLoans){
+				// 	endTimeRS = new Date(parseInt(startDate));
+				// 	endTimeRE = new Date(parseInt(endDate));
+				// 	$stateParams.endTimeRS = startDate;
+				// 	$stateParams.endTimeRE = endDate;
+				// }
 			}
 		    startDate = new Date(parseInt($stateParams.startDate));
 		    endDate = new Date(parseInt($stateParams.endDate));
 		    loanType = $stateParams.loanType;
 		    $stateParams.page = $stateParams.page || 1
-		    return fn.call(this,$stateParams.page,startDate,endDate,loanType,endTimeRS,endTimeRE).then(function(data){
+		    return fn.call(this,$stateParams.page,startDate,endDate,loanType).then(function(data){
 		    	return data;
 		    });
 
 		};
 		var resolveObject = function(fn){
 			return {
-				loans:function(DictService,LoanService,$stateParams,$state){
-		    		return resolveLoans(eval(fn),LoanService,DictService,$stateParams,$state);
+				loans:function(DictService,LoanService,$stateParams){
+		    		return resolveLoans(eval(fn),LoanService,DictService,$stateParams);
 		    	},
 				loanTypes:function(DictService){
 					return DictService.get('loanTypes');
@@ -216,44 +216,44 @@ define(['app','underscore'],function(app,_){
     			controller: "DraftLoanCtrl"
 		    })
 		    .state('collectPending',{
-		    	url:"/manage/collect/pending?page&startDate&endDate&loanType",
+		    	url:"/manage/collect/pending?page&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getUnpayedList"),
     			controller: "CollectController"
 		    })
 		    .state('collectDone',{
-		    	url:"/manage/collect/done?page&startDate&endDate&loanType",
+		    	url:"/manage/collect/done?page&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getPayedList"),
     			controller: "CollectController"
 		    })
 
 		    .state('allProjects',{
-		    	url:"/manage/projects/all?page&startDate&endDate&loanType&endTimeRS&endTimeRE",
+		    	url:"/manage/projects/all?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getLoans"),
     			controller: "ProjectController"
 		    })
  			.state('normalProjects',{
-		    	url:"/manage/projects/normal?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/normal?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getNormalLoans"),
     			controller: "ProjectController"
 		    })
  			.state('overdueProjects',{
-		    	url:"/manage/projects/overdue?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/overdue?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getOverdueLoans"),
     			controller: "ProjectController"
 		    })
  			.state('badbillProjects',{
-		    	url:"/manage/projects/badbill?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/badbill?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getBadbillLoans"),
     			controller: "ProjectController"
 		    })
  		    .state('completedProjects',{
-		    	url:"/manage/projects/completed?page&startDate&endDate&loanType",
+		    	url:"/manage/projects/completed?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getCompletedLoans"),
     			controller: "ProjectController"

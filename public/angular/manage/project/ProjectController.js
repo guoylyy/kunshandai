@@ -17,9 +17,7 @@ define(['app','underscore'],function(app) {
 
 		$scope.condition 	= {
 			startDate:new Date(parseInt($stateParams.startDate)),
-			endDate:new Date(parseInt($stateParams.endDate)),
-			endTimeRS:new Date(parseInt($stateParams.endTimeRS)),
-			endTimeRE:new Date(parseInt($stateParams.endTimeRE))
+			endDate:new Date(parseInt($stateParams.endDate))
 		};
 
 		$scope.search = {
@@ -105,15 +103,13 @@ define(['app','underscore'],function(app) {
 				 	_.each($scope.calendar,function(val,key){
 						$scope.calendar[key] = false;
 					})
-					$scope.calendar[opened] = true;				
+					$scope.calendar[opened] = true;
 			}
 
 			$scope.customTime = function(){
 				$state.go($state.current.name,{
 					startDate:(new Date($scope.condition.startDate)).getTime(),
-					endDate:(new Date($scope.condition.endDate)).getTime(),
-					endTimeRS:(new Date($scope.condition.endTimeRS)).getTime(),
-					endTimeRE:(new Date($scope.condition.endTimeRE)).getTime()
+					endDate:(new Date($scope.condition.endDate)).getTime()
 				});
 			}
 

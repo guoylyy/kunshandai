@@ -36,11 +36,11 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">筛选条件</div>
 		<div class="panel-body">
-			<div class="ks-condition">
+			<div class="ks-condition" ng-show="('allProjects' | isState)">
 				<div class="row">
 					<div class="col-md-9">
 						<ul class="ks-list-unstyled">
-							<li>收款时间:</li>
+							<li>截止时间:</li>
 							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
 						</ul>
 					</div>
@@ -56,7 +56,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="ks-condition" ng-show="('allProjects' | isState)">
+			<!-- <div class="ks-condition" ng-show="('allProjects' | isState)">
 				<div class="row">
 					<div class="col-md-9">
 						<ul class="ks-list-unstyled">
@@ -75,7 +75,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>贷款类型:</li>
@@ -92,8 +92,14 @@
 			<tr>
 				<th>项目编号</th>
 				<th>贷款金额</th>
-				<th>已收金额</th>
-				<th>贷款类型</th>
+				<th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">当期/总期</th>
+				<th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">应收日期</th>
+				<!-- <th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState) ||('badbillProjects' | isState) ">应收金额</th> -->
+				<th ng-show="('completedProjects' | isState) ">期限</th>
+				<th ng-show="('completedProjects' | isState) ">抵押方式</th>
+				<th ng-show="('completedProjects' | isState) ">还款方式</th>
+				<th ng-show="('completedProjects' | isState) ">结清日期</th>
+				<th ng-show="('overdueProjects' | isState) ||('badbillProjects' | isState) ">距收款天数</th>
 				<th>状态</th>
 				<th>操作</th>
 			</tr>
@@ -102,8 +108,14 @@
 			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
 				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
-				<td>{{loan.payedMoney | number:2}}</td>
-				<td>{{loan.loanType.text}}</td>
+				<td ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">{{loan.currPayStep}}/{{loan.payTotalCircle}}</td>
+				<td ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">{{loan.currPayDate | date:"yyyy-MM-dd"}}</td>
+				<!-- <th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState) ||('badbillProjects' | isState) ">{{loan.payMoney}}</th> -->
+				<td ng-show="('completedProjects' | isState) ">{{loan.spanMonth}}</td>
+				<td ng-show="('completedProjects' | isState) ">{{loan.loanType.text}}</td>
+				<td ng-show="('completedProjects' | isState) ">{{loan.payWay.text}}</td>
+				<td ng-show="('completedProjects' | isState) ">{{loan.finishDate | date:'yyyy-MM-dd'}}</td>
+				<td ng-show="('overdueProjects' | isState) ||('badbillProjects' | isState) ">{{loan.nowToPayDate}}</td>
 				<td>{{loan.payStatus.text}}</td>
 				<td >
 					<div class="dropdown" dropdown>

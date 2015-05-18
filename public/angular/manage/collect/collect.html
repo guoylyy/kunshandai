@@ -52,20 +52,22 @@
 				<th>项目编号</th>
 				<th>贷款金额</th>
 				<th>当前/总期</th>
-				<th>应收日期</th>
-				<th>应收金额</th>
-				<th>距收款日期</th>
+				<th ng-show="('collectPending' | isState)">应收日期</th>
+				<th ng-show="('collectPending' | isState)">应收金额</th>
+        <th ng-show="!('collectPending' | isState)">实收日期</th>
+				<th ng-show="!('collectPending' | isState)">实收金额</th>
+				<th ng-show="('collectPending' | isState)">距收款日期</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
+			<tr ng-repeat="loan in loans | orderBy:'serialNumber'">
 				<td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney | number:2}}</td>
-				<td>{{loan.nowToPayDate}}</td>
+				<td ng-show="('collectPending' | isState)">{{loan.nowToPayDate}}</td>
 				<td>
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>

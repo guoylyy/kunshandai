@@ -480,8 +480,9 @@ traits:
                     "code": 404,
                     "message": "找不到对象!"
                   }
-    /mergePayBack/bill:
+    /mergePayBack:
       post:
+        description: 发送付款(最后一期不能计算到合并付款中)
         queryParameters:
           data:
             type: string
@@ -489,7 +490,8 @@ traits:
             example: |
               {
                 "payBackIds":["5557b39ee4b06f7d8f37507a","5557b39ee4b06f7d8f375079"],
-                "payBackDate":"2015-05-20"
+                "payBackDate":"2015-05-20",
+                "payBackMoney": "67200.00"
               }
         responses:
           200:
@@ -497,14 +499,50 @@ traits:
               application/json:
                 schema: |
                   {
-                    "data": {
-                      "amount": 67200,
-                      "interest": 7200,
-                      "overdueMoney": 0,
-                      "payMoney": 67200
-                    },
-                    "code": 200
+                      "data": {
+                          "loaner": {
+                              "ObjectId": "5556ba24e4b04ecf6b11fbf7"
+                          },
+                          "loanObjectId": "5556ba23e4b0846761066ff4",
+                          "loanNumberWithName": "张先生10215",
+                          "payObjectId": "5556ba33e4b066d561fcf7d6",
+                          "serialNumber": 10215,
+                          "payTotalCircle": 4,
+                          "payCurrCircle": 3,
+                          "payDate": "2015-04-28T16:00:00+00:00",
+                          "amount": 40000,
+                          "payMoney": 400,
+                          "overdueMoney": 0,
+                          "interestsMoney": 400
+                      },
+                      "code": 200
                   }
+      /bill:
+        post:
+          description: 合并付款账单(最后一期不能计算到合并付款中)
+          queryParameters:
+            data:
+              type: string
+              description : 发送合并付款的 paybackid 和 实际付款时间
+              example: |
+                {
+                  "payBackIds":["5557b39ee4b06f7d8f37507a","5557b39ee4b06f7d8f375079"],
+                  "payBackDate":"2015-05-20"
+                }
+          responses:
+            200:
+              body:
+                application/json:
+                  schema: |
+                    {
+                      "data": {
+                        "amount": 60000,
+                        "interest": 7200,
+                        "overdueMoney": 0,
+                        "payMoney": 67200
+                      },
+                      "code": 200
+                    }
   /list/{filter}/{pn}:
     get:
       description: |

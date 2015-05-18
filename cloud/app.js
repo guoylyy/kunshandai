@@ -585,6 +585,7 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function (req, res){
 //还款:不能还最后一期
 app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
   //acl
+  var u = check_login(u);
   var payBackId = req.params.id;
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
   loanPayBack.fetch().then(function(p){
@@ -593,6 +594,7 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
       if(p.get('order') == loan.get('payTotalCircle')){
         mutil.renderError(res, {code:500, message:'这是最后一期还款，请跳转到结清'});
       }else{
+        loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
         p.set('payBackMoney', req.body.payBackMoney);
         p.set('payBackDate', new Date(req.body.payBackDate));
         p.set('status',mconfig.loanPayBackStatus.completed.value);
@@ -607,7 +609,9 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
                 var pb = pbs[0];
                 pb.set('status', mconfig.loanPayBackStatus.paying.value);
                 pb.save().then(function(npb){
-                  mutil.renderData(res, concretePayBack(pb, loan, 0));
+                  loan.save().then(function(rLoan){
+                    mutil.renderData(res, concretePayBack(npb, rLoan, 0));
+                  });
                 });
               }else if(pbs.length==0 && p.get('order') > 0){
                 mutil.renderSuccess(res);
@@ -630,6 +634,12 @@ app.post(config.baseUrl + '/loan/payBack/:id', function (req, res){
 });
 
 
+/**
+ * 合并还款账单获取,注：合并还款不能多还或者少还
+ * @param  {[type]} req    [description]
+ * @param  {[type]} res){               var u [description]
+ * @return {[type]}        [description]
+ */
 app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function (req, res){
   var u = check_login(res);
   var ids = req.body.payBackIds;
@@ -640,11 +650,9 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function (req, res){
   var payBackQuery = new AV.Query('LoanPayBack');
   payBackQuery.containedIn('objectId', ids);
   payBackQuery.matchesQuery('loan',loanQuery);
-  console.log('start to merge bill');
-
+  
   var loanObject = AV.Object.createWithoutData('Loan', req.params.id);
   loanObject.fetch().then(function(loan){
-    //console.log(loan);
     payBackQuery.find().then(function(rs){
       var overdueMoney = 0;
       var payMoney = 0;
@@ -656,20 +664,93 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function (req, res){
           mutil.renderError(res, {code:500, message:'含有最后一期还款，请跳转到结清'});
           break;
         }
-        overdueMoney = overdueMoney + calculateOverdueMoney(rs[i], rs[i].get('payDate'), payBackDate);
+        overdueMoney = overdueMoney + calculateOverdueMoney(loan, rs[i].get('payDate'), payBackDate);
         payMoney = payMoney + rs[i].get('payMoney');
         interest = interest + rs[i].get('interestsMoney');
       };
       var bill = {
-        amount : payMoney,
+        amount : payMoney - interest,
         interest: interest,
         overdueMoney: overdueMoney,
         payMoney : payMoney + overdueMoney
       };
+      //console.log(bill);
       mutil.renderData(res, bill);
     });
   });
+});
 
+app.post(config.baseUrl + '/loan/:id/mergePayBack', function (req, res){
+  var u = check_login(res);
+  var ids = req.body.payBackIds;
+  var payBackDate = req.body.payBackDate;//实际还款时间
+
+  var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('owner', u);
+
+  var payBackQuery = new AV.Query('LoanPayBack');
+  payBackQuery.containedIn('objectId', ids); //获取选择的还款计划
+  payBackQuery.matchesQuery('loan',loanQuery); //检查是不是该人的项目
+  payBackQuery.ascending('order');
+  var loanObject = AV.Object.createWithoutData('Loan', req.params.id);
+  loanObject.fetch().then(function(loan){
+    payBackQuery.find().then(function(rs){
+      //查看是否存在最后一期
+      var order = 0;
+      var payText = '与';
+      for (var i = 0; i < rs.length; i++) {
+        if(rs[i].get('order') == loan.get('payTotalCircle')){
+          mutil.renderError(res, {code:500, message:'含有最后一期还款，请跳转到结清'});
+          break;
+        }
+        if(rs[i].get('order') > order){
+          order = rs[i].get('order');
+          payText += rs[i].get('order') + ' ';
+        }
+      };
+      payText += '合并付款.';
+      for (var i = 0; i < rs.length; i++) {
+        rs[i].set('status', mconfig.loanPayBackStatus.completed.value);
+        rs[i].set('payBackDate', new Date(req.body.payBackDate));
+        rs[i].set('description', payText);
+        if(rs[i].get('order') == order){  
+          rs[i].set('payBackMoney', req.body.payBackMoney);  
+          loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
+          rs[i].save().then(function(p){
+            var query = new AV.Query('LoanPayBack');
+            query.equalTo('order', p.get('order') + 1);
+            query.equalTo('loan', p.get('loan'));
+            query.ascending('payDate');
+            query.find({
+              success:function(pbs){
+                if(pbs.length == 1){
+                  var pb = pbs[0];
+                  pb.set('status', mconfig.loanPayBackStatus.paying.value);
+                  pb.save().then(function(npb){
+                    loan.save().then(function(rloan){
+                      mutil.renderData(res, concretePayBack(npb, rloan, 0));
+                    });
+                  });
+                }else if(pbs.length==0 && p.get('order') > 0){
+                  mutil.renderSuccess(res);
+                }else{
+                  mutil.renderError(res, {code:500, message:'内部错误!'});
+                }
+              },
+              error: function(error){
+                mutil.renderError(res, error);
+              }
+            });
+          });
+        }else{
+          rs[i].set('payBackMoney', 0);
+          rs[i].save();
+        }
+      };
+    });
+  },function(error){
+    mutil.renderError(res, error);
+  });
 });
 
 
@@ -907,7 +988,7 @@ app.delete(config.baseUrl + '/contact/:id', function (req, res){
       return loanAssurerQuery.count();
     }
   }).try(function(assurerCount){
-    console.log(assurerCount);
+    //console.log(assurerCount);
     if(assurerCount > 0){
       return AV.Promise.error({code:500, message:'该联系人还有关联的项目，不能删除!'});
     }else{

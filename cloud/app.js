@@ -1370,7 +1370,9 @@ function transformLoan(l){
       currPayDate: l.get('currPayDate'),
       spanMonth: l.get('spanMonth'),
       currPayStep: l.get('currPayStep'),
-      finishDate: l.get('finishDate')
+      finishDate: l.get('finishDate'),
+      payTotalCircle: l.get('payTotalCircle'),
+      payedMoney : l.get('payedMoney')
   };
   return result;
 };

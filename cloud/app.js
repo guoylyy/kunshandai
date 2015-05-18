@@ -524,6 +524,9 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function (req, res){
       query.lessThanOrEqualTo('currPayDate', now3month);
     }else if(req.params.listType == mconfig.loanListTypes.badbill.value){
       query.greaterThan('currPayDate', now3month);
+    }else if (req.params.listType == mconfig.loanListTypes.all.value){
+      query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));
+      query.lessThanOrEqualTo('endDate', new Date(req.query.endDate));
     }
   }
   listLoan(res, query, pageNumber);
@@ -1268,11 +1271,12 @@ function concretePayBack(lpb, loan, overdueMoney){
   result['payTotalCircle'] = loan.get('payTotalCircle');
   result['payCurrCircle'] = lpb.get('order');
   result['payDate'] = lpb.get('payDate'); //应还日期
+  result['payBackDate'] = lpb.get('payBackDate'); //实收日期
   result['amount'] = loan.get('amount');
   result['payMoney'] = lpb.get('payMoney') + overdueMoney;
   result['overdueMoney'] = overdueMoney; //违约金
   result['interestsMoney'] = lpb.get('interestsMoney'); //利息
-  //result['payedMoney'] = loan.payedMoney;
+  result['payBackMoney'] = lpb.get('payBackMoney');
   return result;
 };
 

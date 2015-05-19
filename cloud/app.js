@@ -804,13 +804,17 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function (req, res){
     }else{
       var relation = rLoan.relation('loanPayBacks');
       var q = relation.query();
-      q.notEqualTo('status',mconfig.loanPayBackStatus.completed.value);
-      q.notEqualTo('status',mconfig.loanPayBackStatus.closed.value);
       q.find().then(function(pbs){
         var totalInterests = 0;
         var totalPayMoney = 0;
         var currentStep = 1; //当前周期数
+        console.log(pbs.length);
         for (var i = 0; i < pbs.length; i++) {
+          //过滤掉已经收了的
+          if(pbs[i].get('status') == mconfig.loanPayBackStatus.completed.value ||
+             pbs[i].get('status') == mconfig.loanPayBackStatus.closed.value){
+            continue;
+          }
           totalInterests += pbs[i].get('interestsMoney');
           totalPayMoney  += pbs[i].get('payMoney');
           if(pbs[i].get('order') > currentStep && pbs[i].get('status') == mconfig.loanPayBackStatus.paying.value){
@@ -1275,7 +1279,7 @@ function concretePayBack(lpb, loan, overdueMoney){
   result['payDate'] = lpb.get('payDate'); //应还日期
   result['payBackDate'] = lpb.get('payBackDate'); //实收日期
   result['amount'] = loan.get('amount');
-  result['payMoney'] = lpb.get('payMoney') + overdueMoney;
+  result['payMoney'] = lpb.get('payMoney') - lpb.get('interestsMoney');
   result['overdueMoney'] = overdueMoney; //违约金
   result['interestsMoney'] = lpb.get('interestsMoney'); //利息
   result['payBackMoney'] = lpb.get('payBackMoney');

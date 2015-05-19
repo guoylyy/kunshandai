@@ -8,14 +8,14 @@ define(['../../app'],function(app){
 						return $q.reject('验证码错误');
 					}
 					else if(response.status === 210){
-					
+
 						return $q.reject('密码错误');
 					}
 					else if(response.status === 211){
-						
+
 						return $q.reject('账号不存在');
 					}
-					 
+
 					else if(response.status === 214){
 						return $q.reject('该手机号已经注册');
 					}
@@ -25,11 +25,12 @@ define(['../../app'],function(app){
 				}else{
 					return response;
 				}
-				
+
 			},
 			responseError:function(response){
 				if(response.status === 501){
-					window.location = "/login";
+					// window.location = "/login";
+					return response;
 				}else if(response.status === 404){
 					// alert("地址未找到");
 					return response;

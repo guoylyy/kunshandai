@@ -4,7 +4,7 @@
 'use strict';
 
 define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angularFileUpload','angularSweetAlert', 'highcharts-ng','angularBusy'],function(angular){
-	
+
 	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','ui.utils','angularFileUpload','oitozero.ngSweetAlert','highcharts-ng','cgBusy'])
 	.config(['$httpProvider',function($httpProvider) {
 		$httpProvider.interceptors.push('sessionAuth');
@@ -21,8 +21,8 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
     	$rootScope.$on('$locationChangeStart', function(evt) {
       	// Halt state change from even starting
       	// Perform custom logic
-      	// 
-      	
+      	//
+
 		var userInfo 	= $window.localStorage['userInfo'];
 		var loginStatus = $window.localStorage['loginStatus'];
 		if(userInfo){
@@ -50,38 +50,39 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 					if(now < userInfo.expires){
 						AccountService.login(userInfo).then(function(){
 							// $urlRouter.sync();
+							document.location.reload(true);
 						},function(){
 							console.log("自动登录失败");
 						});
 
 					}else{
 						evt.preventDefault();
-						window.location = '/login';	
+						window.location = '/login';
 						return;
 					}
 
 				}else{
 					evt.preventDefault();
-					window.location = '/login';	
+					window.location = '/login';
 				}
 			}else{
-				if(window.location.pathname == '/login' 
-					|| window.location.pathname == '/signup'  
+				if(window.location.pathname == '/login'
+					|| window.location.pathname == '/signup'
 					|| window.location.pathname == '/retrieve_password'){
-					
+
 					evt.preventDefault();
-					window.location = '/manage';		
+					window.location = '/manage';
 					return;
 				}else{
 					// $urlRouter.sync();
 					return;
 				}
-				
+
 			}
 		}else{
 
-			if(window.location.pathname == '/login' 
-				|| window.location.pathname == '/signup' 
+			if(window.location.pathname == '/login'
+				|| window.location.pathname == '/signup'
 				|| window.location.pathname == '/retrieve_password'){
 				// $urlRouter.sync();
 			}else{
@@ -89,11 +90,11 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 				evt.preventDefault();
 				window.location = '/login';
 				// $location.path('/login');
-			
+
 				return;
 			}
 		}
-		
+
     	})
     })
 	.constant('datepickerPopupConfig', {
@@ -109,6 +110,3 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 	.constant("ApiURL","/v1");
 
 });
-
-
-

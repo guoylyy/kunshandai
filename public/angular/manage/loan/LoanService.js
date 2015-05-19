@@ -223,7 +223,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				var deferred = $q.defer();
 				 getLoanList(page,"badbill",startDate,endDate,loanType)
 				.then(function(res){
-					res = daysAdd(res.values);
+					res.values = daysAdd(res.values);
 					deferred.resolve(res);
 				},function(res){
 					deferred.reject(res);
@@ -235,7 +235,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 					var deferred = $q.defer();
 					getLoanList(page,"overdue",startDate,endDate,loanType)
 					.then(function(res){
-						res = daysAdd(res.values);
+						res.values = daysAdd(res.values);
 						deferred.resolve(res);
 					},function(){
 						deferred.reject(res);

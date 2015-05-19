@@ -216,13 +216,13 @@ define(['app','underscore'],function(app,_){
     			controller: "DraftLoanCtrl"
 		    })
 		    .state('collectPending',{
-		    	url:"/manage/collect/pending?page&loanType",
+		    	url:"/manage/collect/pending?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getUnpayedList"),
     			controller: "CollectController"
 		    })
 		    .state('collectDone',{
-		    	url:"/manage/collect/done?page&loanType",
+		    	url:"/manage/collect/done?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getPayedList"),
     			controller: "CollectController"

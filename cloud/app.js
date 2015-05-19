@@ -944,6 +944,8 @@ function classficStatictics(res, query, baseMap, key){
     };
     baseMap['typeStatictics'] = typeMap;
     baseMap['wayStattictics'] = payBackWayMap;
+    baseMap['count'] = rs.length;
+    
     return mutil.renderData(res, baseMap);
   });
 }

@@ -3,19 +3,10 @@
 define(['app'], function(app) {
   return app.controller('IndexController', ['$scope', '$filter', '$state', '$stateParams', 'incomeStatistics', 'outcomeStatistics',
     function($scope, $filter, $state, $stateParams, incomeStatistics, outcomeStatistics) {
+      $scope.startDate = new Date(parseInt($stateParams.startDate));
+      $scope.endDate = new Date(parseInt($stateParams.endDate));
 
-      if(!$stateParams.startDate || !$stateParams.endDate) {
-        $scope.currDate = new Date();
-      }
-      else{
-        $scope.currDate = new Date($stateParams.startDate);
-      }
-
-      $scope.currYear = null;
-      $scope.currMonth = null;
-
-      $scope.yearList = [];
-      $scope.monthList = [];
+      $scope.calendar = {};
 
       $scope.incomeStatistics = incomeStatistics;
       $scope.outcomeStatistics = outcomeStatistics;
@@ -81,28 +72,6 @@ define(['app'], function(app) {
           }
         }
       });
-
-      for(var i = $scope.currDate.getFullYear() - 10; i <= $scope.currDate.getFullYear() + 10; i++) {
-        var item = {
-          value: i,
-          text: i + ""
-        };
-        $scope.yearList.push(item);
-        if($scope.currDate.getFullYear() == i) {
-          $scope.currYear = item;
-        }
-      }
-
-      for(var i = 1; i <= 12; i++) {
-        var item = {
-          value: i,
-          text: i + ""
-        };
-        $scope.monthList.push(item);
-        if($scope.currDate.getMonth() == (i - 1)){
-          $scope.currMonth = item;
-        }
-      }
 
       $scope.outcomeTypeChartConfig = {
         "options": {
@@ -261,15 +230,15 @@ define(['app'], function(app) {
       };
 
       $scope.startRefresh = function(){
-        var startDate = new Date($scope.currYear.value,
-                                 $scope.currMonth.value - 1,
-                                 1);
-        var endDate = new Date($scope.currYear.value,
-                               $scope.currMonth.value - 1,
-                               new Date($scope.currYear.value, $scope.currMonth.value, 0).getDate());
-        startDate = $filter('date')(startDate, 'yyyy-MM-dd');
-        endDate = $filter('date')(endDate, 'yyyy-MM-dd');
+        var startDate = $scope.startDate.getTime();
+        var endDate = $scope.endDate.getTime();
         $state.go($state.current, {startDate:startDate, endDate:endDate}, {reload: true});
+      };
+
+      $scope.open = function($event,opened) {
+        $event.preventDefault();
+        $event.stopPropagation();
+        $scope.calendar[opened] = true;
       };
     }
   ]);

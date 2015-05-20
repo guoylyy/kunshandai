@@ -111,7 +111,7 @@ loanPayBackFactory.payBackInit.debx = function(loanObj, loan){
     var rlist = [];
     for (var i = 1; i <= loan.payTotalCircle; i++) {
         var status = mconfig.loanPayBackStatus.paying.value;
-        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
+        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month');
         if(i > 1){
             d.subtract(1, 'days');
         }
@@ -154,7 +154,7 @@ loanPayBackFactory.payBackInit.zqmxhb = function(loanObj, loan){
     var rlist = [];
     for (var i = 1; i <= loan.payTotalCircle; i++) {
         var status = mconfig.loanPayBackStatus.paying.value;
-        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
+        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month');
         if(i > 1){
             d.subtract(1, 'days');
         }

@@ -157,41 +157,39 @@ define(['app','underscore'],function(app,_){
 		    	url:"/manage?startDate&endDate",
     			templateUrl:  "/angular/manage/index/index.html",
     			resolve: {
-    				incomeStatistics: function(LoanService, $stateParams){
+    				incomeStatistics: function(LoanService, $stateParams, $filter){
     					if(!$stateParams.startDate || !$stateParams.endDate) {
     						var currDate = new Date();
-    						var startDate = new Date(currDate.getFullYear(),
-    																		 currDate.getMonth(),
-    																		 1);
-    						var endDate = new Date(currDate.getFullYear(),
-    																	 currDate.getMonth(),
-    																	 new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDate());
-    						return LoanService.statictics('income', startDate, endDate).then(function(data){
-	    						return data;
-	    					});
-    					}else{
-								return LoanService.statictics('income', $stateParams.startDate, $stateParams.endDate).then(function(data){
-	    						return data;
-	    					});
+    						$stateParams.startDate = new Date(currDate.getFullYear(),
+    																		  currDate.getMonth(),
+    																		  1).getTime();
+    						$stateParams.endDate = currDate.getTime();
     					}
+              var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');
+              var endDate =  $filter('date')(new Date(parseInt($stateParams.endDate)), 'yyyy-MM-dd');
+              console.log(startDate);
+              console.log(endDate);
+              return LoanService.statictics('income', startDate, endDate).then(function(data){
+                console.log(data);
+                return data;
+              });
     				},
-    				outcomeStatistics: function(LoanService, $stateParams){
+    				outcomeStatistics: function(LoanService, $stateParams, $filter){
     					if(!$stateParams.startDate || !$stateParams.endDate) {
-    						var currDate = new Date();
-    						var startDate = new Date(currDate.getFullYear(),
-    																		 currDate.getMonth(),
-    																		 1);
-    						var endDate = new Date(currDate.getFullYear(),
-    																	 currDate.getMonth(),
-    																	 new Date(currDate.getFullYear(), currDate.getMonth() + 1, 0).getDate());
-    						return LoanService.statictics('outcome', startDate, endDate).then(function(data){
-	    						return data;
-	    					});
-    					}else{
-								return LoanService.statictics('outcome', $stateParams.startDate, $stateParams.endDate).then(function(data){
-	    						return data;
-	    					});
-    					}
+                var currDate = new Date();
+                $stateParams.startDate = new Date(currDate.getFullYear(),
+                                          currDate.getMonth(),
+                                          1).getTime();
+                $stateParams.endDate = currDate.getTime();
+              }
+              var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');
+              var endDate =  $filter('date')(new Date(parseInt($stateParams.endDate)), 'yyyy-MM-dd');
+              console.log(startDate);
+              console.log(endDate);
+              return LoanService.statictics('income', startDate, endDate).then(function(data){
+                console.log(data);
+                return data;
+              });
     				}
     			},
     			controller: 'IndexController'

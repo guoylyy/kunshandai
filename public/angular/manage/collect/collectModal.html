@@ -9,26 +9,7 @@
       <h4 class="modal-title">收款</h4>
     </div>
     <div class="modal-body">
-      <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
-      <div class="ks-divider"></div>
-      <div class="row" style="font-size:14px;">
-        <div class="col-md-3">
-          <div>贷款金额: {{loan.amount}}</div>
-          <div>贷款类型: {{loan.loanType.text}}</div>
-        </div>
-        <div class="col-md-3">
-          <div>贷款人: {{loan.loaner.name}}</div>
-          <div>担保人: {{loan.assurer.name || '无'}}</div>
-        </div>
-        <div class="col-md-3">
-          <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>
-          <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
-        </div>
-        <div class="col-md-3">
-          <div>还款类型: {{loan.payWay.text}}</div>
-          <div>还款总期数: {{loan.payTotalCircle}}</div>
-        </div>
-      </div>
+      <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
       <div class="ks-panel">
         <table class="table table-striped">
           <thead>
@@ -42,8 +23,8 @@
           </thead>
           <tbody>
             <tr ng-repeat="payback in paybacks" ng-class="{warning:($parent.select.payBackIds[$index]),success:(payback.status == 3)}">
-              <td><input type="checkbox" name="payback" value="{{payback.objectId}}" 
-                ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''" 
+              <td><input type="checkbox" name="payback" value="{{payback.objectId}}"
+                ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''"
                 ng-disabled="(!(payback.status == 1) && !($parent.select.payBackIds[$index - 1]) )|| (payback.status == 3) || ($parent.select.payBackIds[$index + 1])"></td>
                 <td>{{payback.order}}</td>
                 <td>{{payback.payMoney | number:2}}</td>
@@ -78,26 +59,7 @@
     <h4 class="modal-title">收款</h4>
   </div>
   <div class="modal-body">
-   <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.serialNumber}}</a></h4>
-   <div class="ks-divider"></div>
-   <div class="row" style="font-size:14px;">
-    <div class="col-md-3">
-      <div>贷款金额: {{loan.amount}}</div>
-      <div>贷款类型: {{loan.loanType.text}}</div>
-    </div>
-    <div class="col-md-3">
-      <div>贷款人: {{loan.loaner.name}}</div>
-      <div>担保人: {{loan.assurer.name}}</div>
-    </div>
-    <div class="col-md-3">
-      <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>
-      <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
-    </div>
-    <div class="col-md-3">
-      <div>还款类型: {{loan.payWay.text}}</div>
-      <div>还款总期数: {{loan.payTotalCircle}}</div>
-    </div>
-  </div>
+  <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
   <div class="ks-panel" ng-show="!billGenerated">
     <table class="table table-striped">
       <thead>
@@ -166,7 +128,7 @@
                       <div class="text-warning" ng-show="payData.payMoney > payBill.payMoney ">大于应收金额</div>
                     </div>
                   </div>
-                 </div> 
+                 </div>
                 <div class="col-md-3">
                   <div class="form-group">
                     <label>*实收违约金（元）</label>
@@ -231,26 +193,7 @@
     <h4 class="modal-title">结清</h4>
   </div>
   <div class="modal-body">
-   <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.serialNumber}}</a></h4>
-   <div class="ks-divider"></div>
-   <div class="row" style="font-size:14px;">
-    <div class="col-md-3">
-      <div>贷款金额: {{loan.amount | number:2}} 元</div>
-      <div>贷款类型: {{loan.loanType.text}}</div>
-    </div>
-    <div class="col-md-3">
-      <div>贷款人: {{loan.loaner.name}}</div>
-      <div>担保人: {{loan.assurer.name}}</div>
-    </div>
-    <div class="col-md-3">
-      <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>
-      <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
-    </div>
-    <div class="col-md-3">
-      <div>还款类型: {{loan.payWay.text}}</div>
-      <div>还款总期数: {{loan.payTotalCircle}}</div>
-    </div>
-  </div>
+    <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
   <div class="ks-divider"></div>
   <div class="ks-panel" ng-show="!billGenerated">
     <table class="table table-striped">

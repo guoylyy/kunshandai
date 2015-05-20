@@ -1,0 +1,20 @@
+<h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.loaner.name}}{{loan.serialNumber}}</a></h4>
+<div class="ks-divider"></div>
+<div class="row" style="font-size:14px;">
+  <div class="col-md-3">
+    <div>贷款金额: {{loan.amount | number:2}}</div>
+    <div>贷款人: {{loan.loaner.name}}</div>
+  </div>
+  <div class="col-md-3">
+    <div>抵押方式: {{loan.loanType.text}}</div>
+    <div>还款类型: {{loan.payWay.text}}</div>
+  </div>
+  <div class="col-md-3">
+    <div>开始时间: {{loan.startDate | date:"yyyy-MM-dd"}}</div>
+    <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
+  </div>
+  <div class="col-md-3">
+    <div>利率（%/月）: {{loan.interests * 100 | number:2}}</div>
+    <div>逾期违约金率（‰/天）: {{loan.overdueCostPercent* 1000 | number:2}}</div>
+  </div>
+</div>

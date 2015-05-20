@@ -167,10 +167,7 @@ define(['app','underscore'],function(app,_){
     					}
               var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');
               var endDate =  $filter('date')(new Date(parseInt($stateParams.endDate)), 'yyyy-MM-dd');
-              console.log(startDate);
-              console.log(endDate);
               return LoanService.statictics('income', startDate, endDate).then(function(data){
-                console.log(data);
                 return data;
               });
     				},
@@ -184,10 +181,7 @@ define(['app','underscore'],function(app,_){
               }
               var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');
               var endDate =  $filter('date')(new Date(parseInt($stateParams.endDate)), 'yyyy-MM-dd');
-              console.log(startDate);
-              console.log(endDate);
-              return LoanService.statictics('income', startDate, endDate).then(function(data){
-                console.log(data);
+              return LoanService.statictics('outcome', startDate, endDate).then(function(data){
                 return data;
               });
     				}

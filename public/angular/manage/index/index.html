@@ -54,10 +54,18 @@
       <div class="row">
         <div class="col-md-12">
           <p class="ks-statics-font">
-            <span class="ks-hlight-text">{{currYear.text}}</span>
+            <span class="ks-hlight-text">{{startDate.getFullYear()}}</span>
             年
-            <span class="ks-hlight-text">{{currMonth.text}}</span>
-            月共新增放款
+            <span class="ks-hlight-text">{{startDate.getMonth()+1}}</span>
+            月
+            <span class="ks-hlight-text">{{startDate.getDate()}}</span>
+            日至
+            <span class="ks-hlight-text">{{endDate.getFullYear()}}</span>
+            年
+            <span class="ks-hlight-text">{{endDate.getMonth()+1}}</span>
+            月
+            <span class="ks-hlight-text">{{endDate.getDate()}}</span>
+            日共新增放款
             <span class="ks-hlight-text">{{outcomeStatistics.count}}</span>
             项，共计
             <span class="ks-hlight-text">{{outcomeStatistics.sum | number:2}}</span>
@@ -84,10 +92,18 @@
       <div class="row">
         <div class="col-md-12">
           <p class="ks-statics-font">
-            <span class="ks-hlight-text">{{currYear.text}}</span>
+            <span class="ks-hlight-text">{{startDate.getFullYear()}}</span>
             年
-            <span class="ks-hlight-text">{{currMonth.text}}</span>
-            月共新增收款
+            <span class="ks-hlight-text">{{startDate.getMonth()+1}}</span>
+            月
+            <span class="ks-hlight-text">{{startDate.getDate()}}</span>
+            日至
+            <span class="ks-hlight-text">{{endDate.getFullYear()}}</span>
+            年
+            <span class="ks-hlight-text">{{endDate.getMonth()+1}}</span>
+            月
+            <span class="ks-hlight-text">{{endDate.getDate()}}</span>
+            日共新增收款
             <span class="ks-hlight-text">{{incomeStatistics.count}}</span>
             项，共计
             <span class="ks-hlight-text">{{incomeStatistics.sum | number:2}}</span>

@@ -93,9 +93,9 @@
 				<th>项目编号</th>
 				<th>贷款金额</th>
 				<th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">当期/总期</th>
-				<th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">应收日期</th>
+				<th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState) || ('badbillProjects' | isState)">应收日期</th>
 				<!-- <th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState) ||('badbillProjects' | isState) ">应收金额</th> -->
-				<th ng-show="('completedProjects' | isState) || ('allProjects' | isState) ">期限</th>
+				<th ng-show="('completedProjects' | isState) || ('allProjects' | isState) ">期数</th>
 				<th ng-show="('completedProjects' | isState) || ('allProjects' | isState) ">抵押方式</th>
 				<th ng-show="('completedProjects' | isState) || ('allProjects' | isState) ">还款方式</th>
 				<th ng-show="('completedProjects' | isState) ">结清日期</th>
@@ -110,7 +110,7 @@
 				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
 				<td ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">{{loan.currPayStep}}/{{loan.payTotalCircle}}</td>
-				<td ng-show="('normalProjects' | isState) || ('overdueProjects' | isState)">{{loan.currPayDate | date:"yyyy-MM-dd"}}</td>
+				<td ng-show="('normalProjects' | isState) || ('overdueProjects' | isState) || ('badbillProjects' | isState)">{{loan.currPayDate | date:"yyyy-MM-dd"}}</td>
 				<!-- <th ng-show="('normalProjects' | isState) || ('overdueProjects' | isState) ||('badbillProjects' | isState) ">{{loan.payMoney}}</th> -->
 				<td ng-show="('completedProjects' | isState) || ('allProjects' | isState) ">{{loan.spanMonth}}</td>
 				<td ng-show="('completedProjects' | isState) || ('allProjects' | isState) ">{{loan.loanType.text}}</td>

@@ -508,22 +508,26 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function (req, res){
   if(req.params.listType == 'draft'){
     query.equalTo('status', mconfig.loanStatus.draft.value);
   }else{
+    //1月之前
+    var now1month = (new moment()).subtract(1,'month').toDate();
+    //3月之前
+    var now3month = (new moment()).subtract(3,'month').toDate();
+    
     query.include('loanPayBacks');
-    query.notEqualTo('status', mconfig.loanStatus.draft.value); //贷款抵押类型过滤
-    var now1month = (new moment()).add(1,'month').toDate();
-    var now3month = (new moment()).add(3,'month').toDate();
+    query.notEqualTo('status', mconfig.loanStatus.draft.value);
     if(req.params.listType == mconfig.loanListTypes.completed.value){
       query.equalTo('status', mconfig.loanStatus.completed.value);
     }else{
       query.notEqualTo('status', mconfig.loanStatus.completed.value);
     }
     if(req.params.listType == mconfig.loanListTypes.normal.value){
-      query.lessThanOrEqualTo('currPayDate', now1month);
+      // currPayDate >= 1monthbefore
+      query.greaterThanOrEqualTo('currPayDate', now1month);
     }else if(req.params.listType == mconfig.loanListTypes.overdue.value){
-      query.greaterThan('currPayDate', now1month);
-      query.lessThanOrEqualTo('currPayDate', now3month);
+      query.greaterThanOrEqualTo('currPayDate', now3month);
+      query.lessThan('currPayDate', now1month);
     }else if(req.params.listType == mconfig.loanListTypes.badbill.value){
-      query.greaterThan('currPayDate', now3month);
+      query.lessThan('currPayDate', now3month);
     }else if (req.params.listType == mconfig.loanListTypes.all.value){
       query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));
       query.lessThanOrEqualTo('endDate', new Date(req.query.endDate));
@@ -1341,22 +1345,21 @@ function transformLoan(l){
   if(l.get('status') == mconfig.loanStatus.completed.value){
     payStatus = mconfig.loanListTypes.completed;
   }else{
-    var now1month = (new moment()).add(1,'month').toDate();
-    var now3month = (new moment()).add(3,'month').toDate();
-    //var diffMonth = now.diff(moment(l.get('currPayDate')), 'month');
+    var now1month = (new moment()).subtract(1,'month').toDate();
+    var now3month = (new moment()).subtract(3,'month').toDate();
     var currDate = l.get('currPayDate');
-
-    if(currDate <= now1month){
+    //根据日期判断项目分类
+    if(currDate >= now1month){
       //正常
       payStatus = mconfig.loanListTypes.normal;
-    }else if(currDate > now1month && currDate<= now3month){
+    }else if(currDate < now1month && currDate >= now3month){
       //逾期
       payStatus = mconfig.loanListTypes.overdue;
-    }else if(currDate > now1month){
+    }else if(currDate < now3month){
       //坏账
       payStatus = mconfig.loanListTypes.badbill;
     }else{
-      console.log(currDate);
+      //console.log(currDate);
     }
   }
   var result = {

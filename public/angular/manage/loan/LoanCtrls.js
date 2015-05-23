@@ -1,13 +1,13 @@
 'use strict';
 
 define(['app',"underscore"],function(app,_) {
-	
+
 
 	return {
-		LoanFormCtrl: app.controller('LoanFormCtrl', 
+		LoanFormCtrl: app.controller('LoanFormCtrl',
 			["$scope","$q","LoanService",'DictService','$state','loanTypes','repayTypes','SweetAlert','loan',
 			function($scope,$q,LoanService,DictService,$state,loanTypes,repayTypes,SweetAlert,loan){
-			
+
 			//下拉选择类型
 			$scope.repayTypes	= repayTypes;
 			$scope.loanTypes 	= loanTypes;
@@ -20,13 +20,13 @@ define(['app',"underscore"],function(app,_) {
 			//获取原有loan 或从本地获取新的loan Model
 			$scope.loanInfo     = LoanService.getLocal();
 			var init = function(){
-				
+
 				if(!$scope.loanInfo.objectId){
 					$scope.loanInfo = _.extend($scope.loanInfo,loan);
 					$scope.loanInfo.overdueCostPercent = $scope.loanInfo.overdueCostPercent * 1000;
 					$scope.loanInfo.interests = $scope.loanInfo.interests * 100;
 				}
-				
+
 			}
 
 			init();
@@ -45,7 +45,7 @@ define(['app',"underscore"],function(app,_) {
 				circleChange();
 				dateChange();
 			})
-			
+
 			$scope.$watchGroup(watchStartDateAndPayCircle,function(){
 				dateChange();
 				payTotalCircleChange();
@@ -55,7 +55,7 @@ define(['app',"underscore"],function(app,_) {
 				payTotalCircleChange();
 			})
 
-			
+
 
 			$scope.afterStartDate = function(value){
 				return new Date(value) > new Date($scope.startDate);
@@ -87,16 +87,16 @@ define(['app',"underscore"],function(app,_) {
 				}
 
 			}
-			
+
 			var dateChange = function(){
 				if(!$scope.loanInfo.startDate || !$scope.loanInfo.spanMonth){
 					return;
 				}
 				var date = new Date($scope.loanInfo.startDate);
 				date.setMonth(date.getMonth()+ parseInt($scope.loanInfo.spanMonth));
-				date.setDate(date.getDate() - 1);	
+				date.setDate(date.getDate() - 1);
 				$scope.loanInfo.endDate = date;
-				
+
 				if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
 					$scope.loanInfo.firstPayDate = $scope.loanInfo.endDate ;
 				}else if($scope.loanInfo.payWay === 'zqcxhb'){
@@ -121,7 +121,7 @@ define(['app',"underscore"],function(app,_) {
 		}]),
 		LoanContactFormCtrl: app.controller('LoanContactFormCtrl', ['$scope','LoanService','ContactService','PawnService','$modal','SweetAlert',
 		 	function($scope,LoanService,ContactService,PawnService,$modal,SweetAlert){
-			
+
 			//项目信息
 			$scope.loanInfo = LoanService.getLocal();
 			//借款人
@@ -153,7 +153,7 @@ define(['app',"underscore"],function(app,_) {
 					if($scope.br.objectId){
 						$scope.selected.br = angular.copy($scope.br);
 					}
-					
+
 					if($scope.loanInfo.assurer){
 						if(!$scope.gr.objectId){
 							ContactService.get($scope.loanInfo.assurer.objectId)
@@ -181,9 +181,9 @@ define(['app',"underscore"],function(app,_) {
 								$scope.pawn.attachments  = attach;
 							})
 						}
-						
+
 					}
-					
+
 				}
 			}
 
@@ -204,19 +204,19 @@ define(['app',"underscore"],function(app,_) {
 			});
 
 			$scope.checkContactUnique = function(name){
-				
+
 				var id = $scope[name].certificateNum;
-				
+
 				if(!id){
 					$scope.unique[name] = true;
 					return;
 				}
-				
+
 				if($scope[name] && $scope.selected[name] && $scope[name].certificateNum === $scope.selected[name].certificateNum){
 					$scope.unique[name] = true;
 					return;
 				}
-			
+
 				ContactService.getByCertification(id).then(function(data){
 					$scope.unique[name] = false;
 				},function(){
@@ -279,7 +279,7 @@ define(['app',"underscore"],function(app,_) {
 					}
 
 			    }, function () {
-			    	
+
 			    });
 			}
 
@@ -310,10 +310,10 @@ define(['app',"underscore"],function(app,_) {
 							$scope.pawn.attachments = _.compact($scope.pawn.attachments);
 						}
 		        	}
-		          	
+
 		        });
-				
-				
+
+
 			}
 
 			$scope.searchContacts = function(type,key){
@@ -338,7 +338,7 @@ define(['app',"underscore"],function(app,_) {
 		}]),
 		CreateLoanCtrl: app.controller('CreateLoanCtrl', ['$scope','LoanService','SweetAlert','PawnService','ContactService','LoanHelper',
 			function($scope,LoanService,SweetAlert,PawnService,ContactService,LoanHelper){
-			
+
 			//项目信息
 			$scope.loanInfo = LoanService.getLocal();
 			//借款人
@@ -348,7 +348,7 @@ define(['app',"underscore"],function(app,_) {
 
 			// 状态记录
 			$scope.status	= {};
-			
+
 			$scope.createLoan = function(valid){
 				if(!valid){
 					return;
@@ -366,9 +366,9 @@ define(['app',"underscore"],function(app,_) {
 		         		LoanHelper.config($scope);
 						LoanHelper.createLoan();
 		        	}
-		        	
+
 		        });
-				
+
 			}
 
 		}]),
@@ -386,11 +386,11 @@ define(['app',"underscore"],function(app,_) {
 			//用于项目详情抵押物信息显示
 			$scope.pawnInfos 	= _.unzip(_.pairs($scope.pawn))[1];
 
-			
+
 		}]),
 		ActiveLoanCtrl: app.controller('ActiveLoanCtrl', ['$scope','LoanService','LoanHelper',
 			function($scope,LoanService,LoanHelper){
-			
+
 			$scope.loanInfo = LoanService.getLocal();
 			//放款
 			$scope.activeLoan = function(){
@@ -400,7 +400,7 @@ define(['app',"underscore"],function(app,_) {
 		}]),
 		ModifyLoanCtrl: app.controller('ModifyLoanCtrl', ['$scope','LoanService','LoanHelper',
 			function($scope,LoanService,LoanHelper){
-			
+
 			$scope.loanInfo = LoanService.getLocal();
 			// 状态记录
 			$scope.status	= {};
@@ -420,37 +420,37 @@ define(['app',"underscore"],function(app,_) {
 				})
 			}
 		}]),
-		CompleteLoanCtrl: app.controller('CompleteLoanCtrl', ['$scope','LoanService','$modal','DictService', 
+		CompleteLoanCtrl: app.controller('CompleteLoanCtrl', ['$scope','LoanService','$modal','DictService',
 			function($scope,LoanService,$modal,DictService){
-			
+
 			$scope.completeLoan = function(loanId){
 				LoanHelper.config($scope);
 				LoanHelper.completeLoan(loanId);
 			}
 		}]),
 		LoanNavCtrl: app.controller('LoanNavCtrl', ['$scope','$state','$stateParams',function($scope,$state,$stateParams){
-			
+
 			$scope.nav = function(valid,direction){
-				if(!valid){
-					return;
-				}else{
-					if(direction === 'prev'){
+				 if(direction === 'prev'){
 						if($state.current.name === 'createProjectMore'){
-							$state.go('createProject',{ref:$stateParams.ref});	
+							$state.go('createProject',{ref:$stateParams.ref});
 						}else if($state.current.name === 'modifyProjectMore'){
-							$state.go('modifyProject',{id:$stateParams.id});	
+							$state.go('modifyProject',{id:$stateParams.id});
 						}
 					}
 					else if(direction === 'next'){
+						if(!valid){
+							return;
+						}
 						if($state.current.name === 'createProject'){
-							$state.go('createProjectMore',{ref:$stateParams.ref});	
+							$state.go('createProjectMore',{ref:$stateParams.ref});
 						}else if($state.current.name === 'modifyProject'){
-							$state.go('modifyProjectMore',{id:$stateParams.id});	
+							$state.go('modifyProjectMore',{id:$stateParams.id});
 						}
 					}
-				}
+
 			}
-			
+
 
 		}])
 

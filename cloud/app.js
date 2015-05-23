@@ -441,6 +441,7 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
   var u = check_login(res);
   var loanId = req.body.loanId;
   var outMoney = parseFloat(req.body.outMoney); //实际放款金额
+  var outDate = new Date(req.body.outDate);
   //生成放款记录
   var loan = AV.Object.createWithoutData('Loan', loanId);
   loan.fetch().then(function(floan){
@@ -458,13 +459,14 @@ app.post(config.baseUrl + '/loan/assure_bill', function (req, res){
           var lpbRelation = floan.relation('loanPayBacks');
           lpbRelation.add(loanPayBacks);
           floan.set('status',mconfig.loanStatus.paying.value);
+          floan.set('outDate', outDate);
           var lrRelation = floan.relation('loanRecords');
           lrRelation.query().find().then(function(lrs){
             if(lrs.length == 1){
               var record = lrs[0];
               console.log(outMoney);
               record.set('outMoney', outMoney);
-              record.set('payDate', new Date());
+              record.set('payDate', outDate);
               record.set('loan', floan);
               record.set('isPayed', true);
               record.save().then(function(r_record){

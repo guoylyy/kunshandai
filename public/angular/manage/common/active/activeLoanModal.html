@@ -6,12 +6,27 @@
 <div class="ks-panel">
   <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
   <div class="ks-divider"></div>
-  
+
   <div ng-repeat="payment in payments" ng-init="loan.preLoanData.finishPayedMoney = loan.preLoanData.finishPayedMoney || 0">
    <ui-include src="'/angular/manage/common/partial/payment.html'"></ui-include>
   <div class="row">
-     <div class="col-md-offset-8 col-md-4">
-      <div class="form-group has-success">
+    <div class="col-md-offset-4 col-md-4">
+      <div class="form-group has-warning">
+        <label class="control-label">*放款日期</label>
+        <div class="input-group">
+          <input type="text" class="form-control"datepicker-popup="{{calendar.format}}"  ng-model="loanData.outDate" is-open="calendar.opened"  close-text="关闭" name="outDate" required/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </div>
+        <div ng-show="loanForm.$submitted || loanForm.outDate.$touched">
+          <div class="text-danger" ng-show="loanForm.outDate.$error.required">请填写放款日期</div>
+          <div class="text-danger" ng-show="loanForm.outDate.$error.date">请填写正确的日期格式</div>
+        </div>
+      </div>
+    </div>
+     <div class="col-md-4">
+      <div class="form-group has-warning">
         <label class="control-label">本次放款（元）</label>
         <div class="input-group has-danger">
           <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->

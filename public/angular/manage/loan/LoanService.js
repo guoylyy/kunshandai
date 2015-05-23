@@ -332,15 +332,19 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				});
 				return deferred.promise;
 			},
-			assure: function(loanId,outMoney){
-				//var outMoney = parseFloat(outMoney);
+			assure: function(loanId,outMoney,outDate){
+				outMoney = parseFloat(outMoney);
+				if(typeof outDate !== 'Date'){
+					outDate = new Date(outDate);
+				}
 				var deferred = $q.defer();
 				$http.post(
 					ApiURL+loanUrl+"/assure_bill",
 					JSON.stringify(
 						{
 							loanId:loanId,
-							outMoney:outMoney
+							outMoney:outMoney,
+							outDate:outDate
 						}
 					)
 				).then(function(res){

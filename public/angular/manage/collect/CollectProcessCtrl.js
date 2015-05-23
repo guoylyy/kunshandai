@@ -122,7 +122,7 @@ define(['app','underscore'],function(app,_) {
 		$scope.openCld = function($event){
 
 			$event.preventDefault();
-    		$event.stopPropagation();
+    	$event.stopPropagation();
 			$scope.calendar.opened = true;
 		}
 

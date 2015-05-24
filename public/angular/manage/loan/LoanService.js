@@ -413,7 +413,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 
 				return deferred.promise;
 			},
-			payMoney:function(payBackId,payDate,payMoney){
+			payMoney:function(payBackId,payDate,payMoney,payData){
 				var payDate = new Date(payDate);
 				var payMoney = Number.parseFloat(payMoney);
 
@@ -423,7 +423,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 						{
 							paybackid:payBackId,
 							payBackDate:payDate,
-							payBackMoney:payMoney
+							payBackMoney:payMoney,
+							payType:payData.payType,
+							offsetMoney:payData.offsetMoney
 						}
 					)
 				).then(function(res){
@@ -437,7 +439,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				var payDate = new Date(payDate);
 				var params = {payDate:payDate,interestCalType:interestCalType};
 				$http.get(
-					ApiURL+loanUrl+"/payBack/"+loanId+"/finish",
+					ApiURL+loanUrl+"/payBack/"+loanId+"/finish/bill",
 					{params:params}
 				).then(function(res){
 					var bill = numberFormat(res.data.data);
@@ -455,14 +457,17 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				var payDate = new Date(payDate);
 
 				payData.income.amount = parseFloat(payData.income.amount);
+				payData.income.interest = parseFloat(payData.income.interest);
 				payData.income.overdueMoney = parseFloat(payData.income.overdueMoney);
 				payData.outcome.assureCost = parseFloat(payData.outcome.assureCost);
+				payData.outcome.interest = parseFloat(payData.outcome.interest);
 				payData.outcome.keepCost = parseFloat(payData.outcome.keepCost);
 
 				$http.post(
 					ApiURL+loanUrl+"/payBack/"+loanId+"/finish",
 					JSON.stringify(
 						{
+							payType:payData.payType,
 							payBackDate:payDate,
 							payBackData:payData
 						}

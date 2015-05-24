@@ -28,11 +28,17 @@
         <td>{{payBill.interestsMoney | number:2}}</td>
         <td>{{row3 = row2 + payBill.interestsMoney| number:2}}</td>
       </tr>
+      <tr class="warning">
+        <th scope="row">本期已还（元）</th>
+        <td></td>
+        <td>{{payBill.payBackMoney | number:2}}</td>
+        <td>{{row4 = row3 - payBill.payBackMoney| number:2}}</td>
+      </tr>
       <tr>
         <th scope="row">收款金额（元）</th>
         <td></td>
         <td></td>
-        <td>{{row3 | number:2}}</td>
+        <td>{{row4 | number:2}}</td>
       </tr>
     </tbody>
   </table>

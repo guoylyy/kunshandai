@@ -27,7 +27,7 @@ define(['app'],function(app) {
 			// 	processListUrl		:'/angular/manage/collect/template/processList.html',
 			// 	processPayUrl		:'/angular/manage/collect/template/processPay.html'
 			// }
-			
+
 			var collectModal = function(loanId,processName){
 				var collectModal = $modal.open({
 					templateUrl: '/angular/manage/collect/collectModal.html',
@@ -51,6 +51,9 @@ define(['app'],function(app) {
 							process[processName] = true;
 							return process;
 						},
+						payBackTypes: function(){
+							return DictService.get('payBackTypes');
+						},
 						interestCalTypes:function(){
 							return DictService.get('interestCalTypes');
 						}
@@ -63,7 +66,7 @@ define(['app'],function(app) {
 					}
 				});
 			}
-			
+
 			//控制几个日历开关状态
 			$scope.open = function($event,opened) {
 			    $event.preventDefault();
@@ -75,7 +78,7 @@ define(['app'],function(app) {
 			    	$scope.calendar['openedend'] = true;
 			    	$scope.calendar['openedstart'] = false;
 			    }
-			    
+
 			}
 
 			$scope.customTime = function(){

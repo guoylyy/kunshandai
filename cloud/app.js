@@ -246,7 +246,7 @@ app.put(config.baseUrl + '/account/profile/resetPassword', function(req, res){
       mutil.renderSuccess(res);
     },
     error: function(err){
-      mutil.renderError(res, { code:410, message:'修改失败,密码错误!'});  
+      mutil.renderError(res, { code:410, message:'修改失败,密码错误!'});
     }
   });
 });
@@ -736,7 +736,7 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
           p.save().then(function(np) {
             //设置总收款
             loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
-            if(payType == mconfig.payBackTypes.partial.value){ 
+            if(payType == mconfig.payBackTypes.partial.value){
               //部分还款,直接保存还款信息
               loan.save().then(function(rLoan){
                 mutil.renderData(res, concretePayBack(np, rLoan, 0));

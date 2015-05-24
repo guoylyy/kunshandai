@@ -1,7 +1,7 @@
 
 define(['app','underscore'],function(app,_) {
 	return app.controller('CollectProcessCtrl',
-		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process,interestCalTypes){
+		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process,interestCalTypes,payBackTypes){
 
 		$scope.loan 	= loan;
 		$scope.paybacks = paybacks;
@@ -14,6 +14,8 @@ define(['app','underscore'],function(app,_) {
 		$scope.process 	= process;
 
 		$scope.interestCalTypes = interestCalTypes;
+
+		$scope.payBackTypes = payBackTypes;
 
 		$scope.calendar	= {
 			opened:false
@@ -36,7 +38,7 @@ define(['app','underscore'],function(app,_) {
 		'completeData.outcome.assureCost','completeData.outcome.keepCost','completeData.outcome.interest'];
 
 		$scope.$watchGroup(completeInputs,function(){
-			if($scope.total && $scope.completeData){
+			if($scope.total && $scope.completeData && $scope.completedBill){
 
 				$scope.total.income = parseFloat($scope.completeData.income.amount)
 										+ parseFloat($scope.completeData.income.overdueMoney)
@@ -47,6 +49,14 @@ define(['app','underscore'],function(app,_) {
 										+ parseFloat($scope.completeData.outcome.interest);
 
 				$scope.completeData.sum = $scope.total.income-$scope.total.outcome;
+
+				$scope.completeData.favour = $scope.completedBill.sum - $scope.completeData.sum;
+
+				if($scope.completeData.favour == 0){
+					$scope.completeData.payType = 'normal';
+				}else{
+					$scope.completeData.payType = '';
+				}
 			}
 		})
 
@@ -56,6 +66,16 @@ define(['app','underscore'],function(app,_) {
 				$scope.total.income = parseFloat($scope.payData.payMoney)
 									+ parseFloat($scope.payData.overdueMoney)
 									+ parseFloat($scope.payData.interestsMoney);
+			  //一期收款若收款金额不匹配可选择还款类型
+				if($scope.payBackIds.length === 1){
+
+					if($scope.total.income === $scope.payBill.sum){
+						$scope.payData.payType = 'normal';
+					}else{
+						$scope.payData.payType = '';
+					}
+					$scope.payData.offsetMoney = $scope.total.income - $scope.payBill.sum;
+				}
 			}
 		})
 
@@ -73,7 +93,19 @@ define(['app','underscore'],function(app,_) {
 					$scope.countPromise = LoanService.countPaymoney($scope.payBackIds[0],$scope.payDate)
 					.then(function(result){
 						$scope.payBill = result;
+						$scope.payBill.sum = $scope.payBill.payMoney + $scope.payBill.overdueMoney
+																	+ $scope.payBill.interestsMoney - $scope.payBill.payBackMoney;
 						$scope.payData = _.extend({},result);
+						//减去上期已还
+						if($scope.payData.payBackMoney != 0){
+
+							$scope.payData.payMoney +=  $scope.payData.interestsMoney
+																					+ $scope.payData.overdueMoney;
+							$scope.payData.interestsMoney = 0;
+							$scope.payData.overdueMoney = 0;
+							$scope.payData.payMoney	-=	$scope.payData.payBackMoney
+						}
+
 						$scope.billGenerated = true;
 
 					});
@@ -98,14 +130,9 @@ define(['app','underscore'],function(app,_) {
 		});
 
 		$scope.startCollect = function(){
-			// $scope.selectedPayback = paybacks[_.findIndex(paybacks,{objectId:$scope.paybackId})];
+
 			$scope.selectedPaybacks = _.filter(paybacks, function(o){ return _.indexOf($scope.payBackIds, o.objectId) != -1});
 
-			// if($scope.selectedPaybacks[$scope.selectedPaybacks.length - 1].order == $scope.paybacks.length){
-			// 	$scope.loanCompleted = true;
-			// }else{
-			// 	$scope.loanCompleted = false;
-			// }
 			$scope.loanCompleted 	= false;
 			$scope.process.list 	= false;
 			$scope.process.pay 		= true;
@@ -128,14 +155,25 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.pay = function(){
 			if($scope.payBackIds.length == 1){
-				LoanService.payMoney($scope.payBackIds[0],$scope.payDate,$scope.total.income)
-				.then(function(){
+				LoanService.payMoney(
+
+					$scope.payBackIds[0],
+					$scope.payDate,
+					$scope.total.income,
+					$scope.payData
+
+				).then(function(){
 					SweetAlert.success("收款成功","");
 					$modalInstance.close(true);
 				});
 			}else{
-				LoanService.multiPayMoney($scope.loan.id,$scope.payBackIds,$scope.payDate,$scope.total.income)
-				.then(function(){
+				LoanService.multiPayMoney(
+					$scope.loan.id,
+					$scope.payBackIds,
+					$scope.payDate,
+					$scope.total.income,
+					$scope.payData
+				).then(function(){
 					SweetAlert.success("收款成功","");
 					$modalInstance.close(true);
 				});

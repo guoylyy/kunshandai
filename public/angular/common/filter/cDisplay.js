@@ -14,7 +14,7 @@ define(['app'],function(app){
 					value:2,
 					text:'已完成'
 				}
-			},	
+			},
 
 		 	loanPayBackStatus :{
 				paying: {
@@ -106,18 +106,53 @@ define(['app'],function(app){
 					value: 'other',
 					text: '其他'
 				}
+			},
+
+			payBackTypes : {
+				'normal':{
+					value: 'normal',
+					text: '正常还款'
+				},
+				'favour':{
+					value: 'favour',
+					text: '优惠'
+				},
+				'next':{
+					value: 'next',
+					text: '滚入下期'
+				},
+				'partial':{
+					value: 'partial',
+					text: '部分还款'
+				}
+			},
+
+			verifyStatus : {
+				none: {
+					value: 'none',
+					text: '未认证'
+				},
+				pending : {
+					value: 'pending',
+					text: '认证中'
+				},
+				approved: {
+					value: 'approved',
+					text: '已认证'
+				}
 			}
+
 		}
 		return function(value,type){
 			if(!value || !type){
 				return '';
 			}
 			if(typeof value === 'string'){
-				return keyValues[type][value].text;	
+				return keyValues[type][value].text;
 			}else{
-				return value.text;	
+				return value.text;
 			}
-			
+
 		}
 	})
 });

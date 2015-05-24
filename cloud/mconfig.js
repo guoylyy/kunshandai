@@ -2,6 +2,22 @@
  * 这个类是一些字典表等静态的配置信息
  */
 exports.pageSize = 10
+
+var verifyStatus = {
+	none: {
+		value: 'none',
+		text: '未认证'
+	},
+	pending : {
+		value: 'pending',
+		text: '认证中'
+	},
+	approved: {
+		value: 'approved',
+		text: '已认证'
+	}
+};
+
 var loanStatus ={
 	draft: {
 		value:0,
@@ -226,5 +242,6 @@ exports.getConfigMapByValue = getConfigMapByValue;
 exports.convertDictToList = convertDictToList;
 exports.loanStatus = loanStatus;
 exports.loanPayBackStatus = loanPayBackStatus;
+exports.verifyStatus = verifyStatus;
 exports.payBackWays = payBackWays;
 exports.loanTypes = loanTypes;

@@ -201,6 +201,112 @@ traits:
                   "result":"success",
                   "code":200
                 }  
+  /profile:
+    get:
+      description: 获取当前用户的 profile
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "data": {
+                        "username": "18516171260",
+                        "emailVerified": false,
+                        "mobilePhoneNumber": "18516171260",
+                        "mobilePhoneVerified": true,
+                        "objectId": "5545ad47e4b0fe5138559c89",
+                        "createdAt": "2015-05-03T05:08:23.289Z",
+                        "updatedAt": "2015-05-03T05:08:42.919Z"
+                    },
+                    "code": 200
+                }
+    put:
+      description: 更新用户信息, 完善资料
+      queryParameters:
+        infoObject:
+          description: 可以放json对象，需要的用户资料
+          example:  |
+            {
+              "gender":'MALE',
+              "address":'fdasfdsa',
+              "company":{
+                "name":"fdasfas"
+                "address":"fdsafas"
+              }
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                同 get 方法
+    /icon:
+      put:
+        description: 设置用户头像
+        queryParameters:
+          icon_id:
+            type: string
+            description: 头像文件 id
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  同 user get 方法返回值
+    /attachments:
+      get:
+        description: 获取一个用户资料附件
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "data": [
+                          {
+                              "mime_type": "image/jpeg",
+                              "key": "0e21afbf944f4bef.jpg",
+                              "name": "DSC_4372副本.jpg",
+                              "url": "http://ac-gvw1ggob.clouddn.com/0e21afbf944f4bef.jpg",
+                              "metaData": {
+                                  "owner": "554876e2e4b03ccbae866c22",
+                                  "size": 41603,
+                                  "fileType": "certification",
+                                  "mime_type": "image/jpeg"
+                              },
+                              "bucket": "gvw1ggob",
+                              "objectId": "5556fdd9e4b04ecf6b15a29d",
+                              "createdAt": "2015-05-16T08:20:41.585Z",
+                              "updatedAt": "2015-05-16T08:20:41.585Z"
+                          }
+                      ],
+                      "code": 200
+                  }
+      post:
+        description: 给用户添加一个附件
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "result": "success",
+                      "code": 200
+                  }
+      delete:
+        description: 移除一个用户附件
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "result": "success",
+                      "code": 200
+                  }
+
+
   
 /loan:
   /{id}:

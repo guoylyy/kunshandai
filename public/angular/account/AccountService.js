@@ -2,11 +2,13 @@ define(['app','underscore'],function(app,_){
 
 	return app.factory('AccountService', ['$http','ApiURL', '$q','$window',
 		function($http,ApiURL,$q,$window){
-		
+
 		var accountUrl = '/account';
 
 		var logined = false;
-		
+
+		var currentUser;
+
 		return{
 			login : function(user,rememberMe){
 				var deferred = $q.defer();
@@ -28,7 +30,7 @@ define(['app','underscore'],function(app,_){
 					//设置登录状态
 					var sessionExpiresTime = new Date();
 						sessionExpiresTime.setMinutes(sessionExpiresTime.getMinutes() + 45);
-					var loginStatus = {logined:true,sessionExpires:sessionExpiresTime};	
+					var loginStatus = {logined:true,sessionExpires:sessionExpiresTime};
 					$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
 
 					deferred.resolve(resUser);
@@ -44,17 +46,20 @@ define(['app','underscore'],function(app,_){
 				return $http.get(ApiURL+accountUrl+"/logout");
 			},
 			isLogin: function(){
-				
-				if(logined === true){
-					return true;
+
+				var deferred = $q.defer();
+				if(currentUser){
+					deferred.resolve(currentUser);
+				}else{
+					$http.get(ApiURL+accountUrl+"/isLogin")
+					.then(function(res){
+						currentUser = res.data;
+						deferred.resolve(currentUser);
+					},function(res){
+						deferred.reject(res);
+					});
 				}
-				return $http.get(ApiURL+accountUrl+"/isLogin").then(function(res){
-					if(res.status === 200){
-						return true;
-					}else{
-						return false;
-					}
-				});
+				return deferred.promise;
 			},
 			signup : function(user){
 				return $http.post(ApiURL+accountUrl+"/register",JSON.stringify(user));
@@ -70,7 +75,7 @@ define(['app','underscore'],function(app,_){
 			}
 
 		}
-		
+
 
 	}]);
 });

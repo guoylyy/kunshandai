@@ -1,0 +1,36 @@
+<div class="col-md-2">
+	<ul class="nav nav-stacked ks-manage-nav" ui-sref-active="active">
+		<li ui-sref="manage.index"><a>账户总览</a></li>
+		<li  class="dropdown" dropdown  >
+			<a ui-sref="loan" dropdown-toggle> 放款管理<span class="glyphicon glyphicon-menu-right"></span></a>
+			  <ul class="dropdown-menu dropdown-menu-right">
+		        <li>
+		          <a href="/createProject" target="_blank">新增放款</a>
+		          <a href="#"  ui-sref="manage.draftLoans" >待放款项目</a>
+		        </li>
+		      </ul>
+		</li>
+		<li class="dropdown" dropdown>
+			<a ui-sref="collect" dropdown-toggle>收款管理<span class="glyphicon glyphicon-menu-right"></span></a>
+			 <ul class="dropdown-menu dropdown-menu-right">
+		        <li>
+		          <a ui-sref="manage.collectPending">待收款项目</a>
+		          <a ui-sref="manage.collectDone">已收款项目</a>
+		        </li>
+		      </ul>
+		</li>
+		<li class="dropdown" dropdown >
+			<a dropdown-toggle>项目检视<span class="glyphicon glyphicon-menu-right"></span></a>
+			<ul class="dropdown-menu dropdown-menu-right">
+		        <li>
+		          <a ui-sref="manage.normalProjects">正常项目</a>
+		          <a ui-sref="manage.overdueProjects">逾期项目</a>
+		          <a ui-sref="manage.badbillProjects">坏账项目</a>
+		          <a ui-sref="manage.completedProjects">结清项目</a>
+		          <a ui-sref="manage.allProjects">所有项目</a>
+		        </li>
+		      </ul>
+		</li>
+		<li ui-sref="manage.contact"><a >客户管理</a></li>
+	</ul>
+</div>

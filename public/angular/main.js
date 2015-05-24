@@ -17,13 +17,13 @@ require.config({
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		'highcharts-ng': '../lib/highcharts-ng/dist/highcharts-ng',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
-		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',	
+		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',
 		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
 		angularBusy:'../lib/angular-busy/dist/angular-busy',
 		text:'../lib/requirejs-text/text',
 		moment:'../lib/moment/moment',
 		moment_zh_cn:'../lib/moment/locale/zh-cn'
-		
+
 	},
 	shim:{
 		'angular':{
@@ -68,7 +68,7 @@ require([
 		 'angular',
 		 'app',
 		 'i18nZh',
-		 
+
 		 'account/AccountService',
 		 'account/AccountController',
 		 'account/login/LoginController',
@@ -83,7 +83,9 @@ require([
 		 'manage/common/active/ActiveLoanModalCtrl',
 		 'manage/common/contract/ContractController',
 		 'manage/common/helper/LoanHelper',
-		
+
+		 'manage/nav/NavController',
+
 		 'manage/loan/LoanCtrls',
 		 'manage/loan/draft/DraftLoanCtrl',
 		 'manage/loan/LoanService',
@@ -93,22 +95,22 @@ require([
 		 'manage/collect/CollectController',
 
 		 'manage/project/ProjectController',
-		 
+
 		 'manage/contact/ContactService',
 		 'manage/contact/ContactController',
 		 'manage/contact/ContactModalCtrl',
-		 		 
+
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',
 		 'common/directive/floatNumberInput',
 		 'common/filter/cDisplay',
-		 
+
 		 'routes'
 ],function(angular) {
-	
+
 	// var $html = angular.element(document.getElementsByTagName('html')[0]);
-	
+
 	angular.element(document).ready(function() {
 		angular.bootstrap(document, ['app']);
 	});

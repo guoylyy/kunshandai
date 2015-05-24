@@ -112,11 +112,6 @@ define(['app','underscore'],function(app,_){
 		    				return data;
 		    			})
 		    		},
-		    		// pawn:function(loan,PawnService,$stateParams){
-		    		// 	return PawnService.getPawn(loan.pawn.id).then(function(data){
-		    		// 		return data;
-		    		// 	})
-		    		// },
 		    		attachments:function($q,LoanService,ContactService,$stateParams){
 		    			var attachments = {};
 
@@ -152,9 +147,31 @@ define(['app','underscore'],function(app,_){
 		    	controller:'RetrievePasswordController'
 		    })
 		     // manage module routes
-
-		    .state('index',{
-		    	url:"/manage?startDate&endDate",
+				.state('manage',{
+					abstract:true,
+					url:'/manage',
+					views:{
+						'':{
+							templateUrl:"/angular/manage/common/partial/manage.html"
+						},
+						'nav@manage': {
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:{
+								user: function(AccountService){
+									return AccountService.isLogin().then(function(data){
+										return data;
+									});
+								}
+							}
+						},
+						'menu@manage': {
+							templateUrl:"/angular/manage/common/partial/menu.html"
+						}
+					}
+				})
+		    .state('manage.index',{
+		    	url:"?startDate&endDate",
     			templateUrl:  "/angular/manage/index/index.html",
     			resolve: {
     				incomeStatistics: function(LoanService, $stateParams, $filter){
@@ -191,12 +208,13 @@ define(['app','underscore'],function(app,_){
 
 		    .state('fianceStatistics',{
 		    	url:"/manage/fianceStatistics",
-		    	templateUrl:  "/angular/manage/index/index.html",
-		    	controller: 'IndexController'
+					templateUrl:  "/angular/manage/index/index.html",
+				  controller: 'IndexController'
+
 		    })
 
-		    .state('draftLoans',{
-		    	url:"/manage/loan/draft?page",
+		    .state('manage.draftLoans',{
+		    	url:"/loan/draft?page",
     			templateUrl: "/angular/manage/loan/draft/draft.html",
     			resolve:{
     				draftLoans:function(LoanService,$stateParams){
@@ -207,51 +225,51 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "DraftLoanCtrl"
 		    })
-		    .state('collectPending',{
-		    	url:"/manage/collect/pending?page&startDate&endDate&loanType",
+		    .state('manage.collectPending',{
+		    	url:"/collect/pending?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getUnpayedList"),
     			controller: "CollectController"
 		    })
-		    .state('collectDone',{
-		    	url:"/manage/collect/done?page&startDate&endDate&loanType",
+		    .state('manage.collectDone',{
+		    	url:"/collect/done?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/collect/collect.html",
     			resolve:resolveObject("LoanService.getPayedList"),
     			controller: "CollectController"
 		    })
 
-		    .state('allProjects',{
-		    	url:"/manage/projects/all?page&startDate&endDate&loanType",
+		    .state('manage.allProjects',{
+		    	url:"/projects/all?page&startDate&endDate&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getLoans"),
     			controller: "ProjectController"
 		    })
- 			.state('normalProjects',{
-		    	url:"/manage/projects/normal?page&loanType",
+ 			.state('manage.normalProjects',{
+		    	url:"/projects/normal?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getNormalLoans"),
     			controller: "ProjectController"
 		    })
- 			.state('overdueProjects',{
-		    	url:"/manage/projects/overdue?page&loanType",
+ 			.state('manage.overdueProjects',{
+		    	url:"/projects/overdue?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getOverdueLoans"),
     			controller: "ProjectController"
 		    })
- 			.state('badbillProjects',{
-		    	url:"/manage/projects/badbill?page&loanType",
+ 			.state('manage.badbillProjects',{
+		    	url:"/projects/badbill?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getBadbillLoans"),
     			controller: "ProjectController"
 		    })
- 		    .state('completedProjects',{
-		    	url:"/manage/projects/completed?page&loanType",
+ 		    .state('manage.completedProjects',{
+		    	url:"/projects/completed?page&loanType",
     			templateUrl: "/angular/manage/project/project.html",
     			resolve:resolveObject("LoanService.getCompletedLoans"),
     			controller: "ProjectController"
 		    })
-		    .state('searchProjects',{
-		    	url:"/manage/projects/search?page&type&keyword",
+		    .state('manage.searchProjects',{
+		    	url:"/projects/search?page&type&keyword",
 				templateUrl: "/angular/manage/project/project.html",
 				resolve:{
 					loans:function(LoanService,$stateParams){
@@ -268,8 +286,8 @@ define(['app','underscore'],function(app,_){
 				},
 				controller: "ProjectController"
 		    })
-		    .state('contact',{
-		    	url:"/manage/contact?page",
+		    .state('manage.contact',{
+		    	url:"/contact?page",
     			templateUrl: "/angular/manage/contact/contact.html",
     			resolve:{
 						contacts:function(ContactService, $stateParams){
@@ -280,8 +298,8 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "ContactController"
 		    })
-		    .state('searchContact',{
-		    	url:"/manage/contact/search?type&keyword",
+		    .state('manage.searchContact',{
+		    	url:"/contact/search?type&keyword",
     			templateUrl: "/angular/manage/contact/contact.html",
     			resolve:{
 						contacts:function(ContactService, $stateParams){
@@ -327,10 +345,6 @@ define(['app','underscore'],function(app,_){
 		    	templateUrl: "/angular/manage/common/contract/contract.html",
 		    	resolve:resolveSelectItems(),
 		    	controller: "ModifyLoanFinalCtrl"
-		    })
-		 	.state('manage',{
-		    	url:"/manage",
-		    	templateUrl: "/angular/manage/index/index.html"
 		    })
 		    .state('help',{
 		    	url:"/help",

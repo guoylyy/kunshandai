@@ -305,8 +305,6 @@ traits:
                       "result": "success",
                       "code": 200
                   }
-
-
   
 /loan:
   /{id}:
@@ -1056,6 +1054,12 @@ traits:
             type: number
             description: |
               实际还钱日期
+          payType:
+            type: string
+            description: 查看 payBackTypes 字典表 共4种还款类型
+          offsetMoney:
+            type: number
+            description: 少还或者多还的钱（绝对值)
         responses:
           200:
             description: |
@@ -1123,7 +1127,7 @@ traits:
                       "message": "这是最后一期还款，请跳转到结清"
                     }
     /{loanId}:
-      /finishBill:
+      /finish:
         get:
           description: |
             查看结清账单
@@ -1153,7 +1157,9 @@ traits:
                         "outcome": { 
                           "assureCost": 0, 
                           "keepCost": 0,
-                          "interest" : 0 
+                          "interest" : 0,
+                          "payedMoney":0,
+                          "favourMoney":0 
                         },
                         "sum":0
                       },
@@ -1173,8 +1179,10 @@ traits:
           queryParameters:
             data:
               type: string
+              description: 
               example: |
                 {
+                    "payType": "normal | favour | partial",
                     "payBackDate":"2014-10-10",
                     "payBackData":{
                       "income": {
@@ -1183,7 +1191,8 @@ traits:
                       },
                       "outcome": {
                         "assureCost": 0, //退还的保证金
-                        "keepCost": 0 //退还的暂存金额
+                        "keepCost": 0, //退还的暂存金额
+                        "favourMoney": 100 //优惠的金额
                       },
                       "sum": 0 //总结清支付费用
                     }

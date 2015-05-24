@@ -696,6 +696,11 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
   var u = check_login(u);
   var payBackId = req.params.id;
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', payBackId);
+
+  //还款的情况
+  var payType = req.body.payType;
+  var offsetMoney = req.body.offsetMoney;
+
   loanPayBack.fetch().then(function(p) {
       var l = p.get('loan');
       l.fetch().then(function(loan) {
@@ -705,42 +710,55 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
             message: '这是最后一期还款，请跳转到结清'
           });
         } else {
-
-          p.set('payBackMoney', req.body.payBackMoney);
+          p.set('payBackMoney', p.get('payBackMoney') +req.body.payBackMoney);
           p.set('payBackDate', new Date(req.body.payBackDate));
-          p.set('status', mconfig.loanPayBackStatus.completed.value);
+          p.set('description', mconfig.payBackTypes[payType].text + ' '+ offsetMoney + ' 元');
+          if(payType != mconfig.payBackTypes.partial.value){
+            p.set('status', mconfig.loanPayBackStatus.completed.value);
+          }
+
           p.save().then(function(np) {
-            var query = new AV.Query('LoanPayBack');
-            query.equalTo('order', p.get('order') + 1);
-            query.equalTo('loan', p.get('loan'));
-            query.ascending('payDate');
-
+            //设置总收款
             loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
-            loan.set('currPayStep', p.get('order') + 1);
-
-            query.find({
-              success: function(pbs) {
-                if (pbs.length == 1) {
-                  var pb = pbs[0];
-                  pb.set('status', mconfig.loanPayBackStatus.paying.value);
-                  pb.save().then(function(npb) {
-                    loan.save().then(function(rLoan) {
-                      mutil.renderData(res, concretePayBack(npb, rLoan, 0));
+            if(payType == mconfig.payBackTypes.partial.value){ 
+              //部分还款,直接保存还款信息
+              loan.save().then(function(rLoan){
+                mutil.renderData(res, concretePayBack(np, rLoan, 0));
+              })
+            }else{
+              //完成本次还款,跳转到下一期
+              var query = new AV.Query('LoanPayBack');
+              query.equalTo('order', p.get('order') + 1);
+              query.equalTo('loan', p.get('loan'));
+              query.ascending('payDate');
+              loan.set('currPayStep', p.get('order') + 1);
+              query.find({
+                success: function(pbs) {
+                  if (pbs.length == 1) {
+                    var pb = pbs[0];
+                    pb.set('status', mconfig.loanPayBackStatus.paying.value);
+                    if(payType == mconfig.payBackTypes.next.value){
+                      pb.set('payedMoney', offsetMoney); //滚入下期金额
+                    }
+                    pb.save().then(function(npb) {
+                      loan.save().then(function(rLoan) {
+                        mutil.renderData(res, concretePayBack(npb, rLoan, 0));
+                      });
                     });
-                  });
-                } else if (pbs.length == 0 && p.get('order') > 0) {
-                  mutil.renderSuccess(res);
-                } else {
-                  mutil.renderError(res, {
-                    code: 500,
-                    message: '内部错误!'
-                  });
+                  } else if (pbs.length == 0 && p.get('order') > 0) {
+                    mutil.renderSuccess(res);
+                  } else {
+                    mutil.renderError(res, {
+                      code: 500,
+                      message: '内部错误!'
+                    });
+                  }
+                },
+                error: function(error) {
+                  mutil.renderError(res, error);
                 }
-              },
-              error: function(error) {
-                mutil.renderError(res, error);
-              }
-            });
+              });
+            }
           });
         }
       });
@@ -775,6 +793,7 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function(req, res) {
       var overdueMoney = 0;
       var payMoney = 0;
       var interest = 0;
+      var payedMoney = 0;
       for (var i = 0; i < rs.length; i++) {
         //console.log(rs[i]);
         if (rs[i].get('order') == loan.get('payTotalCircle')) {
@@ -788,12 +807,14 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function(req, res) {
         overdueMoney = overdueMoney + calculateOverdueMoney(loan, rs[i].get('payDate'), payBackDate);
         payMoney = payMoney + rs[i].get('payMoney');
         interest = interest + rs[i].get('interestsMoney');
+        payedMoney += rs[i].get(payedMoney);
       };
       var bill = {
         amount: payMoney - interest,
         interestsMoney: interest,
         overdueMoney: overdueMoney,
-        payMoney: payMoney + overdueMoney
+        payMoney: payMoney + overdueMoney,
+        payedMoney: payedMoney
       };
       //console.log(bill);
       mutil.renderData(res, bill);
@@ -939,6 +960,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function(req, res) {
       q.find().then(function(pbs) {
         var totalInterests = 0;
         var totalPayMoney = 0;
+        var payedMoney = 0;
         var currentStep = 1; //当前周期数
         console.log(pbs.length);
         for (var i = 0; i < pbs.length; i++) {
@@ -949,6 +971,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function(req, res) {
           }
           totalInterests += pbs[i].get('interestsMoney');
           totalPayMoney += pbs[i].get('payMoney');
+          payedMoney += pbs[i].get('payBackMoney'); //统计已还的金额
           if (pbs[i].get('order') > currentStep && pbs[i].get('status') == mconfig.loanPayBackStatus.paying.value) {
             currentStep = pbs[i].get('order');
           }
@@ -967,6 +990,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function(req, res) {
           rLoan.get('payWay') == mconfig.payBackWays.zqmxhb.value) {
           rc.income.amount = rLoan.get('amount');
         }
+        rc.outcome.payedMoney = payedMoney;
         rc = mloan.calBillSum(rc);
         mutil.renderData(res, rc);
       }, function(error) {
@@ -979,6 +1003,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function(req, res) {
 //结清项目
 app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
   var u = check_login(res);
+  var payType = req.body.payType; //结清的类型
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
   loan.fetch().then(function(rLoan) {
     if (rLoan.get('status') != mconfig.loanStatus.paying.value) {
@@ -987,9 +1012,12 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
         message: '项目状态错误!'
       });
     } else {
+      if(payType != mconfig.payBackTypes.partial.value){
+        //部分结清
+        rLoan.set('status', mconfig.loanStatus.completed.value);
+        rLoan.set('finishDate', new Date(req.body.payBackDate));
+      }
       rLoan.set('finishBill', req.body.payBackData);
-      rLoan.set('status', mconfig.loanStatus.completed.value);
-      rLoan.set('finishDate', new Date(req.body.payBackDate));
       rLoan.set('payedMoney', rLoan.get('payedMoney') + req.body.payBackData.sum);
       rLoan.set('currPayStep', rLoan.get('payTotalCircle'));
       var relation = rLoan.relation('loanPayBacks');
@@ -1002,8 +1030,11 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
           for (var i = 0; i < list.length; i++) {
             //最后一期算结清的钱
             if (list[i].order == rLoan.get('payTotalCircle')) {
-              list[i].set('status', mconfig.loanPayBackStatus.completed.value);
-              list[i].set('payBackMoney', req.body.payBackData.sum);
+              if(payType != mconfig.payBackTypes.partial.value){
+                //非部分结清,项目未完成
+                list[i].set('status', mconfig.loanPayBackStatus.completed.value);
+              }
+              list[i].set('payBackMoney', list[i].get('payBackMoney') + req.body.payBackData.sum);
             } else {
               list[i].set('status', mconfig.loanPayBackStatus.closed.value);
               list[i].set('payBackMoney', 0);
@@ -1443,6 +1474,7 @@ function concretePayBack(lpb, loan, overdueMoney) {
   result['payBackDate'] = lpb.get('payBackDate'); //实收日期
   result['amount'] = loan.get('amount');
   result['payMoney'] = lpb.get('payMoney') - lpb.get('interestsMoney');
+  result['payBackMoney'] = lpb.get('payBackMoney'); //已还的金额
   result['overdueMoney'] = overdueMoney; //违约金
   result['interestsMoney'] = lpb.get('interestsMoney'); //利息
   result['payBackMoney'] = lpb.get('payBackMoney');

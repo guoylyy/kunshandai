@@ -206,7 +206,9 @@ var finishBillParms = {
     outcome: {  //应该退还的金额
         assureCost : 0,
         keepCost : 0,
-        interest : 0
+        interest : 0,
+        payedMoney: 0,
+        favourMoney:0
     },
     sum: 0
 };
@@ -214,7 +216,8 @@ function calBillSum(bill){
     var income = bill.income;
     var outcome = bill.outcome;
     var sum = (income.amount + income.overdueMoney + income.interest) -
-                (outcome.assureCost + outcome.keepCost + outcome.interest);
+                (outcome.assureCost + outcome.keepCost + outcome.interest 
+                    + outcome.payedMoney);
     bill.sum = sum;
     return bill;
 }

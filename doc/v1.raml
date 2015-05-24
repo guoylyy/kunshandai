@@ -241,6 +241,33 @@ traits:
             application/json:
               schema: |
                 同 get 方法
+    /password:
+      put:
+        description: 通过原密码修改 password
+        queryParameters:
+          oldPassword:
+            type: string
+            description: 原密码
+          newPassword:
+            type: string
+            description: 新密码
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "result": "success",
+                      "code": 200
+                  }
+          410:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "code": 410,
+                      "message": "修改失败,密码错误!"
+                  }
     /icon:
       put:
         description: 设置用户头像
@@ -285,6 +312,10 @@ traits:
                   }
       post:
         description: 给用户添加一个附件
+        queryParameters:
+          attid:
+            type: string
+            description: 附件的id
         responses:
           200:
             body:
@@ -296,6 +327,10 @@ traits:
                   }
       delete:
         description: 移除一个用户附件
+        queryParameters:
+          attid:
+            type: string
+            description: 附件的id        
         responses:
           200:
             body:

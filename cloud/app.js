@@ -235,6 +235,19 @@ app.delete(config.baseUrl + '/account/profile/attachments', function(req, res) {
   });
 });
 
+//通过原密码修改密码
+app.put(config.baseUrl + '/account/profile/resetPassword', function(req, res){
+  var u = check_login(res);
+  u.updatePassword(req.body.oldPassword, req.body.newPassword,{
+    success: function(){
+      mutil.renderSuccess(res);
+    },
+    error: function(err){
+      mutil.renderError(res, { code:410, message:'修改失败,密码错误!'});  
+    }
+  });
+});
+
 //发送短信验证码
 app.post(config.baseUrl + '/account/requestResetPasswordBySmsCode', function(req, res) {
   var mobilePhoneNumber = req.body.mobilePhoneNumber;

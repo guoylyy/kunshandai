@@ -4,7 +4,11 @@
 
 			<div class="ks-panel panel panel-default">
 				<div class="panel-heading">贷款信息
-					
+					<button type="button" class="btn btn-xs btn-warning ks-right" ng-click="resetLoanForm()" style="margin-top:-5px;"
+					tooltip="将清空所有数据（除贷款类型、还款类型）"
+          tooltip-placement="top"
+          tooltip-trigger="mouseenter"
+        >重置</button>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -23,7 +27,7 @@
 							<div class="form-group">
 								<label>*贷款金额</label>
 								<div class="input-group">
-									
+
 									<input type="text" class="form-control" placeholder="贷款金额" name="amount" float-number-input ng-model="loanInfo.amount"  required >
 									<span class="input-group-addon">元</span>
 								</div>
@@ -109,8 +113,8 @@
 								</div>
 							</div>
 						</div>
-						
-						
+
+
 					</div>
 					<div class="row">
 						<div class="col-md-4">
@@ -137,10 +141,10 @@
 								</div>
 							</div>
 						</div>
-						
+
 					</div>
 					<div class="row">
-						
+
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*其他费用</label>
@@ -223,7 +227,7 @@
 								<label>*还款周期（月/次）</label>
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="还款周期" number-input name="payCircle"
-									ng-model="loanInfo.payCircle" required 
+									ng-model="loanInfo.payCircle" required
 									>
 									<span class="input-group-addon">月</span>
 								</div>
@@ -245,9 +249,9 @@
 								</div>
 							</div>
 						</div>
-						
+
 					</div>
-			  
+
 					</div>
 				</div>
 

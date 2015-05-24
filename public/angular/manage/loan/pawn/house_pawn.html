@@ -34,7 +34,7 @@
 				  <input type="text" class="form-control" name="houseCertificate3" ng-model="pawn.houseCertificate.value[2]" required>
 				  <span class="input-group-addon">{{pawn.houseCertificate.characters[2]}}</span>
 			</div>
-			<div ng-show="moreInfoForm.$submitted || moreInfoForm.houseCertificate.$touched">
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.houseCertificate1.$touched || moreInfoForm.houseCertificate2.$touched || moreInfoForm.houseCertificate3.$touched">
 				<div class="text-danger" ng-show="moreInfoForm.houseCertificate1.$error.required
 				|| moreInfoForm.houseCertificate2.$error.required || moreInfoForm.houseCertificate3.$error.required">请填{{pawn.houseCertificate.text}}</div>
 			</div>
@@ -53,7 +53,7 @@
 				  <input type="text" class="form-control" name="landCertificate3" ng-model="pawn.landCertificate.value[2]" required>
 				  <span class="input-group-addon">{{pawn.landCertificate.characters[2]}}</span>
 			</div>
-			<div ng-show="moreInfoForm.$submitted || moreInfoForm.landCertificate.$touched">
+			<div ng-show="moreInfoForm.$submitted || moreInfoForm.landCertificate1.$touched || moreInfoForm.landCertificate2.$touched || moreInfoForm.landCertificate3.$touched" >
 				<div class="text-danger" ng-show="moreInfoForm.landCertificate3.$error.required
 				||moreInfoForm.landCertificate1.$error.required || moreInfoForm.landCertificate2.$error.required">请填{{pawn.landCertificate.text}}</div>
 			</div>

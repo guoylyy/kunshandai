@@ -111,6 +111,14 @@ define(['app',"underscore"],function(app,_) {
 				}
 			}
 
+			$scope.resetLoanForm = function(){
+				var loanType = $scope.loanInfo.loanType,
+						payWay = $scope.loanInfo.payWay;
+				$scope.loanInfo = _.extend($scope.loanInfo,LoanService.getModel());
+				$scope.loanInfo.loanType = loanType;
+				$scope.loanInfo.payWay	 = payWay;
+				console.log($scope.loanInfo);
+			}
 			//控制几个日历开关状态
 			$scope.open = function($event,opened) {
 			    $event.preventDefault();

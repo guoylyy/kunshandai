@@ -8,7 +8,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 		var loanUrl = '/loan';
 
 		var model = {
-				objectId:'',
+				// objectId:'',
 				loanType:'',
 				amount:'',    			//number
 				spanMonth:'', 			//number
@@ -197,6 +197,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			},
 			getLocal:function(){
 				return localLoan;
+			},
+			getModel:function(){
+				return _.extend({},model);
 			},
 			getLoan:function(loanId){
 				var deferred = $q.defer();

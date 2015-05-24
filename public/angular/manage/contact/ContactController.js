@@ -3,13 +3,13 @@ define(['app','underscore'], function(app,_) {
     function($scope, contacts, SweetAlert, $modal, ContactService, $state, $stateParams) {
       $scope.currentState = $state.current;
 
-      if($scope.currentState.name == 'contact') {
+      if($scope.currentState.name == 'manage.contact') {
         $scope.contacts = contacts.values;
 
         $scope.currPage = $stateParams.page || 1;
         $scope.totalNum = contacts.totalNum;
         $scope.pageSize = contacts.pageSize;
-      }else if($scope.currentState.name == 'searchContact'){
+      }else if($scope.currentState.name == 'manage.searchContact'){
         $scope.contacts = contacts;
       }
 
@@ -63,7 +63,7 @@ define(['app','underscore'], function(app,_) {
               }
             });
           }
-         
+
         });
       }
 
@@ -88,12 +88,12 @@ define(['app','underscore'], function(app,_) {
       $scope.startSearch = function(){
         if($scope.search.keyword == '') {
           $state.go(
-          "contact",
+          "manage.contact",
           {page:1},
           {reload: true});
         }else{
           $state.go(
-          "searchContact",
+          "manage.searchContact",
           {keyword:$scope.search.keyword,type:$scope.search.type.value},
           {reload: true});
         }
@@ -108,7 +108,7 @@ define(['app','underscore'], function(app,_) {
             contact: function() {
               if (contactId) {
                 return  ContactService.get(contactId);
-                
+
               } else {
                 return ContactService.getModel();
               }

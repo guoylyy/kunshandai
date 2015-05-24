@@ -1124,12 +1124,12 @@ traits:
                     "message": "这是最后一期还款，请跳转到结清"
                   }
       /bill:
-        post:
+        get:
           description: |
             计算还款金额（不用于计算结清）
           queryParameters:
             payBackDate:
-              type: number
+              type: date
               description: |
                 实际还钱日期
           responses:
@@ -1163,51 +1163,6 @@ traits:
                     }
     /{loanId}:
       /finish:
-        get:
-          description: |
-            查看结清账单
-          queryParameters:
-            payDate:
-              type: date
-              example: |
-                "2014-10-10"
-            interestCalType:
-              type: string
-              description: |
-                计算利息的方式 
-              example: |
-                interestCalTypes 去 dict/key 接口取字典表
-          responses:
-            200:
-              body:
-                application/json:
-                  schema: |
-                    {
-                      "data": {
-                        "income": { 
-                          "amount": 0, 
-                          "overdueMoney": 0,
-                          "interest": 0  
-                        },
-                        "outcome": { 
-                          "assureCost": 0, 
-                          "keepCost": 0,
-                          "interest" : 0,
-                          "payedMoney":0,
-                          "favourMoney":0 
-                        },
-                        "sum":0
-                      },
-                      "code": 200
-                    }
-            500:
-              body:
-                application/json:
-                  schema: |
-                    {
-                      "code": 500,
-                      "message": "访问了没有权限的项目/缺少还款类型/还款时间不能早于项目开始时间"
-                    }
         post:
           description: |
             结清接口
@@ -1258,6 +1213,53 @@ traits:
                       "code": 500,
                       "message": "项目状态错误"
                     }
+        /bill:
+          description: 结清账单
+          get:
+            description: |
+              查看结清账单
+            queryParameters:
+              payDate:
+                type: date
+                example: |
+                  "2014-10-10"
+              interestCalType:
+                type: string
+                description: |
+                  计算利息的方式 
+                example: |
+                  interestCalTypes 去 dict/key 接口取字典表
+            responses:
+              200:
+                body:
+                  application/json:
+                    schema: |
+                      {
+                        "data": {
+                          "income": { 
+                            "amount": 0, 
+                            "overdueMoney": 0,
+                            "interest": 0  
+                          },
+                          "outcome": { 
+                            "assureCost": 0, 
+                            "keepCost": 0,
+                            "interest" : 0,
+                            "payedMoney":0,
+                            "favourMoney":0 
+                          },
+                          "sum":0
+                        },
+                        "code": 200
+                      }
+              500:
+                body:
+                  application/json:
+                    schema: |
+                      {
+                        "code": 500,
+                        "message": "访问了没有权限的项目/缺少还款类型/还款时间不能早于项目开始时间"
+                      }
   /search:
     get:
       description: |

@@ -919,7 +919,7 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack', function(req, res) {
 
 
 //计算还款金额: 每次应还的钱
-app.post(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
+app.get(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
   //var payDate = req.body.payDate;
   //根据还款时间计算应还金额
   //判断是按天计算利息还是按月计算违约金 
@@ -933,7 +933,7 @@ app.post(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
           message: '这是最后一期还款，请跳转到结清'
         });
       } else {
-        var overdueMoney = calculateOverdueMoney(loan, pb.get('payDate'), req.body.payBackDate);
+        var overdueMoney = calculateOverdueMoney(loan, pb.get('payDate'), req.query.payBackDate);
         mutil.renderData(res, concretePayBack(pb, loan, overdueMoney));
       }
     });
@@ -943,7 +943,7 @@ app.post(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
 });
 
 //结清账单生成，计算结清需要付钱的钱
-app.get(config.baseUrl + '/loan/payBack/:loanId/finish', function(req, res) {
+app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res) {
   //接受项目id，获取结清账单
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.loanId);

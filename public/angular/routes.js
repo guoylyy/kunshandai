@@ -349,7 +349,14 @@ define(['app','underscore'],function(app,_){
 		    .state('help',{
 		    	url:"/help",
 		    	templateUrl: "/angular/common/template/help.html"
-		    });
+		    })
+				.state('account',{
+					abstruct:true,
+					url:"/account"
+				})
+				.state('account.setting',{
+					url:"/setting"
+				});
 
 	}]);
 

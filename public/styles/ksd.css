@@ -19,6 +19,9 @@ a{
 table td,table th{
 	text-align: center;
 }
+body{
+	min-height: 680px;
+}
 *:focus {
 	outline: none;
 }
@@ -169,7 +172,7 @@ table td,table th{
 }
 .ks-signup-container{
 	right: 100px;
-	
+
 	min-height: 300px;
 	width: 470px;
 	padding:20px 70px 50px 70px;

@@ -55,7 +55,7 @@ define(['app','underscore'],function(app) {
 
 		$scope.startSearch = function(){
 			$state.go(
-				"searchProjects",
+				"manage.searchProjects",
 				{keyword:$scope.search.keyword,type:$scope.search.type.value},
 				{reload: true});
 		}

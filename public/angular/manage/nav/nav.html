@@ -2,13 +2,16 @@
 	<div class="container">
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-		        <li class="active">
-		          <a href="#">{{user.username}}</a>
-		        </li>
+          <li>
+            <a ui-sref="manage.index">贷款经理</a>
+          </li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		      	<li>
-		          <a ui-sref="manage.index">贷款经理</a>
+            <li class="active dropdown" dropdown>
+                <a  dropdown-toggle>{{user.username}}</a>
+    						<ul class="dropdown-menu" role="menu">
+    							<li><a role="menuitem" ui-sref="account.setting">个人设置</a></li>
+    						</ul>
 		        </li>
 		        <li>
 		          <a href="/help" target="_blank">帮助中心</a>

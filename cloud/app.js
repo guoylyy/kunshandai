@@ -75,6 +75,9 @@ app.get('/manage', function(req, res) {
 app.get('/manage/*', function(req, res) {
   res.render('manage.ejs');
 });
+app.get('/account/*', function(req, res) {
+  res.render('manage.ejs');
+});
 
 app.get('/loan', function(req, res) {
   res.render('empty_layout.ejs');
@@ -92,7 +95,7 @@ app.get('/help', function(req, res) {
 
 // app.use('/styles',express.static('public/styles'));
 // app.use(express.static('public/lib'));
-// app.all('/*', function(req, res, next) { 
+// app.all('/*', function(req, res, next) {
 //     // res.render('empty_layout.ejs');
 //     res.sendFile('index.html', { root: __dirname + '/html' });
 // });
@@ -888,7 +891,7 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack', function(req, res) {
 app.post(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
   //var payDate = req.body.payDate;
   //根据还款时间计算应还金额
-  //判断是按天计算利息还是按月计算违约金 
+  //判断是按天计算利息还是按月计算违约金
   var loanPayBack = AV.Object.createWithoutData('LoanPayBack', req.params.id);
   loanPayBack.fetch().then(function(pb) {
     var l = pb.get('loan');

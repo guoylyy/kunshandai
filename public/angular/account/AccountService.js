@@ -72,6 +72,40 @@ define(['app','underscore'],function(app,_){
 			},
 			resetPasswordBySmsCode: function(data){
 				return $http.post(ApiURL+accountUrl+'/resetPasswordBySmsCode',JSON.stringify(data));
+			},
+			getProfile: function(){
+				var deferred = $q.defer();
+
+				$http.get(ApiURL+accountUrl+'/profile').then(function(res){
+					deferred.resolve(res.data.data.infoObject);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
+			updateProfile: function(profile){
+				var deferred = $q.defer();
+
+				$http.put(
+					ApiURL+accountUrl+'/profile',
+					JSON.stringify({infoObject:profile})
+				).then(function(res){
+					deferred.resolve(res.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
+			getAttachments: function(){
+
+			},
+			addAttachment: function(attachmentId){
+
+			},
+			removeAttachment: function(attachmentId){
+
 			}
 
 		}

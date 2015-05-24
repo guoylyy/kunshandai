@@ -74,6 +74,7 @@ require([
 		 'account/login/LoginController',
 		 'account/signup/SignupController',
 		 'account/retrieve_password/RetrievePasswordController',
+		 'account/setting/AccountSettingCtrl',
 
 		 'manage/index/IndexController',
 

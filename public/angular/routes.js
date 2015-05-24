@@ -152,7 +152,7 @@ define(['app','underscore'],function(app,_){
 					url:'/manage',
 					views:{
 						'':{
-							templateUrl:"/angular/manage/common/partial/manage.html"
+							templateUrl:"/angular/manage/common/partial/layout.html"
 						},
 						'nav@manage': {
 							templateUrl: "/angular/manage/nav/nav.html",
@@ -352,10 +352,64 @@ define(['app','underscore'],function(app,_){
 		    })
 				.state('account',{
 					abstruct:true,
-					url:"/account"
+					url:"/account",
+					views:{
+						'':{
+							templateUrl:"/angular/manage/common/partial/layout.html"
+						},
+						'nav@account': {
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:{
+								user: function(AccountService){
+									return AccountService.isLogin().then(function(data){
+										return data;
+									});
+								}
+							}
+						},
+					}
+
 				})
 				.state('account.setting',{
-					url:"/setting"
+					url:"/setting",
+					views: {
+						'menu': {
+							templateUrl:"/angular/manage/common/partial/menu_account.html"
+						}
+					}
+				})
+				.state('account.setting.profile',{
+					url:"/profile",
+					views:{
+						'@account':{
+							templateUrl: '/angular/account/setting/profile.html',
+							controller:'AccountSettingCtrl',
+							resolve:{
+								user: function(AccountService){
+									return AccountService.isLogin().then(function(data){
+										return data;
+									});
+								},
+								profile: function(AccountService){
+									return AccountService.getProfile().then(function(profile){
+										return profile;
+									})
+								}
+							}
+						}
+					}
+
+				})
+				.state('account.setting.safety',{
+					url:"/safety",
+					templateUrl: '/angular/account/setting/safety.html',
+					controller:'AccountSettingCtrl'
+				})
+				.state('account.setting.avatar',{
+					url:"/avatar",
+					templateUrl: '/angular/account/setting/avatar.html',
+					controller:'AccountSettingCtrl'
 				});
 
 	}]);

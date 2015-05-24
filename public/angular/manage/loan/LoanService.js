@@ -312,7 +312,6 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				var deferred = $q.defer();
 				$http.delete(ApiURL+loanUrl+"/"+loanId)
 				.then(function(res){
-					// _.extend(localLoan,res.data.data);
 					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);
@@ -358,9 +357,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				var payDate = new Date(payDate),
 					deferred = $q.defer();
 
-				$http.post(
+				$http.get(
 					ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",
-					JSON.stringify({payBackDate:payDate})
+					{params:{payBackDate:payDate}}
 				).then(function(res){
 					var bill = numberFormat(res.data.data);
 					deferred.resolve(bill);

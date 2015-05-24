@@ -1,0 +1,132 @@
+<div class="ks-dividing">
+ <h4>个人设置</h4>
+</div>
+<form name="profileForm">
+<div class="ks-panel panel panel-default">
+  <div class="panel-heading">基本信息
+
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>姓名</label>
+          <input type="text" class="form-control" placeholder="姓名" name="name" ng-model="user.profile.name"  required >
+          <div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
+            <div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写姓名</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label>性别: </label>
+            <label class="checkbox-inline">
+               <input type="radio" ng-model="user.profile.gender" ng-value="'male'"> 男
+            </label>
+            <label class="checkbox-inline">
+              <input type="radio" ng-model="user.profile.gender" ng-value="'female'"> 女
+            </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="control-label">身份证</label>
+          <input type="text" class="form-control" placeholder="身份证" name="id"
+           ng-model="user.profile.certificateNum"  ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/">
+          <div ng-show="profileForm.$submitted || profileForm.id.$touched">
+            <!-- <div class="text-danger" ng-show="editForm.id.$error.required">请填身份证</div> -->
+            <div class="text-danger" ng-show="profileForm.id.$error.pattern">请填写正确的身份证号</div>
+            <!-- <div class="text-danger" ng-show="editForm.id.$error.validator">已存在相同身份证的客户</div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>经营类型: </label>
+          <label class="checkbox-inline">
+             <input type="radio" ng-model="user.profile.manageType" name="manageType" ng-value="'individual'"> 个人
+          </label>
+          <label class="checkbox-inline">
+            <input type="radio" ng-model="user.profile.manageType"  name="manageType" ng-value="'company'"> 公司
+          </label>
+        </div>
+      </div>
+    </div>
+    <div ng-show="user.profile.manageType === 'company'">
+      <div class="row" >
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>公司名称</label>
+            <input type="text" class="form-control" placeholder="公司名称" name="cname"
+             ng-model="user.profile.company.name">
+          </div>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>经营范围</label><br>
+            <label class="checkbox-inline">
+              <input type="checkbox" ng-model="user.profile.manageRange[0]" ng-true-value="'fcdy'">房产抵押
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" ng-model="user.profile.manageRange[1]" ng-true-value="'qcdy'">汽车抵押
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" ng-model="user.profile.manageRange[2]" ng-true-value="'mfdk'">买房贷款
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" ng-model="user.profile.manageRange[3]" ng-true-value="'mcdk'">房车贷款
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" ng-model="user.profile.manageRange[4]" ng-true-value="'mcdk'">房车贷款
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" ng-model="user.profile.manageRange[5]" ng-true-value="'hpdy'">承兑汇票抵押
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-md-3">
+          <div class="form-group">
+            <label>公司电话</label><br>
+            <input type="text" class="form-control" placeholder="公司名称" name="cname"
+             ng-model="user.profile.company.telephone">
+          </div>
+        </div>
+      </div>
+      <div class="row" >
+        <div class="col-md-10">
+          <div class="form-group">
+            <label>公司地址</label><br>
+            <input type="text" class="form-control" placeholder="公司名称" name="cname"
+             ng-model="user.profile.company.address">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="form-group">
+          <label>个人所在地址</label>
+          <input type="text" class="form-control" placeholder="个人所在地址" ng-model="user.profile.address">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ks-divider"></div>
+<div class="row">
+  <div class="col-md-offset-10 col-md-2">
+    <button type="submit" class="btn btn-success ks-right" ng-click="updateProfile()">更新信息</button>
+  </div>
+</div>
+</div>
+</form>

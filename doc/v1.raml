@@ -241,6 +241,33 @@ traits:
             application/json:
               schema: |
                 同 get 方法
+    /password:
+      put:
+        description: 通过原密码修改 password
+        queryParameters:
+          oldPassword:
+            type: string
+            description: 原密码
+          newPassword:
+            type: string
+            description: 新密码
+        responses:
+          200:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "result": "success",
+                      "code": 200
+                  }
+          410:
+            body:
+              application/json:
+                schema: |
+                  {
+                      "code": 410,
+                      "message": "修改失败,密码错误!"
+                  }
     /icon:
       put:
         description: 设置用户头像
@@ -285,6 +312,10 @@ traits:
                   }
       post:
         description: 给用户添加一个附件
+        queryParameters:
+          attid:
+            type: string
+            description: 附件的id
         responses:
           200:
             body:
@@ -296,6 +327,10 @@ traits:
                   }
       delete:
         description: 移除一个用户附件
+        queryParameters:
+          attid:
+            type: string
+            description: 附件的id        
         responses:
           200:
             body:
@@ -305,8 +340,6 @@ traits:
                       "result": "success",
                       "code": 200
                   }
-
-
   
 /loan:
   /{id}:
@@ -1056,6 +1089,12 @@ traits:
             type: number
             description: |
               实际还钱日期
+          payType:
+            type: string
+            description: 查看 payBackTypes 字典表 共4种还款类型
+          offsetMoney:
+            type: number
+            description: 少还或者多还的钱（绝对值)
         responses:
           200:
             description: |
@@ -1085,12 +1124,12 @@ traits:
                     "message": "这是最后一期还款，请跳转到结清"
                   }
       /bill:
-        post:
+        get:
           description: |
             计算还款金额（不用于计算结清）
           queryParameters:
             payBackDate:
-              type: number
+              type: date
               description: |
                 实际还钱日期
           responses:
@@ -1123,58 +1162,17 @@ traits:
                       "message": "这是最后一期还款，请跳转到结清"
                     }
     /{loanId}:
-      /finishBill:
-        get:
-          description: |
-            查看结清账单
-          queryParameters:
-            payDate:
-              type: date
-              example: |
-                "2014-10-10"
-            interestCalType:
-              type: string
-              description: |
-                计算利息的方式 
-              example: |
-                interestCalTypes 去 dict/key 接口取字典表
-          responses:
-            200:
-              body:
-                application/json:
-                  schema: |
-                    {
-                      "data": {
-                        "income": { 
-                          "amount": 0, 
-                          "overdueMoney": 0,
-                          "interest": 0  
-                        },
-                        "outcome": { 
-                          "assureCost": 0, 
-                          "keepCost": 0,
-                          "interest" : 0 
-                        },
-                        "sum":0
-                      },
-                      "code": 200
-                    }
-            500:
-              body:
-                application/json:
-                  schema: |
-                    {
-                      "code": 500,
-                      "message": "访问了没有权限的项目/缺少还款类型/还款时间不能早于项目开始时间"
-                    }
+      /finish:
         post:
           description: |
             结清接口
           queryParameters:
             data:
               type: string
+              description: 
               example: |
                 {
+                    "payType": "normal | favour | partial",
                     "payBackDate":"2014-10-10",
                     "payBackData":{
                       "income": {
@@ -1183,7 +1181,8 @@ traits:
                       },
                       "outcome": {
                         "assureCost": 0, //退还的保证金
-                        "keepCost": 0 //退还的暂存金额
+                        "keepCost": 0, //退还的暂存金额
+                        "favourMoney": 100 //优惠的金额
                       },
                       "sum": 0 //总结清支付费用
                     }
@@ -1214,6 +1213,53 @@ traits:
                       "code": 500,
                       "message": "项目状态错误"
                     }
+        /bill:
+          description: 结清账单
+          get:
+            description: |
+              查看结清账单
+            queryParameters:
+              payDate:
+                type: date
+                example: |
+                  "2014-10-10"
+              interestCalType:
+                type: string
+                description: |
+                  计算利息的方式 
+                example: |
+                  interestCalTypes 去 dict/key 接口取字典表
+            responses:
+              200:
+                body:
+                  application/json:
+                    schema: |
+                      {
+                        "data": {
+                          "income": { 
+                            "amount": 0, 
+                            "overdueMoney": 0,
+                            "interest": 0  
+                          },
+                          "outcome": { 
+                            "assureCost": 0, 
+                            "keepCost": 0,
+                            "interest" : 0,
+                            "payedMoney":0,
+                            "favourMoney":0 
+                          },
+                          "sum":0
+                        },
+                        "code": 200
+                      }
+              500:
+                body:
+                  application/json:
+                    schema: |
+                      {
+                        "code": 500,
+                        "message": "访问了没有权限的项目/缺少还款类型/还款时间不能早于项目开始时间"
+                      }
   /search:
     get:
       description: |

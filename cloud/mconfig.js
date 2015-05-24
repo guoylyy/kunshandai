@@ -3,6 +3,27 @@
  */
 exports.pageSize = 10
 
+
+
+var payBackTypes = {
+	'normal':{
+		value: 'normal',
+		text: '正常还款'
+	},
+	'favour':{
+		value: 'favour',
+		text: '优惠'
+	},
+	'next':{
+		value: 'next',
+		text: '滚入下期'
+	},
+	'partial':{
+		value: 'partial',
+		text: '部分还款'
+	}
+};
+
 var verifyStatus = {
 	none: {
 		value: 'none',
@@ -187,6 +208,8 @@ function convertDictToList(key){
 		return getKeyValueList(fileTypes);
 	}else if(key=='interestCalTypes'){
 		return getKeyValueList(interestCalTypes);
+	}else if(key=='payBackTypes'){
+		return getKeyValueList(payBackTypes);
 	}
 	return null;
 }
@@ -203,6 +226,8 @@ function getConfigMapByValue(key, value){
 		obj = loanPayBackStatus;
 	}else if(key=='interestCalTypes'){
 		obj = interestCalTypes;
+	}else if(key=='payBackTypes'){
+		obj = payBackTypes;
 	}
 	if(!obj){
 		return null;
@@ -237,6 +262,7 @@ function getSumMap(obj){
 
 exports.interestCalTypes = interestCalTypes;
 exports.getSumMap = getSumMap;
+exports.payBackTypes = payBackTypes;
 exports.loanListTypes = loanListTypes;
 exports.getConfigMapByValue = getConfigMapByValue;
 exports.convertDictToList = convertDictToList;

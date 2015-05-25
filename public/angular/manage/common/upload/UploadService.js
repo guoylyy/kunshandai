@@ -1,7 +1,7 @@
 define(['app','underscore'],function(app,_){
-	return app.service('UploadService', ['ApiURL','$upload',
-		function(ApiURL,$upload){
-		
+	return app.service('UploadService', ['ApiURL','$upload','$q',
+		function(ApiURL,$upload,$q){
+
 		var fileStatus = {};
 
 		var attachmentTypes = [
@@ -21,6 +21,7 @@ define(['app','underscore'],function(app,_){
 				return fileStatus;
 			},
 			upload:function(files,fileType){
+				var deferred = $q.defer(),totalUploaded = 0;
 				if (files && files.length) {
 		            for (var i = 0; i < files.length; i++) {
 		                var file = files[i];
@@ -33,31 +34,48 @@ define(['app','underscore'],function(app,_){
 		                    file: file,
 		                    fileFormDataName:'attachment'
 		                }).progress(function (evt) {
+												var index;
+												if(files.length > 1){
+													index = _.findIndex(files,{'$$hashKey':evt.config.file.$$hashKey});
+												}else{
+													index = 0;
+												}
+												files[index].percent = parseInt(100.0 * evt.loaded / evt.total);
 
-		                    if(!fileStatus[evt.config.file.$$hashKey]){
-		                    	fileStatus[evt.config.file.$$hashKey] = {};
-		                    } 
-		                    fileStatus[evt.config.file.$$hashKey].percent = parseInt(100.0 * evt.loaded / evt.total);
-		                    console.log('progress: ' + fileStatus[evt.config.file.$$hashKey].percent + '% ' + evt.config.file.name);
+												console.log('progress: ' + files[index].percent + '% ' + evt.config.file.name)
 
 		                }).success(function (data, status, headers, config) {
 
-		                    var index = _.findIndex(files,{'$$hashKey':config.file.$$hashKey});
+		                    var index;
+												if(files.length > 1){
+													index = _.findIndex(files,{'$$hashKey':config.file.$$hashKey});
+												}else{
+													index = 0;
+												}
 		                    files[index].objectId = data.data.id;
 		                    files[index].url = data.data.url;
 		                    files[index].newUpload = true;
+												totalUploaded += 1;
+												if(totalUploaded == files.length){
+													deferred.resolve("all files uploaded");
+												}
 		                    console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 
 		                }).error(function(data, status, headers, config){
+												var index;
+												if(files.length > 1){
+													index = _.findIndex(files,{'$$hashKey':evt.config.file.$$hashKey});
+												}else{
+													index = 0;
+												}
 
-		                	console.log('file ' + config.file.name + 'upload fail. Response: ' + data);	            
-		                	if(!fileStatus[config.file.$$hashKey]){
-		                		fileStatus[config.file.$$hashKey] = {};
-		                	}
-		                	fileStatus[config.file.$$hashKey].error = true;
+												files[index].error = true;
+												console.log('file ' + config.file.name + 'upload fail. Response: ' + data);
+												deferred.reject("upload file:"+config.file.name+"fail");
 		                });
 		            }
-		        }
+		     }
+				return deferred.promise;
 			}
 		}
 

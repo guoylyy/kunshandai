@@ -20,11 +20,11 @@
         <td>{{file.name}}</td>
         <td>{{file.type}}</td>
         <td>{{file.size/1000000 | number:2}}</td>
-        <td  class="text-success" ng-show="!fileStatus[file.$$hashKey].error">
-          {{fileStatus[file.$$hashKey].percent}}%
+        <td  class="text-success" ng-show="!file.error">
+          {{file.percent}}%
         </td>
-        <td class="text-danger" ng-show="fileStatus[file.$$hashKey].error">上传失败</td>
-        <td></td>              
+        <td class="text-danger" ng-show="file.error">上传失败</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -36,7 +36,7 @@
       <div class="col-md-9">
         <div ng-file-drop ng-file-select ng-model="files" ng-file-chang="fileDropped($files,$event)" ng-multiple="true" drop-available="dropSupported" class="ks-drop-box">
           <div>将文件拖动到此上传 或 点击此处选择文件</div>
-          </div>
+        </div>
       </div>
     </div>
   </div>

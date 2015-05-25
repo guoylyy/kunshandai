@@ -1,0 +1,45 @@
+<div class="ks-dividing">
+ <h4>头像设置</h4>
+</div>
+<form name="profileForm">
+<div class="ks-panel panel panel-default">
+  <div class="panel-heading">修改头像
+
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+            <a href="#" class="thumbnail" >
+             <img src="{{user.avatar.url}}">
+            </a>
+        </div>
+      </div>
+      <div class="col-md-1">
+        <div class="form-group">
+            <a href="#" class="thumbnail" >
+             <img src="{{user.avatar.url}}">
+            </a>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <progressbar animate="false" class="active" value="user.avatarfiles[0].percent"
+        type="{{upload.type}}" ng-show="upload.uploading" style="margin-left:10px;">{{user.avatarfiles[0].percent}}
+        <i ng-show="upload.showWarning">上传失败</i>
+        <i ng-show="user.avatarfiles[0].percent == 100">上传成功</i>
+        </progressbar>
+        <div ng-file-drop ng-file-select ng-model="user.avatarfiles" ng-file-change="fileDropped($files,$event)" ng-multiple="false" drop-available="dropSupported" class="ks-drop-box">
+          <div>将文件拖动到此上传 或 点击此处选择文件</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ks-divider"></div>
+<div class="row">
+  <div class="col-md-offset-10 col-md-2">
+    <button type="submit" class="btn btn-success ks-right" ng-click="updateAvatar()">保存修改</button>
+  </div>
+</div>
+</div>
+</form>

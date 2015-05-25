@@ -77,7 +77,7 @@ define(['app','underscore'],function(app,_){
 				var deferred = $q.defer();
 
 				$http.get(ApiURL+accountUrl+'/profile').then(function(res){
-					deferred.resolve(res.data.data.infoObject);
+					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);
 				})
@@ -90,6 +90,20 @@ define(['app','underscore'],function(app,_){
 				$http.put(
 					ApiURL+accountUrl+'/profile',
 					JSON.stringify({infoObject:profile})
+				).then(function(res){
+					deferred.resolve(res.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
+			updateAvatar: function(avatarId){
+				var deferred = $q.defer();
+
+				$http.put(
+					ApiURL+accountUrl+'/profile/icon',
+					JSON.stringify({icon_id:avatarId})
 				).then(function(res){
 					deferred.resolve(res.data);
 				},function(res){

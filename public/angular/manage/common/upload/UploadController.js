@@ -1,15 +1,15 @@
 define(['app','underscore'],function(app,_){
 	return app.controller('UploadController', function($scope,$modalInstance,UploadService,SweetAlert,type){
-		
+
 		$scope.type = type;
-  		
+
   		$scope.attachmentType = 'certification';
 
 		$scope.fileList = [];
 
 		$scope.attchTypes = UploadService.getAttachmentTypes();
 
-		$scope.fileStatus = UploadService.getFileStatus();
+		// $scope.fileStatus = UploadService.getFileStatus();
 
 		$scope.finish= function () {
 			_.each($scope.fileList,function(file,index){
@@ -27,11 +27,11 @@ define(['app','underscore'],function(app,_){
 				_.each($scope.files,function(file){
 					file.attachmentType = $scope.attachmentType;
 
-				})	
+				})
 				$scope.fileList = _.union($scope.fileList,$scope.files);
 				UploadService.upload($scope.files,$scope.attachmentType);
 			}
-		  
+
 		});
 
 
@@ -44,15 +44,15 @@ define(['app','underscore'],function(app,_){
 				   showCancelButton: true,
 				   confirmButtonColor: "#DD6B55",
 				   confirmButtonText: "确定",
-				},function(isConfirm){ 
+				},function(isConfirm){
 					if(isConfirm){
-						$modalInstance.dismiss('cancel');	
+						$modalInstance.dismiss('cancel');
 					}
 				});
 	    	}else{
 	    		$modalInstance.dismiss('cancel');
 	    	}
-		   
+
 		   };
 	});
 });

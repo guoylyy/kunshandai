@@ -353,6 +353,13 @@ define(['app','underscore'],function(app,_){
 				.state('account',{
 					abstruct:true,
 					url:"/account",
+					resolve:{
+						profile: function(AccountService){
+							return AccountService.getProfile().then(function(profile){
+								return profile;
+							})
+						}
+					},
 					views:{
 						'':{
 							templateUrl:"/angular/manage/common/partial/layout.html"
@@ -384,19 +391,7 @@ define(['app','underscore'],function(app,_){
 					views:{
 						'@account':{
 							templateUrl: '/angular/account/setting/profile.html',
-							controller:'AccountSettingCtrl',
-							resolve:{
-								user: function(AccountService){
-									return AccountService.isLogin().then(function(data){
-										return data;
-									});
-								},
-								profile: function(AccountService){
-									return AccountService.getProfile().then(function(profile){
-										return profile;
-									})
-								}
-							}
+							controller:'AccountSettingCtrl'
 						}
 					}
 
@@ -413,8 +408,12 @@ define(['app','underscore'],function(app,_){
 				})
 				.state('account.setting.avatar',{
 					url:"/avatar",
-					templateUrl: '/angular/account/setting/avatar.html',
-					controller:'AccountSettingCtrl'
+					views:{
+						'@account':{
+							templateUrl: '/angular/account/setting/avatar.html',
+							controller:'AccountSettingCtrl'
+						}
+					}
 				});
 
 	}]);

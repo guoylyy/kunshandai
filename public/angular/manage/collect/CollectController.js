@@ -20,8 +20,18 @@ define(['app'],function(app) {
 
 			$scope.calendar 	= {};
 
-			$scope.condition 	= {startDate:new Date(parseInt($stateParams.startDate)),endDate:new Date(parseInt($stateParams.endDate))};
+			$scope.condition 	= {};
 
+			var init = function(){
+				var startDate = '',endDate = '';
+				if($stateParams.startDate){
+					startDate = new Date(parseInt($stateParams.startDate));
+					endDate = new Date(parseInt($stateParams.endDate));
+				}
+				$scope.condition = {startDate:startDate,endDate:endDate};
+			}
+
+			init();
 			// $scope.template = {
 			// 	processCompleteUrl	:'/angular/manage/collect/template/processComplete.html',
 			// 	processListUrl		:'/angular/manage/collect/template/processList.html',

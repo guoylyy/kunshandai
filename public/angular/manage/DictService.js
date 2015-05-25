@@ -1,7 +1,7 @@
 define(['../app'],function(app){
 
 	return app.factory('DictService', ['$http','$q','ApiURL',function($http,$q,ApiURL){
-		
+
 		var keys = {};
 
 		var timeRangeValues = function(){
@@ -13,8 +13,8 @@ define(['../app'],function(app){
 			var end = new Date(year,month,day);
 			return [
 				{
-					startDate: new Date("1970-01-01").getTime(),
-					endDate: new Date("2070-01-01").getTime(),
+					startDate:null, //new Date("1970-01-01").getTime(),
+					endDate: null,//new Date("2070-01-01").getTime(),
 					text:'所有'
 				},
 				{

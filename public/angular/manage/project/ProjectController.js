@@ -15,10 +15,18 @@ define(['app','underscore'],function(app) {
 
 		$scope.calendar 	= {};
 
-		$scope.condition 	= {
-			startDate:new Date(parseInt($stateParams.startDate)),
-			endDate:new Date(parseInt($stateParams.endDate))
-		};
+		$scope.condition 	= {};
+
+		var init = function(){
+			var startDate = '',endDate = '';
+			if($stateParams.startDate){
+				startDate = new Date(parseInt($stateParams.startDate));
+				endDate = new Date(parseInt($stateParams.endDate));
+			}
+			$scope.condition = {startDate:startDate,endDate:endDate};
+		}
+
+		init();
 
 		$scope.search = {
 			type:{

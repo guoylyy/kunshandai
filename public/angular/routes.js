@@ -13,23 +13,20 @@ define(['app','underscore'],function(app,_){
 
 		var resolveLoans = function(fn,LoanService,DictService,$stateParams){
 		    var startDate, endDate, loanType;
-			if(!$stateParams.startDate){
-				var timeRanges = DictService.get('timeRanges');
-				startDate = timeRanges[0].startDate;
-				endDate = timeRanges[0].endDate;
-				$stateParams.startDate = startDate;
-				$stateParams.endDate = endDate;
-				// if(fn === LoanService.getLoans){
-				// 	endTimeRS = new Date(parseInt(startDate));
-				// 	endTimeRE = new Date(parseInt(endDate));
-				// 	$stateParams.endTimeRS = startDate;
-				// 	$stateParams.endTimeRE = endDate;
-				// }
-			}
-		    startDate = new Date(parseInt($stateParams.startDate));
-		    endDate = new Date(parseInt($stateParams.endDate));
-		    loanType = $stateParams.loanType;
-		    $stateParams.page = $stateParams.page || 1
+				if(!$stateParams.startDate){
+					var timeRanges = DictService.get('timeRanges');
+
+					$stateParams.startDate = timeRanges[0].startDate;
+					$stateParams.endDate = timeRanges[0].endDate;
+
+				}
+				if($stateParams.startDate){
+					startDate = new Date(parseInt($stateParams.startDate));
+			    endDate = new Date(parseInt($stateParams.endDate));
+				}
+
+				loanType = $stateParams.loanType;
+		    $stateParams.page = $stateParams.page || 1;
 		    return fn.call(this,$stateParams.page,startDate,endDate,loanType).then(function(data){
 		    	return data;
 		    });

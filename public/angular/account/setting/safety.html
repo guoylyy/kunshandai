@@ -1,0 +1,61 @@
+<div class="ks-dividing" novalidate>
+ <h4>账户安全</h4>
+</div>
+<form name="modifyPWForm" ng-submit="modifyPWForm.$valid && updatePassword()">
+<div class="ks-panel panel panel-default">
+  <div class="panel-heading">修改密码
+
+  </div>
+  <div class="panel-body">
+    <div class="alert alert-danger" ng-show="err && !succ">
+  		<p>{{err}}</p>
+  	</div>
+    <div class="alert alert-success" ng-show="succ && !err">
+  		<p>{{succ}}</p>
+  	</div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>*原密码</label>
+          <input type="password" class="form-control" placeholder="原密码" name="password" ng-model="user.password"  required >
+          <div ng-show="modifyPWForm.$submitted || modifyPWForm.password.$touched">
+            <div class="text-danger" ng-show="modifyPWForm.password.$error.required">请填写原密码</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>*新密码</label>
+          <input type="password" class="form-control" placeholder="新密码" name="newPassword" ng-model="user.newPassword" ng-minlength="6" required >
+          <div ng-show="modifyPWForm.$submitted || modifyPWForm.newPassword.$touched">
+            <div class="text-danger" ng-show="modifyPWForm.newPassword.$error.required">请填写新密码</div>
+            <div class="text-danger" ng-show="modifyPWForm.newPassword.$error.minlength">密码不得少于六位</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>*再次输入新密码</label>
+          <input type="password" class="form-control" placeholder="再次输入新密码" name="newPasswordConfirm"
+          ui-validate="{same:'$value == user.newPassword'}" ui-validate-watch=" 'user.newPassword'" ng-model="user.newPasswordConfirm" required>
+          <div ng-show="modifyPWForm.$submitted || modifyPWForm.newPasswordConfirm.$touched">
+            <div class="text-danger" ng-show="modifyPWForm.newPasswordConfirm.$error.required">请再次填写新密码</div>
+            <div class="text-danger" ng-show="modifyPWForm.newPasswordConfirm.$error.same">两次输入的新密码不一致</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ks-divider"></div>
+<div class="row">
+  <div class="col-md-offset-10 col-md-2">
+    <button type="submit" class="btn btn-success ks-right">更新密码</button>
+  </div>
+</div>
+</div>
+</form>

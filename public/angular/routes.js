@@ -403,8 +403,12 @@ define(['app','underscore'],function(app,_){
 				})
 				.state('account.setting.safety',{
 					url:"/safety",
-					templateUrl: '/angular/account/setting/safety.html',
-					controller:'AccountSettingCtrl'
+					views:{
+						'@account':{
+							templateUrl: '/angular/account/setting/safety.html',
+							controller:'AccountSettingCtrl'
+						}
+					}
 				})
 				.state('account.setting.avatar',{
 					url:"/avatar",

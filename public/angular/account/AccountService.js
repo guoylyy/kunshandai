@@ -112,6 +112,30 @@ define(['app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
+			updatePassword: function(oldPassword,newPassword){
+				var deferred = $q.defer();
+
+				$http.put(
+					ApiURL+accountUrl+'/profile/resetPassword',
+					JSON.stringify({
+						oldPassword:oldPassword,
+						newPassword:newPassword
+						})
+				).then(function(res){
+					var userInfo 	= $window.localStorage['userInfo'];
+	    		if(userInfo){
+	    			userInfo = JSON.parse(userInfo);
+	          userInfo.password = newPassword;
+	    			userInfo.expires  = new Date(userInfo.expires);
+						$window.localStorage['userInfo'] = JSON.stringify(userInfo);
+	    		}
+					deferred.resolve(res.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
 			getAttachments: function(){
 
 			},

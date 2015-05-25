@@ -18,6 +18,18 @@ define(['app'],function(app){
       })
     }
 
+    $scope.updatePassword = function(){
+      AccountService.updatePassword($scope.user.password,$scope.user.newPassword)
+      .then(function(res){
+        $scope.succ = "更新成功";
+        $scope.err = "";
+      },function(res){
+        $scope.err = "更新失败";
+        $scope.succ  = "";
+
+      })
+    }
+
     $scope.updateAvatar = function(){
       AccountService.updateAvatar($scope.user.avatar.id)
       .then(function(res){

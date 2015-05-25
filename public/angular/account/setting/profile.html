@@ -8,6 +8,19 @@
   </div>
   <div class="panel-body">
     <div class="row">
+      <div class="col-md-2">
+        <div class="form-group">
+            <label>头像</label>
+            <a ui-sref="account.setting.avatar" class="thumbnail"
+            tooltip="修改头像"
+            tooltip-placement="top"
+            tooltip-trigger="mouseenter">
+             <img src="{{user.avatar.url}}" alt="修改头像">
+            </a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-md-3">
         <div class="form-group">
           <label>姓名</label>

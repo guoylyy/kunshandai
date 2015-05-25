@@ -83,6 +83,9 @@ define(['app','underscore'],function(app) {
 							process[processName] = true;
 							return process;
 						},
+						payBackTypes: function(){
+							return DictService.get('payBackTypes');
+						},
 						interestCalTypes:function(){
 							return DictService.get('interestCalTypes');
 						}

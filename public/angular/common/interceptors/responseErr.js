@@ -1,6 +1,6 @@
 define(['../../app'],function(app){
 
-	return app.factory('responseErr', ['$q','$injector', function($q,$injector){
+	return app.factory('responseErr', ['$q','$injector','$window', function($q,$injector,$window){
 		var responseErr = {
 			response: function(response) {
 				if(response.status !== 200){
@@ -29,6 +29,13 @@ define(['../../app'],function(app){
 			},
 			responseError:function(response){
 				if(response.status === 501){
+
+					var sessionExpiresTime = new Date(),loginStatus = {};
+					sessionExpiresTime.setDate(sessionExpiresTime.getDate() - 1);
+					loginStatus.sessionExpires = sessionExpiresTime;
+					loginStatus.logined = false;
+					$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
+
 					// window.location = "/login";
 					return response;
 				}else if(response.status === 404){

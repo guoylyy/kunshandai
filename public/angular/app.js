@@ -83,6 +83,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 
 			if(window.location.pathname == '/login'
 				|| window.location.pathname == '/signup'
+				|| window.location.pathname == '/help'
 				|| window.location.pathname == '/retrieve_password'){
 				// $urlRouter.sync();
 			}else{

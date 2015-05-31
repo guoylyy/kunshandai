@@ -51,6 +51,7 @@
 			<tr>
 				<th>项目编号</th>
 				<th>贷款金额</th>
+				<th>还款方式</th>
 				<th>当前/总期</th>
 				<th>应收日期</th>
 				<th>应收金额</th>
@@ -64,6 +65,7 @@
 			<tr ng-repeat="loan in loans | orderBy:'serialNumber'">
 				<td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
+				<td>{{loan.payWay.text}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney | number:2}}</td>

@@ -6,10 +6,12 @@
 	<div class="col-md-10">
 		<h4>项目编号: {{loanInfo.numberWithName}}</h4>
 	</div>
-	<div class=" col-md-2" ng-show="('createProjectFinal' | isState) || ('loan' | isState)" ng-controller="ActiveLoanCtrl">
+	<div class=" col-md-3" ng-show="('createProjectFinal' | isState) || ('loan' | isState)" ng-controller="ActiveLoanCtrl">
 		<button class="btn btn-warning ks-right" ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
 		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">正在收款</button>
+		<a ui-sref="manage.normalProjects"><button class="btn btn-info ks-right">返回项目列表</button></a>
 	</div>
+
 </div>
 <div class="ks-panel panel panel-primary">
 	<div class="panel-heading">贷款信息</div>

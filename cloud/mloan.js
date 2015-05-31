@@ -266,7 +266,6 @@ function convertParameters(loan, currentDate, currentStep){
 
     //逾期天数
     map['od'] = currDate.diff(endDate, 'days') > 0 ? currDate.diff(endDate, 'days'):0;
-    //console.log(map);
     return map;
 }
 loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, data){
@@ -357,12 +356,16 @@ loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
     if(map.od > 0){
         data.interestCalType = mconfig.interestCalTypes.allInterest.value;
     }
+    mlog.dlog('周期末还本付息计算');
+    mlog.dlog(data);
+    mlog.dlog(map);
     switch(data.interestCalType){
         case mconfig.interestCalTypes.dayInterest.value:
             rc.income['interest'] = map.P * map.i * map.j * map.k - map.P * map.i * (1-map.Nx) * map.k;
+            mlog.dlog(rc.income['interest']);
             break;
         case mconfig.interestCalTypes.monthInterest.value:
-            rc.income['interest'] = map.P * map.i * (map.n - (j - 1)* map.k) ;
+            rc.income['interest'] = map.P * map.i * (map.n - (map.j - 1)* map.k) ;
             break;
         case mconfig.interestCalTypes.circleInterest.value:
             rc.income['interest'] = map.P * map.i * map.k;
@@ -376,14 +379,18 @@ loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
+    
     var rc = fillBasicMap(loanObj);
     var map = convertParameters(loanObj.attributes, data.currDate, data.currentStep);
     rc.income.overdueMoney = map.P * map.ov * map.od;
-    data.interestCalType  = mconfig.interestCalTypes.monthInterest.value;
-    if(map['od']<=0){
+    mlog.dlog('到期还本付息计算');
+    mlog.dlog(data);
+    mlog.dlog(map);
+    if(map.od <= 0){
+        console.log(data.interestCalType);
         switch(data.interestCalType){
             case mconfig.interestCalTypes.dayInterest.value:
-                rc.income['interest'] = map.P * map.i * map.T * map.Tx;
+                rc.income['interest'] = map.P * map.i * map.T * map.Tx; //按天计息
                 break;
             case mconfig.interestCalTypes.monthInterest.value:
                 rc.income['interest'] = map.P * map.i * map.n;

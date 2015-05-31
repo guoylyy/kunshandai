@@ -975,10 +975,10 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
       var q = relation.query();
       q.find().then(function(pbs) {
         var totalInterests = 0;
-        var totalPayMoney = 0;
+        var totalPayMoney = 0; //还需要付的钱
         var payedMoney = 0;
         var currentStep = 1; //当前周期数
-        console.log(pbs.length);
+        //console.log(pbs.length);
         for (var i = 0; i < pbs.length; i++) {
           //过滤掉已经收了的
           if (pbs[i].get('status') == mconfig.loanPayBackStatus.completed.value ||
@@ -992,12 +992,14 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
             currentStep = pbs[i].get('order');
           }
         };
+
         totalPayMoney = totalPayMoney - totalInterests;
         var params = {
           currDate: req.query.payDate,
           currentStep: currentStep,
           interestCalType: req.query.interestCalType
         };
+        //console.log('----' + req.query.interestCalType);
         var rc = mloan.calculateFinishBillParms(rLoan, params);
 
         rc.income.amount = totalPayMoney; //还款中未还的金额
@@ -1481,6 +1483,7 @@ function concretePayBack(lpb, loan, overdueMoney) {
     ObjectId: loan.get('loaner').id,
   };
   result['loanObjectId'] = loan.id;
+  result['payWay'] = mconfig.getConfigMapByValue('payBackWays', loan.get('payWay'));
   result['loanNumberWithName'] = loan.get('numberWithName');
   result['payObjectId'] = lpb.id;
   result['serialNumber'] = loan.get('serialNumber');
@@ -1496,7 +1499,6 @@ function concretePayBack(lpb, loan, overdueMoney) {
   result['payBackMoney'] = lpb.get('payBackMoney');
   return result;
 };
-
 
 //需要根据最近的还款周期列出项目，这个需要反向生成
 function listLoan(res, query, pageNumber) {

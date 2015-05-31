@@ -37,17 +37,16 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			typeTransform = function(loan){
 
 				//format string to float
-				loan.amount = Number.parseFloat(loan.amount);
-				loan.assureCost = Number.parseFloat(loan.assureCost);
-				loan.serviceCost = Number.parseFloat(loan.serviceCost);
-				loan.otherCost = Number.parseFloat(loan.otherCost);
-				loan.keepCost = Number.parseFloat(loan.keepCost);
+				loan.amount = parseFloat(loan.amount);
+				loan.assureCost = parseFloat(loan.assureCost);
+				loan.serviceCost = parseFloat(loan.serviceCost);
+				loan.otherCost = parseFloat(loan.otherCost);
+				loan.keepCost = parseFloat(loan.keepCost);
 
 				//format string to number
-				loan.spanMonth = Number.parseInt(loan.spanMonth);
-				loan.payCircle = Number.parseInt(loan.payCircle);
-				loan.payTotalCircle = Number.parseInt(loan.payTotalCircle);
-
+				loan.spanMonth = parseInt(loan.spanMonth);
+				loan.payCircle = parseInt(loan.payCircle);
+				loan.payTotalCircle = parseInt(loan.payTotalCircle);
 				//format string to date
 				loan.startDate = new Date(loan.startDate);
 				loan.endDate = new Date(loan.endDate);
@@ -60,7 +59,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 					if(typeof val === 'object'){
 						numberFormat(data[key]);
 					}else if(typeof val === 'number'){
-						data[key] = Number.parseFloat(val.toFixed(2));
+						data[key] = parseFloat(val.toFixed(2));
 					}
 				});
 				return data;
@@ -75,8 +74,8 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				return data;
 			},
 			dataTransform = function(loan){
-				loan.overdueCostPercent = Number.parseFloat(loan.overdueCostPercent) / 1000;
-				loan.interests = Number.parseFloat(loan.interests) / 100;
+				loan.overdueCostPercent = parseFloat(loan.overdueCostPercent) / 1000;
+				loan.interests = parseFloat(loan.interests) / 100;
 				return loan;
 			},
 			getLoanList = function(page,filter,startDate,endDate,loanType){
@@ -418,7 +417,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			},
 			payMoney:function(payBackId,payDate,payMoney,payData){
 				var payDate = new Date(payDate);
-				var payMoney = Number.parseFloat(payMoney);
+				var payMoney = parseFloat(payMoney);
 
 				return $http.post(
 					ApiURL+loanUrl+"/payBack/"+payBackId,

@@ -1,19 +1,19 @@
 <div class="container-fluid" ng-controller="LoanNavCtrl">
-	<div ng-show="('createProject' | isState) || ('modifyProject' | isState)">
+	<div ng-show="('project.create' | isState) || ('project.modify' | isState)">
 		<div class="col-md-6 "></div>
 		<div class="col-md-6" >
 			<button type="submit" class="btn btn-primary ks-right" ng-click="nav(loanForm.$valid,'next')">下一步 </button>
 		</div>
 	</div>
 
-	<div ng-show="('createProjectMore' | isState) || ('modifyProjectMore' | isState)">
+	<div ng-show="('project.createMore' | isState) || ('project.modifyMore' | isState)">
 		<div class="col-md-6 ">
 			<button type="submit" class="btn btn-primary"  ng-click="nav(moreInfoForm.$valid,'prev')" ng-disabled="status.loanCreating">上一步</button>
 		</div>
-		<div class="col-md-6" ng-controller="CreateLoanCtrl" ng-show="('createProjectMore' | isState)">
+		<div class="col-md-6" ng-controller="CreateLoanCtrl" ng-show="('project.createMore' | isState)">
 			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating" ng-click="createLoan(moreInfoForm.$valid)">生成项目</button>
 		</div>
-		<div class="col-md-6" ng-controller="ModifyLoanCtrl" ng-show="('modifyProjectMore' | isState)">
+		<div class="col-md-6" ng-controller="ModifyLoanCtrl" ng-show="('project.modifyMore' | isState)">
 			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating" ng-click="modifyLoan(moreInfoForm.$valid)">结清并生成新的项目</button>
 		</div>
 	</div>

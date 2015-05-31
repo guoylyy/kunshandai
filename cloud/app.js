@@ -78,16 +78,18 @@ app.get('/manage/*', function(req, res) {
 app.get('/account/*', function(req, res) {
   res.render('manage.ejs');
 });
-
+app.get('/project/*', function(req, res) {
+  res.render('manage.ejs');
+});
 app.get('/loan', function(req, res) {
-  res.render('empty_layout.ejs');
+  res.render('manage.ejs');
 });
 app.get('/loan/:id/modify', function(req, res) {
   res.render('loan_form.ejs');
 });
 
-app.get('/createProject', function(req, res) {
-  res.render('loan_form.ejs');
+app.get('/project.create', function(req, res) {
+  res.render('manage.ejs');
 });
 app.get('/help', function(req, res) {
   res.render('help.ejs');

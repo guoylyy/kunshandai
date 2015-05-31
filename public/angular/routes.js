@@ -90,55 +90,7 @@ define(['app','underscore'],function(app,_){
 		    	templateUrl: "angular/account/signup/signup.html"
 
 		    })
-		    .state('loan',{
-		    	url:'/loan?id',
-		    	templateUrl: "angular/manage/common/contract/contract.html",
-		    	resolve:{
-		    		loan:function(LoanService,$stateParams){
-		    			return LoanService.getLoan($stateParams.id).then(function(data){
-		    				return data;
-		    			})
-		    		},
-		    		paybacks:function(LoanService,$stateParams){
-		    			return LoanService.getPaybacks($stateParams.id).then(function(data){
-		    				return data;
-		    			})
-		    		},
-		    		payments:function(LoanService,$stateParams){
-		    			return LoanService.getPayments($stateParams.id).then(function(data){
-		    				return data;
-		    			})
-		    		},
-		    		attachments:function($q,LoanService,ContactService,$stateParams){
-		    			var attachments = {};
-
-		    			var defferrd = $q.defer();
-
-		    			LoanService.getLoan($stateParams.id).then(function(loanData){
-
-		    				 ContactService.getAttachments(loanData.loaner.id).then(function(attachdata){
-		    					attachments.br = attachdata;
-
-		    				}).then(function(){
-		    					if(loanData.assurer && loanData.assurer.id){
-
-			    					ContactService.getAttachments(loanData.assurer.id).then(function(attachdata){
-			    						attachments.gr = attachdata;
-			    						defferrd.resolve(attachments);
-			    					});
-		    					}else{
-		    						defferrd.resolve(attachments);
-		    					}
-		    				})
-		    			})
-
-		    			return defferrd.promise;
-		    		}
-		    	},
-		    	controller:'ContractController'
-		    })
-
-		    .state('retrieve_password', {
+				.state('retrieve_password', {
 		    	url: "/retrieve_password",
 		    	templateUrl: "angular/account/retrieve_password/retrieve_password.html",
 		    	controller:'RetrievePasswordController'
@@ -307,38 +259,129 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "ContactController"
 		    })
-  			.state('createProject',{
-		    	url:"/createProject?ref",
-    			templateUrl: "/angular/manage/loan/create_loanDetail.html",
-    			resolve:_.extend(resolveSelectItems(),resolveLoan()),
-    			controller: "LoanFormCtrl"
+				.state('loan',{
+					url:'/loan',
+					templateUrl: "/angular/manage/common/partial/layout_simple.html",
+					abstract:true
+
+				})
+				.state('loan.detail',{
+					url:'?id',
+					views:{
+						'nav':{
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:{
+								user: function(AccountService){
+									return AccountService.isLogin().then(function(data){
+										return data;
+									});
+								}
+							}
+						},
+						'':{
+							templateUrl:"/angular/manage/common/contract/contract.html",
+							resolve:{
+								loan:function(LoanService,$stateParams){
+									return LoanService.getLoan($stateParams.id).then(function(data){
+										return data;
+									})
+								},
+								paybacks:function(LoanService,$stateParams){
+									return LoanService.getPaybacks($stateParams.id).then(function(data){
+										return data;
+									})
+								},
+								payments:function(LoanService,$stateParams){
+									return LoanService.getPayments($stateParams.id).then(function(data){
+										return data;
+									})
+								},
+								attachments:function($q,LoanService,ContactService,$stateParams){
+									var attachments = {};
+
+									var defferrd = $q.defer();
+
+									LoanService.getLoan($stateParams.id).then(function(loanData){
+
+										ContactService.getAttachments(loanData.loaner.id).then(function(attachdata){
+											attachments.br = attachdata;
+
+										}).then(function(){
+											if(loanData.assurer && loanData.assurer.id){
+
+												ContactService.getAttachments(loanData.assurer.id).then(function(attachdata){
+													attachments.gr = attachdata;
+													defferrd.resolve(attachments);
+												});
+											}else{
+												defferrd.resolve(attachments);
+											}
+										})
+									})
+
+									return defferrd.promise;
+								}
+							},
+							controller:'ContractController'
+						}
+					}
+				})
+				.state('project',{
+					url:'/project',
+					views:{
+						'nav@project':{
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:{
+								user: function(AccountService){
+									return AccountService.isLogin().then(function(data){
+										return data;
+									});
+								}
+							}
+						},
+						'':{
+							templateUrl:'/angular/manage/common/partial/layout_simple.html'
+						},
+						'wizard@project':{
+							templateUrl:'/angular/manage/common/partial/wizard.html'
+						}
+					}
+
+				})
+  			.state('project.create',{
+		    	url:"/create?ref",
+					templateUrl: "/angular/manage/loan/create_loanDetail.html",
+		    	resolve:_.extend(resolveSelectItems(),resolveLoan()),
+		    	controller: "LoanFormCtrl"
 		    })
-		    .state('createProjectMore',{
-		    	url:"/createProject?ref#more",
-				templateUrl: "/angular/manage/loan/create_loanInfo.html",
+		    .state('project.createMore',{
+		    	url:"/create?ref#more",
+					templateUrl: "/angular/manage/loan/create_loanInfo.html",
 		    	controller:"LoanContactFormCtrl"
 		    })
-		 	 .state('createProjectFinal',{
-		    	url:"/createProject?ref#projectDetail",
+		 	 .state('project.createFinal',{
+		    	url:"/create?ref#projectDetail",
 		    	templateUrl: "/angular/manage/common/contract/contract.html",
 		    	controller: "LoanDetailCtrl"
 		    })
 		 	 // 调整项目
-		 	.state('modifyProject',{
-		    	url:"/loan/:id/modify",
+		 	.state('project.modify',{
+		    	url:"/:id/modify",
 		    	templateUrl: "/angular/manage/loan/create_loanDetail.html",
 		    	resolve:_.extend(resolveSelectItems(),resolveLoan()),
 		    	controller: "LoanFormCtrl"
 
 		    })
-		    .state('modifyProjectMore',{
-		    	url:"#more",
+		    .state('project.modifyMore',{
+		    	url:"/:id/modify#more",
 		    	templateUrl: "/angular/manage/loan/create_loanInfo.html",
 		    	controller: "LoanContactFormCtrl"
 
 		    })
-		    .state('modifyProjectFinal',{
-		    	url:"#final",
+		    .state('project.modifyFinal',{
+		    	url:"/:id/modify#final",
 		    	templateUrl: "/angular/manage/common/contract/contract.html",
 		    	resolve:resolveSelectItems(),
 		    	controller: "ModifyLoanFinalCtrl"

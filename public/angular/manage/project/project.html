@@ -125,8 +125,8 @@
 						<ul class="dropdown-menu">
 							<li><a role="menuitem" ng-click="collectModal(loan.id,'list')" ng-show="loan.status.value === 1">收款</a></li>
 							<li><a role="menuitem" ng-click="collectModal(loan.id,'complete')" ng-show="loan.status.value === 1">结清</a></li>
-							<li><a role="menuitem" href="/loan/{{loan.id}}/modify" target="_blank" ng-show="loan.status.value === 1" >调整</a></li>
-							<li><a role="menuitem" href="/createProject?ref={{loan.id}}" target="_blank">新签</a></li>
+							<li><a role="menuitem" href="/project/{{loan.id}}/modify" target="_blank" ng-show="loan.status.value === 1" >调整</a></li>
+							<li><a role="menuitem" href="/project/create?ref={{loan.id}}" target="_blank">新签</a></li>
 						</ul>
 					</div>
 				</td>

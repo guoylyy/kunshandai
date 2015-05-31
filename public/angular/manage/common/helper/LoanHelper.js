@@ -1,7 +1,7 @@
 define(['app'],function(app){
 	return app.service('LoanHelper', ['$state','$stateParams','$q','LoanService','ContactService','PawnService','DictService','SweetAlert','$modal',
 		function($state,$stateParams,$q,LoanService,ContactService,PawnService,DictService,SweetAlert,$modal){
-		
+
 		var $scope;
 
 		var completeLoan = function(loanId){
@@ -29,6 +29,9 @@ define(['app'],function(app){
 						process['complete'] = true;
 						return process;
 					},
+					payBackTypes: function(){
+						return DictService.get('payBackTypes');
+					},
 					interestCalTypes:function(){
 						return DictService.get('interestCalTypes');
 					}
@@ -47,26 +50,26 @@ define(['app'],function(app){
 		},
 		//生成放款项目
 		createLoan = function(finishBill){
-			
+
 			$scope.status.loanCreating = true;
-			
+
 			var contract 		= {};
-			
+
 			if($scope.loanInfo.objectId && finishBill){
 				var preLoanData		= {};
 				preLoanData.loanId = $scope.loanInfo.objectId;
 				preLoanData.finishBill = finishBill;
 				preLoanData.finishPayedMoney = finishBill.sum;
-				
+
 				contract.preLoanData = preLoanData;
 				contract.isModifiedLoan = true;
 			}
-			
+
 			LoanService.create($scope.loanInfo)
 			.then(function(data){
 
 				contract.loanId 	= data.id;
-			
+
 			//新建借款人客户或更新客户
 			}).then(function(){
 				var loanDeferred = $q.defer();
@@ -90,11 +93,11 @@ define(['app'],function(app){
 				return loanDeferred.promise;
 
 			}).then(function(){
-				
+
 				if($scope.br.hasGr){
-					
+
 					var grDeferred = $q.defer();
-					
+
 					if($scope.gr.objectId){
 						ContactService.update($scope.gr).then(function(data){
 							$scope.gr 			= _.extend($scope.gr,_.omit(data,'attachments'));
@@ -114,17 +117,17 @@ define(['app'],function(app){
 					}
 					return grDeferred.promise;
 				}else{
-					
+
 					contract.assurerId = null;
 					return;
 				}
 			}).then(function(){
 
-				if($scope.loanInfo.loanType === 'fcdy' 
-					|| $scope.loanInfo.loanType === 'mfdy' 
-					|| $scope.loanInfo.loanType === 'qcdy' 
+				if($scope.loanInfo.loanType === 'fcdy'
+					|| $scope.loanInfo.loanType === 'mfdy'
+					|| $scope.loanInfo.loanType === 'qcdy'
 					|| $scope.loanInfo.loanType === 'mcdy'){
-					
+
 					var pawnDeferred = $q.defer();
 					PawnService.create($scope.pawn).then(function(pawnData){
 						contract.loanPawnId	= pawnData.objectId;
@@ -147,7 +150,7 @@ define(['app'],function(app){
 				});
 				return createLoanDeferred.promise;
 			}).then(function(){
-				$state.go('createProjectFinal',{ref:$stateParams.ref});
+				$state.go('project.createFinal',{ref:$stateParams.ref});
 			}).catch(function(){
 				$scope.status.loanCreating = false;
 				SweetAlert.error("新建放款失败", "服务器开了点小差", "error");
@@ -174,14 +177,14 @@ define(['app'],function(app){
 
 			activeModal.result.then(function(actived){
 				$scope.loanInfo.actived = actived;
-				
+
 				if(actived){
 					LoanService.getPaybacks($scope.loanInfo.objectId).then(function(paybacks){
 						$scope.loanInfo.paybacks = paybacks;
 						SweetAlert.success("放款完成");
 					},function(){
 						SweetAlert.success("获取还款信息失败");
-					})	
+					})
 				}
 
 			},function(){

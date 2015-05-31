@@ -76,8 +76,8 @@
 						<ul class="dropdown-menu"  role="menu">
 							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle"> 收款</a></li>
 							<li><a role="menuitem"  ng-click="complete(loan.loanObjectId)">结清</a></li>
-							<li ><a role="menuitem" href="/loan/{{loan.loanObjectId}}/modify" target="_blank">调整</a></li>
-							<li ><a role="menuitem" href="/createProject?ref={{loan.loanObjectId}}" target="_blank">新签</a></li>
+							<li ><a role="menuitem" href="/project/{{loan.loanObjectId}}/modify" target="_blank">调整</a></li>
+							<li ><a role="menuitem" href="/project/create?ref={{loan.loanObjectId}}" target="_blank">新签</a></li>
 						</ul>
 					</div>
 				</td>

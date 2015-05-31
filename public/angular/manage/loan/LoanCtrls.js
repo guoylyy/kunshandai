@@ -440,20 +440,20 @@ define(['app',"underscore"],function(app,_) {
 
 			$scope.nav = function(valid,direction){
 				 if(direction === 'prev'){
-						if($state.current.name === 'createProjectMore'){
-							$state.go('createProject',{ref:$stateParams.ref});
-						}else if($state.current.name === 'modifyProjectMore'){
-							$state.go('modifyProject',{id:$stateParams.id});
+						if($state.current.name === 'project.createMore'){
+							$state.go('project.create',{ref:$stateParams.ref});
+						}else if($state.current.name === 'project.modifyMore'){
+							$state.go('project.modify',{id:$stateParams.id});
 						}
 					}
 					else if(direction === 'next'){
 						if(!valid){
 							return;
 						}
-						if($state.current.name === 'createProject'){
-							$state.go('createProjectMore',{ref:$stateParams.ref});
-						}else if($state.current.name === 'modifyProject'){
-							$state.go('modifyProjectMore',{id:$stateParams.id});
+						if($state.current.name === 'project.create'){
+							$state.go('project.createMore',{ref:$stateParams.ref});
+						}else if($state.current.name === 'project.modify'){
+							$state.go('project.modifyMore',{id:$stateParams.id});
 						}
 					}
 

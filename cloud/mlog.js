@@ -3,7 +3,7 @@
 var util=require('util');
 
 var open=!__production;
-//var open=true;
+var debug=false;
 
 function startWith(s,prefix,f){
   if(s.indexOf(prefix)==0){
@@ -22,13 +22,19 @@ function logError(error){
 }
 
 function log(s){
-  s=s+'';
+  //s=s+'';
   if(open){
-    filterFn(s,function(){
+    //filterFn(s,function(){
       console.log(s);
-    });
+    //});
   }
 }
 
+function dlog(s){
+  if(debug){
+    console.log(s);
+  }
+}
+exports.dlog=dlog;
 exports.log=log;
 exports.logError=logError;

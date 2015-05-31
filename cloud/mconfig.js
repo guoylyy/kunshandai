@@ -3,8 +3,6 @@
  */
 exports.pageSize = 10
 
-
-
 var payBackTypes = {
 	'normal':{
 		value: 'normal',

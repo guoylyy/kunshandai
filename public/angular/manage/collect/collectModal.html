@@ -99,13 +99,14 @@
             <div class="input-group">
               <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate"
               is-open="calendar.opened" datepicker-options="dateOptions"  close-text="关闭" name="payDate" required
-              ui-validate="'$value > loan.startDate'" min-date="loan.startDate"/>
+              ui-validate="'$value >= loan.startDate'" min-date="loan.startDate"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </div>
+            <div class="text-danger" ng-show="payForm.payDate.$error.validator">收款日期不得早于项目开始日期</div>
+
             <div ng-show="payForm.$submitted || payForm.payDate.$touched">
-              <div class="text-danger" ng-show="payForm.payDate.$error.validator">收款日期不得早于项目开始日期</div>
               <div class="text-danger" ng-show="payForm.payDate.$error.required">请填写还款日期</div>
               <div class="text-danger" ng-show="payForm.payDate.$error.date">请填写正确的日期格式</div>
             </div>
@@ -269,13 +270,13 @@
             <div class="input-group">
               <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="completeCount.date"
                is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="completeDate"
-               ui-validate="'$value > loan.startDate'" min-date="loan.startDate"/>
+               ui-validate="'$value >= loan.startDate'" min-date="loan.startDate"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </div>
+            <div class="text-danger" ng-show="completeForm.completeDate.$error.validator">结清日期不得在项目开始日期前</div>
             <div ng-show="completeForm.$submitted || completeForm.completeDate.$touched">
-              <div class="text-danger" ng-show="completeForm.completeDate.$error.validator">结清日期不得在项目开始日期前</div>
               <div class="text-danger" ng-show="completeForm.completeDate.$error.required">请填写还款日期</div>
               <div class="text-danger" ng-show="completeForm.completeDate.$error.date">请填写正确的日期格式</div>
             </div>

@@ -975,29 +975,42 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
     } else {
       var relation = rLoan.relation('loanPayBacks');
       var q = relation.query();
+      q.ascending('order');
       q.find().then(function(pbs) {
         var totalInterests = 0;
         var totalPayMoney = 0; //还需要付的钱
         var payedMoney = 0;
         var currentStep = 1; //当前周期数
-        var currentStepDate;
+        var currentStepDate; //周期开始日期
+        var previousStep = pbs[0];
         //console.log(pbs.length);
         for (var i = 0; i < pbs.length; i++) {
           //过滤掉已经收了的
           if (pbs[i].get('status') == mconfig.loanPayBackStatus.completed.value ||
             pbs[i].get('status') == mconfig.loanPayBackStatus.closed.value) {
+            previousStep = pbs[i];
             continue;
           }
           totalInterests += pbs[i].get('interestsMoney');
           totalPayMoney += pbs[i].get('payMoney');
           payedMoney += pbs[i].get('payBackMoney'); //统计已还的金额
-          if (pbs[i].get('order') > currentStep && pbs[i].get('status') == mconfig.loanPayBackStatus.paying.value) {
+          if (pbs[i].get('order') >= currentStep && pbs[i].get('status') == mconfig.loanPayBackStatus.paying.value) {
             currentStep = pbs[i].get('order');
-            currentStepDate = pbs[i].get('payDate');
+            if(pbs[i].get('order') == 1){
+              currentStepDate = rLoan.get('startDate');
+            }else{
+              currentStepDate = previousStep.get('payDate');
+            }
+            //console.log(pbs[i].get('order'));
+            console.log(currentStepDate);
           }
+          previousStep = pbs[i];
         };
 
         totalPayMoney = totalPayMoney - totalInterests;
+        console.log(currentStepDate);
+        //console.log('paydate');
+        //console.log(new Date(req.query.payDate));
         var params = {
           currDate: req.query.payDate,
           currentStep: currentStep,

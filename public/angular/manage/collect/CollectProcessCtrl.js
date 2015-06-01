@@ -33,7 +33,7 @@ define(['app','underscore'],function(app,_) {
 		$scope.$watchCollection("select.payBackIds",function(newIds,oldIds){
 			$scope.payBackIds = _.compact($scope.select.payBackIds);
 		})
-		$scope.$watch('process',function(){
+		$scope.$watchCollection('process',function(){
 			if(	$scope.process.complete){
 				$scope.completeCount.date = new Date(new Date().toLocaleDateString());
 				$scope.completeCount.interestType = 'allInterest';

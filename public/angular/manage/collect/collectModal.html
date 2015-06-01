@@ -9,9 +9,6 @@
     </div>
     <div class="modal-body">
       <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
-      <p class="bg-warning" ng-show="select.payBackIds[paybacks.length - 1]">
-        最后一期不支持合并还款
-      </p>
       <div class="ks-panel">
         <table class="table table-striped">
           <thead>
@@ -47,6 +44,9 @@
         <div ng-show="paySelectForm.$submitted || paySelectForm.payback.$touched">
          <div class="text-danger" ng-show="paySelectForm.payBackIds.$error.required">请选择一项</div>
        </div>
+     </div>
+     <div class="alert alert-warning" ng-show="select.payBackIds[paybacks.length - 1]">
+       <p>最后一期不支持合并还款, 包含最后一期只能进行结清</p>
      </div>
    </div>
    <div class="modal-footer">

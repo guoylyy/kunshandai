@@ -136,18 +136,47 @@ define(['app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
-			getAttachments: function(){
+			getAttachments: function(accountId){
+				var deferred = $q.defer();
 
+				$http.put(
+					ApiURL+accountUrl+'/'+accountId+'/attachments'
+				).then(function(res){
+					deferred(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
 			},
-			addAttachment: function(attachmentId){
+			addAttachment: function(accountId,attachmentId){
+				var deferred = $q.defer();
 
+				$http.put(
+					ApiURL+accountUrl+'/'+accountId+'/attachments/'+attachmentId
+				).then(function(res){
+					deferred(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
 			},
-			removeAttachment: function(attachmentId){
+			removeAttachment: function(accountId,attachmentId){
+				var deferred = $q.defer();
 
+				$http.delete(
+					ApiURL+accountUrl+'/'+accountId+'/attachments/'+attachmentId
+				).then(function(res){
+					deferred(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
 			}
 
 		}
-
 
 	}]);
 });

@@ -429,8 +429,12 @@ define(['app','underscore'],function(app,_){
 				})
 				.state('account.setting.certification',{
 					url:"/certification",
-					templateUrl: '/angular/account/setting/certification.html',
-					controller:'AccountSettingCtrl'
+					views:{
+						'@account':{
+							templateUrl: '/angular/account/setting/certification.html',
+							controller:'AccountSettingCtrl'
+						}
+					}
 				})
 				.state('account.setting.safety',{
 					url:"/safety",

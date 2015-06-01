@@ -119,8 +119,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			//先息后本，只生成一期还款,首次还款日期是最终还款日期
 			loanPayBackFactory.payBackInit.xxhb = function(loan){
 			    var outMoney = loan.amount;
+					var interestsMoney = loan.amount * loan.interests * loan.spanMonth;
 			    var d = moment(loan.firstPayDate).format();//todo:修改成首次还款日期日期
-			    return [generateLoanPayBack(outMoney, 0, d,  1)];
+			    return [generateLoanPayBack(outMoney, interestsMoney, d,  1)];
 			};
 			//等额本息需要每月还利息 + 本金 + 逾期违约金
 			//生成之时预约违约金为 0

@@ -70,6 +70,21 @@ define(['app','underscore'],function(app,_){
 	    			 return DictService.get('payBackWays');
 	    		}
 		    }
+		},
+
+		resolveNavObjects = function(){
+			return {
+				user: function(AccountService){
+					return AccountService.isLogin().then(function(data){
+						return data;
+					});
+				},
+				profile: function(AccountService){
+					return AccountService.getProfile().then(function(profile){
+						return profile;
+					})
+				}
+			}
 		};
 
 		$stateProvider
@@ -106,18 +121,7 @@ define(['app','underscore'],function(app,_){
 						'nav@manage': {
 							templateUrl: "/angular/manage/nav/nav.html",
 							controller: "NavController",
-							resolve:{
-								user: function(AccountService){
-									return AccountService.isLogin().then(function(data){
-										return data;
-									});
-								},
-								profile: function(AccountService){
-									return AccountService.getProfile().then(function(profile){
-										return profile;
-									})
-								}
-							}
+							resolve:resolveNavObjects()
 						},
 						'menu@manage': {
 							templateUrl:"/angular/manage/common/partial/menu.html"
@@ -276,13 +280,7 @@ define(['app','underscore'],function(app,_){
 						'nav':{
 							templateUrl: "/angular/manage/nav/nav.html",
 							controller: "NavController",
-							resolve:{
-								user: function(AccountService){
-									return AccountService.isLogin().then(function(data){
-										return data;
-									});
-								}
-							}
+							resolve:resolveNavObjects()
 						},
 						'':{
 							templateUrl:"/angular/manage/common/contract/contract.html",
@@ -338,13 +336,7 @@ define(['app','underscore'],function(app,_){
 						'nav@project':{
 							templateUrl: "/angular/manage/nav/nav.html",
 							controller: "NavController",
-							resolve:{
-								user: function(AccountService){
-									return AccountService.isLogin().then(function(data){
-										return data;
-									});
-								}
-							}
+							resolve:resolveNavObjects()
 						},
 						'':{
 							templateUrl:'/angular/manage/common/partial/layout_simple.html'
@@ -412,13 +404,7 @@ define(['app','underscore'],function(app,_){
 						'nav@account': {
 							templateUrl: "/angular/manage/nav/nav.html",
 							controller: "NavController",
-							resolve:{
-								user: function(AccountService){
-									return AccountService.isLogin().then(function(data){
-										return data;
-									});
-								}
-							}
+							resolve:resolveNavObjects()
 						},
 					}
 

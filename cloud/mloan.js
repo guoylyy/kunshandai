@@ -311,7 +311,7 @@ loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, data){
                 break;
         };
     }
-    //console.log(rc);
+    checkBill(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.debx = function(loanObj, data){
@@ -349,7 +349,6 @@ loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
     if(map.od > 0){
         data.interestCalType = mconfig.interestCalTypes.allInterest.value;
     }
-    
     switch(data.interestCalType){
         case mconfig.interestCalTypes.dayInterest.value:
             rc.outcome['interest'] = map.P * map.i * (1 - map.Nx) * map.k;
@@ -367,6 +366,7 @@ loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
         default:
             break;
     };
+    checkBill(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
@@ -427,7 +427,7 @@ loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
     }else{
         rc.income['interest'] = map.P * map.T * map.i;
     }
-    //console.log(rc);
+    checkBill(rc);
     return rc;
 };
 

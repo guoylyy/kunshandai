@@ -44,7 +44,7 @@ app.use(avosExpressHttpsRedirect());
 app.use(express.cookieParser(config.cookieParserSalt)); //还不明白是干什么的
 app.use(avosExpressCookieSession({ //设置 cookie
   cookie: {
-    maxAge: 3600000
+    maxAge: 3600000 * 24
   },
   fetchUser: true
 }));

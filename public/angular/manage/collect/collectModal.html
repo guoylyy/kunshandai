@@ -99,7 +99,7 @@
             <div class="input-group">
               <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate"
               is-open="calendar.opened" datepicker-options="dateOptions"  close-text="关闭" name="payDate" required
-              ui-validate="'$value > loan.startDate'" />
+              ui-validate="'$value > loan.startDate'" min-date="loan.startDate"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
@@ -269,7 +269,7 @@
             <div class="input-group">
               <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="completeCount.date"
                is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="completeDate"
-               ui-validate="'$value > loan.startDate'"/>
+               ui-validate="'$value > loan.startDate'" min-date="loan.startDate"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>

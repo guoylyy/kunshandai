@@ -29,7 +29,7 @@ define(['app','underscore'],function(app,_){
 					}
 					//设置登录状态
 					var sessionExpiresTime = new Date();
-						sessionExpiresTime.setMinutes(sessionExpiresTime.getMinutes() + 45);
+						sessionExpiresTime.setHours(sessionExpiresTime.getHours() + 23);
 					var loginStatus = {logined:true,sessionExpires:sessionExpiresTime};
 					$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
 

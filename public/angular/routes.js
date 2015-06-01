@@ -111,6 +111,11 @@ define(['app','underscore'],function(app,_){
 									return AccountService.isLogin().then(function(data){
 										return data;
 									});
+								},
+								profile: function(AccountService){
+									return AccountService.getProfile().then(function(profile){
+										return profile;
+									})
 								}
 							}
 						},

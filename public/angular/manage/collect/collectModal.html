@@ -9,6 +9,9 @@
     </div>
     <div class="modal-body">
       <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+      <p class="bg-warning" ng-show="select.payBackIds[paybacks.length - 1]">
+        最后一期不支持合并还款
+      </p>
       <div class="ks-panel">
         <table class="table table-striped">
           <thead>
@@ -455,7 +458,7 @@
 
           </div>
         </div>
-        <fieldset class="panel panel-success"  ng-show="completeData.favour != 0 && billGenerated" >
+        <fieldset class="panel panel-success"  ng-show="completeData.favour > 0 && billGenerated" >
            <div class="panel-heading">结清类型</div>
              <div class="panel-body">
                 <div class="row">

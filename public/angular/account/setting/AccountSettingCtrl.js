@@ -1,10 +1,11 @@
 define(['app'],function(app){
-  return app.controller('AccountSettingCtrl',['$scope','profile','AccountService','SweetAlert','UploadService',
-    function($scope,profile,AccountService,SweetAlert,UploadService){
+  return app.controller('AccountSettingCtrl',['$scope','profile','AccountService','SweetAlert','UploadService','$state',
+    function($scope,profile,AccountService,SweetAlert,UploadService,$state){
 
     $scope.user = {};
-    $scope.user.avatar  = profile.icon;
+    $scope.user.avatar  = profile.icon || {url:'/images/avatar.jpeg'};
     $scope.user.profile = profile.infoObject;
+
 
     $scope.upload = {};
     $scope.upload.showWarning = ($scope.upload.type === 'danger' || $scope.upload.type === 'warning');
@@ -34,6 +35,7 @@ define(['app'],function(app){
       AccountService.updateAvatar($scope.user.avatar.id)
       .then(function(res){
         SweetAlert.success("更新成功");
+        $state.reload();
       },function(res){
         SweetAlert.error("更新失败");
       })

@@ -1,8 +1,10 @@
 define(['app'],function(app){
-  return app.controller('NavController',['$scope','AccountService','user',
-         function($scope,AccountService,user){
+  return app.controller('NavController',['$scope','AccountService','user','profile',
+         function($scope,AccountService,user,profile){
 
           $scope.user = user;
+
+          $scope.user.profile = profile.infoObject;
 
           $scope.logout = function(){
             $scope.err = null;

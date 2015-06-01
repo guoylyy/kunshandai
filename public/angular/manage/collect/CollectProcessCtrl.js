@@ -59,7 +59,7 @@ define(['app','underscore'],function(app,_) {
 
 				$scope.completeData.favour = parseFloat(($scope.completedBill.sum - $scope.completeData.sum).toFixed(2));
 
-				if($scope.completeData.favour == 0){
+				if($scope.completeData.favour >= 0){
 					$scope.completeData.payType = 'normal';
 				}else{
 					$scope.completeData.payType = '';
@@ -76,7 +76,7 @@ define(['app','underscore'],function(app,_) {
 			  //一期收款若收款金额不匹配可选择还款类型
 				if($scope.payBackIds.length === 1){
 
-					if($scope.total.income === $scope.payBill.sum){
+					if($scope.total.income >= $scope.payBill.sum){
 						$scope.payData.payType = 'normal';
 					}else{
 						$scope.payData.payType = '';

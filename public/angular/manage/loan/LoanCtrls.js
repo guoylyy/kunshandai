@@ -23,8 +23,10 @@ define(['app',"underscore"],function(app,_) {
 
 				if(!$scope.loanInfo.objectId){
 					$scope.loanInfo = _.extend($scope.loanInfo,loan);
-					$scope.loanInfo.overdueCostPercent = $scope.loanInfo.overdueCostPercent * 1000;
-					$scope.loanInfo.interests = $scope.loanInfo.interests * 100;
+					if(loan){
+						$scope.loanInfo.overdueCostPercent = $scope.loanInfo.overdueCostPercent * 1000;
+						$scope.loanInfo.interests = $scope.loanInfo.interests * 100;
+					}
 				}
 
 			}

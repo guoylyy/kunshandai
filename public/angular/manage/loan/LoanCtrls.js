@@ -198,7 +198,7 @@ define(['app',"underscore"],function(app,_) {
 
 			$scope.$watchCollection('pawn.pawnType.value',function(){
 				if($scope.pawn && $scope.pawn.pawnType){
-					console.log($scope.pawn.pawnType.value);
+
 					var required = true;
 					for(var i = 0;i <= $scope.pawn.pawnType.items.length; i++){
 						if($scope.pawn.pawnType.value[i]){
@@ -277,7 +277,7 @@ define(['app',"underscore"],function(app,_) {
 				});
 				modalInstance.result.then(function (fileList) {
 
-			      	if(type === '借款人'){
+			    if(type === '借款人'){
 						$scope.br.attachments 	= _.union($scope.br.attachments,fileList);
 					}else if(type === '担保人'){
 						$scope.gr.attachments 	= _.union($scope.gr.attachments,fileList);

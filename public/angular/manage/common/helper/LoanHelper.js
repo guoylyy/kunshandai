@@ -175,16 +175,20 @@ define(['app'],function(app){
 				}
 			});
 
-			activeModal.result.then(function(outDate){
+			activeModal.result.then(function(actived){
 				$scope.loanInfo.actived = actived;
 
-				if(outDate){
-					$scope.loanInfo.payments[0].outDate = outDate;
-					LoanService.getPaybacks($scope.loanInfo.objectId).then(function(paybacks){
-						$scope.loanInfo.paybacks = paybacks;
-						SweetAlert.success("放款完成");
+				if(actived){
+					LoanService.getPayments($scope.loanInfo.objectId).then(function(data){
+						$scope.loanInfo.payments = data;
+						LoanService.getPaybacks($scope.loanInfo.objectId).then(function(paybacks){
+							$scope.loanInfo.paybacks = paybacks;
+							SweetAlert.success("放款完成");
+						},function(){
+							SweetAlert.success("获取还款信息失败");
+						})
 					},function(){
-						SweetAlert.success("获取还款信息失败");
+						SweetAlert.success("获放款信息失败");
 					})
 				}
 

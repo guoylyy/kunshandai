@@ -88,9 +88,9 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.$watch("payDate",function(){
 			if($scope.payDate){
+				$scope.payData = {};
 				if($scope.payDate < $scope.loan.startDate){
 					$scope.billGenerated = false;
-					$scope.payData = {};
 					return;
 				}
 				if($scope.payBackIds.length > 1){
@@ -129,9 +129,9 @@ define(['app','underscore'],function(app,_) {
 		var countCompleteWatch = ['completeCount.date','completeCount.interestType'];
 		$scope.$watchGroup(countCompleteWatch,function(){
 			if($scope.completeCount.date && $scope.completeCount.interestType){
+				$scope.completeData = {income:{},outcome:{}};
 				if($scope.completeCount.date < $scope.loan.startDate){
 					$scope.billGenerated = false;
-					$scope.completeData = {income:{},outcome:{}};
 					return;
 				}
 				$scope.countPromise = LoanService.countCompleteMoney($scope.loan.id,$scope.completeCount.date,$scope.completeCount.interestType);

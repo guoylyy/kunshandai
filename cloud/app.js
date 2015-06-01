@@ -1612,7 +1612,8 @@ function transformLoan(l) {
     currPayStep: l.get('currPayStep'),
     finishDate: l.get('finishDate'),
     payTotalCircle: l.get('payTotalCircle'),
-    payedMoney: l.get('payedMoney')
+    payedMoney: l.get('payedMoney'),
+    overdueBreachPercent: l.get('overdueBreachPercent')
   };
   return result;
 };

@@ -140,6 +140,33 @@ define(['app'],function(app){
 					value: 'approved',
 					text: '已认证'
 				}
+			},
+
+			manageRange : {
+				fcdy: {
+					value: 'fcdy',
+					text: '房产抵押'
+				},
+				qcdy: {
+					value: 'qcdy',
+					text: '汽车抵押'
+				},
+				mfdk: {
+					value: 'mfdk',
+					text: '买房贷款'
+				},
+				mcdk: {
+					value: 'mcdk',
+					text: '房车贷款'
+				},
+				mcdk: {
+					value: 'mcdk',
+					text: '房车贷款'
+				},
+				hpdy: {
+					value: 'hpdy',
+					text: '承兑汇票抵押'
+				}
 			}
 
 		}

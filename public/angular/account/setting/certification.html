@@ -2,39 +2,88 @@
  <h4>实名认证</h4>
 </div>
 <form name="profileForm">
-<div class="ks-panel panel panel-default">
+  <div class="ks-panel panel panel-default">
+    <div class="panel-heading">账号资料
+      <button type="button" class="btn btn-xs btn-warning ks-right" ui-sref="account.setting.profile" style="margin-top:-5px;">
+        修改资料</button>
+    </div>
+    <div class="panel-body">
+      <div class="alert alert-warning" ng-show="!profileCompleted">
+        <p class="text-center">请完善个人资料,<a ui-sref="account.setting.profile">点此修改</a></p>
+      </div>
+      <dl class="dl-horizontal">
+        <dt>姓名:</dt>
+        <dd>{{user.profile.name}}
+          <span class="label label-default" ng-show="!user.certificated">未认证</span>
+          <span class="label label-success" ng-show="user.certificated">已认证</span>
+        </dd>
+        <dt>经营类型:</dt>
+        <dd>{{user.profile.manageType === 'company'?'公司':'个人'}}</dd>
+        <dt>性别:</dt>
+        <dd>{{user.profile.gender === 'male'?'男':'女'}}</dd>
+        <dt>身份证号:</dt>
+        <dd>{{user.profile.certificateNum}}</dd>
+        <dt>个人所在地:</dt>
+        <dd>{{user.profile.address}}</dd>
+        <dt>经营范围:</dt>
+        <dd>
+          <ul class="list-inline">
+            <li ng-show="user.profile.manageRange[0]">汽车抵押</li>
+            <li ng-show="user.profile.manageRange[1]">房产抵押</li>
+            <li ng-show="user.profile.manageRange[2]">买房贷款</li>
+            <li ng-show="user.profile.manageRange[3]">买车贷款</li>
+            <li ng-show="user.profile.manageRange[4]">承兑汇票抵押</li>
+          </ul>
+        </dd>
+      </dl>
+      <div class="ks-divider"></div>
+      <dl class="dl-horizontal" ng-show="user.profile.manageType === 'company'">
+        <dt>公司名称:</dt>
+        <dd>{{user.profile.company.name}}</dd>
+        <dt>公司电话:</dt>
+        <dd>{{user.profile.company.telephone}}</dd>
+        <dt>公司地址:</dt>
+        <dd>{{user.profile.company.address}}</dd>
+      </dl>
+    </div>
+  </div>
+<div class="ks-panel panel panel-default" ng-show="!user.certificated">
   <div class="panel-heading">上传身份证
 
   </div>
-  <div class="panel-body">
+  <fieldset class="panel-body" ng-disabled="!profileCompleted">
     <div class="row">
       <div class="col-md-6">
-        <button class="btn btn-info" ngf-select="" ng-model="certification.frontFile" ngf-multiple="false" ng-file-change="">上传身份证正面</button>
+        <button class="btn btn-info" ng-file-select ng-model="certification.frontFiles"
+        ng-file-multiple="false" ng-file-change="attachSelected($files,'front')">上传身份证正面</button>
+        <div class="ks-divider"></div>
         <div class="form-group">
-            <a href="#" class="thumbnail" >
-             <img src="{{certification.frontFile.url }}">
+            <a href="#" class="thumbnail"  ng-show="certification.front.url">
+             <img src="{{certification.front.url}}">
             </a>
         </div>
       </div>
       <div class="col-md-6">
-        <button class="btn btn-info" ngf-select="" ng-model="certification.backFile" ngf-multiple="false" ng-file-change="">上传身份证反面</button>
+        <button class="btn btn-info" ng-file-select ng-model="certification.backFiles"
+        ng-file-multiple="false" ng-file-change="attachSelected($files,'back')">上传身份证反面</button>
+        <div class="ks-divider"></div>
         <div class="form-group">
-            <a href="#" class="thumbnail" >
-             <img src="{{certification.backFile.url }}">
+            <a href="#" class="thumbnail"  ng-show="certification.back.url">
+             <img src="{{certification.back.url }}">
             </a>
         </div>
       </div>
     </div>
-  </div>
+  </fieldset>
 </div>
-<div class="ks-panel panel panel-default">
+<!-- <div class="ks-panel panel panel-default">
   <div class="panel-heading">上传其他材料
 
   </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-md-6">
-        <button class="btn btn-info" ngf-select="" ng-model="certification.frontFile" ngf-multiple="false" ng-file-change="">上传身份证正面</button>
+        <button class="btn btn-info" ngf-select="" ng-model="certification.frontFile" ngf-multiple="false" ng-file-change="">上传其他材料</button>
         <div class="form-group">
             <a href="#" class="thumbnail" >
              <img src="{{certification.frontFile.url }}">
@@ -43,11 +92,11 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <div class="ks-divider"></div>
 <div class="row">
   <div class="col-md-offset-10 col-md-2">
-    <button type="submit" class="btn btn-success ks-right" ng-click="updateAvatar()">保存修改</button>
+    <button type="submit" class="btn btn-success ks-right" ng-click="startCertificate()">申请认证</button>
   </div>
 </div>
 </div>

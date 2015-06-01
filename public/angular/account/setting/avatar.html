@@ -28,7 +28,7 @@
         <i ng-show="upload.showWarning">上传失败</i>
         <i ng-show="user.avatarfiles[0].percent == 100">上传成功</i>
         </progressbar>
-        <div ng-file-drop ng-file-select ng-model="user.avatarfiles" ng-file-change="fileDropped($files,$event)" ng-multiple="false" drop-available="dropSupported" class="ks-drop-box">
+        <div ng-file-drop ng-file-select ng-model="user.avatarfiles" ng-file-change="avatarSelected($files,$event)" ng-multiple="false" drop-available="dropSupported" class="ks-drop-box">
           <div>将文件拖动到此上传 或 点击此处选择文件</div>
         </div>
       </div>

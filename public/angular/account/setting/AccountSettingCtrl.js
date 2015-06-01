@@ -6,9 +6,21 @@ define(['app'],function(app){
     $scope.user.avatar  = profile.icon || {url:'/images/avatar.jpeg'};
     $scope.user.profile = profile.infoObject;
 
+    $scope.certification = {front:{},back:{}};
 
     $scope.upload = {};
     $scope.upload.showWarning = ($scope.upload.type === 'danger' || $scope.upload.type === 'warning');
+
+    $scope.$watchCollection('user.profile',function(){
+
+      $scope.profileCompleted =  (_.compact(_.values($scope.user.profile)).length
+                                  == _.values($scope.user.profile).length)
+      if($scope.user.profile.manageType == 'company'){
+        $scope.profileCompleted = $scope.profileCompleted &&(_.compact(_.values($scope.user.profile.company)).length
+                                    == _.values($scope.user.profile.company).length)
+        $scope.profileCompleted = $scope.profileCompleted && _.compact(_.values($scope.user.profile.manageRange)).length > 0;
+      }
+    })
 
     $scope.updateProfile = function(){
       AccountService.updateProfile($scope.user.profile)
@@ -41,7 +53,19 @@ define(['app'],function(app){
       })
     }
 
-    $scope.fileDropped = function($files,$event){
+    $scope.attachSelected = function($files,type){
+        if($files.length > 0){
+          UploadService.upload($files,'other')
+          .then(function(){
+            $scope.certification[type].url = $files[0].url;
+            $scope.certification[type].id = $files[0].objectId;
+          },function(){
+            SweetAlert.error("上传失败","请稍后再试");
+          })
+        }
+    }
+
+    $scope.avatarSelected = function($files,$event){
       if($files.length > 0){
         $scope.upload.uploading =  true;
         $scope.upload.type      = 'info';
@@ -53,6 +77,14 @@ define(['app'],function(app){
         },function(){
           $scope.upload.type = 'danger';
         });
+      }
+    }
+
+    $scope.startCertificate = function(){
+      if($scope.certification.front.url && $scope.certification.back.url){
+        SweetAlert.success("已提交申请","认证需要1到2个工作日");
+      }else{
+        SweetAlert.error("资料不全","请上传身份证正反面扫描件");
       }
     }
   }]);

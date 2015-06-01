@@ -5,7 +5,7 @@ define(['app'],function(app){
 
 		$scope.loan = loan;
 
-		$scope.loanData = {};
+		$scope.loanData = {outDate:new Date()};
 
 		$scope.status = {loaning:false};
 
@@ -30,7 +30,7 @@ define(['app'],function(app){
 			var outDate = new Date($scope.loanData.outDate);
 			LoanService.assure(loanId, amount, outDate).then(function(res){
 
-				$modalInstance.close(true);
+				$modalInstance.close(outDate);
 
 			},function(res){
 

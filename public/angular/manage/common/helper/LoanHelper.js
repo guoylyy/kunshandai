@@ -175,10 +175,11 @@ define(['app'],function(app){
 				}
 			});
 
-			activeModal.result.then(function(actived){
+			activeModal.result.then(function(outDate){
 				$scope.loanInfo.actived = actived;
 
-				if(actived){
+				if(outDate){
+					$scope.loanInfo.payments[0].outDate = outDate;
 					LoanService.getPaybacks($scope.loanInfo.objectId).then(function(paybacks){
 						$scope.loanInfo.paybacks = paybacks;
 						SweetAlert.success("放款完成");

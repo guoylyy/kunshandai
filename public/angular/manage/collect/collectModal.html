@@ -1,7 +1,6 @@
 <!-- 收款列表 -->
 <form name="paySelectForm" ng-submit="paySelectForm.$valid && startCollect()">
   <div ng-show="process.list">
-
     <div class="modal-header">
       <button type="button" class="close" ng-click="cancel()" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -23,30 +22,35 @@
           </thead>
           <tbody>
             <tr ng-repeat="payback in paybacks" ng-class="{warning:($parent.select.payBackIds[$index]),success:(payback.status == 3)}">
-              <td><input type="checkbox" name="payback" value="{{payback.objectId}}"
-                ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''"
-                ng-disabled="(!(payback.status == 1) && !($parent.select.payBackIds[$index - 1]) )|| (payback.status == 3) || ($parent.select.payBackIds[$index + 1])"></td>
-                <td>{{payback.order}}</td>
-                <td>{{payback.payMoney | number:2}}</td>
-                <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
-                <td ng-show="payback.status === 1" class="text-info">正在还</td>
-                <td ng-show="payback.status === 2" >未还</td>
-                <td ng-show="payback.status === 3"class="text-success">已还</td>
-                <td ng-show="payback.status === 4">已关闭</td>
-              </tr>
-            </tbody>
-          </table>
-          <input type="hidden" ng-model="payBackIds" name="payBackIds" required>
-          <div ng-show="paySelectForm.$submitted || paySelectForm.payback.$touched">
-           <div class="text-danger" ng-show="paySelectForm.payBackIds.$error.required">请选择一项</div>
-         </div>
+              <td ng-show="payback.status !== 3">
+                <input type="checkbox" name="payback" value="{{payback.objectId}}"
+              ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''"
+              ng-disabled="(!(payback.status == 1) && !($parent.select.payBackIds[$index - 1]) )|| (payback.status == 3) || ($parent.select.payBackIds[$index + 1])">
+              </td>
+              <td ng-show="payback.status === 3">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              </td>
+              <td>{{payback.order}}</td>
+              <td>{{payback.payMoney | number:2}}</td>
+              <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+              <td ng-show="payback.status === 1" class="text-info">正在还</td>
+              <td ng-show="payback.status === 2" >未还</td>
+              <td ng-show="payback.status === 3"class="text-success">已还</td>
+              <td ng-show="payback.status === 4">已关闭</td>
+            </tr>
+          </tbody>
+        </table>
+        <input type="hidden" ng-model="payBackIds" name="payBackIds" required>
+        <div ng-show="paySelectForm.$submitted || paySelectForm.payback.$touched">
+         <div class="text-danger" ng-show="paySelectForm.payBackIds.$error.required">请选择一项</div>
        </div>
      </div>
-     <div class="modal-footer">
-       <button type="button" class="btn btn-warning ks-left" ng-click="startComplete()">开始结清</button>
-      <button type="button" class="btn btn-default" ng-click="cancel()">取消收款</button>
-      <button type="submit" class="btn btn-success" ng-show="!select.payBackIds[paybacks.length - 1]" ng-disabled="payBackIds.length == 0">开始收款</button>
-    </div>
+   </div>
+   <div class="modal-footer">
+     <button type="button" class="btn btn-warning ks-left" ng-click="startComplete()">开始结清</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">取消收款</button>
+    <button type="submit" class="btn btn-success" ng-show="!select.payBackIds[paybacks.length - 1]" ng-disabled="payBackIds.length == 0">开始收款</button>
+  </div>
   </div>
 </form>
 
@@ -90,12 +94,15 @@
           <div class="form-group has-warning">
             <label class="control-label">*收款日期</label>
             <div class="input-group">
-              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate" is-open="calendar.opened" datepicker-options="dateOptions"  close-text="关闭" name="payDate" required/>
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate"
+              is-open="calendar.opened" datepicker-options="dateOptions"  close-text="关闭" name="payDate" required
+              ui-validate="'$value > loan.startDate'" />
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </div>
             <div ng-show="payForm.$submitted || payForm.payDate.$touched">
+              <div class="text-danger" ng-show="payForm.payDate.$error.validator">收款日期不得早于项目开始日期</div>
               <div class="text-danger" ng-show="payForm.payDate.$error.required">请填写还款日期</div>
               <div class="text-danger" ng-show="payForm.payDate.$error.date">请填写正确的日期格式</div>
             </div>
@@ -227,7 +234,7 @@
   <div class="modal-body">
     <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
   <div class="ks-divider"></div>
-  <div class="ks-panel" ng-show="!billGenerated">
+  <div class="ks-panel" >
     <table class="table table-striped">
       <thead>
         <tr>
@@ -257,12 +264,15 @@
           <div class="form-group has-warning">
             <label class="control-label">结清日期</label>
             <div class="input-group">
-              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="completeCount.date" is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="completeDate"/>
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="completeCount.date"
+               is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="completeDate"
+               ui-validate="'$value > loan.startDate'"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
               </span>
             </div>
             <div ng-show="completeForm.$submitted || completeForm.completeDate.$touched">
+              <div class="text-danger" ng-show="completeForm.completeDate.$error.validator">结清日期不得在项目开始日期前</div>
               <div class="text-danger" ng-show="completeForm.completeDate.$error.required">请填写还款日期</div>
               <div class="text-danger" ng-show="completeForm.completeDate.$error.date">请填写正确的日期格式</div>
             </div>
@@ -285,7 +295,7 @@
       </div>
 
      <div class="ks-divider"></div>
-      <div class="panel panel-success" ng-show="billGenerated" cg-busy="countPromise">
+      <div class="panel panel-success" ng-show="billGenerated " cg-busy="countPromise">
        <div class="panel-heading">结清账单</div>
          <div class="panel-body">
             <div class="row">

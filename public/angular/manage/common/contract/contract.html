@@ -127,8 +127,8 @@
 	<div class="panel-body">
 
 	<div ng-repeat="payment in loanInfo.payments">
-	<label>放款时间：{{payment.updatedAt | date:'yyyy-MM-dd'}}</label>
-	  <ui-include src="'angular/manage/common/partial/payment.html'"></ui-include>
+	<label>放款时间：{{payment.outDate | date:'yyyy-MM-dd'}}</label>
+	  <ui-include src="'/angular/manage/common/partial/payment.html'"></ui-include>
 	</div>
 </div>
 </div>

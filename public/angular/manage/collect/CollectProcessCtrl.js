@@ -33,7 +33,14 @@ define(['app','underscore'],function(app,_) {
 		$scope.$watchCollection("select.payBackIds",function(newIds,oldIds){
 			$scope.payBackIds = _.compact($scope.select.payBackIds);
 		})
-
+		$scope.$watch('process',function(){
+			if(	$scope.process.complete){
+				$scope.completeCount.date = new Date(new Date().toLocaleDateString());
+				$scope.completeCount.interestType = 'allInterest';
+			}else if( $scope.process.pay ){
+				$scope.payDate = new Date(new Date().toLocaleDateString());
+			}
+		})
 		var completeInputs = ['completeData.income.amount','completeData.income.overdueMoney','completeData.income.interest',
 		'completeData.outcome.assureCost','completeData.outcome.keepCost','completeData.outcome.interest'];
 
@@ -50,7 +57,7 @@ define(['app','underscore'],function(app,_) {
 
 				$scope.completeData.sum = $scope.total.income-$scope.total.outcome;
 
-				$scope.completeData.favour = $scope.completedBill.sum - $scope.completeData.sum;
+				$scope.completeData.favour = parseFloat(($scope.completedBill.sum - $scope.completeData.sum).toFixed(2));
 
 				if($scope.completeData.favour == 0){
 					$scope.completeData.payType = 'normal';
@@ -81,6 +88,11 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.$watch("payDate",function(){
 			if($scope.payDate){
+				if($scope.payDate < $scope.loan.startDate){
+					$scope.billGenerated = false;
+					$scope.payData = {};
+					return;
+				}
 				if($scope.payBackIds.length > 1){
 					$scope.countPromise = LoanService.countMultiPaymoney($scope.loan.id,$scope.payBackIds,$scope.payDate)
 					.then(function(result){
@@ -117,6 +129,11 @@ define(['app','underscore'],function(app,_) {
 		var countCompleteWatch = ['completeCount.date','completeCount.interestType'];
 		$scope.$watchGroup(countCompleteWatch,function(){
 			if($scope.completeCount.date && $scope.completeCount.interestType){
+				if($scope.completeCount.date < $scope.loan.startDate){
+					$scope.billGenerated = false;
+					$scope.completeData = {income:{},outcome:{}};
+					return;
+				}
 				$scope.countPromise = LoanService.countCompleteMoney($scope.loan.id,$scope.completeCount.date,$scope.completeCount.interestType);
 				$scope.countPromise.then(function(res){
 					$scope.completedBill = res;
@@ -130,7 +147,6 @@ define(['app','underscore'],function(app,_) {
 		});
 
 		$scope.startCollect = function(){
-
 			$scope.selectedPaybacks = _.filter(paybacks, function(o){ return _.indexOf($scope.payBackIds, o.objectId) != -1});
 
 			$scope.loanCompleted 	= false;

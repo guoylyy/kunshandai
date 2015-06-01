@@ -228,10 +228,7 @@ function fillBasicMap(loanObj){
     rc.outcome.keepCost = loanObj.get('keepCost');
     return rc;
 }
-/*
-    先息后本
-    1.
- */
+/**/
 function stepNx(startDate, currDate, currentStep, payCircle){
     var start = new moment(startDate.toDate());
     start.add((currentStep-1) * payCircle, 'months');
@@ -523,10 +520,16 @@ function updateLoan(loan, reqBody){
     loan.set('interests', reqBody.interests);
     loan.set('assureCost', reqBody.assureCost);
     loan.set('serviceCost', reqBody.serviceCost);
-    loan.set('overdueCostPercent', reqBody.overdueCostPercent);
+    loan.set('overdueCostPercent', reqBody.overdueCostPercent);//违约金率 千分之
     loan.set('otherCost', reqBody.otherCost);
     loan.set('keepCost', reqBody.keepCost);
     loan.set('payWay', reqBody.payWay);
+
+    if(reqBody.loanType == mconfig.payBackWays.debx.value){
+        loan.set('overdueBreachPercent', reqBody.overdueBreachPercent);
+    }else{
+        loan.set('overdueBreachPercent', parseFloat(0));
+    }
 
     loan.set('isSmsRemind', reqBody.isSmsRemind);
     loan.set('isEmailRemind', reqBody.isEmailRemind);

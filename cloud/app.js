@@ -587,8 +587,8 @@ app.post(config.baseUrl + '/loan/assure_bill', function(req, res) {
                 record.set('loan', floan);
                 record.set('isPayed', true);
                 record.save().then(function(r_record) {
-                  floan.save().then(function(data) {
-                    res.redirect(config.baseUrl + '/loan/' + data.id);
+                  floan.save().then(function(r_data) {
+                    mutil.renderData(res, transformLoanDetails(r_data));
                   }, function(error) {
                     mutil.renderError(res, error);
                   });

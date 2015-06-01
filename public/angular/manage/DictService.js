@@ -19,32 +19,32 @@ define(['../app'],function(app){
 				},
 				{
 					startDate: start.getTime(),
-					endDate: end.setMonth(start.getMonth()+1),
+					endDate: new Date(year,month,day).setMonth(end.getMonth()+1),
 					text:'小于1个月'
 				},
 				{
-					startDate: start.setMonth(start.getMonth()+1),
-					endDate: end.setMonth(start.getMonth()+3),
+					startDate: new Date(year,month,day).setMonth(start.getMonth()+1),
+					endDate: new Date(year,month,day).setMonth(end.getMonth()+3),
 					text:'1~3个月'
 				},
 				{
-					startDate: start.setMonth(start.getMonth()+3),
-					endDate: end.setMonth(start.getMonth()+6),
+					startDate: new Date(year,month,day).setMonth(start.getMonth()+3),
+					endDate: new Date(year,month,day).setMonth(end.getMonth()+6),
 					text:'3~6个月'
 				},
 				{
-					startDate: start.setMonth(start.getMonth()+6),
-					endDate: end.setMonth(start.getMonth()+9),
+					startDate: new Date(year,month,day).setMonth(start.getMonth()+6),
+					endDate: new Date(year,month,day).setMonth(end.getMonth()+9),
 					text:'6~9个月'
 				},
 				{
-					startDate: start.setMonth(start.getMonth()+9),
-					endDate: end.setMonth(start.getMonth()+12),
+					startDate: new Date(year,month,day).setMonth(start.getMonth()+9),
+					endDate: new Date(year,month,day).setMonth(end.getMonth()+12),
 					text:'9~12个月'
 				},
 				{
-					startDate: start.setMonth(start.getMonth()+12),
-					endDate: end.setMonth(start.getMonth()+120),
+					startDate: new Date(year,month,day).setMonth(start.getMonth()+12),
+					endDate: new Date(year,month,day).setMonth(start.getMonth()+120),
 					text:'多于12个月'
 				}
 			]

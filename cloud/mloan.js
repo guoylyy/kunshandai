@@ -242,23 +242,32 @@ function stepNx(startDate, currDate, currentStep, payCircle){
     return Nx;
 }
 
-function convertParameters(loan, currentDate, currentStep){
+function convertParameters(loan, params){
+    var currentDate = params.currDate;
+    var currentStep = params.currentStep;
+    var currentStepDate = params.currentStepDate;
+    
     var map = {};
-    var startDate = new moment(loan.startDate);
-    var currDate = (new moment(currentDate));
-    var endDate = new moment(loan.endDate);
+    var stepStartDate = preStepDate(loan, currentStepDate, currentStep);
+    var startDate = new moment(loan.startDate); //合同开始日期
+    var currStartDate = preStepDate(loan, currentStepDate, currentStep);
+    var currDate = new moment(currentDate);  //当前日期
+    var endDate = new moment(loan.endDate);    //合同结束日期
+    
     map['totalDay'] = endDate.diff(startDate,'days');
     map['unPayedDay'] = endDate.diff(currDate, 'days');
+    map['unPayedTotalDay'] = endDate.diff(stepStartDate, 'days');
     map['payedMonth'] = currDate.diff(startDate, 'months') + 1;
     map['unPayedMonth'] = endDate.diff(currDate, 'months');
 
     map['T'] = loan.spanMonth;
     map['Tx'] = 1 -  map['unPayedDay']/map['totalDay']; //已经经过的比率
+    map['Tsx'] = 1 - map['unPayedDay']/map['unPayedTotalDay']; //需要还款的比例
     map['P'] = loan.amount;
     map['i'] = loan.interests;
     map['j'] = currentStep; //当前期数
     map['N'] = loan.payTotalCircle; //总期数
-    map['k'] = loan.payCircle;
+    map['k'] = loan.payCircle; //每期的月数
     map['n'] = map['payedMonth']; //已经经过的月份
     map['ov'] = loan.overdueCostPercent;
 
@@ -268,9 +277,21 @@ function convertParameters(loan, currentDate, currentStep){
     map['od'] = currDate.diff(endDate, 'days') > 0 ? currDate.diff(endDate, 'days'):0;
     return map;
 }
+
+function preStepDate(loan, currentStepDate, currentStep){
+    if(currentStep == 1){
+        return new moment(loan.startDate);
+    }else{
+        var m = new moment(currentStepDate);
+        m.subtract(loan.payCircle, 'months');
+        m.add(1, 'days');
+        return m;
+    }
+}
+
 loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, data){
     var rc = fillBasicMap(loanObj);
-    var map = convertParameters(loanObj.attributes, data.currDate, data.currentStep);
+    var map = convertParameters(loanObj.attributes, data);
     rc.income.overdueMoney = map.P * map.ov * map.od;
     if(map['od'] <= 0){
         switch(data.interestCalType){
@@ -295,19 +316,19 @@ loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, data){
 };
 loanPayBackFactory.finishBillParmsCal.debx = function(loanObj, data){
     var rc = fillBasicMap(loanObj);
-    var map = convertParameters(loanObj.attributes, data.currDate, data.currentStep);
+    var map = convertParameters(loanObj.attributes, data);
     rc.income.overdueMoney = map.P * map.ov * map.od;
-    //data.interestCalType = mconfig.interestCalTypes.allInterest.value;
+    mlog.dlog(map);
     if(map.od <= 0){
         switch(data.interestCalType){
-            case mconfig.interestCalTypes.dayInterest.value:
-                rc.income['interest'] = map.P * map.i * map.j * map.k - map.P * map.i * (1-map.Nx) * map.k;
+            case mconfig.interestCalTypes.dayInterest.value:                
+                rc.income['interest'] = map.P * map.i * (map.N - map.j + 1) * map.k * map.Tsx;
                 break;
             case mconfig.interestCalTypes.monthInterest.value:
                 rc.income['interest'] = map.P * map.i * (map.n - (map.j - 1)* map.k) ;
                 break;
             case mconfig.interestCalTypes.circleInterest.value:
-                rc.income['interest'] = map.P * map.i * map.k * (parseInt(map.Nx) + 2 - map.j);
+                rc.income['interest'] = map.P * map.i * map.k * (map.N - map.j + 1);
                 break;
             case mconfig.interestCalTypes.allInterest.value:
                 rc.income['interest'] = map.P * map.i * (map.N - (map.j - 1)) * map.k;
@@ -318,17 +339,17 @@ loanPayBackFactory.finishBillParmsCal.debx = function(loanObj, data){
     }else{
         rc.income['interest'] = map.P * map.i * (map.N - (map.j - 1)) * map.k;
     }
-    //console.log(rc);
+    checkBill(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
     var rc = fillBasicMap(loanObj);
-    var map = convertParameters(loanObj.attributes, data.currDate, data.currentStep);
+    var map = convertParameters(loanObj.attributes, data);
     rc.income.overdueMoney = map.P * map.ov * map.od;
-    //data.interestCalType = mconfig.interestCalTypes.allInterest.value;
     if(map.od > 0){
         data.interestCalType = mconfig.interestCalTypes.allInterest.value;
     }
+    
     switch(data.interestCalType){
         case mconfig.interestCalTypes.dayInterest.value:
             rc.outcome['interest'] = map.P * map.i * (1 - map.Nx) * map.k;
@@ -346,23 +367,21 @@ loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
         default:
             break;
     };
-    //console.log(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
     var rc = fillBasicMap(loanObj);
-    var map = convertParameters(loanObj.attributes, data.currDate, data.currentStep);
+    var map = convertParameters(loanObj.attributes, data);
     rc.income.overdueMoney = map.P * map.ov * map.od;
     if(map.od > 0){
         data.interestCalType = mconfig.interestCalTypes.allInterest.value;
     }
-    mlog.dlog('周期末还本付息计算');
+    mlog.dlog('周期末息后本计算');
     mlog.dlog(data);
     mlog.dlog(map);
     switch(data.interestCalType){
         case mconfig.interestCalTypes.dayInterest.value:
-            rc.income['interest'] = map.P * map.i * map.j * map.k - map.P * map.i * (1-map.Nx) * map.k;
-            mlog.dlog(rc.income['interest']);
+            rc.income['interest'] = map.P * map.i * (map.N - map.j + 1) * map.k * map.Tsx;
             break;
         case mconfig.interestCalTypes.monthInterest.value:
             rc.income['interest'] = map.P * map.i * (map.n - (map.j - 1)* map.k) ;
@@ -376,12 +395,13 @@ loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
         default:
             break;
     };
+    checkBill(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
     
     var rc = fillBasicMap(loanObj);
-    var map = convertParameters(loanObj.attributes, data.currDate, data.currentStep);
+    var map = convertParameters(loanObj.attributes, data);
     rc.income.overdueMoney = map.P * map.ov * map.od;
     mlog.dlog('到期还本付息计算');
     mlog.dlog(data);
@@ -410,6 +430,12 @@ loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
     //console.log(rc);
     return rc;
 };
+
+function checkBill(bill){
+    if(bill.income['interest'] < 0){
+        bill.income['interest'] = 0;
+    }
+}
 
 
 loanPayBackFactory.factory = function(loan){

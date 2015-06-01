@@ -980,6 +980,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
         var totalPayMoney = 0; //还需要付的钱
         var payedMoney = 0;
         var currentStep = 1; //当前周期数
+        var currentStepDate;
         //console.log(pbs.length);
         for (var i = 0; i < pbs.length; i++) {
           //过滤掉已经收了的
@@ -992,6 +993,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
           payedMoney += pbs[i].get('payBackMoney'); //统计已还的金额
           if (pbs[i].get('order') > currentStep && pbs[i].get('status') == mconfig.loanPayBackStatus.paying.value) {
             currentStep = pbs[i].get('order');
+            currentStepDate = pbs[i].get('payDate');
           }
         };
 
@@ -999,6 +1001,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
         var params = {
           currDate: req.query.payDate,
           currentStep: currentStep,
+          currentStepDate: currentStepDate,
           interestCalType: req.query.interestCalType
         };
         //console.log('----' + req.query.interestCalType);

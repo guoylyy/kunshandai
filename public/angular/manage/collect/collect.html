@@ -65,7 +65,7 @@
 			<tr ng-repeat="loan in loans | orderBy:'serialNumber'">
 				<td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
-        <td>{{loan.payWay | cDisplay:'payWay'}}</td>
+				<td>{{loan.payWay.text}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
 				<td>{{loan.payMoney | number:2}}</td>

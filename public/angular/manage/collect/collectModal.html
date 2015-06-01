@@ -194,7 +194,8 @@
               <div class="panel-body">
                  <div class="row">
                    <div class="col-md-9">
-                     <label class="radio-inline" ng-repeat="ptype in payBackTypes" ng-show="ptype.value!='normal'">
+                     <label class="radio-inline" ng-repeat="ptype in payBackTypes"
+                        ng-show="(ptype.value!='normal' && loan.payStatus.value!=='overdue') || (loan.payStatus.value==='overdue' && ptype.value=='next')">
                         <input type="radio" ng-model="payData.payType"  ng-value="ptype.value"
                         name="payBackType" ng-required="!payData.payType && payBackIds.length == 1">{{ptype.text}}
                      </label>

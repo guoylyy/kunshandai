@@ -205,7 +205,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>*{{!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')? '首次':''}}还款日期</label>
 								<div class="input-group">
@@ -224,7 +224,22 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4" ng-show="!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')">
+						<div class="col-md-6" ng-show="loanInfo.payWay == 'debx'">
+							<div class="form-group">
+								<label>*提前结清违约金</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="提前结清违约金" float-number-input name="overdueBreachPercent"
+									ng-model="loanInfo.overdueBreachPercent" ng-required="loanInfo.payWay == 'debx'">
+									<span class="input-group-addon">‰ /天</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.overdueBreachPercent.$touched">
+									<div class="text-danger" ng-show="loanForm.overdueBreachPercent.$error.required">请填写提前结清违约金</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6" ng-show="!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')">
 							<div class="form-group">
 								<label>*还款周期（月/次）</label>
 								<div class="input-group">
@@ -238,7 +253,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-4"  ng-show="!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')">
+						<div class="col-md-6"  ng-show="!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')">
 							<div class="form-group">
 								<label>*还款总次数</label>
 								<div class="input-group">
@@ -246,14 +261,10 @@
 									<span class="input-group-addon">期</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">
-<!-- 									<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.validator">还款周期填写有误</div>
- -->									<!-- <div class="text-danger" ng-show="loanForm.payTotalCircle.$error.required">请填写还款总期数</div> -->
 								</div>
 							</div>
 						</div>
-
 					</div>
-
 					</div>
 				</div>
 

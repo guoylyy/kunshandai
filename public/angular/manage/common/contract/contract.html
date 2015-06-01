@@ -49,6 +49,7 @@
 					<th>履约保证金（元）</th>
 					<th>服务费（元）</th>
 					<th>逾期违约金率（‰/天）</th>
+					<th ng-show="loanInfo.payWay.value === 'debx'">提前结清违约金率（‰/天）</th>
 					<th>其他费用（元）</th>
 					<th>暂收金额（元）</th>
 				</tr>
@@ -61,6 +62,7 @@
 					<td>{{loanInfo.assureCost | number:2}}</td>
 					<td>{{loanInfo.serviceCost | number:2}}</td>
 					<td>{{loanInfo.overdueCostPercent*1000 | number:2}}</td>
+					<td ng-show="loanInfo.payWay.value === 'debx'">{{loanInfo.overdueBreachPercent*1000 | number:2}}</td>
 					<td>{{loanInfo.otherCost | number:2}}</td>
 					<td>{{loanInfo.keepCost | number:2}}</td>
 				</tr>

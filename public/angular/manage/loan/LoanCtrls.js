@@ -25,7 +25,9 @@ define(['app',"underscore"],function(app,_) {
 					$scope.loanInfo = _.extend($scope.loanInfo,loan);
 					if(loan){
 						$scope.loanInfo.overdueCostPercent = $scope.loanInfo.overdueCostPercent * 1000;
+						$scope.loanInfo.overdueBreachPercent = $scope.loanInfo.overdueBreachPercent * 1000;
 						$scope.loanInfo.interests = $scope.loanInfo.interests * 100;
+
 					}
 				}
 
@@ -37,11 +39,18 @@ define(['app',"underscore"],function(app,_) {
 				var loan = angular.copy($scope.loanInfo);
 				loan.interests = loan.interests / 100;
 				loan.overdueCostPercent = loan.overdueCostPercent / 1000;
+				loan.overdueBreachPercent = loan.overdueBreachPercent / 1000;
 				$scope.countResults = LoanService.getCountResult(loan);
 			};
 
 			var watchPayWayAndSpanMonth 	= ['loanInfo.payWay','loanInfo.spanMonth'],
 				watchStartDateAndPayCircle 	= ['loanInfo.startDate','loanInfo.payCircle'];
+
+			$scope.$watch('loanInfo.payWay',function(){
+				if(!$scope.loanInfo.payWay === 'debx'){
+					$scope.loanInfo.overdueBreachPercent = 0;
+				}
+			})
 
 			$scope.$watchGroup(watchPayWayAndSpanMonth,function(){
 				circleChange();

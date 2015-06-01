@@ -10,19 +10,20 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 		var model = {
 				// objectId:'',
 				loanType:'',
-				amount:'',    			//number
-				spanMonth:'', 			//number
+				amount:'',    						//number
+				spanMonth:'', 						//number
 				startDate:'',
 				endDate:'',
-				payCircle:'', 			//number
-				payTotalCircle:'',		//number
-				interests:'',			//number
-				assureCost:'',			//number
-				serviceCost:'',			//number
-				overdueCostPercent:'',	//number
-				otherCost:'',			//number
+				payCircle:'', 						//number
+				payTotalCircle:'',				//number
+				interests:'',							//number
+				assureCost:'',						//number
+				serviceCost:'',						//number
+				overdueCostPercent:'',		//number
+				overdueBreachPercent:'', 	//number
+				otherCost:'',							//number
 				otherCostDesc:'',
-				keepCost:'',			//number
+				keepCost:'',							//number
 				keepCostDesc:'',
 				payWay:'',
 				firstPayDate:'',
@@ -75,6 +76,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			},
 			dataTransform = function(loan){
 				loan.overdueCostPercent = parseFloat(loan.overdueCostPercent) / 1000;
+				loan.overdueBreachPercent = parseFloat(loan.overdueBreachPercent) / 1000;
 				loan.interests = parseFloat(loan.interests) / 100;
 				return loan;
 			},

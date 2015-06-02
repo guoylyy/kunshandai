@@ -1021,9 +1021,6 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
         };
 
         totalPayMoney = totalPayMoney - totalInterests;
-        //console.log(currentStepDate);
-        //console.log('paydate');
-        //console.log(new Date(req.query.payDate));
         var params = {
           currDate: req.query.payDate,
           currentStep: currentStep,
@@ -1039,8 +1036,11 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
           rLoan.get('payWay') == mconfig.payBackWays.zqmxhb.value) {
           rc.income.amount = rLoan.get('amount');
         }
+        //等额本息需要加入提前结清违约金
+        
         rc.outcome.payedMoney = payedMoney;
         rc = mloan.calBillSum(rc);
+        mlog.dlog(rc);
         mutil.renderData(res, rc);
       }, function(error) {
         mutil.renderError(res, error);

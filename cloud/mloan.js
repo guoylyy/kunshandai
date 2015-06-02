@@ -220,6 +220,9 @@ function calBillSum(bill){
     var sum = (income.amount + income.overdueMoney + income.interest) -
                 (outcome.assureCost + outcome.keepCost + outcome.interest 
                     + outcome.payedMoney);
+    if(bill.income.overdueBreach){
+        sum += bill.income.overdueBreach;
+    }
     bill.sum = sum;
     return bill;
 }
@@ -368,7 +371,21 @@ loanPayBackFactory.finishBillParmsCal.debx = function(loanObj, data){
     }else{
         rc.income['interest'] = map.P * map.i * (map.N - (map.j - 1)) * map.k;
     }
+    //加入提前结清违约金
+    var curr = new moment(data.currDate);
+    var endDate = new moment(loanObj.get('endDate'));
+    var startDate = new moment(loanObj.get('startDate'));
+    var days = 0;
+    if(curr.isBefore(startDate)){
+        curr = startDate;
+    }
+    if(curr.isBefore(endDate)){
+        days = endDate.diff(curr,'days');
+    }
+    mlog.dlog('提前结清天数:'+days);
+    rc.income['overdueBreach'] = loanObj.get('overdueBreachPercent') * map.P * days;
     checkBill(rc);
+    mlog.dlog(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
@@ -527,7 +544,7 @@ function updateLoan(loan, reqBody){
     loan.set('keepCost', reqBody.keepCost);
     loan.set('payWay', reqBody.payWay);
 
-    if(reqBody.loanType == mconfig.payBackWays.debx.value){
+    if(reqBody.payWay == mconfig.payBackWays.debx.value){
         loan.set('overdueBreachPercent', reqBody.overdueBreachPercent);
     }else{
         loan.set('overdueBreachPercent', parseFloat(0));

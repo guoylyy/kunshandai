@@ -143,9 +143,24 @@ app.post(config.baseUrl + '/account/register', function(req, res) {
   });
 });
 
+app.put(config.baseUrl + '/account/verify', function(req, res){
+  var u = check_login(res);
+  //判断是不是用户的资料都全了
+  var front = AV.Object.createWithoutData('_File', req.body.icard_front);
+  var back = AV.Object.createWithoutData('_File', req.body.icard_back);
+  u.set('icard_front',front);
+  u.set('icard_back',back);
+  u.set('isVerified', true);
+  u.save().then(function(rc){
+    mutil.renderSuccess(res);
+  },function(error){
+    mutil.renderErrorData(res, error);
+  });
+});
+
 //发送手机验证码
 app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function(req, res) {
-  var u = check_login();
+  var u = check_login(res);
   var mobilePhoneNumber = u.get('mobilePhoneNumber');
   AV.User.requestMobilePhoneVerify(mobilePhoneNumber).then(function() {
     mutil.renderSuccess(res);
@@ -334,7 +349,7 @@ app.delete(config.baseUrl + '/loan/:id', function(req, res) {
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
   loan.fetch().then(function(l) {
-    console.log(u);
+    //console.log(u);
     if (!l.id) {
       mutil.renderError(res, {
         code: 404,
@@ -575,7 +590,7 @@ app.post(config.baseUrl + '/loan/assure_bill', function(req, res) {
             lrRelation.query().find().then(function(lrs) {
               if (lrs.length == 1) {
                 var record = lrs[0];
-                console.log(outMoney);
+                //console.log(outMoney);
                 record.set('outMoney', outMoney);
                 record.set('payDate', outDate);
                 record.set('loan', floan);
@@ -1000,13 +1015,13 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
               currentStepDate = previousStep.get('payDate');
             }
             //console.log(pbs[i].get('order'));
-            console.log(currentStepDate);
+            //console.log(currentStepDate);
           }
           previousStep = pbs[i];
         };
 
         totalPayMoney = totalPayMoney - totalInterests;
-        console.log(currentStepDate);
+        //console.log(currentStepDate);
         //console.log('paydate');
         //console.log(new Date(req.query.payDate));
         var params = {

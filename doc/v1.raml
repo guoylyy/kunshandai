@@ -340,6 +340,28 @@ traits:
                       "result": "success",
                       "code": 200
                   }
+  /verify:
+    description: 用户认证接口
+    put:
+      description: 用户认证接口
+      queryParameters:
+        data: 
+          type: string
+          description: json 数据接口
+          example: |
+            {
+              "icard_front":"xxx",
+              "icard_back":"xxx"
+            }
+      responses:
+        200:
+          body:
+            application/json:
+              schema: |
+                {
+                    "result": "success",
+                    "code": 200
+                }
   
 /loan:
   /{id}:

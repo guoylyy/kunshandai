@@ -110,8 +110,6 @@ define(['app',"underscore"],function(app,_) {
 
 				if($scope.loanInfo.payWay === 'xxhb' || $scope.loanInfo.payWay === 'dqhbfx'){
 					$scope.loanInfo.firstPayDate = $scope.loanInfo.endDate ;
-				}else if($scope.loanInfo.payWay === 'zqcxhb'){
-					$scope.loanInfo.firstPayDate = $scope.loanInfo.startDate;
 				}else{
 					if($scope.loanInfo.startDate && $scope.loanInfo.payCircle){
 						var firstPayDate = new Date($scope.loanInfo.startDate);

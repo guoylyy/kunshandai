@@ -141,6 +141,8 @@ loanPayBackFactory.payBackInit.zqcxhb = function(loanObj, loan){
         if(i > 1){
             status = mconfig.loanPayBackStatus.toPaying.value;
         }
+        if(i == loan.payTotalCircle)
+            interestsMoney = 0;
         rlist.push(generateLoanPayBack(loanObj, baseMoney + interestsMoney + overdueMoney, interestsMoney,
             d, status, i));
     };

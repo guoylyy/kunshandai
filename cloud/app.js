@@ -636,7 +636,7 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function(req, res) {
     query.notEqualTo('status', mconfig.loanStatus.draft.value);
     if (req.params.listType == mconfig.loanListTypes.completed.value) {
       query.equalTo('status', mconfig.loanStatus.completed.value);
-    } else {
+    } else if(req.params.listType != mconfig.loanListTypes.all.value){
       query.notEqualTo('status', mconfig.loanStatus.completed.value);
     }
     if (req.params.listType == mconfig.loanListTypes.normal.value) {
@@ -648,10 +648,14 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function(req, res) {
     } else if (req.params.listType == mconfig.loanListTypes.badbill.value) {
       query.lessThan('currPayDate', now3month);
     } else if (req.params.listType == mconfig.loanListTypes.all.value) {
-      query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));
-      query.lessThanOrEqualTo('endDate', new Date(req.query.endDate));
+      if(req.query.startDate != undefined){
+        query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));  
+      }
+      if(req.query.endDate != undefined){
+        query.lessThanOrEqualTo('endDate', new Date(req.query.endDate));
+      }
     }
-  }
+  };
   listLoan(res, query, pageNumber);
 });
 
@@ -1523,8 +1527,8 @@ function listLoan(res, query, pageNumber) {
   var totalPageNum = 1;
   var resultsMap = {};
   query.count().then(function(count) {
-    totalPageNum = parseInt(count / mconfig.pageSize) + 1;
-    resultsMap['totalPageNum'] = totalPageNum;
+    //totalPageNum = parseInt(count / mconfig.pageSize) + 1;
+    //resultsMap['totalPageNum'] = totalPageNum;
     resultsMap['totalNum'] = count;
     resultsMap['pageSize'] = mconfig.pageSize;
   }).then(function() {
@@ -1537,9 +1541,15 @@ function listLoan(res, query, pageNumber) {
         success: function(results) {
           var rlist = [];
           for (var i = 0; i < results.length; i++) {
-            //console.log(results[i].get('currPayDate'));
+            if(results[i].get('status')== mconfig.loanStatus.draft.value){
+              resultsMap['totalNum'] = resultsMap['totalNum'] - 1;
+              continue; //过滤掉草稿项目
+            }
             rlist.push(transformLoan(results[i]));
           };
+          totalPageNum = parseInt(resultsMap['totalNum'] / mconfig.pageSize) + 1;
+          resultsMap['totalPageNum'] = totalPageNum;
+          resultsMap['currPage'] = pageNumber;
           resultsMap['values'] = rlist;
           mutil.renderData(res, resultsMap);
         },

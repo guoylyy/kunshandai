@@ -84,13 +84,7 @@ app.get('/project/*', function(req, res) {
 app.get('/loan', function(req, res) {
   res.render('manage.ejs');
 });
-app.get('/loan/:id/modify', function(req, res) {
-  res.render('loan_form.ejs');
-});
 
-app.get('/project.create', function(req, res) {
-  res.render('manage.ejs');
-});
 app.get('/help', function(req, res) {
   res.render('help.ejs');
 });
@@ -649,7 +643,7 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function(req, res) {
       query.lessThan('currPayDate', now3month);
     } else if (req.params.listType == mconfig.loanListTypes.all.value) {
       if(req.query.startDate != undefined){
-        query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));  
+        query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));
       }
       if(req.query.endDate != undefined){
         query.lessThanOrEqualTo('endDate', new Date(req.query.endDate));

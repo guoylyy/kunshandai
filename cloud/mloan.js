@@ -220,7 +220,7 @@ function calBillSum(bill){
     var sum = (income.amount + income.overdueMoney + income.interest) -
                 (outcome.assureCost + outcome.keepCost + outcome.interest 
                     + outcome.payedMoney);
-    if(bill.income.overdueBreach){
+    if(bill.income.overdueBreach != undefined){
         sum += bill.income.overdueBreach;
     }
     bill.sum = sum;

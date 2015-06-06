@@ -208,6 +208,8 @@ function convertDictToList(key){
 		return getKeyValueList(interestCalTypes);
 	}else if(key=='payBackTypes'){
 		return getKeyValueList(payBackTypes);
+	}else if(key=='verifyStatus'){
+		return getKeyValueList(verifyStatus);
 	}
 	return null;
 }
@@ -226,6 +228,8 @@ function getConfigMapByValue(key, value){
 		obj = interestCalTypes;
 	}else if(key=='payBackTypes'){
 		obj = payBackTypes;
+	}else if(key=='verifyStatus'){
+		obj = verifyStatus;
 	}
 	if(!obj){
 		return null;

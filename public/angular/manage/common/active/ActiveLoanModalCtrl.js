@@ -5,7 +5,7 @@ define(['app'],function(app){
 
 		$scope.loan = loan;
 
-		$scope.loanData = {outDate:new Date()};
+		$scope.loanData = {outDate:new Date(loan.startDate)};
 
 		$scope.status = {loaning:false};
 

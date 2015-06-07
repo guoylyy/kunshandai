@@ -49,9 +49,9 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				loan.payCircle = parseInt(loan.payCircle);
 				loan.payTotalCircle = parseInt(loan.payTotalCircle);
 				//format string to date
-				loan.startDate = new Date(loan.startDate);
-				loan.endDate = new Date(loan.endDate);
-				loan.firstPayDate = new Date(loan.firstPayDate);
+				loan.startDate = new Date(moment(loan.startDate));
+				loan.endDate = new Date(moment(loan.endDate));
+				loan.firstPayDate = new Date(moment(loan.firstPayDate));
 
 				return loan;
 			},

@@ -1,5 +1,5 @@
 
-define(['app','underscore'],function(app,_) {
+define(['app','underscore','moment'],function(app,_,moment) {
 	return app.controller('CollectProcessCtrl',
 		function(LoanService,$scope,$modalInstance,loan,paybacks,SweetAlert,process,interestCalTypes,payBackTypes){
 
@@ -35,10 +35,10 @@ define(['app','underscore'],function(app,_) {
 		})
 		$scope.$watchCollection('process',function(){
 			if(	$scope.process.complete){
-				$scope.completeCount.date = new Date(new Date().toLocaleDateString());
+				$scope.completeCount.date = new Date(moment().format('YYYY-MM-DD'));
 				$scope.completeCount.interestType = 'allInterest';
 			}else if( $scope.process.pay ){
-				$scope.payDate = new Date(new Date().toLocaleDateString());
+				$scope.payDate = new Date(moment().format('YYYY-MM-DD'));
 			}
 		})
 		var completeInputs = ['completeData.income.amount','completeData.income.overdueMoney','completeData.income.interest',

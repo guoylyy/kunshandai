@@ -136,13 +136,32 @@ define(['app','underscore'],function(app,_){
 
 				return deferred.promise;
 			},
+			verify: function(front_id,back_id) {
+				var deferred = $q.defer();
+
+				$http.put(
+					ApiURL+accountUrl+'/verify',
+					JSON.stringify(
+						{
+							icard_front:front_id,
+							icard_back:back_id
+						}
+					)
+				).then(function(res){
+					deferred.resolve(res.data.data);
+				},function(res){
+					deferred.reject(res);
+				})
+
+				return deferred.promise;
+			},
 			getAttachments: function(accountId){
 				var deferred = $q.defer();
 
 				$http.put(
 					ApiURL+accountUrl+'/'+accountId+'/attachments'
 				).then(function(res){
-					deferred(res.data.data);
+					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);
 				})
@@ -155,7 +174,7 @@ define(['app','underscore'],function(app,_){
 				$http.put(
 					ApiURL+accountUrl+'/'+accountId+'/attachments/'+attachmentId
 				).then(function(res){
-					deferred(res.data.data);
+					deferred.resolve(res.data.data);
 				},function(res){
 					deferred.reject(res);
 				})

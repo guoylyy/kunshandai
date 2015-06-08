@@ -47,15 +47,16 @@
       </dl>
     </div>
   </div>
-<div class="ks-panel panel panel-default" ng-show="!user.certificated">
-  <div class="panel-heading">上传身份证
+<div class="ks-panel panel panel-default">
+  <div class="panel-heading" >{{user.certificated? '认证的':'上传'}}身份证
 
   </div>
   <fieldset class="panel-body" ng-disabled="!profileCompleted">
     <div class="row">
       <div class="col-md-6">
+        <label ng-show="user.certificated">身份证正面</label>
         <button class="btn btn-info" ng-file-select ng-model="certification.frontFiles"
-        ng-file-multiple="false" ng-file-change="attachSelected($files,'front')">上传身份证正面</button>
+        ng-file-multiple="false" ng-file-change="attachSelected($files,'front')" ng-show="!user.certificated">上传身份证正面</button>
         <div class="ks-divider"></div>
         <div class="form-group">
             <a href="#" class="thumbnail"  ng-show="certification.front.url">
@@ -64,8 +65,9 @@
         </div>
       </div>
       <div class="col-md-6">
+        <label ng-show="user.certificated">身份证反面</label>
         <button class="btn btn-info" ng-file-select ng-model="certification.backFiles"
-        ng-file-multiple="false" ng-file-change="attachSelected($files,'back')">上传身份证反面</button>
+        ng-file-multiple="false" ng-file-change="attachSelected($files,'back')" ng-show="!user.certificated">上传身份证反面</button>
         <div class="ks-divider"></div>
         <div class="form-group">
             <a href="#" class="thumbnail"  ng-show="certification.back.url">
@@ -94,7 +96,7 @@
   </div>
 </div> -->
 <div class="ks-divider"></div>
-<div class="row">
+<div class="row" ng-show="!user.certificated">
   <div class="col-md-offset-10 col-md-2">
     <button type="submit" class="btn btn-success ks-right" ng-click="startCertificate()">申请认证</button>
   </div>

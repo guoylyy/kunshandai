@@ -71,6 +71,28 @@
         </div>
       </div>
     </div>
+    <div class="row" >
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>经营范围</label><br>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="user.profile.manageRange[0]" ng-true-value="'fcdy'">房产抵押
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="user.profile.manageRange[1]" ng-true-value="'qcdy'">汽车抵押
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="user.profile.manageRange[2]" ng-true-value="'mfdk'">买房贷款
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="user.profile.manageRange[3]" ng-true-value="'mcdk'">买车贷款
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="user.profile.manageRange[4]" ng-true-value="'hpdy'">承兑汇票抵押
+          </label>
+        </div>
+      </div>
+    </div>
     <div ng-show="user.profile.manageType === 'company'">
       <div class="row" >
         <div class="col-md-3">
@@ -81,28 +103,7 @@
           </div>
         </div>
       </div>
-      <div class="row" >
-        <div class="col-md-12">
-          <div class="form-group">
-            <label>经营范围</label><br>
-            <label class="checkbox-inline">
-              <input type="checkbox" ng-model="user.profile.manageRange[0]" ng-true-value="'fcdy'">房产抵押
-            </label>
-            <label class="checkbox-inline">
-              <input type="checkbox" ng-model="user.profile.manageRange[1]" ng-true-value="'qcdy'">汽车抵押
-            </label>
-            <label class="checkbox-inline">
-              <input type="checkbox" ng-model="user.profile.manageRange[2]" ng-true-value="'mfdk'">买房贷款
-            </label>
-            <label class="checkbox-inline">
-              <input type="checkbox" ng-model="user.profile.manageRange[3]" ng-true-value="'mcdk'">买车贷款
-            </label>
-            <label class="checkbox-inline">
-              <input type="checkbox" ng-model="user.profile.manageRange[4]" ng-true-value="'hpdy'">承兑汇票抵押
-            </label>
-          </div>
-        </div>
-      </div>
+
       <div class="row" >
         <div class="col-md-3">
           <div class="form-group">

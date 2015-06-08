@@ -2,17 +2,22 @@ define(['app'],function(app){
   return app.controller('AccountSettingCtrl',['$scope','profile','AccountService','SweetAlert','UploadService','$state',
     function($scope,profile,AccountService,SweetAlert,UploadService,$state){
 
-    $scope.user = {};
+    $scope.user = {certificated:profile.isVerified};
     $scope.user.avatar  = profile.icon || {url:'/images/avatar.jpeg'};
     $scope.user.profile = profile.infoObject;
-
-    $scope.certification = {front:{},back:{}};
+    $scope.certification = {
+        front:{url:profile.icard_front? profile.icard_front.url : ''},
+        back:{url:profile.icard_front? profile.icard_back.url : ''}
+      };
 
     $scope.upload = {};
     $scope.upload.showWarning = ($scope.upload.type === 'danger' || $scope.upload.type === 'warning');
 
     $scope.$watchCollection('user.profile',function(){
-
+      if(!profile.infoObject){
+        $scope.profileCompleted =  false;
+        return;
+      }
       $scope.profileCompleted =  (_.compact(_.values($scope.user.profile)).length
                                   == _.values($scope.user.profile).length)
       if($scope.user.profile.manageType == 'company'){
@@ -26,6 +31,7 @@ define(['app'],function(app){
       AccountService.updateProfile($scope.user.profile)
       .then(function(res){
         SweetAlert.success("更新成功");
+        $state.reload();
       },function(res){
         SweetAlert.error("更新失败");
       })
@@ -55,7 +61,7 @@ define(['app'],function(app){
 
     $scope.attachSelected = function($files,type){
         if($files.length > 0){
-          UploadService.upload($files,'other')
+          UploadService.upload($files,'certification')
           .then(function(){
             $scope.certification[type].url = $files[0].url;
             $scope.certification[type].id = $files[0].objectId;
@@ -82,7 +88,12 @@ define(['app'],function(app){
 
     $scope.startCertificate = function(){
       if($scope.certification.front.url && $scope.certification.back.url){
-        SweetAlert.success("已提交申请","认证需要1到2个工作日");
+        AccountService.verify($scope.certification['front'].id,$scope.certification['back'].id).then(function() {
+          SweetAlert.success("已提交申请","认证需要1到2个工作日");
+          $state.reload();
+        }, function(res) {
+          SweetAlert.error("申请认证失败","服务器内部错误");
+        } )
       }else{
         SweetAlert.error("资料不全","请上传身份证正反面扫描件");
       }

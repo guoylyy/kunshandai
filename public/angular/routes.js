@@ -71,7 +71,16 @@ define(['app','underscore'],function(app,_){
 	    		}
 		    }
 		},
-
+		resolveCondition = function(){
+			return {
+				loanTypes:function(DictService){
+					return DictService.get('loanTypes');
+				},
+				timeRanges:function(DictService){
+					return DictService.get("timeRanges");
+				}
+			}
+		},
 		resolveNavObjects = function(){
 			return {
 				user: function(AccountService){
@@ -231,21 +240,21 @@ define(['app','underscore'],function(app,_){
 		    })
 		    .state('manage.searchProjects',{
 		    	url:"/projects/search?page&type&keyword",
-				templateUrl: "/angular/manage/project/project.html",
-				resolve:{
-					loans:function(LoanService,$stateParams){
-			    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
-			    			return data;
-			    		})
-			    	},
-					loanTypes:function(DictService){
-						return DictService.get('loanTypes');
+					templateUrl: "/angular/manage/project/project.html",
+					resolve:{
+						loans:function(LoanService,$stateParams){
+				    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
+				    			return data;
+				    		})
+				    	},
+						loanTypes:function(DictService){
+							return DictService.get('loanTypes');
+						},
+						timeRanges:function(DictService){
+							return DictService.get("timeRanges");
+						}
 					},
-					timeRanges:function(DictService){
-						return DictService.get("timeRanges");
-					}
-				},
-				controller: "ProjectController"
+					controller: "ProjectController"
 		    })
 		    .state('manage.contact',{
 		    	url:"/contact?page",
@@ -488,6 +497,13 @@ define(['app','underscore'],function(app,_){
 				.state('borrow.repayPending',{
 					url:"/repay/pending?page&startDate&endDate&loanType",
     			templateUrl: "/angular/borrow/repay/repay.html",
+					resolve:resolveCondition(),
+    			controller: "RepayController"
+				})
+				.state('borrow.repayDone',{
+					url:"/repay/done?page&startDate&endDate&loanType",
+    			templateUrl: "/angular/borrow/repay/repay.html",
+					resolve:resolveCondition(),
     			controller: "RepayController"
 				})
 				.state('borrow.contact',{
@@ -501,6 +517,54 @@ define(['app','underscore'],function(app,_){
 		    		}
     			},
     			controller: "ContactController"
+		    })
+				.state('borrow.allProjects',{
+		    	url:"/projects/all?page&startDate&endDate&loanType",
+    			templateUrl: "/angular/borrow/project/bproject.html",
+    			resolve:resolveCondition(),
+    			controller: "BProjectController"
+		    })
+ 			.state('borrow.normalProjects',{
+		    	url:"/projects/normal?page&loanType",
+    			templateUrl: "/angular/borrow/project/bproject.html",
+    			resolve:resolveCondition(),
+    			controller: "BProjectController"
+		    })
+ 			.state('borrow.overdueProjects',{
+		    	url:"/projects/overdue?page&loanType",
+    			templateUrl: "/angular/borrow/project/bproject.html",
+    			resolve:resolveCondition(),
+    			controller: "BProjectController"
+		    })
+ 			.state('borrow.badbillProjects',{
+		    	url:"/projects/badbill?page&loanType",
+    			templateUrl: "/angular/borrow/project/bproject.html",
+    			resolve:resolveCondition(),
+    			controller: "BProjectController"
+		    })
+ 		    .state('borrow.completedProjects',{
+		    	url:"/projects/completed?page&loanType",
+    			templateUrl: "/angular/borrow/project/bproject.html",
+    			resolve:resolveCondition(),
+    			controller: "BProjectController"
+		    })
+		    .state('borrow.searchProjects',{
+		    	url:"/projects/search?page&type&keyword",
+					templateUrl: "/angular/borrow/project/bproject.html",
+					resolve:{
+						loans:function(LoanService,$stateParams){
+				    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
+				    			return data;
+				    		})
+				    	},
+						loanTypes:function(DictService){
+							return DictService.get('loanTypes');
+						},
+						timeRanges:function(DictService){
+							return DictService.get("timeRanges");
+						}
+					},
+					controller: "BProjectController"
 		    })
 	}]);
 

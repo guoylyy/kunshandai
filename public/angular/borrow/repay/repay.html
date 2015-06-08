@@ -4,8 +4,8 @@
 <div class="row">
  <div class="col-md-6">
    <div class="btn-group btn-group-middle" >
-     <button type="button" class="btn btn-default" ui-sref="manage.collectPending" ui-sref-active="active">待还款项目</button>
-     <button type="button" class="btn btn-default" ui-sref="manage.collectDone"  ui-sref-active="active">已还款项目</button>
+     <button type="button" class="btn btn-default" ui-sref="borrow.collectPending" ui-sref-active="active">待还款项目</button>
+     <button type="button" class="btn btn-default" ui-sref="borrow.collectDone"  ui-sref-active="active">已还款项目</button>
 
    </div>
  </div>
@@ -55,9 +55,9 @@
        <th>当前/总期</th>
        <th>应收日期</th>
        <th>应收金额</th>
-       <th ng-show="('manage.collectDone' | isState)">实收日期</th>
-       <th ng-show="('manage.collectDone' | isState)">实收金额</th>
-       <th ng-show="('manage.collectPending' | isState)">距收款日期</th>
+       <th ng-show="('borrow.collectDone' | isState)">实收日期</th>
+       <th ng-show="('borrow.collectDone' | isState)">实收金额</th>
+       <th ng-show="('borrow.collectPending' | isState)">距收款日期</th>
        <th>操作</th>
      </tr>
    </thead>
@@ -69,9 +69,9 @@
        <td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
        <td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
        <td>{{loan.payMoney | number:2}}</td>
-       <td ng-show="('manage.collectDone' | isState)">{{loan.payBackDate | date: "yyyy-MM-dd"}}</td>
-       <td ng-show="('manage.collectDone' | isState)">{{loan.payBackMoney | number:2}}</td>
-       <td ng-show="('manage.collectPending' | isState)">{{loan.nowToPayDate}}</td>
+       <td ng-show="('borrow.collectDone' | isState)">{{loan.payBackDate | date: "yyyy-MM-dd"}}</td>
+       <td ng-show="('borrow.collectDone' | isState)">{{loan.payBackMoney | number:2}}</td>
+       <td ng-show="('borrow.collectPending' | isState)">{{loan.nowToPayDate}}</td>
        <td>
          <div class="dropdown" dropdown>
            <a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>

@@ -108,6 +108,7 @@ require([
 		 'common/filter/cDisplay',
 
 		 'borrow/repay/RepayController',
+		 'borrow/project/BProjectController',
 		 'routes'
 
 ],function(angular) {

@@ -1,0 +1,35 @@
+<div class="col-md-2">
+	<ul class="nav nav-stacked ks-manage-nav">
+		<li ui-sref="borrow.index" ui-sref-active="active"><a>借款总览</a></li>
+		<li  class="dropdown" dropdown  >
+			<a ui-sref="loan" dropdown-toggle> 借款管理<span class="glyphicon glyphicon-menu-right"></span></a>
+			  <ul class="dropdown-menu dropdown-menu-right">
+		        <li>
+		          <a href="/bproject/create" target="_blank">新增借款</a>
+		        </li>
+		      </ul>
+		</li>
+		<li class="dropdown" dropdown>
+			<a ui-sref="collect" dropdown-toggle>还款管理<span class="glyphicon glyphicon-menu-right"></span></a>
+			 <ul class="dropdown-menu dropdown-menu-right">
+		        <li>
+		          <a ui-sref="borrow.repayPending">待还款项目</a>
+		          <a ui-sref="borrow.repayDone">已还款项目</a>
+		        </li>
+		      </ul>
+		</li>
+		<li class="dropdown" dropdown >
+			<a dropdown-toggle>项目检视<span class="glyphicon glyphicon-menu-right"></span></a>
+			<ul class="dropdown-menu dropdown-menu-right">
+		        <li>
+		          <a ui-sref="borrow.normalProjects">正常项目</a>
+		          <a ui-sref="borrow.overdueProjects">逾期项目</a>
+		          <a ui-sref="borrow.badbillProjects">坏账项目</a>
+		          <a ui-sref="borrow.completedProjects">结清项目</a>
+		          <a ui-sref="borrow.allProjects">所有项目</a>
+		        </li>
+		      </ul>
+		</li>
+		<li ui-sref="borrow.contact" ui-sref-active="active"><a >客户管理</a></li>
+	</ul>
+</div>

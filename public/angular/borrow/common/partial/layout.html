@@ -1,0 +1,22 @@
+<div ui-view="nav"></div>
+<div class="ks-m-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-md-3">
+				<a ui-sref="manage.index"><div class="ks-logo"></div></a>
+			</div>
+			<div class="col-sm-3 col-md-3">
+				<div class="ks-logo-info"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container ks-main">
+  <div class="row">
+    <div ui-view="menu"></div>
+    <div class="col-md-offset-1 col-md-9 ks-manage-main" ui-view>
+
+    </div>
+  </div>
+</div>
+<ui-include src="'/angular/manage/common/partial/footer.html'"></ui-include>

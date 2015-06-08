@@ -225,6 +225,10 @@ dl dt,dl dd{
 	padding-bottom: 5px;
 	font-size: 14px;
 }
+.navbar-nav .active a{
+	background: #fafafa;
+	color: #f5a022;
+}
 .nav-stacked li span{
 	margin-left: 110px;
 }

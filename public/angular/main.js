@@ -107,7 +107,9 @@ require([
 		 'common/directive/floatNumberInput',
 		 'common/filter/cDisplay',
 
+		 'borrow/repay/RepayController',
 		 'routes'
+
 ],function(angular) {
 
 	// var $html = angular.element(document.getElementsByTagName('html')[0]);

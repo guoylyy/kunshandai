@@ -69,6 +69,12 @@ app.get('/login', function(req, res) {
 app.get('/signup', function(req, res) {
   res.render('account.ejs');
 });
+app.get('/borrow', function(req, res) {
+  res.render('manage.ejs');
+});
+app.get('/borrow/*', function(req, res) {
+  res.render('manage.ejs');
+});
 app.get('/manage', function(req, res) {
   res.render('manage.ejs');
 });
@@ -1037,7 +1043,7 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
           rc.income.amount = rLoan.get('amount');
         }
         //等额本息需要加入提前结清违约金
-        
+
         rc.outcome.payedMoney = payedMoney;
         rc = mloan.calBillSum(rc);
         mlog.dlog(rc);

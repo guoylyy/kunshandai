@@ -5,12 +5,15 @@
 				<li>
 					<a ui-sref="manage.index">首页</a>
 				</li>
-				<li>
-					<a ui-sref="manage.index">贷款经理</a>
+				<li  ui-sref="manage"  ui-sref-active="active" ui-sref-opts="{reload: true}">
+					<a>贷款经理</a>
+        </li>
+				<li  ui-sref="borrow"  ui-sref-active="active">
+					<a>借款经理</a>
         </li>
 		  </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li class="active dropdown" dropdown>
+        <li class="dropdown" dropdown>
             <a  dropdown-toggle>{{user.profile.name ||user.username}}</a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a role="menuitem" ui-sref="account.setting.profile">个人设置</a></li>

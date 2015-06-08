@@ -112,11 +112,14 @@ define(['app','underscore'],function(app,_){
 		    })
 		     // manage module routes
 				.state('manage',{
-					abstract:true,
+					// abstract:true,
 					url:'/manage',
 					views:{
 						'':{
-							templateUrl:"/angular/manage/common/partial/layout.html"
+							templateUrl:"/angular/manage/common/partial/layout.html",
+							controller: function($state) {
+								$state.go('manage.index');
+							}
 						},
 						'nav@manage': {
 							templateUrl: "/angular/manage/nav/nav.html",
@@ -453,8 +456,52 @@ define(['app','underscore'],function(app,_){
 							controller:'AccountSettingCtrl'
 						}
 					}
-				});
+				})
 
+				/**
+				*
+				*Borrow 模块路由
+				*/
+				.state('borrow',{
+          url:"/borrow",
+          // abstract:true,
+          views:{
+						'':{
+							templateUrl:"/angular/borrow/common/partial/layout.html",
+							controller: function($state) {
+								$state.go('borrow.index');
+							}
+						},
+						'nav@borrow': {
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:resolveNavObjects()
+						},
+						'menu@borrow': {
+							templateUrl:"/angular/borrow/common/partial/menu.html"
+						}
+					}
+        })
+        .state('borrow.index',{
+          url:''
+        })
+				.state('borrow.repayPending',{
+					url:"/repay/pending?page&startDate&endDate&loanType",
+    			templateUrl: "/angular/borrow/repay/repay.html",
+    			controller: "RepayController"
+				})
+				.state('borrow.contact',{
+		    	url:"/contact?page",
+    			templateUrl: "/angular/manage/contact/contact.html",
+    			resolve:{
+						contacts:function(ContactService, $stateParams){
+		    			return ContactService.getByPage($stateParams.page || 1).then(function(data){
+    						return data;
+    					});
+		    		}
+    			},
+    			controller: "ContactController"
+		    })
 	}]);
 
 });

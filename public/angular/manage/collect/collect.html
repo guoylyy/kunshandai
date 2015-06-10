@@ -68,7 +68,7 @@
 				<td>{{loan.payWay.text}}</td>
 				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
 				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
-				<td>{{loan.payMoney | number:2}}</td>
+				<td>{{loan.payMoney + loan.interestsMoney | number:2}}</td>
         <td ng-show="('manage.collectDone' | isState)">{{loan.payBackDate | date: "yyyy-MM-dd"}}</td>
 				<td ng-show="('manage.collectDone' | isState)">{{loan.payBackMoney | number:2}}</td>
 				<td ng-show="('manage.collectPending' | isState)">{{loan.nowToPayDate}}</td>

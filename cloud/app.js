@@ -941,7 +941,6 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack', function(req, res) {
   });
 });
 
-
 //计算还款金额: 每次应还的钱
 app.get(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
   //var payDate = req.body.payDate;
@@ -1511,8 +1510,6 @@ function calculateOverdueMoney(loan, baseDate, payDate) {
   }
 };
 
-//项目调整
-//流程 结清当前项目 + 生成一个新项目
 function concretePayBack(lpb, loan, overdueMoney) {
   var result = {};
   result['loaner'] = {

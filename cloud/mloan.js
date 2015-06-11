@@ -211,21 +211,24 @@ loanPayBackFactory.overdueMoneyCal.dqhbfx = function(loanObj, currDate){
 
 
 //提前结清违约金和退还项目利息计算接口
-var finishBillParms = {
-    income: { //收入金额
-        amount: 0,
-        overdueMoney: 0,
-        interest:0
-    },
-    outcome: {  //应该退还的金额
-        assureCost : 0,
-        keepCost : 0,
-        interest : 0,
-        payedMoney: 0,
-        favourMoney:0
-    },
-    sum: 0
-};
+//
+function getFinishBillTemplate(){
+    return {
+        income: { //收入金额
+            amount: 0,
+            overdueMoney: 0,
+            interest:0
+        },
+        outcome: {  //应该退还的金额
+            assureCost : 0,
+            keepCost : 0,
+            interest : 0,
+            payedMoney: 0,
+            favourMoney:0
+        },
+        sum: 0
+    };
+}
 function calBillSum(bill){
     var income = bill.income;
     var outcome = bill.outcome;
@@ -240,7 +243,7 @@ function calBillSum(bill){
 }
 
 function fillBasicMap(loanObj){
-    var rc = finishBillParms;
+    var rc = getFinishBillTemplate();
     rc.outcome.assureCost = loanObj.get('assureCost');
     rc.outcome.keepCost = loanObj.get('keepCost');
     return rc;
@@ -428,6 +431,7 @@ loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
             break;
     };
     checkBill(rc);
+    console.log(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){

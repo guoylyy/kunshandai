@@ -109,9 +109,13 @@ loanPayBackFactory.payBackInit.debx = function(loanObj, loan){
     var interestsMoney = loan.amount * loan.interests * loan.payCircle;
     var overdueMoney = 0;
     var rlist = [];
+    var endDate = new moment(loan.endDate);
     for (var i = 1; i <= loan.payTotalCircle; i++) {
         var status = mconfig.loanPayBackStatus.paying.value;
         var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month');
+        if(d > endDate){
+            d = endDate; //控制还款日期不能超过项目结束日日期
+        }
         if(i > 1){
             d.subtract(1, 'days');
         }
@@ -131,11 +135,15 @@ loanPayBackFactory.payBackInit.zqcxhb = function(loanObj, loan){
     var interestsMoney = loan.amount * loan.interests * loan.payCircle;
     var overdueMoney = 0;
     var rlist = [];
+    var endDate = new moment(loan.endDate);
     for (var i = 1; i <= loan.payTotalCircle; i++) {
         var status = mconfig.loanPayBackStatus.paying.value;
         var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month');
         if(i > 1){
             d.subtract(1, 'days');
+        }
+        if(d > endDate){
+            d = endDate; //控制还款日期不能超过项目结束日日期
         }
         d = d.format();
         if(i > 1){
@@ -154,11 +162,15 @@ loanPayBackFactory.payBackInit.zqmxhb = function(loanObj, loan){
     var interestsMoney = loan.amount * loan.interests * loan.payCircle;
     var overdueMoney = 0;
     var rlist = [];
+    var endDate = new moment(loan.endDate);
     for (var i = 1; i <= loan.payTotalCircle; i++) {
         var status = mconfig.loanPayBackStatus.paying.value;
         var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month');
         if(i > 1){
             d.subtract(1, 'days');
+        }
+        if(d > endDate){
+            d = endDate; //控制还款日期不能超过项目结束日日期
         }
         d = d.format();
         if(i > 1){

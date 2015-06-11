@@ -121,14 +121,11 @@ define(['app','underscore'],function(app,_){
 		    })
 		     // manage module routes
 				.state('manage',{
-					// abstract:true,
+					abstract:true,
 					url:'/manage',
 					views:{
 						'':{
-							templateUrl:"/angular/manage/common/partial/layout.html",
-							controller: function($state) {
-								$state.go('manage.index');
-							}
+							templateUrl:"/angular/manage/common/partial/layout.html"
 						},
 						'nav@manage': {
 							templateUrl: "/angular/manage/nav/nav.html",
@@ -473,13 +470,10 @@ define(['app','underscore'],function(app,_){
 				*/
 				.state('borrow',{
           url:"/borrow",
-          // abstract:true,
+          abstract:true,
           views:{
 						'':{
-							templateUrl:"/angular/borrow/common/partial/layout.html",
-							controller: function($state) {
-								$state.go('borrow.index');
-							}
+							templateUrl:"/angular/borrow/common/partial/layout.html"
 						},
 						'nav@borrow': {
 							templateUrl: "/angular/manage/nav/nav.html",

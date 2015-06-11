@@ -44,7 +44,7 @@ define(['app'],function(app) {
 					controller:'CollectProcessCtrl',
 					size:'lg',
 					backdrop: true,
-            		windowClass: 'modal',
+          windowClass: 'modal',
 					resolve:{
 						loan:function(){
 							return LoanService.getLoan(loanId);

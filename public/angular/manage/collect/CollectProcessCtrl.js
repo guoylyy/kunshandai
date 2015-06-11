@@ -51,9 +51,16 @@ define(['app','underscore','moment'],function(app,_,moment) {
 										+ parseFloat($scope.completeData.income.overdueMoney)
 										+ parseFloat($scope.completeData.income.interest);
 
+				if($scope.loan.payWay === 'debx'){
+					$scope.total.income += $scope.completeData.income.overdueBreach;
+				}
+
 				$scope.total.outcome = parseFloat($scope.completeData.outcome.assureCost)
 										+ parseFloat($scope.completeData.outcome.keepCost)
 										+ parseFloat($scope.completeData.outcome.interest);
+				//优惠和已收
+				$scope.total.outcome += parseFloat($scope.completedBill.outcome.payedMoney)
+															+parseFloat($scope.completedBill.outcome.favourMoney);
 
 				$scope.completeData.sum = $scope.total.income-$scope.total.outcome;
 

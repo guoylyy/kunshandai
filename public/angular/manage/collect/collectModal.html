@@ -313,6 +313,25 @@
             <div class="ks-divider"></div>
             <h4>收入：</h4>
             <div class="ks-divider"></div>
+            <div class="row" ng-show="loan.payWay === 'debx'">
+                 <div class="col-md-3">
+                   <div class="form-group">
+                     <label class="control-label">*提前结清违约金（元）</label>
+                     <div class="input-group has-success">
+                       <input type="text" class="form-control" placeholder="提前结清违约金" name="overdueBreach" float-number-input
+                       ng-model="completeData.income.overdueBreach"  ng-required="loan.payWay==='debx'" >
+                       <span class="input-group-addon">元</span>
+                     </div>
+                     <div ng-show="completeForm.$submitted || completeForm.overdueBreach.$touched">
+                       <div class="text-danger" ng-show="completeForm.overdueBreach.$error.required">请填写提前结清违约金</div>
+                     </div>
+                      <div >
+                       <div class="text-danger" ng-show="completeData.income.overdueBreach < completedBill.income.overdueBreach ">小于应收提前结清违约金</div>
+                       <div class="text-warning" ng-show="completeData.income.overdueBreach > completedBill.income.overdueBreach ">大于应收提前结清违约金</div>
+                     </div>
+                   </div>
+                 </div>
+            </div>
            <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">

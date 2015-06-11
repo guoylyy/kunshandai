@@ -39,11 +39,50 @@
         <td></td>
         <td>{{row5 = row4 - completedBill.outcome.keepCost| number:2}}</td>
       </tr>
+      <tr ng-show="completedBill.outcome.payedMoney > 0">
+        <th scope="row">已结清金额（元）
+          <span class="badge"
+                  tooltip="进行部分结清后已结清的金额"
+                  tooltip-placement="top"
+                  tooltip-trigger="mouseenter">
+                  ?
+          </span>
+        </th>
+        <td>{{completedBill.outcome.payedMoney  | number:2}}</td>
+        <td></td>
+        <td>{{row6 = row5 - completedBill.outcome.payedMoney| number:2}}</td>
+      </tr>
+      <tr ng-show="completedBill.outcome.favourMoney > 0">
+        <th scope="row">优惠（元）
+          <span class="badge"
+                  tooltip="历史收款记录中优惠总金额"
+                  tooltip-placement="top"
+                  tooltip-trigger="mouseenter">
+                  ?
+          </span>
+       </th>
+        <td>{{completedBill.outcome.favourMoney  | number:2}}</td>
+        <td></td>
+        <td>{{row7 = row6 - completedBill.outcome.favourMoney| number:2}}</td>
+      </tr>
+      <tr ng-show="loan.payWay === 'debx'">
+        <th scope="row" >提前结清违约金（元）
+          <span class="badge"
+                  tooltip="等额本息贷款特有"
+                  tooltip-placement="top"
+                  tooltip-trigger="mouseenter">
+                  ?
+          </span>
+        </th>
+        <td></td>
+        <td>{{completedBill.income.overdueBreach  | number:2}}</td>
+        <td>{{row8 = row7 + completedBill.income.overdueBreach| number:2}}</td>
+      </tr>
       <tr>
         <th scope="row">结清金额（元）</th>
         <td></td>
         <td></td>
-        <td>{{row5 | number:2}}</td>
+        <td>{{row8 | number:2}}</td>
       </tr>
     </tbody>
   </table>

@@ -42,7 +42,7 @@ define(['app','underscore','moment'],function(app,_,moment) {
 			}
 		})
 		var completeInputs = ['completeData.income.amount','completeData.income.overdueMoney','completeData.income.interest',
-		'completeData.outcome.assureCost','completeData.outcome.keepCost','completeData.outcome.interest'];
+		'completeData.outcome.assureCost','completeData.outcome.keepCost','completeData.outcome.interest','completeData.income.overdueBreach'];
 
 		$scope.$watchGroup(completeInputs,function(){
 			if($scope.total && $scope.completeData && $scope.completedBill){
@@ -51,8 +51,8 @@ define(['app','underscore','moment'],function(app,_,moment) {
 										+ parseFloat($scope.completeData.income.overdueMoney)
 										+ parseFloat($scope.completeData.income.interest);
 
-				if($scope.loan.payWay === 'debx'){
-					$scope.total.income += $scope.completeData.income.overdueBreach;
+				if($scope.loan.payWay.value === 'debx'){
+					$scope.total.income += parseFloat($scope.completeData.income.overdueBreach);
 				}
 
 				$scope.total.outcome = parseFloat($scope.completeData.outcome.assureCost)
@@ -212,6 +212,17 @@ define(['app','underscore','moment'],function(app,_,moment) {
 			$scope.process.list = false;
 		}
 
+		$scope.resetCompleteData = function(){
+			$scope.completeData ={
+				outcome:_.extend({},$scope.completedBill.outcome),
+				income:_.extend({},$scope.completedBill.income)
+			};
+		}
+
+
+		$scope.resetPayData = function(){
+			$scope.payData = _.extend({},	$scope.payBill);
+		}
 
 		$scope.completeLoan = function(){
 

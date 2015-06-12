@@ -222,6 +222,7 @@
   </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
+  <button type="button" class="btn btn-default" ng-click="resetPayData()" >重置账单金额</button>
   <button type="submit" class="btn btn-success" ng-disabled="payForm.$invalid">完成收款</button>
 </div>
 </div>
@@ -313,13 +314,13 @@
             <div class="ks-divider"></div>
             <h4>收入：</h4>
             <div class="ks-divider"></div>
-            <div class="row" ng-show="loan.payWay === 'debx'">
+            <div class="row" ng-show="loan.payWay.value === 'debx'">
                  <div class="col-md-3">
                    <div class="form-group">
                      <label class="control-label">*提前结清违约金（元）</label>
                      <div class="input-group has-success">
                        <input type="text" class="form-control" placeholder="提前结清违约金" name="overdueBreach" float-number-input
-                       ng-model="completeData.income.overdueBreach"  ng-required="loan.payWay==='debx'" >
+                       ng-model="completeData.income.overdueBreach"  ng-required="loan.payWay.value==='debx'" >
                        <span class="input-group-addon">元</span>
                      </div>
                      <div ng-show="completeForm.$submitted || completeForm.overdueBreach.$touched">
@@ -505,6 +506,7 @@
        </fieldset>
   </div>
   <div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="resetCompleteData()" >重置账单金额</button>
     <button type="submit" class="btn btn-success" ng-disabled="!billGenerated">完成结清</button>
   </div>
 </div>

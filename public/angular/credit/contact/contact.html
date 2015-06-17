@@ -14,7 +14,7 @@
           </div>
           <input type="text" class="form-control" aria-label="Text input with dropdown button" ng-model="search.keyword">
           <span class="input-group-btn">
-            <button class="btn btn-primary" type="button" ng-click="startSearch()">搜索</button>
+            <button class="btn btn-success" type="button" ng-click="startSearch()">搜索</button>
           </span>
         </div>
       </div>
@@ -41,7 +41,6 @@
             <td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
             <td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
             <td>{{loan.payMoney + loan.interestsMoney | number:2}}</td>
-
 
           </tr>
           </tr>

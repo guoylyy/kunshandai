@@ -518,19 +518,19 @@ define(['app','underscore'],function(app,_){
     			resolve:resolveCondition(),
     			controller: "BProjectController"
 		    })
- 			.state('borrow.normalProjects',{
+ 			  .state('borrow.normalProjects',{
 		    	url:"/projects/normal?page&loanType",
     			templateUrl: "/angular/borrow/project/bproject.html",
     			resolve:resolveCondition(),
     			controller: "BProjectController"
 		    })
- 			.state('borrow.overdueProjects',{
+ 			  .state('borrow.overdueProjects',{
 		    	url:"/projects/overdue?page&loanType",
     			templateUrl: "/angular/borrow/project/bproject.html",
     			resolve:resolveCondition(),
     			controller: "BProjectController"
 		    })
- 			.state('borrow.badbillProjects',{
+ 			  .state('borrow.badbillProjects',{
 		    	url:"/projects/badbill?page&loanType",
     			templateUrl: "/angular/borrow/project/bproject.html",
     			resolve:resolveCondition(),
@@ -560,6 +560,19 @@ define(['app','underscore'],function(app,_){
 					},
 					controller: "BProjectController"
 		    })
+				.state('credit',{
+					abstract:true,
+					url:"/credit",
+					templateUrl: ""
+				})
+				.state('credit.contact',{
+					url:"/contact",
+					templateUrl: ""
+				})
+				.state('credit.pawn',{
+					url:"/pawn",
+					templateUrl: ""
+				})
 	}]);
 
 });

@@ -4,7 +4,18 @@
 'use strict';
 
 define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angularFileUpload','angularSweetAlert', 'highcharts-ng','angularBusy'],function(angular){
-
+	var changeUrl = function(evt){
+		if(window.location.pathname == '/login'
+			|| window.location.pathname == '/signup'
+			|| window.location.pathname == '/help'
+			|| window.location.pathname == '/retrieve_password'){
+			return;
+		}else{
+			evt.preventDefault();
+			window.location = '/login';
+			return;
+		}
+	}
 	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','ui.utils','angularFileUpload','oitozero.ngSweetAlert','highcharts-ng','cgBusy'])
 	.config(['$httpProvider',function($httpProvider) {
 		$httpProvider.interceptors.push('sessionAuth');
@@ -39,62 +50,100 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 
 		var now 		= new Date();
 
-		if(loginStatus.logined || userInfo){
-		    //session过期
+
+		//自动登录情况
+		if(userInfo){
+			//session过期
 			if(now > loginStatus.sessionExpires){
 				loginStatus.logined = false;
 				$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
-				//记住登录状态
-				if(userInfo){
-					//记住状态期限内
-					if(now < userInfo.expires){
-						AccountService.login(userInfo).then(function(){
-							// $urlRouter.sync();
-							document.location.reload(true);
-						},function(){
-							console.log("自动登录失败");
-						});
 
-					}else{
-						evt.preventDefault();
-						window.location = '/login';
-						return;
-					}
+				//记住状态期限内则重新登录，否则跳到登录页面
+				if(now < userInfo.expires){
+					AccountService.login(userInfo).then(function(){
+						document.location.reload(true);
+					},function(){
+						console.log("自动登录失败");
+					});
 
 				}else{
-					evt.preventDefault();
-					window.location = '/login';
+
+					changeUrl(evt);
 				}
+
 			}else{
-				if(window.location.pathname == '/login'
-					|| window.location.pathname == '/signup'
-					|| window.location.pathname == '/retrieve_password'){
-
-					evt.preventDefault();
-					window.location = '/manage';
-					return;
-				}else{
-					// $urlRouter.sync();
-					return;
-				}
-
+				return;
 			}
 		}else{
-
-			if(window.location.pathname == '/login'
-				|| window.location.pathname == '/signup'
-				|| window.location.pathname == '/help'
-				|| window.location.pathname == '/retrieve_password'){
-				// $urlRouter.sync();
+			//session过期
+			if(now > loginStatus.sessionExpires){
+				loginStatus.logined = false;
+				$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
+				changeUrl(evt);
+				return;
 			}else{
-				// $state.go('login');
-				evt.preventDefault();
-				window.location = '/login';
-				// $location.path('/login');
-
 				return;
 			}
 		}
+    // //自动登录情况或 不自动登录情况下用户已登录
+		// if(loginStatus.logined || userInfo){
+		//     //session过期
+		// 	if(now > loginStatus.sessionExpires){
+		// 		loginStatus.logined = false;
+		// 		$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
+		// 		//记住登录状态
+		// 		if(userInfo){
+		// 			//记住状态期限内
+		// 			if(now < userInfo.expires){
+		// 				AccountService.login(userInfo).then(function(){
+		// 					// $urlRouter.sync();
+		// 					document.location.reload(true);
+		// 				},function(){
+		// 					console.log("自动登录失败");
+		// 				});
+		//
+		// 			}else{
+		//
+		// 				evt.preventDefault();
+		// 				window.location = '/login';
+		// 				return;
+		// 			}
+		//
+		// 		}else{
+		// 			evt.preventDefault();
+		// 			window.location = '/login';
+		// 		}
+		//
+		// 	}else{
+		// 		if(window.location.pathname == '/login'
+		// 			|| window.location.pathname == '/signup'
+		// 			|| window.location.pathname == '/retrieve_password'){
+		//
+		// 			evt.preventDefault();
+		// 			window.location = '/manage';
+		// 			return;
+		// 		}else{
+		// 			// $urlRouter.sync();
+		// 			return;
+		// 		}
+		//
+		// 	}
+		// }else{
+		//
+		// 	if(window.location.pathname == '/login'
+		// 		|| window.location.pathname == '/signup'
+		// 		|| window.location.pathname == '/help'
+		// 		|| window.location.pathname == '/retrieve_password'){
+		// 		// $urlRouter.sync();
+		// 	}else{
+		// 		// $state.go('login');
+		// 		evt.preventDefault();
+		// 		window.location = '/login';
+		// 		// $location.path('/login');
+		//
+		// 		return;
+		// 	}
+		// }
 
     	})
     })

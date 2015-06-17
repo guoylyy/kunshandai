@@ -1,0 +1,52 @@
+<div class="ks-panel">
+	<div class="panel panel-default">
+		<div class="panel-heading">查询用户信息</div>
+		<div class="panel-body">
+      <div class="row">
+      <div class="col-md-offset-3 col-md-6">
+        <div class="input-group">
+          <div class="input-group-btn" dropdown>
+            <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle >{{search.type.text || '借款人'}}<span class="caret"></span></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:73px;">
+              <li><a ng-click="changeSearchType('id')">借款人</a></li>
+              <li><a ng-click="changeSearchType('name')">担保人</a></li>
+            </ul>
+          </div>
+          <input type="text" class="form-control" aria-label="Text input with dropdown button" ng-model="search.keyword">
+          <span class="input-group-btn">
+            <button class="btn btn-primary" type="button" ng-click="startSearch()">搜索</button>
+          </span>
+        </div>
+      </div>
+    </div>
+      <div class="ks-divider"></div>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>姓名</th>
+            <th>总贷款数</th>
+            <th>总借款数</th>
+            <th>总贷款金额</th>
+            <th>已还贷款总金额</th>
+            <th>未还贷款总金额</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="loan in loans | orderBy:'serialNumber'">
+            <td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
+            <td>{{loan.amount | number:2}}</td>
+            <td>{{loan.payWay.text}}</td>
+            <td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
+            <td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
+            <td>{{loan.payMoney + loan.interestsMoney | number:2}}</td>
+
+
+          </tr>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

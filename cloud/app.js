@@ -75,6 +75,12 @@ app.get('/borrow', function(req, res) {
 app.get('/borrow/*', function(req, res) {
   res.render('manage.ejs');
 });
+app.get('/credit', function(req, res) {
+  res.render('manage.ejs');
+});
+app.get('/credit/*', function(req, res) {
+  res.render('manage.ejs');
+});
 app.get('/manage', function(req, res) {
   res.render('manage.ejs');
 });

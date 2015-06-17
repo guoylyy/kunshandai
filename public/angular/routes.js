@@ -563,15 +563,30 @@ define(['app','underscore'],function(app,_){
 				.state('credit',{
 					abstract:true,
 					url:"/credit",
-					templateUrl: ""
+					views:{
+						'':{
+							templateUrl:"/angular/credit/common/partial/layout.html"
+						},
+						'nav@credit': {
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:resolveNavObjects()
+						},
+						'menu@credit': {
+							templateUrl:"/angular/credit/common/partial/menu.html"
+						}
+					}
+				})
+				.state('credit.index',{
+					url:""
 				})
 				.state('credit.contact',{
 					url:"/contact",
-					templateUrl: ""
+					templateUrl:"/angular/credit/contact/contact.html"
 				})
 				.state('credit.pawn',{
 					url:"/pawn",
-					templateUrl: ""
+					templateUrl:"/angular/credit/pawn/pawn.html"
 				})
 	}]);
 

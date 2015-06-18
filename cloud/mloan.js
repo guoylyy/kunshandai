@@ -576,11 +576,19 @@ function updateLoan(loan, reqBody){
 
     //还款时间
     //根据还款类型确认初次还款日期
+    //存储一个正常的首次还款时间
+    //loan.set('normalFirstPayDate', mutil.wrapperStrToDate(reqBody.normalFirstPayDate));
     loan.set('currPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
     loan.set('firstPayDate', mutil.wrapperStrToDate(reqBody.firstPayDate));
     loan.set('status', mconfig.loanStatus.draft.value);
     return loan;
 };
+
+//获取正常还款时间
+function getNormalFirstPayDate(loan){
+    var loanType = loan.get('loanType');
+    
+}
 
 //贷款抵押物
 function createLoanPawn(reqBody){

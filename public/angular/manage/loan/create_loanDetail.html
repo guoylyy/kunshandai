@@ -211,9 +211,9 @@
 								<div class="input-group">
 									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.firstPayDate" is-open="calendar.openedPay"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭"  required name="firstPayDate" show-weeks="false"
 									 ui-validate="{rangeStart:'$value >= loanInfo.startDate',rangeEnd:' $value <= loanInfo.endDate'}" ui-validate-watch=" 'loanInfo'"
-									min-date="loanInfo.startDate" max-date="loanInfo.endDate"/>
+									min-date="loanInfo.startDate" max-date="loanInfo.endDate" disabled/>
 									<span class="input-group-btn">
-										<button type="button" class="btn btn-default" ng-click="open($event,'openedPay')" ><i class="glyphicon glyphicon-calendar"></i></button>
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedPay')" disabled><i class="glyphicon glyphicon-calendar"></i></button>
 									</span>
 								</div>
 

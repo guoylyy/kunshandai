@@ -1,0 +1,513 @@
+<!-- 还款列表 -->
+<form name="paySelectForm" ng-submit="paySelectForm.$valid && startCollect()">
+  <div ng-show="process.list">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h4 class="modal-title">还款</h4>
+    </div>
+    <div class="modal-body">
+      <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+      <div class="ks-panel">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>选择</th>
+              <th>期数</th>
+              <th>应还金额</th>
+              <th>应还日期</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="payback in paybacks" ng-class="{warning:($parent.select.payBackIds[$index]),success:(payback.status == 3)}">
+              <td ng-show="payback.status !== 3">
+                <input type="checkbox" name="payback" value="{{payback.objectId}}"
+              ng-model="$parent.select.payBackIds[$index]"  ng-true-value="'{{payback.objectId}}'" ng-false-value="''"
+              ng-disabled="(!(payback.status == 1) && !($parent.select.payBackIds[$index - 1]) )|| (payback.status == 3) || ($parent.select.payBackIds[$index + 1])">
+              </td>
+              <td ng-show="payback.status === 3">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              </td>
+              <td>{{payback.order}}</td>
+              <td>{{payback.payMoney | number:2}}</td>
+              <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+              <td ng-show="payback.status === 1" class="text-info">正在还</td>
+              <td ng-show="payback.status === 2" >未还</td>
+              <td ng-show="payback.status === 3"class="text-success">已还</td>
+              <td ng-show="payback.status === 4">已关闭</td>
+            </tr>
+          </tbody>
+        </table>
+        <input type="hidden" ng-model="payBackIds" name="payBackIds" required>
+        <div ng-show="paySelectForm.$submitted || paySelectForm.payback.$touched">
+         <div class="text-danger" ng-show="paySelectForm.payBackIds.$error.required">请选择一项</div>
+       </div>
+     </div>
+     <div class="alert alert-warning" ng-show="select.payBackIds[paybacks.length - 1]">
+       <p>最后一期不支持合并还款, 包含最后一期只能进行结清</p>
+     </div>
+   </div>
+   <div class="modal-footer">
+     <button type="button" class="btn btn-warning ks-left" ng-click="startComplete()">开始结清</button>
+    <button type="button" class="btn btn-default" ng-click="cancel()">取消还款</button>
+    <button type="submit" class="btn btn-success" ng-show="!select.payBackIds[paybacks.length - 1]" ng-disabled="payBackIds.length == 0">开始还款</button>
+  </div>
+  </div>
+</form>
+
+<!-- 还款界面 -->
+<form name="payForm" ng-submit="payForm.$valid && pay()">
+<div ng-show="process.pay">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">还款</h4>
+  </div>
+  <div class="modal-body">
+  <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+  <div class="ks-panel" >
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>期数</th>
+          <th>应还金额</th>
+          <th>应还日期</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="selectedPayback in selectedPaybacks" >
+          <td>{{selectedPayback.order}}</td>
+          <td>{{selectedPayback.payMoney | number:2}}</td>
+          <td>{{selectedPayback.payDate | date:"yyyy-MM-dd"}}</td>
+          <td ng-show="selectedPayback.status === 1" class="text-info">正在还</td>
+          <td ng-show="selectedPayback.status === 2" >未还</td>
+          <td ng-show="selectedPayback.status === 3"class="text-success">已还</td>
+          <td ng-show="selectedPayback.status === 4">已关闭</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    <div class="ks-divider"></div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group has-warning">
+            <label class="control-label">*还款日期</label>
+            <div class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="payDate"
+              is-open="calendar.opened" datepicker-options="dateOptions"  close-text="关闭" name="payDate" required
+              ui-validate="'$value >= loan.startDate'" min-date="loan.startDate"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-show="payForm.payDate.$error.validator">还款日期不得早于项目开始日期</div>
+
+            <div ng-show="payForm.$submitted || payForm.payDate.$touched">
+              <div class="text-danger" ng-show="payForm.payDate.$error.required">请填写还款日期</div>
+              <div class="text-danger" ng-show="payForm.payDate.$error.date">请填写正确的日期格式</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="ks-divider"></div>
+    <fieldset class="panel panel-success" ng-disabled="!billGenerated" ng-show="billGenerated" cg-busy="countPromise">
+         <div class="panel-heading">还款账单</div>
+           <div class="panel-body">
+              <div class="row">
+                <div class="col-md-12">
+                 <div class="ks-panel">
+                       <ui-include src="'/angular/borrow/common/partial/repayBill.html'"></ui-include>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>*实还本金（元）</label>
+                    <div class="input-group has-success">
+                      <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+                      <input type="text" class="form-control" placeholder="还款金额" name="payMoney" float-number-input ng-model="payData.payMoney"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <!-- <label ng-show="payData.payBackMoney != 0" class="text-warning">减去上期已还{{payData.payBackMoney}}</label> -->
+                    <div ng-show="payForm.$submitted || payForm.payMoney.$touched">
+                      <div class="text-danger" ng-show="payForm.payMoney.$error.required">请填写实还金额</div>
+                    </div>
+                     <div >
+                      <div class="text-danger" ng-show="payData.payMoney < payBill.payMoney && payData.payBackMoney == 0">小于应还金额</div>
+                      <div class="text-warning" ng-show="payData.payMoney > payBill.payMoney && payData.payBackMoney == 0">大于应还金额</div>
+                    </div>
+                  </div>
+                 </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>*实还违约金（元）</label>
+                    <div class="input-group has-success">
+                      <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+                      <input type="text" class="form-control" placeholder="还款金额" name="overdueMoney" float-number-input ng-model="payData.overdueMoney"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="payForm.$submitted || payForm.overdueMoney.$touched">
+                      <div class="text-danger" ng-show="payForm.overdueMoney.$error.required">请填写实还违约金</div>
+                    </div>
+                     <div>
+                      <div class="text-danger" ng-show="payData.overdueMoney < payBill.overdueMoney && payData.payBackMoney == 0">小于应还违约金</div>
+                      <div class="text-warning" ng-show="payData.overdueMoney > payBill.overdueMoney && payData.payBackMoney == 0">大于应还违约金</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>*实还利息（元）</label>
+                    <div class="input-group has-success">
+                      <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+                      <input type="text" class="form-control" placeholder="实还利息（元）" name="interest" float-number-input ng-model="payData.interestsMoney"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="payForm.$submitted || payForm.interest.$touched">
+                      <div class="text-danger" ng-show="payForm.interest.$error.required">请填写实还利息</div>
+                    </div>
+                     <div >
+                      <div class="text-danger" ng-show="payData.interestsMoney < payBill.interestsMoney && payData.payBackMoney == 0">小于应还利息</div>
+                      <div class="text-warning" ng-show="payData.interestsMoney > payBill.interestsMoney && payData.payBackMoney == 0">大于应还利息</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>*总计（元）</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="总计" name="totalIncome"  value="{{total.income | number:2}}" disabled="true">
+                      <span class="input-group-addon">元</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+           </div>
+         </fieldset>
+         <fieldset class="panel panel-success"  ng-show="total.income != payBill.sum && billGenerated && payBackIds.length == 1" >
+            <div class="panel-heading">还款类型</div>
+              <div class="panel-body">
+                 <div class="row">
+                   <div class="col-md-9">
+                     <label class="radio-inline" ng-repeat="ptype in payBackTypes"
+                        ng-show="(ptype.value!='normal' && loan.payStatus.value!=='overdue') || (loan.payStatus.value==='overdue' && ptype.value=='next')">
+                        <input type="radio" ng-model="payData.payType"  ng-value="ptype.value"
+                        name="payBackType" ng-required="!payData.payType && payBackIds.length == 1">{{ptype.text}}
+                     </label>
+                     <div ng-show="payForm.$submitted || payForm.payBackType.$touched">
+                       <div class="text-danger" ng-show="payForm.payBackType.$error.required">请填写还款类型</div>
+                     </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div ng-show="payData.payType == 'favour'">
+                        优惠：<ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元
+                      </div>
+                      <div ng-show="payData.payType == 'next'">
+                        下期多还：<ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元
+                      </div>
+                      <div ng-show="payData.payType == 'partial'">
+                        本期下次还款：<ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元
+                      </div>
+                    <!-- {{payData.payType | cDisplay:'payBackTypes'}}(差额)：  <ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元 -->
+                    </div>
+                 </div>
+              </div>
+        </fieldset>
+
+  </div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
+  <button type="button" class="btn btn-default" ng-click="resetPayData()" >重置账单金额</button>
+  <button type="submit" class="btn btn-success" ng-disabled="payForm.$invalid">完成还款</button>
+</div>
+</div>
+</form>
+
+<!-- 结清界面 -->
+ <form name="completeForm" ng-submit="completeForm.$valid && completeLoan()">
+<div ng-show="process.complete">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title">结清</h4>
+  </div>
+  <div class="modal-body">
+    <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+  <div class="ks-divider"></div>
+  <div class="ks-panel" >
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>期数</th>
+          <th>应还金额（元）</th>
+          <th>应还日期</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="payback in paybacks">
+          <td>{{payback.order}}</td>
+          <td>{{payback.payMoney | number:2}}</td>
+          <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+          <td ng-show="payback.status === 1" class="text-info">正在还</td>
+          <td ng-show="payback.status === 2" >未还</td>
+          <td ng-show="payback.status === 3" class="text-success">已还</td>
+          <td ng-show="payback.status === 4">已关闭</td>
+        </tr>
+      </tbody>
+    </table>
+     <div class="ks-divider"></div>
+  </div>
+  <!-- <pre>{{completeForm.$error | json}}</pre> -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group has-warning">
+            <label class="control-label">结清日期</label>
+            <div class="input-group">
+              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="completeCount.date"
+               is-open="calendar.opened" datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="completeDate"
+               ui-validate="'$value >= loan.startDate'" min-date="loan.startDate"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+            <div class="text-danger" ng-show="completeForm.completeDate.$error.validator">结清日期不得在项目开始日期前</div>
+            <div ng-show="completeForm.$submitted || completeForm.completeDate.$touched">
+              <div class="text-danger" ng-show="completeForm.completeDate.$error.required">请填写还款日期</div>
+              <div class="text-danger" ng-show="completeForm.completeDate.$error.date">请填写正确的日期格式</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="form-group has-warning">
+            <label class="control-label">利息计算方式</label>
+            <div class="input-group">
+              <label class="radio-inline" ng-repeat="i in interestCalTypes">
+                 <input type="radio" ng-model="completeCount.interestType"  ng-value="i.value" name="interestTypeGroup" ng-required="!completeCount.interestType" >{{i.text}}
+              </label>
+            </div>
+            <!-- <input type="hidden" name="interestType" value="{{completeCount.interestType}}" > -->
+            <div ng-show="completeForm.$submitted || completeForm.interestType.$touched ||  completeForm.completeDate.$touched">
+              <div class="text-danger" ng-show="completeForm.interestTypeGroup.$error.required">请选择利息计算方式</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     <div class="ks-divider"></div>
+      <div class="panel panel-success" ng-show="billGenerated " cg-busy="countPromise">
+       <div class="panel-heading">结清账单</div>
+         <div class="panel-body">
+            <div class="row">
+            <div class="col-md-12">
+            <div class="ks-panel">
+             <ui-include src="'/angular/borrow/common/partial/completeBill.html'"></ui-include>
+            </div>
+            </div>
+          </div>
+            <div class="ks-divider"></div>
+            <h4>支出：</h4>
+            <div class="ks-divider"></div>
+            <div class="row" ng-show="loan.payWay.value === 'debx'">
+                 <div class="col-md-3">
+                   <div class="form-group">
+                     <label class="control-label">*提前结清违约金（元）</label>
+                     <div class="input-group has-success">
+                       <input type="text" class="form-control" placeholder="提前结清违约金" name="overdueBreach" float-number-input
+                       ng-model="completeData.income.overdueBreach"  ng-required="loan.payWay.value==='debx'" >
+                       <span class="input-group-addon">元</span>
+                     </div>
+                     <div ng-show="completeForm.$submitted || completeForm.overdueBreach.$touched">
+                       <div class="text-danger" ng-show="completeForm.overdueBreach.$error.required">请填写提前结清违约金</div>
+                     </div>
+                      <div >
+                       <div class="text-danger" ng-show="completeData.income.overdueBreach < completedBill.income.overdueBreach ">小于应还提前结清违约金</div>
+                       <div class="text-warning" ng-show="completeData.income.overdueBreach > completedBill.income.overdueBreach ">大于应还提前结清违约金</div>
+                     </div>
+                   </div>
+                 </div>
+            </div>
+           <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label">*实还本金（元）</label>
+                    <div class="input-group has-warning">
+                      <input type="text" class="form-control" placeholder="实还金额" name="amount" float-number-input ng-model="completeData.income.amount"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="completeForm.$submitted || completeForm.amount.$touched">
+                      <div class="text-danger" ng-show="completeForm.amount.$error.required">请填写实还金额</div>
+                    </div>
+                     <div >
+                      <div class="text-danger" ng-show="completeData.income.amount < completedBill.income.amount ">小于应还本金</div>
+                      <div class="text-warning" ng-show="completeData.income.amount > completedBill.income.amount ">大于应还本金</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group has-warning">
+                    <label class="control-label">*实还逾期费用（元）</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="实还金额" name="overdueMoney" float-number-input ng-model="completeData.income.overdueMoney"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="completeForm.$submitted || completeForm.overdueMoney.$touched">
+                      <div class="text-danger" ng-show="completeForm.overdueMoney.$error.required">请填写实还逾期费用</div>
+                    </div>
+                    <div>
+                      <div class="text-danger" ng-show="completeData.income.overdueMoney < completedBill.income.overdueMoney ">小于应还逾期费用</div>
+                      <div class="text-warning" ng-show="completeData.income.overdueMoney > completedBill.income.overdueMoney ">大于应还逾期费用</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group has-warning">
+                    <label class="control-label">*实还利息（元）</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="实还利息" name="ininterest" float-number-input ng-model="completeData.income.interest"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="completeForm.$submitted || completeForm.ininterest.$touched">
+                      <div class="text-danger" ng-show="completeForm.ininterest.$error.required">请填写实还利息</div>
+                    </div>
+                    <div>
+                      <div class="text-danger" ng-show="completeData.income.interest < completedBill.income.interest ">小于应还利息</div>
+                      <div class="text-warning" ng-show="completeData.income.interest > completedBill.income.interest ">大于应还利息</div>
+                    </div>
+                  </div>
+                </div>
+                 <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label">*实还总计（元）</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control"  ng-value="total.income | number:2" disabled="true">
+                      <span class="input-group-addon">元</span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            <div class="ks-divider"></div>
+            <h4>收入：</h4>
+            <div class="ks-divider"></div>
+            <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group has-success">
+                    <label class="control-label">*实收保证金</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="实收保证金" name="assureCost" float-number-input ng-model="completeData.outcome.assureCost"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="completeForm.$submitted || completeForm.assureCost.$touched">
+                      <div class="text-danger" ng-show="completeForm.assureCost.$error.required">请填写实收保证金</div>
+                    </div>
+                    <div>
+                      <div class="text-warning" ng-show="completeData.outcome.assureCost < completedBill.outcome.assureCost ">小于应收保证金</div>
+                      <div class="text-danger" ng-show="completeData.outcome.assureCost > completedBill.outcome.assureCost ">大于应收保证金</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group has-success">
+                    <label class="control-label">*实收暂还费用</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="实收暂还费用" name="keepCost" float-number-input ng-model="completeData.outcome.keepCost"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="completeForm.$submitted || completeForm.keepCost.$touched">
+                      <div class="text-danger" ng-show="completeForm.keepCost.$error.required">请填写实收暂还费用</div>
+                    </div>
+                     <div>
+                      <div class="text-warning" ng-show="completeData.outcome.keepCost < completedBill.outcome.keepCost ">小于应收暂还费用</div>
+                      <div class="text-danger" ng-show="completeData.outcome.keepCost > completedBill.outcome.keepCost ">大于应收暂还费用</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group has-success">
+                    <label class="control-label">*实收利息</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="实收利息" name="outinterest" float-number-input ng-model="completeData.outcome.interest"  required >
+                      <span class="input-group-addon">元</span>
+                    </div>
+                    <div ng-show="completeForm.$submitted || completeForm.outinterest.$touched">
+                      <div class="text-danger" ng-show="completeForm.outinterest.$error.required">请填写实收利息</div>
+                    </div>
+                     <div>
+                      <div class="text-warning" ng-show="completeData.outcome.interest < completedBill.outcome.interest ">小于应收利息</div>
+                      <div class="text-danger" ng-show="completeData.outcome.interest > completedBill.outcome.interest ">大于应收利息</div>
+                    </div>
+                  </div>
+                </div>
+                 <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label">*实收总计</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control"  ng-value="total.outcome | number:2" disabled="true">
+                      <span class="input-group-addon">元</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="ks-divider"></div>
+            <div class="row">
+              <!-- <div class="col-md-offset-6  col-md-3" >
+                <div class="form-group">
+                  <label>*优惠（元）</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control"  placeholder="优惠" name="favour" value="{{completeData.favour | number:2}}" disabled="true">
+                    <span class="input-group-addon">元</span>
+                  </div>
+                </div>
+              </div> -->
+                <div class="col-md-offset-9 col-md-3" >
+                  <div class="form-group">
+                    <label>*总计（元）</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control"  placeholder="总计" name="total" value="{{total.income - total.outcome| number:2}}" disabled="true">
+                      <span class="input-group-addon">元</span>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+          </div>
+        </div>
+        <fieldset class="panel panel-success"  ng-show="completeData.favour > 0 && billGenerated" >
+           <div class="panel-heading">结清类型</div>
+             <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-9">
+                    <label class="radio-inline" ng-repeat="ptype in payBackTypes" ng-show="ptype.value!='normal' && ptype.value!='next'">
+                       <input type="radio" ng-model="completeData.payType"  ng-value="ptype.value"
+                       name="payBackType" ng-required="!completeData.payType">{{ptype.text}}
+                    </label>
+                    <div ng-show="completeForm.$submitted || completeForm.payBackType.$touched">
+                      <div class="text-danger" ng-show="completeForm.payBackType.$error.required">请填写还款类型</div>
+                    </div>
+                   </div>
+                   <div class="col-md-3">
+                     <div ng-show="completeData.payType == 'favour'">
+                       优惠：<ins  class="text-warning">{{completeData.favour}}</ins> 元
+                     </div>
+                     <div ng-show="completeData.payType == 'partial'">
+                       下次结清：<ins  class="text-warning">{{completeData.favour}}</ins> 元
+                     </div>
+                   </div>
+                </div>
+             </div>
+       </fieldset>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="resetCompleteData()" >重置账单金额</button>
+    <button type="submit" class="btn btn-success" ng-disabled="!billGenerated">完成结清</button>
+  </div>
+</div>
+</form>

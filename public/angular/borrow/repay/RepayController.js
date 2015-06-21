@@ -1,6 +1,6 @@
 define(['app'],function(app){
-  return app.controller('RepayController',['$scope','loans','loanTypes','timeRanges','BLoanService','$state','$stateParams',
-    function($scope,loans,loanTypes,timeRanges,BLoanService,$state,$stateParams) {
+  return app.controller('RepayController',['$scope','loans','loanTypes','timeRanges','BLoanService','$state','$stateParams','$modal','DictService',
+    function($scope,loans,loanTypes,timeRanges,BLoanService,$state,$stateParams,$modal,DictService) {
 
       $scope.totalLoans 	= loans.totalNum;
 
@@ -28,15 +28,11 @@ define(['app'],function(app){
       }
 
       init();
-      // $scope.template = {
-      // 	processCompleteUrl	:'/angular/manage/collect/template/processComplete.html',
-      // 	processListUrl		:'/angular/manage/collect/template/processList.html',
-      // 	processPayUrl		:'/angular/manage/collect/template/processPay.html'
-      // }
+
 
       var collectModal = function(loanId,processName){
         var collectModal = $modal.open({
-          templateUrl: '/angular/manage/collect/collectModal.html',
+          templateUrl: '/angular/borrow/repay/repayModal.html',
           controller:'CollectProcessCtrl',
           size:'lg',
           backdrop: true,

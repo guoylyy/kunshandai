@@ -1,4 +1,3 @@
-
 <div class="ks-dividing">
 	<h4>项目详情</h4>
 </div>
@@ -9,7 +8,7 @@
 	<div class=" col-md-3" ng-controller="ActiveLoanCtrl">
 		<a ui-sref="manage.normalProjects"><button class="btn btn-default ks-right">返回项目列表</button></a>
 		<button class="btn btn-warning ks-right" ng-click="activeLoan()" ng-show="!loanInfo.actived">立即放款</button>
-		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">正在收款</button>
+		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">{{loanInfo.status.value == 1?'正在收款':'已完成'}}</button>
 	</div>
 
 </div>

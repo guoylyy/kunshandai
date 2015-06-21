@@ -19,7 +19,7 @@
        <div class="row">
          <div class="col-md-9">
            <ul class="ks-list-unstyled">
-             <li>收款时间:</li>
+             <li>还款时间:</li>
              <li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
            </ul>
          </div>
@@ -53,11 +53,11 @@
        <th>贷款金额</th>
        <th>还款类型</th>
        <th>当前/总期</th>
-       <th>应收日期</th>
-       <th>应收金额</th>
-       <th ng-show="('borrow.collectDone' | isState)">实收日期</th>
-       <th ng-show="('borrow.collectDone' | isState)">实收金额</th>
-       <th ng-show="('borrow.collectPending' | isState)">距收款日期</th>
+       <th>应还日期</th>
+       <th>应还金额</th>
+       <th ng-show="('borrow.collectDone' | isState)">实还日期</th>
+       <th ng-show="('borrow.collectDone' | isState)">实还金额</th>
+       <th ng-show="('borrow.collectPending' | isState)">距还款日期</th>
        <th>操作</th>
      </tr>
    </thead>
@@ -76,7 +76,7 @@
          <div class="dropdown" dropdown>
            <a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
            <ul class="dropdown-menu"  role="menu">
-             <li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle"> 收款</a></li>
+             <li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle">入账</a></li>
              <li><a role="menuitem"  ng-click="complete(loan.loanObjectId)">结清</a></li>
              <li ><a role="menuitem" href="/project/{{loan.loanObjectId}}/modify" target="_blank">调整</a></li>
              <li ><a role="menuitem" href="/project/create?ref={{loan.loanObjectId}}" target="_blank">新签</a></li>

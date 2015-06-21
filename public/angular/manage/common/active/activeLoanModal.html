@@ -31,13 +31,13 @@
         <div class="input-group has-danger">
           <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
           <input type="text" class="form-control" placeholder="放款金额" name="amount" float-number-input ng-model="loanData.amount"
-          ng-init="payment.shouldOutMoney" required>
+          ng-init="loanData.amount = payment.shouldOutMoney" required>
           <span class="input-group-addon">元</span>
         </div>
         <div ng-show="loanForm.$submitted || loanForm.amount.$touched">
           <div class="text-danger" ng-show="loanForm.amount.$error.required">请填写放款金额</div>
         </div>
-        <div ng-init="total = (payment.outMoney + payment.keepCost + payment.otherCost + payment.serviceCost + payment.assureCost+payment.interestsMoney - loan.preLoanData.finishPayedMoney)">
+        <div ng-init="total = payment.shouldOutMoney">
           <div class="text-danger" ng-show="loanData.amount < total ">小于计算的放款金额</div>
           <div class="text-warning" ng-show="loanData.amount > total ">大于计算的放款金额</div>
         </div>

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['app','underscore'],function(app) {
+define(['app','underscore'],function(app,_) {
 	return app.controller('ProjectController', ['$scope','$state','$stateParams','loans','loanTypes','timeRanges','$modal','LoanService','DictService',
 	 function($scope,$state,$stateParams,loans,loanTypes,timeRanges,$modal,LoanService,DictService){
 
@@ -62,6 +62,9 @@ define(['app','underscore'],function(app) {
 		}
 
 		$scope.startSearch = function(){
+			if(_.isEmpty($scope.search.keyword)){
+				return;
+			}
 			$state.go(
 				"manage.searchProjects",
 				{keyword:$scope.search.keyword,type:$scope.search.type.value},

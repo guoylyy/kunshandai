@@ -1,0 +1,45 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>科目</th>
+        <th>支出</th>
+        <th>收入</th>
+        <th>余额</th>
+      </tr>
+    </thead>
+    <tbody ng-init="total = completedBill.income.amount + completedBill.income.overdueMoney
+     + completedBill.income.interest - completedBill.outcome.assureCost - completedBill.outcome.keepCost - completedBill.outcome.interest">
+      <tr>
+        <th scope="row">应还本金（元）</th>
+        <td>{{payBill.payMoney | number:2 }}</td>
+        <td></td>
+        <td>{{row1 = -payBill.payMoney | number:2 }}</td>
+      </tr>
+      <tr>
+        <th scope="row">应还逾期费用（元）</th>
+        <td>{{payBill.overdueMoney | number:2}}</td>
+        <td></td>
+        <td>{{row2 = row1 - payBill.overdueMoney   | number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">利息（元）</th>
+        <td>{{payBill.interestsMoney | number:2}}</td>
+        <td></td>
+        <td>{{row3 = row2 - payBill.interestsMoney| number:2}}</td>
+      </tr>
+      <tr class="warning">
+        <th scope="row">本期已还（元）</th>
+        <td></td>
+        <td>{{payBill.payBackMoney | number:2}}</td>
+        <td>{{row4 = row3 + payBill.payBackMoney| number:2}}</td>
+      </tr>
+      <tr>
+        <th scope="row">还款金额（元）</th>
+        <td></td>
+        <td></td>
+        <td>{{row4 | number:2}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

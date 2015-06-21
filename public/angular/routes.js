@@ -485,9 +485,51 @@ define(['app','underscore'],function(app,_){
 						}
 					}
         })
+				.state('borrow.index',{
+		    	url:"?startDate&endDate",
+    			templateUrl:  "/angular/borrow/index/index.html",
+    			resolve: {
+    				incomeStatistics: function(BLoanService, $stateParams, $filter){
+    					if(!$stateParams.startDate || !$stateParams.endDate) {
+    						var currDate = new Date();
+    						$stateParams.startDate = new Date(currDate.getFullYear(),
+    																		  currDate.getMonth(),
+    																		  1).getTime();
+    						$stateParams.endDate = currDate.getTime();
+    					}
+              var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');
+              var endDate =  $filter('date')(new Date(parseInt($stateParams.endDate)), 'yyyy-MM-dd');
+              return BLoanService.statictics('income', startDate, endDate).then(function(data){
+                return data;
+              });
+    				},
+    				outcomeStatistics: function(BLoanService, $stateParams, $filter){
+    					if(!$stateParams.startDate || !$stateParams.endDate) {
+                var currDate = new Date();
+                $stateParams.startDate = new Date(currDate.getFullYear(),
+                                          currDate.getMonth(),
+                                          1).getTime();
+                $stateParams.endDate = currDate.getTime();
+              }
+              var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');
+              var endDate =  $filter('date')(new Date(parseInt($stateParams.endDate)), 'yyyy-MM-dd');
+              return BLoanService.statictics('outcome', startDate, endDate).then(function(data){
+                return data;
+              });
+    				}
+    			},
+    			controller: 'BIndexController'
+		    })
+
+		    .state('borrow.fianceStatistics',{
+		    	url:"/fianceStatistics",
+					templateUrl:  "/angular/borrow/index/index.html",
+				  controller: 'BIndexController'
+
+		    })
 				.state('borrow.draft',{
 		    	url:"/draft?page",
-    			templateUrl: "/angular/borrow/bloan/partial/draft.html",
+    			templateUrl: "/angular/borrow/bloan/partials/draft.html",
     			resolve:{
     				draftLoans:function(BLoanService,$stateParams){
     					return BLoanService.getDraft($stateParams.page || 1).then(function(data){
@@ -550,9 +592,7 @@ define(['app','underscore'],function(app,_){
 		    	resolve:resolveSelectItems(),
 		    	controller: "ModifyBLoanFinalCtrl"
 		    })
-        .state('borrow.index',{
-          url:''
-        })
+
 				.state('borrow.repayPending',{
 					url:"/repay/pending?page&startDate&endDate&loanType",
     			templateUrl: "/angular/borrow/repay/repay.html",

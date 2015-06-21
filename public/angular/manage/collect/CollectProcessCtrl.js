@@ -186,7 +186,7 @@ define(['app','underscore','moment'],function(app,_,moment) {
 					$scope.payData
 
 				).then(function(){
-					SweetAlert.success("收款成功","");
+					SweetAlert.success("操作成功","");
 					$modalInstance.close(true);
 				});
 			}else{
@@ -197,7 +197,7 @@ define(['app','underscore','moment'],function(app,_,moment) {
 					$scope.total.income,
 					$scope.payData
 				).then(function(){
-					SweetAlert.success("收款成功","");
+					SweetAlert.success("操作成功","");
 					$modalInstance.close(true);
 				});
 			}

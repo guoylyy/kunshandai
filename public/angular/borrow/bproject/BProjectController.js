@@ -1,6 +1,6 @@
 define(['app'],function(app) {
-  return app.controller('BProjectController', ['$scope','BLoanService','loans','$state','$stateParams','loanTypes','timeRanges',
-    function($scope,BLoanService,loans,$state,$stateParams,loanTypes,timeRanges) {
+  return app.controller('BProjectController', ['$scope','BLoanService','loans','$state','$stateParams','loanTypes','timeRanges','$modal','DictService',
+    function($scope,BLoanService,loans,$state,$stateParams,loanTypes,timeRanges,$modal,DictService) {
 
 
       		$scope.currentState	= $state.current;
@@ -56,20 +56,23 @@ define(['app'],function(app) {
       				$scope.search.type.text = '项目号';
       			}else{
       				$scope.search.type.value = 'name';
-      				$scope.search.type.text = '贷款人';
+      				$scope.search.type.text = '放款人';
       			}
       		}
 
       		$scope.startSearch = function(){
-      			$state.go(
-      				"manage.searchProjects",
+            if(_.isEmpty($scope.search.keyword)){
+      				return;
+      			}
+            $state.go(
+      				"borrow.searchProjects",
       				{keyword:$scope.search.keyword,type:$scope.search.type.value},
       				{reload: true});
       		}
 
       		$scope.collectModal = function(loanId,processName){
       				var collectModal = $modal.open({
-      					templateUrl: '/angular/manage/collect/collectModal.html',
+      					templateUrl: '/angular/borrow/repay/repayModal.html',
       					controller:'CollectProcessCtrl',
       					size:'lg',
       					backdrop: true,

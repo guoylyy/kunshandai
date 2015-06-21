@@ -2,8 +2,8 @@
 
 define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 
-	return app.factory('BLoanService', ['$http','$q','ApiURL','$log',
-		function($http,$q,ApiURL,$log){
+	return app.factory('BLoanService', ['$http','$q','ApiURL','$log','LoanService',
+		function($http,$q,ApiURL,$log,LoanService){
 
 		var loanUrl = '/borrow';
 

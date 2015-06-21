@@ -577,42 +577,54 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "ContactController"
 		    })
+				.state('borrow.searchContact',{
+		    	url:"/contact/search?type&keyword",
+    			templateUrl: "/angular/manage/contact/contact.html",
+    			resolve:{
+						contacts:function(ContactService, $stateParams){
+		    			return ContactService.search($stateParams.type,$stateParams.keyword).then(function(data){
+			    			return data;
+			    		})
+		    		}
+    			},
+    			controller: "ContactController"
+		    })
 				.state('borrow.allProjects',{
 		    	url:"/projects/all?page&startDate&endDate&loanType",
-    			templateUrl: "/angular/borrow/project/bproject.html",
-    			resolve:resolveCondition(),
+    			templateUrl: "/angular/borrow/bproject/bproject.html",
+    			resolve:resolveObject("BLoanService.getLoans"),
     			controller: "BProjectController"
 		    })
  			  .state('borrow.normalProjects',{
 		    	url:"/projects/normal?page&loanType",
-    			templateUrl: "/angular/borrow/project/bproject.html",
-    			resolve:resolveCondition(),
+    			templateUrl: "/angular/borrow/bproject/bproject.html",
+    			resolve:resolveObject("BLoanService.getNormalLoans"),
     			controller: "BProjectController"
 		    })
  			  .state('borrow.overdueProjects',{
 		    	url:"/projects/overdue?page&loanType",
-    			templateUrl: "/angular/borrow/project/bproject.html",
-    			resolve:resolveCondition(),
+    			templateUrl: "/angular/borrow/bproject/bproject.html",
+    			resolve:resolveObject("BLoanService.getOverdueLoans"),
     			controller: "BProjectController"
 		    })
  			  .state('borrow.badbillProjects',{
 		    	url:"/projects/badbill?page&loanType",
-    			templateUrl: "/angular/borrow/project/bproject.html",
-    			resolve:resolveCondition(),
+    			templateUrl: "/angular/borrow/bproject/bproject.html",
+    			resolve:resolveObject("BLoanService.getBadbillLoans"),
     			controller: "BProjectController"
 		    })
  		    .state('borrow.completedProjects',{
 		    	url:"/projects/completed?page&loanType",
-    			templateUrl: "/angular/borrow/project/bproject.html",
-    			resolve:resolveCondition(),
+    			templateUrl: "/angular/borrow/bproject/bproject.html",
+    			resolve:resolveObject("BLoanService.getCompletedLoans"),
     			controller: "BProjectController"
 		    })
 		    .state('borrow.searchProjects',{
 		    	url:"/projects/search?page&type&keyword",
-					templateUrl: "/angular/borrow/project/bproject.html",
+					templateUrl: "/angular/borrow/bproject/bproject.html",
 					resolve:{
-						loans:function(LoanService,$stateParams){
-				    		return LoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
+						loans:function(BLoanService,$stateParams){
+				    		return BLoanService.search($stateParams.type,$stateParams.keyword).then(function(data){
 				    			return data;
 				    		})
 				    	},

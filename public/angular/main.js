@@ -102,7 +102,7 @@ require([
 		 'manage/contact/ContactModalCtrl',
 
 	   'borrow/bloan/controllers/BLoanCtrls',
-		'borrow/bloan/helpers/BLoanHelper',
+		 'borrow/bloan/helpers/BLoanHelper',
 		 'borrow/bloan/services/BLoanService',
 
 		 'common/interceptors/responseErr',
@@ -112,7 +112,7 @@ require([
 		 'common/filter/cDisplay',
 
 		 'borrow/repay/RepayController',
-		 'borrow/project/BProjectController',
+		 'borrow/bproject/BProjectController',
 		 'routes'
 
 ],function(angular) {

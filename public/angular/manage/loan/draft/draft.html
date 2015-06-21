@@ -1,12 +1,12 @@
 <div class="ks-dividing">
 	<h4 ng-show="('manage.draftLoans' | isState)">放款管理->待放款项目</h4>
-	<h4 ng-show="('borrow.draft' | isState)">借款管理->待入资项目</h4>
+	<h4 ng-show="('borrow.draft' | isState)">借款管理->待入账项目</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="btn-group btn-group-middle" >
 			<button type="button" class="btn btn-default" ui-sref="manage.draftLoans" ui-sref-active="active" ng-show="('manage.draftLoans' | isState)">待放款项目</button>
-			<button type="button" class="btn btn-default" ui-sref="borrow.draft" ui-sref-active="active" ng-show="('borrow.draft' | isState)">待入资项目</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.draft" ui-sref-active="active" ng-show="('borrow.draft' | isState)">待入账项目</button>
 		</div>
 	</div>
 </div>
@@ -15,7 +15,7 @@
 		<thead>
 			<tr>
 				<th>项目编号</th>
-				<th>贷款人</th>
+				<th>放款人</th>
 				<th>贷款金额（元）</th>
 				<th>创建时间</th>
 				<th>贷款类型</th>
@@ -35,7 +35,7 @@
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a role="menuitem" ng-click="activeLoan(loan.id)">放款</a></li>
+							<li><a role="menuitem" ng-click="activeLoan(loan.id)">入账</a></li>
 							<li><a role="menuitem" ng-click="deleteLoan(loan.id)" class="text-danger">删除</a></li>
 						</ul>
 					</div>

@@ -1,4 +1,4 @@
-define(['app'],function(app){
+define(['app','moment'],function(app,moment){
 	return app.controller('ActiveLoanModalCtrl',function($scope,$modalInstance,LoanService,payments,loan){
 
 		$scope.payments = payments;

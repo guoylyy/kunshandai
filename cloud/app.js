@@ -325,11 +325,20 @@ app.post(config.baseUrl + '/account/submitVerify', function(req, res){
 /**********************************************
  * 贷款项目相关操作
  */
+app.get(config.baseUrl + '/borrow/search', function(req, res){
+  searchProject(req, res, PRJ_TYPE.BORROW);
+});
+
 app.get(config.baseUrl + '/loan/search', function(req, res) {
+  searchProject(req, res, PRJ_TYPE.LOAN);
+});
+
+function searchProject(req, res, clazz){
   var u = check_login(res);
   var query = new AV.Query('Loan');
   var type = req.query.type;
   var key = req.query.key;
+  query.equalTo('projectClass', clazz);
   query.equalTo('owner', u);
   query.include('loaner');
   query.include('assurer');
@@ -346,7 +355,7 @@ app.get(config.baseUrl + '/loan/search', function(req, res) {
       message: '参数错误!'
     });
   }
-});
+};
 
 app.get(config.baseUrl + '/loan/:id', function(req, res) {
   var u = check_login(res);

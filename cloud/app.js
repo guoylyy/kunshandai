@@ -343,6 +343,12 @@ function searchProject(req, res, clazz){
   query.include('loaner');
   query.include('assurer');
   query.ascending('currPayDate');
+  if(key == undefined || key == null){
+    return mutil.renderError(res, {
+      code: 500,
+      message: '参数不能为空!'
+    });
+  };
   if (type == 'name') {
     query.startsWith('numberWithName', key);
     listLoan(res, query, 1, true);

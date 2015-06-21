@@ -1718,7 +1718,8 @@ function transformLoan(l) {
     finishDate: l.get('finishDate'),
     payTotalCircle: l.get('payTotalCircle'),
     payedMoney: l.get('payedMoney'),
-    overdueBreachPercent: l.get('overdueBreachPercent')
+    overdueBreachPercent: l.get('overdueBreachPercent'),
+    startDate : l.get('startDate')
   };
   return result;
 };
@@ -1729,7 +1730,7 @@ function transformLoanDetails(l) {
     return {};
   }
   //m['spanMonth'] = l.get('spanMonth');
-  m['startDate'] = formatTime(l.get('startDate'));
+  //m['startDate'] = formatTime(l.get('startDate'));
   m['endDate'] = formatTime(l.get('endDate'));
   m['payCircle'] = l.get('payCircle');
   m['payTotalCircle'] = l.get('payTotalCircle');

@@ -240,6 +240,7 @@ app.get(config.baseUrl + '/account/profile/attachments', function(req, res) {
     mutil.renderError(res, error);
   });
 });
+
 app.post(config.baseUrl + '/account/profile/attachments', function(req, res) {
   var u = check_login(res);
   var attachment = AV.Object.createWithoutData('_File', req.body.attid);
@@ -478,12 +479,29 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function(req, res) {
 app.post(config.baseUrl + '/loan/create_loan', function(req, res) {
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
+  loan.set('isBorow', false);
   loan.save().then(function(r_loan) {
     res.redirect(config.baseUrl + '/loan/' + r_loan.id);
   }, function(error) {
     mutil.renderError(res, error);
   });
 });
+
+//新建一个融资项目
+app.post(config.baseUrl + '/borrow/create', function(req, res){
+  createProject(req, res, true);
+});
+
+function createProject(req, res, isBorow){
+  var u = check_login(res);
+  var loan = mloan.createBasicLoan(req.body, u);
+  loan.set('isBorow', isBorow);
+  loan.save().then(function(r_loan) {
+    res.redirect(config.baseUrl + '/loan/' + r_loan.id);
+  }, function(error) {
+    mutil.renderError(res, error);
+  });
+};
 
 //生成项目时候初次记录生成放款
 app.post(config.baseUrl + '/loan/generate_bill', function(req, res) {
@@ -1545,8 +1563,6 @@ function listLoan(res, query, pageNumber) {
   var totalPageNum = 1;
   var resultsMap = {};
   query.count().then(function(count) {
-    //totalPageNum = parseInt(count / mconfig.pageSize) + 1;
-    //resultsMap['totalPageNum'] = totalPageNum;
     resultsMap['totalNum'] = count;
     resultsMap['pageSize'] = mconfig.pageSize;
   }).then(function() {

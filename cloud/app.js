@@ -51,6 +51,12 @@ app.use(avosExpressCookieSession({ //设置 cookie
 app.use(expressLayouts);
 app.use(app.router);
 app.use(express.static('public')); //public
+
+var PRJ_TYPE = {
+  'LOAN':'LOAN',
+  'BORROW':'BORROW'
+};
+
 /**
  * 主页路由器,用于渲染前端框架入口页面
  */
@@ -244,6 +250,7 @@ app.get(config.baseUrl + '/account/profile/attachments', function(req, res) {
     mutil.renderError(res, error);
   });
 });
+
 app.post(config.baseUrl + '/account/profile/attachments', function(req, res) {
   var u = check_login(res);
   var attachment = AV.Object.createWithoutData('_File', req.body.attid);
@@ -482,12 +489,29 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function(req, res) {
 app.post(config.baseUrl + '/loan/create_loan', function(req, res) {
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
+  loan.set('projectClass', PRJ_TYPE.LOAN);
   loan.save().then(function(r_loan) {
     res.redirect(config.baseUrl + '/loan/' + r_loan.id);
   }, function(error) {
     mutil.renderError(res, error);
   });
 });
+
+//新建一个融资项目
+app.post(config.baseUrl + '/borrow/create', function(req, res){
+  createProject(req, res, PRJ_TYPE.BORROW);
+});
+
+function createProject(req, res, clazz){
+  var u = check_login(res);
+  var loan = mloan.createBasicLoan(req.body, u);
+  loan.set('projectClass', clazz);
+  loan.save().then(function(r_loan) {
+    res.redirect(config.baseUrl + '/loan/' + r_loan.id);
+  }, function(error) {
+    mutil.renderError(res, error);
+  });
+};
 
 //生成项目时候初次记录生成放款
 app.post(config.baseUrl + '/loan/generate_bill', function(req, res) {
@@ -636,15 +660,23 @@ app.post(config.baseUrl + '/loan/assure_bill', function(req, res) {
  *   1. 分页列出所有项目（不包括草稿项目)
  *   2. 分页列出草稿项目
  *******************************************/
+app.get(config.baseUrl + '/borrow/list/:listType/:pn', function(req,res){
+  listProject(req, res, PRJ_TYPE.BORROW);
+});
 
 //列出贷款项目
 app.get(config.baseUrl + '/loan/list/:listType/:pn', function(req, res) {
+  listProject(req, res, PRJ_TYPE.LOAN);
+});
+
+function listProject(req, res, clazz){
   var u = check_login(res);
   var pageNumber = req.params.pn;
   var query = new AV.Query('Loan');
   query.include('loaner');
   query.include('assurer');
   query.equalTo('owner', u);
+  query.equalTo('projectClass', clazz); //判断是否为空
   query.ascending('currPayDate');
   if (req.query.loanType) {
     query.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
@@ -682,16 +714,26 @@ app.get(config.baseUrl + '/loan/list/:listType/:pn', function(req, res) {
     }
   };
   listLoan(res, query, pageNumber);
+};
+
+
+app.get(config.baseUrl + '/borrow/payBack/list/:pn', function(req, res){
+  listPackBacks(req, res, PRJ_TYPE.BORROW);
+});
+
+
+//目前列出还款金额是以当日为节点计算需要还款的金额
+app.get(config.baseUrl + '/loan/payBack/list/:pn', function(req, res) {
+  listPackBacks(req, res, PRJ_TYPE.LOAN);
 });
 
 //还款管理列表
-//目前列出还款金额是以当日为节点计算需要还款的金额
-app.get(config.baseUrl + '/loan/payBack/list/:pn', function(req, res) {
+function listPackBacks(req, res, clazz){
   var pageNumber = req.params.pn;
   var u = check_login(res);
-
   //过滤条件设置
   var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('projectClass', clazz);
   loanQuery.equalTo('status', mconfig.loanStatus.paying.value);
   loanQuery.equalTo('owner', u);
   if (req.query.loanType)
@@ -735,7 +777,7 @@ app.get(config.baseUrl + '/loan/payBack/list/:pn', function(req, res) {
       });
     }
   });
-});
+};
 
 //还款:不能还最后一期
 app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
@@ -1118,12 +1160,21 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
 /****************************
   项目放款和收款的统计接口
 */
+app.get(config.baseUrl + '/borrow/statictics/outcome', function(req, res){
+  staticOutcome(req, res, PRJ_TYPE.BORROW);
+});
+
 //统计放款金额
 app.get(config.baseUrl + '/loan/statictics/outcome', function(req, res) {
+  staticOutcome(req, res, PRJ_TYPE.LOAN);
+});
+
+function staticOutcome(req, res, clazz){
   var u = check_login(res);
   var startsWith = (new moment(req.query.startDate)).startOf('day');
   var endsWith = (new moment(req.query.endDate)).endOf('day');
   var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('projectClass', clazz);
   loanQuery.equalTo('owner', u);
   loanQuery.notEqualTo('status', mconfig.loanStatus.draft.value);
 
@@ -1139,13 +1190,23 @@ app.get(config.baseUrl + '/loan/statictics/outcome', function(req, res) {
     endsWith: endsWith.valueOf()
   };
   return classficStatictics(res, query, map, 'outMoney');
+};
+
+app.get(config.baseUrl + '/borrow/statictics/income', function(req, res){
+  staticIncome(req, res, PRJ_TYPE.BORROW);
 });
 
 //统计收到的还款金额
 app.get(config.baseUrl + '/loan/statictics/income', function(req, res) {
+  staticIncome(req, res, PRJ_TYPE.LOAN);
+});
+
+function staticIncome(req, res, clazz){
   var u = check_login(res);
   var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('projectClass', clazz);
   loanQuery.equalTo('owner', u);
+  loanQuery.notEqualTo('status', mconfig.loanStatus.draft.value);
   //定时时间段
   var startsWith = (new moment(req.query.startDate)).startOf('day');
   var endsWith = (new moment(req.query.endDate)).endOf('day');
@@ -1162,7 +1223,8 @@ app.get(config.baseUrl + '/loan/statictics/income', function(req, res) {
     endsWith: endsWith.valueOf()
   };
   return classficStatictics(res, query, map, 'payBackMoney');
-});
+};
+
 
 function classficStatictics(res, query, baseMap, key) {
     query.find().then(function(rs) {
@@ -1549,8 +1611,6 @@ function listLoan(res, query, pageNumber) {
   var totalPageNum = 1;
   var resultsMap = {};
   query.count().then(function(count) {
-    //totalPageNum = parseInt(count / mconfig.pageSize) + 1;
-    //resultsMap['totalPageNum'] = totalPageNum;
     resultsMap['totalNum'] = count;
     resultsMap['pageSize'] = mconfig.pageSize;
   }).then(function() {

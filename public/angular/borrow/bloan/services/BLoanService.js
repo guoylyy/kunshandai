@@ -106,94 +106,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			};
 
 
-			var loanPayBackFactory = {
-			    payBackInit: {}
-			};
-
-			function generateLoanPayBack(payMoney, interestsMoney, payDate, order){
-			    var lp = {};
-			    lp['payDate'] = payDate;
-			    lp['payMoney'] = payMoney;
-			    lp['interestsMoney'] = interestsMoney;
-			    lp['order'] =order;
-			    return lp;
-			};
-			//先息后本，只生成一期还款,首次还款日期是最终还款日期
-			loanPayBackFactory.payBackInit.xxhb = function(loan){
-			    var outMoney = loan.amount;
-					var interestsMoney = loan.amount * loan.interests * loan.spanMonth;
-			    var d = moment(loan.firstPayDate).format();//todo:修改成首次还款日期日期
-			    return [generateLoanPayBack(outMoney, interestsMoney, d,  1)];
-			};
-			//等额本息需要每月还利息 + 本金 + 逾期违约金
-			//生成之时预约违约金为 0
-			loanPayBackFactory.payBackInit.debx = function(loan){
-			    var baseMoney = loan.amount / loan.payTotalCircle; //每期本金
-			    var interestsMoney = loan.amount * loan.interests * loan.payCircle;
-			    var overdueMoney = 0;
-			    var rlist = [];
-			    for (var i = 1; i <= loan.payTotalCircle; i++) {
-
-			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-
-			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
-			            d, i));
-			    };
-			    return rlist;
-			};
-			//周期初还本付息
-			//期间只收利息
-			loanPayBackFactory.payBackInit.zqcxhb = function(loan){
-			    var baseMoney = 0; //每期还本金
-			    var interestsMoney = loan.amount * loan.interests * loan.payCircle;
-			    var overdueMoney = 0;
-			    var rlist = [];
-			    for (var i = 1; i <= loan.payTotalCircle; i++) {
-
-			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-
-			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
-			            d, i));
-			    };
-			    return rlist;
-			};
-			//周期末息后本
-			loanPayBackFactory.payBackInit.zqmxhb = function(loan){
-			    var baseMoney = 0; //每期还本金
-			    var interestsMoney = loan.amount * loan.interests * loan.payCircle;
-			    var overdueMoney = 0;
-			    var rlist = [];
-			    for (var i = 1; i <= loan.payTotalCircle; i++) {
-
-			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-
-			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
-			            d, i));
-			    };
-			    return rlist;
-			};
-			//到期本息
-			loanPayBackFactory.payBackInit.dqhbfx = function(loan){
-			    var baseMoney = parseInt(loan.amount);
-			    var d = moment(loan.firstPayDate).format();
-			    var overdueMoney = 0;
-			    var interestsMoney = baseMoney * loan.interests * loan.spanMonth;
-			    return [generateLoanPayBack(interestsMoney+ baseMoney, interestsMoney, d, 1)];
-			};
-
-			loanPayBackFactory.factory = function(loan){
-			    return new loanPayBackFactory.payBackInit[loan.payWay](loan);
-			};
-
-
-			//外部调用这个接口计算一个项目的还款流程
-			//@return list of LoanPackBacks
-			function calculatePayBackMoney(loan){
-			    return loanPayBackFactory.factory(loan);
-			};
-
-
-		var LoanService = {
+		var BLoanService = {
 			getCorrectFormat:function(loan){
 				return typeTransform(loan);
 			},
@@ -259,17 +172,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				return LoanService.getPaybacks(loanId);
 			},
 			getPayments:function(loanId){
-				var deferred = $q.defer();
-
-				$http.get(ApiURL+loanUrl+"/"+loanId+"/payments")
-				.then(function(res){
-					deferred.resolve(numberFormat(res.data.data));
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.getPayments(loanId);
 
 			},
 			getCountResult:function(loan){
@@ -293,177 +196,32 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 
 			},
 			deleteDraftLoan  : function(loanId){
-				var deferred = $q.defer();
-				$http.delete(ApiURL+loanUrl+"/"+loanId)
-				.then(function(res){
-					deferred.resolve(res.data.data);
-				},function(res){
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.deleteDraftLoan(loanId);
 			},
 			generate: function(contract){
-				var deferred = $q.defer();
-				$http.post(
-					ApiURL+loanUrl+"/generate_bill",
-					JSON.stringify(contract)
-				).then(function(res){
-					deferred.resolve(res.data.data);
-				},function(res){
-					deferred.reject(res);
-				});
-				return deferred.promise;
+				return LoanService.generate(contract);
 			},
 			assure: function(loanId,outMoney,outDate){
-				outMoney = parseFloat(outMoney);
-				if(typeof outDate !== 'Date'){
-					outDate = new Date(outDate);
-				}
-				var deferred = $q.defer();
-				$http.post(
-					ApiURL+loanUrl+"/assure_bill",
-					JSON.stringify(
-						{
-							loanId:loanId,
-							outMoney:outMoney,
-							outDate:outDate
-						}
-					)
-				).then(function(res){
-					deferred.resolve(res.data.data);
-				},function(){
-					deferred.reject('放款失败');
-				});
-				return deferred.promise;
+				return LoanService.assure(loanId,outMoney,outDate)
 			},
 			countPaymoney:function(payBackId,payDate){
-				var payDate = new Date(payDate),
-					deferred = $q.defer();
-
-				$http.get(
-					ApiURL+loanUrl+"/payBack/"+payBackId+"/bill",
-					{params:{payBackDate:payDate}}
-				).then(function(res){
-					var bill = numberFormat(res.data.data);
-					deferred.resolve(bill);
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.countPaymoney(payBackId,payDate);
 			},
 			countMultiPaymoney:function(loanId,payBackIds,payDate){
-				payDate = new Date(payDate);
-				var deferred = $q.defer();
-				$http.post(
-					ApiURL+loanUrl+"/"+loanId+"/mergePayBack/bill",
-					JSON.stringify(
-						{
-							payBackIds:payBackIds,
-							payBackDate:payDate
-						}
-					)
-				).then(function(res){
-					var bill = numberFormat(res.data.data);
-					deferred.resolve(bill);
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.countMultiPaymoney(loanId,payBackIds,payDate);
 
 			},
 			multiPayMoney:function(loanId,payBackIds,payDate,payMoney){
-				payDate = new Date(payDate);
-				var deferred = $q.defer();
-				$http.post(
-					ApiURL+loanUrl+"/"+loanId+"/mergePayBack",
-					JSON.stringify(
-						{
-							payBackIds:payBackIds,
-							payBackDate:payDate,
-							payBackMoney:payMoney
-						}
-					)
-				).then(function(res){
-					deferred.resolve(res.data.data);
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				})
-
-				return deferred.promise;
+				return LoanService.multiPayMoney(loanId,payBackIds,payDate,payMoney);
 			},
 			payMoney:function(payBackId,payDate,payMoney,payData){
-				var payDate = new Date(payDate);
-				var payMoney = parseFloat(payMoney);
-
-				return $http.post(
-					ApiURL+loanUrl+"/payBack/"+payBackId,
-					JSON.stringify(
-						{
-							paybackid:payBackId,
-							payBackDate:payDate,
-							payBackMoney:payMoney,
-							payType:payData.payType,
-							offsetMoney:payData.offsetMoney
-						}
-					)
-				).then(function(res){
-					return res.data.data;
-				},function(res){
-					$log.error(res);
-				});
+				return LoanService.payMoney(payBackId,payDate,payMoney,payData);
 			},
 			countCompleteMoney:function(loanId,payDate,interestCalType){
-				var deferred = $q.defer();
-				var payDate = new Date(payDate);
-				var params = {payDate:payDate,interestCalType:interestCalType};
-				$http.get(
-					ApiURL+loanUrl+"/payBack/"+loanId+"/finish/bill",
-					{params:params}
-				).then(function(res){
-					var bill = numberFormat(res.data.data);
-					deferred.resolve(bill);
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.countCompleteMoney(loanId,payDate,interestCalType);
 			},
 			completeLoan:function(loanId,payDate,payData){
-				var deferred = $q.defer();
-
-				var payDate = new Date(payDate);
-
-				payData.income.amount = parseFloat(payData.income.amount);
-				payData.income.interest = parseFloat(payData.income.interest);
-				payData.income.overdueMoney = parseFloat(payData.income.overdueMoney);
-				payData.outcome.assureCost = parseFloat(payData.outcome.assureCost);
-				payData.outcome.interest = parseFloat(payData.outcome.interest);
-				payData.outcome.keepCost = parseFloat(payData.outcome.keepCost);
-
-				$http.post(
-					ApiURL+loanUrl+"/payBack/"+loanId+"/finish",
-					JSON.stringify(
-						{
-							payType:payData.payType,
-							payBackDate:payDate,
-							payBackData:payData
-						}
-					)
-				).then(function(res){
-					deferred.resolve(res.data.data);
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.completeLoan(loanId,payDate,payData);
 			},
 			search:function(type,keyword){
 				var deferred = $q.defer();
@@ -507,7 +265,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			}
 		}
 
-		return LoanService;
+		return BLoanService;
 }]);
 
 });

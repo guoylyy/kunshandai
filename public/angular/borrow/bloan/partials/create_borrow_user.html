@@ -2,12 +2,12 @@
 <!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
 	<div class="container-fluid">
 	<div class="ks-dividing">
-		<h4>借款人</h4>
+		<h4>放款人</h4>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">借款人信息
+				<div class="panel-heading">放款人信息
 					<span><a class="text-info ks-right small" ng-init="brSelect=false" ng-click="brSelect=!brSelect">从客户中选择</a></span>
 				</div>
 				<div class="panel-body">
@@ -20,8 +20,8 @@
 								<label class="control-label">*姓名</label>;
 								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" ng-pattern="/^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/" required>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bname.$touched">
-									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填借款人姓名</div>
-									<div class="text-danger" ng-show="moreInfoForm.bname.$error.pattern">请填正确的借款人姓名</div>
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填放款人姓名</div>
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.pattern">请填正确的放款人姓名</div>
 								</div>
 							</div>
 						</div>
@@ -30,7 +30,7 @@
 								<label class="control-label">*身份证</label>
 								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-blur="checkContactUnique('br')" ui-validate="{uniqueId:'unique.br'}" ui-validate-watch="'unique.br'" required>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bid.$touched">
-									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填借款人身份证</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填放款人身份证</div>
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.pattern">请填写正确的身份证号</div>
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.uniqueId">已存在相同身份证的客户</div>
 								</div>
@@ -121,7 +121,7 @@
 			</script>
 			</script>
 			<div class="ks-panel panel panel-default" collapse="!brSelect">
-				<div class="panel-heading">从客户中选择借款人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
+				<div class="panel-heading">从客户中选择放款人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
 				<div class="panel-body">
 					<div class="input-group">
 						<div class="input-group-btn" dropdown>
@@ -140,8 +140,8 @@
 				</div>
 			</div>
 
-			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">借款人附件
+			<!-- <div class="ks-panel panel panel-default">
+				<div class="panel-heading">放款人附件
 					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('借款人')" style="margin-top:-5px;">上传</button>
 				</div>
 				<div class="panel-body">
@@ -154,7 +154,7 @@
 						</li>
 					</ul>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 	<div  collapse="!br.hasGr">
@@ -231,7 +231,7 @@
 	</div>
 	<div class="ks-divider"></div>
 
-	<ui-include src="'/angular/manage/loan/ctrls.html'"></ui-include>
+	<ui-include src="'/angular/borrow/bloan/partials/ctrls.html'"></ui-include>
 
 	</div>
 </form>

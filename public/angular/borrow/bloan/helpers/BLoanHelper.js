@@ -1,5 +1,5 @@
 define(['app'],function(app){
-	return app.service('LoanHelper', ['$state','$stateParams','$q','BLoanService','ContactService','PawnService','DictService','SweetAlert','$modal',
+	return app.service('BLoanHelper', ['$state','$stateParams','$q','BLoanService','ContactService','PawnService','DictService','SweetAlert','$modal',
 		function($state,$stateParams,$q,BLoanService,ContactService,PawnService,DictService,SweetAlert,$modal){
 
 		var $scope;

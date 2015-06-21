@@ -10,10 +10,10 @@
 		<div class="col-md-6 ">
 			<button type="submit" class="btn btn-primary"  ng-click="nav(moreInfoForm.$valid,'prev')" ng-disabled="status.loanCreating">上一步</button>
 		</div>
-		<div class="col-md-6" ng-controller="CreateLoanCtrl" ng-show="('bproject.createMore' | isState)">
+		<div class="col-md-6" ng-controller="CreateBLoanCtrl" ng-show="('bproject.createMore' | isState)">
 			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating" ng-click="createLoan(moreInfoForm.$valid)">生成项目</button>
 		</div>
-		<div class="col-md-6" ng-controller="ModifyLoanCtrl" ng-show="('bproject.modifyMore' | isState)">
+		<div class="col-md-6" ng-controller="ModifyBLoanCtrl" ng-show="('bproject.modifyMore' | isState)">
 			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating" ng-click="modifyLoan(moreInfoForm.$valid)">结清并生成新的项目</button>
 		</div>
 	</div>

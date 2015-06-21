@@ -1,11 +1,12 @@
 <div class="ks-dividing">
-	<h4 ng-show="('draftLoans' | isState)">放款管理->待放款项目</h4>
+	<h4 ng-show="('manage.draftLoans' | isState)">放款管理->待放款项目</h4>
+	<h4 ng-show="('borrow.draft' | isState)">借款管理->待入资项目</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="btn-group btn-group-middle" >
-			<button type="button" class="btn btn-default" ui-sref="manage.draftLoans" ui-sref-active="active">待放款项目</button>
-
+			<button type="button" class="btn btn-default" ui-sref="manage.draftLoans" ui-sref-active="active" ng-show="('manage.draftLoans' | isState)">待放款项目</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.draft" ui-sref-active="active" ng-show="('borrow.draft' | isState)">待入资项目</button>
 		</div>
 	</div>
 </div>

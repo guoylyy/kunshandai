@@ -11,7 +11,7 @@ define(['app','underscore'],function(app,_){
 		  requireBase: false
 		});
 
-		var resolveLoans = function(fn,LoanService,DictService,$stateParams){
+		var resolveLoans = function(fn,LoanService,BLoanService,DictService,$stateParams){
 		    var startDate, endDate, loanType;
 				if(!$stateParams.startDate){
 					var timeRanges = DictService.get('timeRanges');
@@ -34,8 +34,8 @@ define(['app','underscore'],function(app,_){
 		};
 		var resolveObject = function(fn){
 			return {
-				loans:function(DictService,LoanService,$stateParams){
-		    		return resolveLoans(eval(fn),LoanService,DictService,$stateParams);
+				loans:function(DictService,LoanService,BLoanService,$stateParams){
+		    		return resolveLoans(eval(fn),LoanService,BLoanService,DictService,$stateParams);
 		    	},
 				loanTypes:function(DictService){
 					return DictService.get('loanTypes');
@@ -485,6 +485,18 @@ define(['app','underscore'],function(app,_){
 						}
 					}
         })
+				.state('borrow.draft',{
+		    	url:"/draft?page",
+    			templateUrl: "/angular/manage/loan/draft/draft.html",
+    			resolve:{
+    				draftLoans:function(BLoanService,$stateParams){
+    					return BLoanService.getDraft($stateParams.page || 1).then(function(data){
+    						return data;
+    					});
+    				}
+    			},
+    			controller: "DraftLoanCtrl"
+		    })
 				.state('bproject',{
 					url:'/bproject',
 					views:{
@@ -544,13 +556,13 @@ define(['app','underscore'],function(app,_){
 				.state('borrow.repayPending',{
 					url:"/repay/pending?page&startDate&endDate&loanType",
     			templateUrl: "/angular/borrow/repay/repay.html",
-					resolve:resolveCondition(),
+					resolve:resolveObject("BLoanService.getUnpayedList"),
     			controller: "RepayController"
 				})
 				.state('borrow.repayDone',{
 					url:"/repay/done?page&startDate&endDate&loanType",
     			templateUrl: "/angular/borrow/repay/repay.html",
-					resolve:resolveCondition(),
+					resolve:resolveObject("BLoanService.getPayedList"),
     			controller: "RepayController"
 				})
 				.state('borrow.contact',{

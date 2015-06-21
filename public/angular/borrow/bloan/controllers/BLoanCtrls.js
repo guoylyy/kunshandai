@@ -380,7 +380,7 @@ define(['app',"underscore"],function(app,_) {
 		        }, function(isConfirm) {
 		        	if(isConfirm){
 		         		BLoanHelper.config($scope);
-						BLoanHelper.createLoan();
+					    	BLoanHelper.createLoan();
 		        	}
 
 		        });

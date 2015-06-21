@@ -345,10 +345,10 @@ function searchProject(req, res, clazz){
   query.ascending('currPayDate');
   if (type == 'name') {
     query.startsWith('numberWithName', key);
-    listLoan(res, query, 1);
+    listLoan(res, query, 1, true);
   } else if (type == 'id') {
     query.startsWith('numberWithName', key);
-    listLoan(res, query, 1);
+    listLoan(res, query, 1, true);
   } else {
     mutil.renderError(res, {
       code: 500,
@@ -682,6 +682,7 @@ function listProject(req, res, clazz){
   var u = check_login(res);
   var pageNumber = req.params.pn;
   var query = new AV.Query('Loan');
+
   query.include('loaner');
   query.include('assurer');
   query.equalTo('owner', u);
@@ -689,15 +690,18 @@ function listProject(req, res, clazz){
   query.ascending('currPayDate');
   if (req.query.loanType) {
     query.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
+    
   }
+  var skipDraft  = true;
   if (req.params.listType == 'draft') {
+    //console.log('loan draft');
     query.equalTo('status', mconfig.loanStatus.draft.value);
+    skipDraft = false;
   } else {
     //1月之前
     var now1month = (new moment()).subtract(1, 'month').toDate();
     //3月之前
     var now3month = (new moment()).subtract(3, 'month').toDate();
-
     query.include('loanPayBacks');
     query.notEqualTo('status', mconfig.loanStatus.draft.value);
     if (req.params.listType == mconfig.loanListTypes.completed.value) {
@@ -706,7 +710,6 @@ function listProject(req, res, clazz){
       query.notEqualTo('status', mconfig.loanStatus.completed.value);
     }
     if (req.params.listType == mconfig.loanListTypes.normal.value) {
-      // currPayDate >= 1monthbefore
       query.greaterThanOrEqualTo('currPayDate', now1month);
     } else if (req.params.listType == mconfig.loanListTypes.overdue.value) {
       query.greaterThanOrEqualTo('currPayDate', now3month);
@@ -722,7 +725,7 @@ function listProject(req, res, clazz){
       }
     }
   };
-  listLoan(res, query, pageNumber);
+  listLoan(res, query, pageNumber, skipDraft);
 };
 
 
@@ -1616,9 +1619,10 @@ function concretePayBack(lpb, loan, overdueMoney) {
 };
 
 //需要根据最近的还款周期列出项目，这个需要反向生成
-function listLoan(res, query, pageNumber) {
+function listLoan(res, query, pageNumber, skipDraft) {
   var totalPageNum = 1;
   var resultsMap = {};
+
   query.count().then(function(count) {
     resultsMap['totalNum'] = count;
     resultsMap['pageSize'] = mconfig.pageSize;
@@ -1632,7 +1636,7 @@ function listLoan(res, query, pageNumber) {
         success: function(results) {
           var rlist = [];
           for (var i = 0; i < results.length; i++) {
-            if(results[i].get('status')== mconfig.loanStatus.draft.value){
+            if(skipDraft && results[i].get('status')== mconfig.loanStatus.draft.value){
               resultsMap['totalNum'] = resultsMap['totalNum'] - 1;
               continue; //过滤掉草稿项目
             }

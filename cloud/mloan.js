@@ -431,7 +431,6 @@ loanPayBackFactory.finishBillParmsCal.zqcxhb = function(loanObj, data){
             break;
     };
     checkBill(rc);
-    console.log(rc);
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
@@ -472,7 +471,6 @@ loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
    // mlog.dlog(data);
     mlog.dlog(map);
     if(map.od <= 0){
-        console.log(data.interestCalType);
         switch(data.interestCalType){
             case mconfig.interestCalTypes.dayInterest.value:
                 rc.income['interest'] = map.P * map.i * map.T * map.Tx; //按天计息

@@ -51,6 +51,12 @@ app.use(avosExpressCookieSession({ //设置 cookie
 app.use(expressLayouts);
 app.use(app.router);
 app.use(express.static('public')); //public
+
+var PRJ_TYPE = {
+  'LOAN':'LOAN',
+  'BORROW':'BORROW'
+};
+
 /**
  * 主页路由器,用于渲染前端框架入口页面
  */
@@ -479,7 +485,7 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function(req, res) {
 app.post(config.baseUrl + '/loan/create_loan', function(req, res) {
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
-  loan.set('isBorow', false);
+  loan.set('projectClass', PRJ_TYPE.LOAN);
   loan.save().then(function(r_loan) {
     res.redirect(config.baseUrl + '/loan/' + r_loan.id);
   }, function(error) {
@@ -489,13 +495,13 @@ app.post(config.baseUrl + '/loan/create_loan', function(req, res) {
 
 //新建一个融资项目
 app.post(config.baseUrl + '/borrow/create', function(req, res){
-  createProject(req, res, true);
+  createProject(req, res, PRJ_TYPE.BORROW);
 });
 
-function createProject(req, res, isBorow){
+function createProject(req, res, clazz){
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
-  loan.set('isBorow', isBorow);
+  loan.set('projectClass', clazz);
   loan.save().then(function(r_loan) {
     res.redirect(config.baseUrl + '/loan/' + r_loan.id);
   }, function(error) {

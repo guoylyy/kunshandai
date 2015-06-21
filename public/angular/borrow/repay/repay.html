@@ -76,7 +76,7 @@
          <div class="dropdown" dropdown>
            <a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
            <ul class="dropdown-menu"  role="menu">
-             <li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle">入账</a></li>
+             <li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle">还款</a></li>
              <li><a role="menuitem"  ng-click="complete(loan.loanObjectId)">结清</a></li>
              <li ><a role="menuitem" href="/project/{{loan.loanObjectId}}/modify" target="_blank">调整</a></li>
              <li ><a role="menuitem" href="/project/create?ref={{loan.loanObjectId}}" target="_blank">新签</a></li>

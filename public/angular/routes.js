@@ -487,7 +487,7 @@ define(['app','underscore'],function(app,_){
         })
 				.state('borrow.draft',{
 		    	url:"/draft?page",
-    			templateUrl: "/angular/manage/loan/draft/draft.html",
+    			templateUrl: "/angular/borrow/bloan/partial/draft.html",
     			resolve:{
     				draftLoans:function(BLoanService,$stateParams){
     					return BLoanService.getDraft($stateParams.page || 1).then(function(data){

@@ -1,7 +1,7 @@
 define(['app','underscore'],function(app,_){
 	return app.controller('DraftLoanCtrl', ['$scope','$state','$stateParams','LoanService','draftLoans','SweetAlert', '$modal',
 		function($scope,$state,$stateParams,LoanService,draftLoans,SweetAlert,$modal){
-		
+
 		$scope.totalLoans = draftLoans.totalNum;
 
 		$scope.currentPage =  $stateParams.page || 1;
@@ -9,12 +9,12 @@ define(['app','underscore'],function(app,_){
 		$scope.loans = 	draftLoans.values;
 
 		$scope.pageChanged = function(){
-			
+
 			$stateParams.page = $scope.currentPage;
 
 			 $state.go($state.current, {page:$scope.currentPage}, {reload: true});
 		}
-		
+
 		$scope.deleteLoan = function(loanId){
 
 			SweetAlert.swal({
@@ -24,8 +24,8 @@ define(['app','underscore'],function(app,_){
 			   showCancelButton: true,
 			   confirmButtonColor: "#DD6B55",
 			   confirmButtonText: "确定",
-			   closeOnConfirm: false}, 
-			function(isConfirm){ 
+			   closeOnConfirm: false},
+			function(isConfirm){
 				if(isConfirm){
 					LoanService.deleteDraftLoan(loanId).then(function(){
 				   		SweetAlert.success("删除成功");
@@ -56,16 +56,16 @@ define(['app','underscore'],function(app,_){
 			activeModal.result.then(function(actived){
 				if(actived){
 					SweetAlert.swal(
-						{  
-							title: "放款成功",  
+						{
+							title: "操作成功",
 						 	type: "success",
 						 	confirmButtonColor: "#DD6B55",
-						 	confirmButtonText: "好的",  
-						 	closeOnConfirm: true 
-					 	}, 
-					 	function(){ 
+						 	confirmButtonText: "好的",
+						 	closeOnConfirm: true
+					 	},
+					 	function(){
 					 	  	$state.go($state.current,{},{reload:true});
-						}	
+						}
 					);
 
 				}

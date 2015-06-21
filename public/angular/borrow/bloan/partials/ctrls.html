@@ -1,0 +1,20 @@
+<div class="container-fluid" ng-controller="BLoanNavCtrl">
+	<div ng-show="('bproject.create' | isState) || ('bproject.modify' | isState)">
+		<div class="col-md-6 "></div>
+		<div class="col-md-6" >
+			<button type="submit" class="btn btn-primary ks-right" ng-click="nav(loanForm.$valid,'next')">下一步 </button>
+		</div>
+	</div>
+
+	<div ng-show="('bproject.createMore' | isState) || ('bproject.modifyMore' | isState)">
+		<div class="col-md-6 ">
+			<button type="submit" class="btn btn-primary"  ng-click="nav(moreInfoForm.$valid,'prev')" ng-disabled="status.loanCreating">上一步</button>
+		</div>
+		<div class="col-md-6" ng-controller="CreateLoanCtrl" ng-show="('bproject.createMore' | isState)">
+			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating" ng-click="createLoan(moreInfoForm.$valid)">生成项目</button>
+		</div>
+		<div class="col-md-6" ng-controller="ModifyLoanCtrl" ng-show="('bproject.modifyMore' | isState)">
+			<button type="submit" class="btn btn-primary ks-right" ng-disabled="status.loanCreating" ng-click="modifyLoan(moreInfoForm.$valid)">结清并生成新的项目</button>
+		</div>
+	</div>
+</div>

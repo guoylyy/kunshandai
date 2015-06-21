@@ -69,10 +69,14 @@ app.get('/login', function(req, res) {
 app.get('/signup', function(req, res) {
   res.render('account.ejs');
 });
+
 app.get('/borrow', function(req, res) {
   res.render('manage.ejs');
 });
 app.get('/borrow/*', function(req, res) {
+  res.render('manage.ejs');
+});
+app.get('/bproject/*', function(req, res) {
   res.render('manage.ejs');
 });
 app.get('/credit', function(req, res) {

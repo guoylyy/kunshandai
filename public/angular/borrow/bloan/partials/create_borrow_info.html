@@ -1,0 +1,304 @@
+<form name="loanForm" novalidate>
+	<div class="container-fluid">
+		<div class="col-md-6">
+
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">贷款信息
+					<button type="button" class="btn btn-xs btn-warning ks-right" ng-click="resetLoanForm()" style="margin-top:-5px;"
+					tooltip="将清空所有数据（除贷款类型、还款类型）"
+          tooltip-placement="top"
+          tooltip-trigger="mouseenter"
+        >重置</button>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*贷款类型</label>
+								<select ng-init="loanInfo.loanType = loanInfo.loanType.value || loanInfo.loanType || loanTypes[0].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
+								<div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
+									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写逾期违约金</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*贷款金额</label>
+								<div class="input-group">
+
+									<input type="text" class="form-control" placeholder="贷款金额" name="amount" float-number-input ng-model="loanInfo.amount"  required >
+									<span class="input-group-addon">元</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.amount.$touched">
+									<div class="text-danger" ng-show="loanForm.amount.$error.required">请填写贷款金额</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*贷款期限</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="贷款期限" number-input name="spanMonth" ng-model="loanInfo.spanMonth" required>
+									<span class="input-group-addon">月</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.spanMonth.$touched">
+									<div class="text-danger" ng-show="loanForm.spanMonth.$error.required">请填写贷款金额</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*开始日期</label>
+								<div class="input-group">
+									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.startDate" is-open="calendar.openedstart"  datepicker-options="dateOptions" ng-required="true" close-text="关闭" name="startDate"/>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedstart')">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</button>
+									</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.startDate.$touched">
+									<div class="text-danger" ng-show="loanForm.startDate.$error.required">请填写开始日期</div>
+									<div class="text-danger" ng-show="loanForm.startDate.$error.date">请填写正确的日期格式</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*截止日期</label>
+								<div class="input-group">
+									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.endDate" is-open="calendar.openedend"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭" name="endDate" disabled="true"/>
+
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedend')" disabled="true">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</button>
+									</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.endDate.$touched">
+									<div class="text-danger" ng-show="loanForm.endDate.$error.required">请填写截止日期</div>
+									<div class="text-danger" ng-show="loanForm.endDate.$error.date">请填写正确的日期格式</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>*利率</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="利率" float-number-input name="interests" ng-model="loanInfo.interests" required>
+									<span class="input-group-addon">% /月</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.interests.$touched">
+									<div class="text-danger" ng-show="loanForm.interests.$error.required">请填写利率</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>*逾期违约金率</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="逾期违约金" float-number-input name="overdueCostPercent " ng-model="loanInfo.overdueCostPercent" required>
+									<span class="input-group-addon">‰ /天</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.overdueCostPercent.$touched">
+									<div class="text-danger" ng-show="loanForm.overdueCostPercent.$error.required">请填写逾期违约金</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>*履约保证金</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="履约保证金" number-input name="assureCost" ng-model="loanInfo.assureCost" required>
+									<span class="input-group-addon">元</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.assureCost.$touched">
+									<div class="text-danger" ng-show="loanForm.assureCost.$error.required">请填写履约保证金</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>*服务费</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="服务费" number-input name="serviceCost" ng-model="loanInfo.serviceCost" required>
+									<span class="input-group-addon">元</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.serviceCost.$touched">
+									<div class="text-danger" ng-show="loanForm.serviceCost.$error.required">请填写服务费</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*其他费用</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="其他费用" number-input name="otherCost" ng-model="loanInfo.otherCost" required>
+									<span class="input-group-addon">元</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.otherCost.$touched">
+									<div class="text-danger" ng-show="loanForm.otherCost.$error.required">请填写其他费用</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>其他费用备注</label>
+								<input type="text" class="form-control" placeholder="其他费用备注" ng-model="loanInfo.otherCostDesc">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*暂收金额</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="暂收金额" number-input name="keepCost" ng-model="loanInfo.keepCost" required>
+									<span class="input-group-addon">元</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.keepCost.$touched">
+									<div class="text-danger" ng-show="loanForm.keepCost.$error.required">请填写暂收金额</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>暂收金额备注</label>
+								<input type="text" class="form-control" placeholder="暂收金额备注" ng-model="loanInfo.keepCostDesc">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">还款信息</div>
+				<div class="panel-body" style="height:100%;">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*还款类型</label>
+								<select  ng-init="loanInfo.payWay = loanInfo.payWay.value || loanInfo.payWay ||repayTypes[0].value" class="form-control" ng-model="loanInfo.payWay" ng-options="repayType.value as repayType.text for repayType in repayTypes" required name="payWay"></select>
+								<div ng-show="loanForm.$submitted || loanForm.payWay.$touched">
+									<div class="text-danger" ng-show="loanForm.payWay.$error.required">请填写逾期违约金</div>
+									<div class="text-danger" ng-show="loanForm.payWay.$error.date">请填写正确的日期格式</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>*{{!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')? '首次':''}}还款日期</label>
+								<div class="input-group">
+									<input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="loanInfo.firstPayDate" is-open="calendar.openedPay"  datepicker-options="dateOptions" ng-required="true"  close-text="关闭"  required name="firstPayDate" show-weeks="false"
+									 ui-validate="{rangeStart:'$value >= loanInfo.startDate',rangeEnd:' $value <= loanInfo.endDate'}" ui-validate-watch=" 'loanInfo'"
+									min-date="loanInfo.startDate" max-date="loanInfo.endDate" disabled/>
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default" ng-click="open($event,'openedPay')" disabled><i class="glyphicon glyphicon-calendar"></i></button>
+									</span>
+								</div>
+
+								<div ng-show="loanForm.$submitted || loanForm.firstPayDate.$touched">
+									<div class="text-danger" ng-show="loanForm.firstPayDate.$error.required">请填写还款日期</div>
+									<div class="text-danger" ng-show="loanForm.firstPayDate.$error.rangeStart">不能小于开始日期</div>
+									<div class="text-danger" ng-show="loanForm.firstPayDate.$error.rangeEnd">不能大于截止日期</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6" ng-show="loanInfo.payWay == 'debx'">
+							<div class="form-group">
+								<label>*提前结清违约金</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="提前结清违约金" float-number-input name="overdueBreachPercent"
+									ng-model="loanInfo.overdueBreachPercent" ng-required="loanInfo.payWay == 'debx'">
+									<span class="input-group-addon">‰ /天</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.overdueBreachPercent.$touched">
+									<div class="text-danger" ng-show="loanForm.overdueBreachPercent.$error.required">请填写提前结清违约金</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6" ng-show="!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')">
+							<div class="form-group">
+								<label>*还款周期（月/次）</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="还款周期" number-input name="payCircle"
+									ng-model="loanInfo.payCircle" required
+									>
+									<span class="input-group-addon">月</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">																<div class="text-danger" ng-show="loanForm.payTotalCircle.$error.validator">还款周期填写有误</div>
+									<div class="text-danger" ng-show="loanForm.payCircle.$error.required">请填写还款周期</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6"  ng-show="!(loanInfo.payWay == 'xxhb' || loanInfo.payWay == 'dqhbfx')">
+							<div class="form-group">
+								<label>*还款总次数</label>
+								<div class="input-group">
+									<input type="text" class="form-control" placeholder="还款总期数" number-input name="payTotalCircle" ng-model="loanInfo.payTotalCircle" ui-validate="'loanInfo.spanMonth % loanInfo.payCircle === 0'" ui-validate-watch=" 'loanInfo'" required disabled="true">
+									<span class="input-group-addon">期</span>
+								</div>
+								<div ng-show="loanForm.$submitted || loanForm.payCircle.$touched">
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">还款明细
+						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="count()" style="margin-top:-5px;">显示</button>
+					</div>
+
+					<div class="panel-body" >
+						<table class="table table-striped" >
+							<thead>
+								<tr>
+									<th>期数</th>
+									<th>利息</th>
+									<th>还款日期</th>
+									<th>应还金额</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="cr in countResults">
+									<td>{{cr.order}}</td>
+									<td>{{cr.interestsMoney}}</td>
+									<td>{{cr.payDate | date:"yyyy-MM-dd"}}</td>
+									<td>{{cr.payMoney | number:2}}</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ks-divider"></div>
+		<ui-include src="'/angular/borrow/bloan/partials/ctrls.html'"></ui-include>
+	</div>
+</form>

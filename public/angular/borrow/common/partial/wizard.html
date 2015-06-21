@@ -1,6 +1,6 @@
-<div  ng-show="('project.create' | isState) || ('project.createMore' | isState) || ('project.createFinal' | isState)">
+<div  ng-show="('bproject.create' | isState) || ('bproject.createMore' | isState) || ('bproject.createFinal' | isState)">
 	<h3 class="ks-dividing" >
-		新增贷款项目
+		新增借款项目
 	</h3>
 	<div class="row" >
 		 <div class="row bs-wizard" style="border-bottom:0;">
@@ -11,7 +11,7 @@
 	          <div class="bs-wizard-info text-center">填写贷款信息</div>
 	        </div>
 
-	        <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(('project.createMore' | isState)||('project.createFinal' | isState))}">
+	        <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(('bproject.createMore' | isState)||('bproject.createFinal' | isState))}">
 	          <div class="text-center bs-wizard-stepnum" >步骤二</div>
 	          <div class="progress"><div class="progress-bar"></div></div>
 	          <div  class="bs-wizard-dot" ></div>
@@ -20,7 +20,7 @@
 	          </div>
 	        </div>
 
-	        <div class="col-xs-4 bs-wizard-step" ng-class="{active:('project.createFinal' | isState)}">
+	        <div class="col-xs-4 bs-wizard-step" ng-class="{active:('bproject.createFinal' | isState)}">
 	          <div class="text-center bs-wizard-stepnum">完成</div>
 	          <div class="progress"><div class="progress-bar"></div></div>
 	          <div  class="bs-wizard-dot"></div>
@@ -29,11 +29,9 @@
 
 		</div>
 	</div>
-
-
 </div>
 
-<div  ng-show="('project.modify' | isState) || ('project.modifyMore' | isState) || ('project.modifyFinal' | isState)">
+<div  ng-show="('bproject.modify' | isState) || ('bproject.modifyMore' | isState) || ('bproject.modifyFinal' | isState)">
 	<h3 class="ks-dividing" >
 		调整项目
 	</h3>
@@ -46,7 +44,7 @@
 	          <div class="bs-wizard-info text-center">调整贷款信息</div>
 	        </div>
 
-	        <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(('project.createMore' | isState)||('project.createFinal' | isState))}">
+	        <div class="col-xs-4 bs-wizard-step " ng-class="{'complete':(('bproject.createMore' | isState)||('bproject.createFinal' | isState))}">
 	          <div class="text-center bs-wizard-stepnum" >步骤二</div>
 	          <div class="progress"><div class="progress-bar"></div></div>
 	          <div  class="bs-wizard-dot" ></div>
@@ -55,7 +53,7 @@
 	          </div>
 	        </div>
 
-	        <div class="col-xs-4 bs-wizard-step" ng-class="{active:('project.createFinal' | isState)}">
+	        <div class="col-xs-4 bs-wizard-step" ng-class="{active:('bproject.createFinal' | isState)}">
 	          <div class="text-center bs-wizard-stepnum">完成</div>
 	          <div class="progress"><div class="progress-bar"></div></div>
 	          <div  class="bs-wizard-dot"></div>

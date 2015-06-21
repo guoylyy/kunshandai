@@ -1,0 +1,237 @@
+<form name="moreInfoForm" novalidate>
+<!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
+	<div class="container-fluid">
+	<div class="ks-dividing">
+		<h4>借款人</h4>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">借款人信息
+					<span><a class="text-info ks-right small" ng-init="brSelect=false" ng-click="brSelect=!brSelect">从客户中选择</a></span>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						 <alert type="warning" close="closed = true" ng-show="!closed && br.objectId && !status.loanCreating" >{{'您已从客户中选择借款人，此处修改将更新到联系人信息，若新建客户请重置'}}</alert>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="control-label">*姓名</label>;
+								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" ng-pattern="/^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bname.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填借款人姓名</div>
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.pattern">请填正确的借款人姓名</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="control-label">*身份证</label>
+								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-blur="checkContactUnique('br')" ui-validate="{uniqueId:'unique.br'}" ui-validate-watch="'unique.br'" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bid.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填借款人身份证</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.pattern">请填写正确的身份证号</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.uniqueId">已存在相同身份证的客户</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div class="form-group">
+								<label class="control-label">*担保人</label><br>
+								<!-- <a ng-init="br.hasGr = (br.hasGr || loanInfo.assurer)"ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a> -->
+								<ul class="list-inline">
+									 <li>
+										<!-- <label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items"  >{{i}}</label> -->
+										<label class="radio-inline">
+							                 <input type="radio" ng-model="br.hasGr" ng-value="false" name="hasGr" required>无
+							             </label>
+							             <label class="radio-inline">
+							                 <input type="radio" ng-model="br.hasGr" ng-value="true" name="hasGr" required>有
+							             </label>
+									</li>
+								</ul>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.hasGr.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="text-align:right">
+					<a ng-init="brMore=false" ng-click="brMore=!brMore" class=" text-info">{{brMore?'收起更多信息':'填写更多信息'}}</a>
+					</div>
+					<div ui-toggle="brMore">
+					<div class="ks-divider"></div>
+
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>手机号</label>
+								<input type="text" class="form-control" placeholder="手机号" ng-model="br.mobilePhoneNum" name="bmobilePhoneNum" ng-pattern="/\b\d{11}\b/">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bmobilePhoneNum.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>邮箱</label>
+								<input type="email" class="form-control" placeholder="邮箱" ng-model="br.email" name="bemail">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bemail.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bemail.$error.email">请填写正确邮箱</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>QQ</label>
+								<input type="text" class="form-control" placeholder="QQ" ng-model="br.qq" name="bqq" ng=pattern="/\d+/">
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bqq.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bqq.$error.pattern">请填写正确QQ号</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>微信</label>
+								<input type="text" class="form-control" placeholder="微信" ng-model="br.wechat">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label>地址</label>
+								<input type="text" class="form-control" placeholder="地址" ng-model="br.address" name="baddress">
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4" >
+			<script type="text/ng-template" id="contactTemplate.html">
+			  <a>
+			       <span bind-html-unsafe="match.model.name"></span>
+			        <span bind-html-unsafe="match.model.certificateNum | typeaheadHighlight:query"></span>
+			  </a>
+			</script>
+			</script>
+			<div class="ks-panel panel panel-default" collapse="!brSelect">
+				<div class="panel-heading">从客户中选择借款人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
+				<div class="panel-body">
+					<div class="input-group">
+						<div class="input-group-btn" dropdown>
+							<button type="button" class="btn btn-default dropdown-toggle" ng-init="brsearchType='name'" dropdown-toggle >{{brsearchType === 'name'? '姓名':'身份证'}}<span class="caret"></span></button>
+							<ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width:73px;">
+								<li><a ng-click="brsearchType='name'">姓名</a></li>
+								<li><a ng-click="brsearchType='certificate'">身份证</a></li>
+							</ul>
+
+						</div>
+						<input type="text" class="form-control"  ng-model="selected.br" typeahead="contact as contact.name for contact in searchContacts(brsearchType,$viewValue) | filter:{name:$viewValue}" typeahead-loading="loadingContacts"  typeahead-template-url="contactTemplate.html" >
+						<span class="input-group-btn">
+								<button class="btn btn-primary" type="button" ng-click="resetContact('br')">重置</button>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="ks-panel panel panel-default">
+				<div class="panel-heading">借款人附件
+					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('借款人')" style="margin-top:-5px;">上传</button>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+						<li class="list-group-item" ng-show="br.attachments" ng-repeat="a in br.attachments">
+							<a class="glyphicon glyphicon-remove text-danger ks-right" ng-click="removeAttach('br',$index)"></a>
+							<a href="{{a.url}}" target="_blank">
+									{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div  collapse="!br.hasGr">
+		<ui-include src="'/angular/manage/contact/grInfo.html'"></ui-include>
+	</div>
+
+	<div ng-init="pType = loanInfo.loanType " ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
+		<div class="ks-dividing">
+			<h4>抵押物</h4>
+		</div>
+		<div class="row" >
+			<div class="col-md-8">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物信息</div>
+					<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
+						<!-- <div ng-include="template.houseUrl"></div> -->
+						<ui-include src="'/angular/manage/loan/pawn/house_pawn.html'"></ui-include>
+					</div>
+					<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
+						<!-- <div ng-include="template.carUrl"></div> -->
+						<ui-include src="'/angular/manage/loan/pawn/car_pawn.html'"></ui-include>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物附件
+						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('抵押物')" style="margin-top:-5px;">上传</button>
+
+					</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
+								<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('pawn',$index)"></a>
+								<a ng-href="a.url" target="_blank">
+									{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ks-divider"></div>
+	<div>
+		<div class="ks-dividing">
+			<h4>通知</h4>
+		</div>
+		<div class="row" >
+			<div class="col-md-8">
+				<ul class="list-inline">
+					 <li>
+						<label class="checkbox-inline">
+			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" > 短信提醒
+			             </label>
+			             <span class="label label-info" ng-click="viewMsgTemplate()" style="cursor:pointer;">查看模板</span>
+					</li>
+					<li>
+						<label class="checkbox-inline">
+			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >邮件提醒
+			             </label>
+					</li>
+
+				</ul>
+				<div ng-show="loanInfo.isSmsRemind && !br.mobilePhoneNum ">
+					<div class="text-warning">借款人手机号未填,无法接受短信提醒</div>
+				</div>
+				<div ng-show="loanInfo.isEmailRemind && !br.email">
+					<div class="text-warning">借款人邮箱未填,无法接受短信提醒</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ks-divider"></div>
+
+	<ui-include src="'/angular/manage/loan/ctrls.html'"></ui-include>
+
+	</div>
+</form>

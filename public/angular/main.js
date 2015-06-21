@@ -101,6 +101,10 @@ require([
 		 'manage/contact/ContactController',
 		 'manage/contact/ContactModalCtrl',
 
+	   'borrow/bloan/controllers/BLoanCtrls',
+		'borrow/bloan/helpers/BLoanHelper',
+		 'borrow/bloan/services/BLoanService',
+
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',

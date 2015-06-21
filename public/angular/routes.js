@@ -485,6 +485,59 @@ define(['app','underscore'],function(app,_){
 						}
 					}
         })
+				.state('bproject',{
+					url:'/bproject',
+					views:{
+						'nav@bproject':{
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:resolveNavObjects()
+						},
+						'':{
+							templateUrl:'/angular/manage/common/partial/layout_simple.html'
+						},
+						'wizard@bproject':{
+							templateUrl:'/angular/borrow/common/partial/wizard.html'
+						}
+					}
+
+				})
+				.state('bproject.create',{
+		    	url:"/create?ref",
+					templateUrl: "/angular/borrow/bloan/partials/create_borrow_info.html",
+		    	resolve:_.extend(resolveSelectItems(),resolveLoan()),
+		    	controller: "BLoanFormCtrl"
+		    })
+		    .state('bproject.createMore',{
+		    	url:"/create?ref#more",
+					templateUrl: "/angular/borrow/bloan/partials/create_borrow_user.html",
+		    	controller:"BLoanContactFormCtrl"
+		    })
+		 	 .state('bproject.createFinal',{
+		    	url:"/create?ref#projectDetail",
+		    	templateUrl: "/angular/manage/common/contract/contract.html",
+		    	controller: "BLoanDetailCtrl"
+		    })
+		 	 // 调整项目
+		 	.state('bproject.modify',{
+		    	url:"/:id/modify",
+		    	templateUrl: "/angular/borrow/bloan/partials/create_borrow_info.html",
+		    	resolve:_.extend(resolveSelectItems(),resolveLoan()),
+		    	controller: "BLoanFormCtrl"
+
+		    })
+		    .state('bproject.modifyMore',{
+		    	url:"/:id/modify#more",
+		    	templateUrl: "/angular/borrow/bloan/partials/create_borrow_user.html",
+		    	controller: "BLoanContactFormCtrl"
+
+		    })
+		    .state('bproject.modifyFinal',{
+		    	url:"/:id/modify#final",
+		    	templateUrl: "/angular/manage/common/contract/contract.html",
+		    	resolve:resolveSelectItems(),
+		    	controller: "ModifyBLoanFinalCtrl"
+		    })
         .state('borrow.index',{
           url:''
         })

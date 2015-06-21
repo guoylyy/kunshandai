@@ -22,8 +22,9 @@ function calculateOutMoney(loan, interestsMoney){
     lr.set('assureCost', -loan.assureCost);
     lr.set('serviceCost', -loan.serviceCost);
     lr.set('otherCost', -loan.otherCost);
-    lr.set('outMoney', loan.amount);
-    lr.set('shouldOutMoney', outMoney)
+    lr.set('baseMoney', loan.amount);
+    lr.set('outMoney', 0);
+    lr.set('shouldOutMoney', outMoney);
     lr.set('order',1); //标记为首次放款
     lr.set('isPayed', false);
     return lr;

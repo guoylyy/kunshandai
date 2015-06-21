@@ -121,6 +121,10 @@ define(['app','underscore'],function(app,_) {
 			}
 
 			$scope.customTime = function(){
+				if(_.isNull($scope.condition.startDate) || _.isNull($scope.condition.endDate)){
+					return;
+				}
+
 				$state.go($state.current.name,{
 					startDate:(new Date($scope.condition.startDate)).getTime(),
 					endDate:(new Date($scope.condition.endDate)).getTime()

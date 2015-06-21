@@ -204,17 +204,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				return _.extend({},model);
 			},
 			getLoan:function(loanId){
-				var deferred = $q.defer();
-
-				$http.get(ApiURL+loanUrl+"/"+loanId)
-				.then(function(res){
-					deferred.resolve(typeTransform(res.data.data));
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.getLoan(loanId);
 			},
 			getNormalLoans:function(page,startDate,endDate,loanType){
 				return getLoanList(page,"normal",startDate,endDate,loanType);
@@ -266,18 +256,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				 return getPaybackList(page,startDate,endDate,loanType,3);
 			},
 			getPaybacks: function(loanId){
-				var deferred = $q.defer();
-
-				$http.get(
-					ApiURL+loanUrl+"/"+loanId+"/paybacks"
-				).then(function(res){
-					deferred.resolve(res.data.data);
-				},function(res){
-					$log.error(res);
-					deferred.reject(res);
-				});
-
-				return deferred.promise;
+				return LoanService.getPaybacks(loanId);
 			},
 			getPayments:function(loanId){
 				var deferred = $q.defer();

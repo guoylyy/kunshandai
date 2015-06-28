@@ -1136,8 +1136,10 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
         message: '项目状态错误!'
       });
     } else {
+      var isPart = false;
       if(payType != mconfig.payBackTypes.partial.value){
         //部分结清
+        isPart = true;
         rLoan.set('status', mconfig.loanStatus.completed.value);
         rLoan.set('finishDate', new Date(req.body.payBackDate));
       }
@@ -1153,10 +1155,10 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
           console.log('save paybacks...');
           for (var i = 0; i < list.length; i++) {
             //最后一期算结清的钱
-            if (list[i].order == rLoan.get('payTotalCircle')) {
+            console.log('start calculate:' + list[i].get('order'));
+            if (list[i].get('order') == rLoan.get('payTotalCircle')) { //最后一期
               if(payType != mconfig.payBackTypes.partial.value){
-                //非部分结清,项目未完成
-                list[i].set('status', mconfig.loanPayBackStatus.completed.value);
+                list[i].set('status', mconfig.loanPayBackStatus.completed.value);//非部分结清,项目未完成
               }
               list[i].set('payBackMoney', list[i].get('payBackMoney') + req.body.payBackData.sum);
             } else {

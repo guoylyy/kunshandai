@@ -148,13 +148,18 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			    var interestsMoney = loan.amount * loan.interests * loan.payCircle;
 			    var overdueMoney = 0;
 			    var rlist = [];
-			    for (var i = 1; i <= loan.payTotalCircle; i++) {
+			    for (var i = 1; i <= loan.payTotalCircle + 1; i++) {
 
-			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-
+			        var d = moment(loan.startDate).add(loan.payCircle*(i-1), 'month').format();
+			        if(i == (loan.payTotalCircle + 1)){
+			        	rlist.push(generateLoanPayBack(parseFloat(loan.amount), 0,
+			            	d, '还本'));	
+			        	break;
+			        }
 			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
 			            d, i));
 			    };
+			    
 			    return rlist;
 			};
 			//周期末息后本
@@ -166,7 +171,12 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 			    for (var i = 1; i <= loan.payTotalCircle; i++) {
 
 			        var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month').format();
-
+			        if(i == loan.payTotalCircle){
+			        	console.log(loan.amount + baseMoney + interestsMoney + overdueMoney);
+			        	rlist.push(generateLoanPayBack(parseFloat(loan.amount) + baseMoney + interestsMoney + overdueMoney, interestsMoney,
+			            d, '还本付息'));	
+			            break;
+			        }
 			        rlist.push(generateLoanPayBack(baseMoney + interestsMoney + overdueMoney, interestsMoney,
 			            d, i));
 			    };

@@ -15,6 +15,8 @@ function updateContact(contact, reqBody){
     contact.set('name',reqBody.name);
     contact.set('certificateType', reqBody.certificateType);
     contact.set('certificateNum', reqBody.certificateNum);
+    contact.set('bankCardNumber', reqBody.bankCardNumber);
+    contact.set('bankCardName', reqBody.bankCardName);
     contact.set('email', reqBody.email);
     contact.set('qq', reqBody.qq);
     contact.set('address', reqBody.address);

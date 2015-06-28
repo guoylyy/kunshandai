@@ -44,7 +44,7 @@ app.use(avosExpressHttpsRedirect());
 app.use(express.cookieParser(config.cookieParserSalt)); //还不明白是干什么的
 app.use(avosExpressCookieSession({ //设置 cookie
   cookie: {
-    maxAge: 3600000 * 24
+    maxAge: 3600000 * 24 * 7
   },
   fetchUser: true
 }));
@@ -1281,7 +1281,7 @@ app.post(config.baseUrl + '/contact', function(req, res) {
     mutil.renderData(res, r_contact);
   }, function(error) {
     mutil.renderError(res, error);
-  })
+  });
 });
 
 /*更新联系人*/
@@ -1633,6 +1633,7 @@ function listLoan(res, query, pageNumber, skipDraft) {
 
   query.count().then(function(count) {
     resultsMap['totalNum'] = count;
+    //console.log(count);
     resultsMap['pageSize'] = mconfig.pageSize;
   }).then(function() {
     if (pageNumber > resultsMap.totalPageNum) {
@@ -1640,6 +1641,7 @@ function listLoan(res, query, pageNumber, skipDraft) {
       mutil.renderData(res, resultsMap);
     } else {
       query.skip(pageNumber * mconfig.pageSize - mconfig.pageSize);
+      query.limit(mconfig.pageSize);
       query.find({
         success: function(results) {
           var rlist = [];

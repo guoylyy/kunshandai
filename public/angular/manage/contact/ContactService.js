@@ -11,7 +11,7 @@ define(['app','underscore'],function(app,_){
 			certificateType:'',
 			name:'',
 			certificateNum:'',
-			mobilePhoneNum:'',
+			mobilePhoneNumber:'',
 			email:'',
 			qq:'',
 			wechat:'',

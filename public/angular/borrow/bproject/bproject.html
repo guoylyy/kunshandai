@@ -107,7 +107,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
-				<td><a href="/loan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
+				<td><a href="/bloan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
 				<td ng-show="('borrow.normalProjects' | isState) || ('borrow.overdueProjects' | isState)">{{loan.currPayStep}}/{{loan.payTotalCircle}}</td>
 				<td ng-show="('borrow.normalProjects' | isState) || ('borrow.overdueProjects' | isState) || ('borrow.badbillProjects' | isState)">{{loan.currPayDate | date:"yyyy-MM-dd"}}</td>

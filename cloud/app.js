@@ -106,6 +106,9 @@ app.get('/project/*', function(req, res) {
 app.get('/loan', function(req, res) {
   res.render('manage.ejs');
 });
+app.get('/bloan', function(req, res) {
+  res.render('manage.ejs');
+});
 
 app.get('/help', function(req, res) {
   res.render('help.ejs');

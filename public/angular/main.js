@@ -106,6 +106,7 @@ require([
 	     'borrow/bloan/controllers/BLoanCtrls',
 		 'borrow/bloan/helpers/BLoanHelper',
 		 'borrow/bloan/services/BLoanService',
+		 'borrow/bloan/controllers/BContractController',
 
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',

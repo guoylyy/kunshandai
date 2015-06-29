@@ -8,7 +8,7 @@
 		<div class="col-md-8">
 			<div class="ks-panel panel panel-default">
 				<div class="panel-heading">放款人信息
-					<span><a class="text-info ks-right small" ng-init="brSelect=false" ng-click="brSelect=!brSelect">从客户中选择</a></span>
+					<!-- <span><a class="text-info ks-right small" ng-init="brSelect=false" ng-click="brSelect=!brSelect">从客户中选择</a></span> -->
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -57,6 +57,20 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>银行卡开户行</label>
+								<input type="text" class="form-control" placeholder="银行卡开户行" ng-model="br.bankCardName" name="bbankCardName">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label>银行卡号码</label>
+								<input type="text" class="form-control" placeholder="银行卡号码" ng-model="br.bankCardNumber" name="bbankCardNumber">
+							</div>
+						</div>
+					</div>
 					<div style="text-align:right">
 					<a ng-init="brMore=false" ng-click="brMore=!brMore" class=" text-info">{{brMore?'收起更多信息':'填写更多信息'}}</a>
 					</div>
@@ -67,7 +81,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>手机号</label>
-								<input type="text" class="form-control" placeholder="手机号" ng-model="br.mobilePhoneNum" name="bmobilePhoneNum" ng-pattern="/\b\d{11}\b/">
+								<input type="text" class="form-control" placeholder="手机号" ng-model="br.mobilePhoneNumber" name="bmobilePhoneNum" ng-pattern="/\b\d{11}\b/">
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bmobilePhoneNum.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.bmobilePhoneNum.$error.pattern">请填写正确的手机号</div>
 								</div>
@@ -120,7 +134,7 @@
 			  </a>
 			</script>
 			</script>
-			<div class="ks-panel panel panel-default" collapse="!brSelect">
+			<div class="ks-panel panel panel-default" >
 				<div class="panel-heading">从客户中选择放款人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
 				<div class="panel-body">
 					<div class="input-group">
@@ -161,44 +175,7 @@
 		<ui-include src="'/angular/manage/contact/grInfo.html'"></ui-include>
 	</div>
 
-	<div ng-init="pType = loanInfo.loanType " ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
-		<div class="ks-dividing">
-			<h4>抵押物</h4>
-		</div>
-		<div class="row" >
-			<div class="col-md-8">
-				<div class="ks-panel panel panel-default">
-					<div class="panel-heading">抵押物信息</div>
-					<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
-						<!-- <div ng-include="template.houseUrl"></div> -->
-						<ui-include src="'/angular/manage/loan/pawn/house_pawn.html'"></ui-include>
-					</div>
-					<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
-						<!-- <div ng-include="template.carUrl"></div> -->
-						<ui-include src="'/angular/manage/loan/pawn/car_pawn.html'"></ui-include>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="ks-panel panel panel-default">
-					<div class="panel-heading">抵押物附件
-						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('抵押物')" style="margin-top:-5px;">上传</button>
 
-					</div>
-					<div class="panel-body">
-						<ul class="list-group">
-							<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
-								<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('pawn',$index)"></a>
-								<a ng-href="a.url" target="_blank">
-									{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 	<div class="ks-divider"></div>
 	<div>
 		<div class="ks-dividing">
@@ -209,23 +186,17 @@
 				<ul class="list-inline">
 					 <li>
 						<label class="checkbox-inline">
-			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" > 短信提醒
+			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" > 还款短信提醒
 			             </label>
 			             <span class="label label-info" ng-click="viewMsgTemplate()" style="cursor:pointer;">查看模板</span>
 					</li>
 					<li>
 						<label class="checkbox-inline">
-			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >邮件提醒
+			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >还款邮件提醒
 			             </label>
 					</li>
 
 				</ul>
-				<div ng-show="loanInfo.isSmsRemind && !br.mobilePhoneNum ">
-					<div class="text-warning">借款人手机号未填,无法接受短信提醒</div>
-				</div>
-				<div ng-show="loanInfo.isEmailRemind && !br.email">
-					<div class="text-warning">借款人邮箱未填,无法接受短信提醒</div>
-				</div>
 			</div>
 		</div>
 	</div>

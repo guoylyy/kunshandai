@@ -1,0 +1,200 @@
+<div class="ks-dividing">
+	<h4>项目详情</h4>
+</div>
+<div class="row">
+	<div class="col-md-9">
+		<h4>项目编号: {{loanInfo.numberWithName}}</h4>
+	</div>
+	<div class=" col-md-3" ng-controller="ActiveBLoanCtrl">
+		<a ui-sref="manage.normalProjects"><button class="btn btn-default ks-right">返回项目列表</button></a>
+		<button class="btn btn-warning ks-right" ng-click="activeLoan()" ng-show="!loanInfo.actived">立即入账</button>
+		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">{{loanInfo.status.value == 1?'正在还款':'已完成'}}</button>
+	</div>
+
+</div>
+<div class="ks-panel panel panel-primary">
+	<div class="panel-heading">融资信息</div>
+	<div class="panel-body">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>贷款类型</th>
+					<th>贷款金额（元）</th>
+					<th>开始日期</th>
+					<th>截止日期</th>
+					<th>还款类型</th>
+					<th>首次还款日期</th>
+					<th>还款周期（月/次）</th>
+					<th>还款总次数（次）</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{loanInfo.loanType | cDisplay:"loanTypes"}}</td>
+					<td>{{loanInfo.amount | number:2}}</td>
+					<td>{{loanInfo.startDate | date:"yyyy-MM-dd"}}</td>
+					<td>{{loanInfo.endDate | date:"yyyy-MM-dd"}}</td>
+					<td>{{loanInfo.payWay | cDisplay:"payBackWays"}}</td>
+					<td>{{loanInfo.firstPayDate | date:"yyyy-MM-dd"}}</td>
+					<td>{{loanInfo.payCircle}}</td>
+					<td>{{loanInfo.payTotalCircle}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>利率（%/月）</th>
+					<th>履约保证金（元）</th>
+					<th>服务费（元）</th>
+					<th>逾期违约金率（‰/天）</th>
+					<th ng-show="loanInfo.payWay.value === 'debx'">提前结清违约金率（‰/天）</th>
+					<th>其他费用（元）</th>
+					<th>暂收金额（元）</th>
+				</tr>
+			</thead>
+			<tbody>
+
+
+				<tr>
+					<td>{{loanInfo.interests*100 | number:2}}</td>
+					<td>{{loanInfo.assureCost | number:2}}</td>
+					<td>{{loanInfo.serviceCost | number:2}}</td>
+					<td>{{loanInfo.overdueCostPercent*1000 | number:2}}</td>
+					<td ng-show="loanInfo.payWay.value === 'debx'">{{loanInfo.overdueBreachPercent*1000 | number:2}}</td>
+					<td>{{loanInfo.otherCost | number:2}}</td>
+					<td>{{loanInfo.keepCost | number:2}}</td>
+				</tr>
+
+			</tbody>
+		</table>
+		<div class="ks-divider"></div>
+		<div class="row">
+			<div class="col-md-6">
+				<p class="ks-heading">放款人信息:</p>
+				<div class="row">
+					<div class="col-md-4">
+						  <p><label>姓 名 :</label><span>{{br.name}}</span></p>
+						  <p><label>电 话 :</label><span>{{br.mobilePhoneNumber? br.mobilePhoneNumber:'未填'}}</span></p>
+						  <p><label>微 信 :</label><span>{{br.wechat? br.wechat:'未填'}}</span></p>
+						  <p><label>开户行名称 :</label><span>{{br.bankCardName? br.bankCardName:'未填'}}</span></p>
+					</div>
+					<div class="col-md-6">
+						  <p><label>身份证 :</label><span>{{br.certificateNum}}</span></p>
+						  <p><label>邮 箱  :</label><span>{{br.email? br.email:'未填'}}</span></p>
+						  <p><label>Q Q  :</label><span>{{br.qq? br.qq:'未填'}}</span></p>
+						  <p><label>银行卡号 :</label><span>{{br.bankCardNumber? br.bankCardNumber:'未填'}}</span></p>
+					</div>
+				</div>
+				<p><label>地 址 :</label><span>{{br.address? br.address:'未填'}}</span></p>
+			</div>
+			<div class="col-md-6">
+				<div ng-show="loanInfo.assurer">
+					<p class="ks-heading">担保人信息:</p>
+					<div class="row">
+						<div class="col-md-4">
+							  <p><label>姓 名 :</label><span>{{gr.name}}</span></p>
+							  <p><label>电 话 :</label><span>{{gr.mobilePhoneNumber? gr.mobilePhoneNumber:'未填'}}</span></p>
+							  <p><label>微 信 :</label><span>{{gr.wechat? gr.wechat:'未填'}}</span></p>
+						</div>
+						<div class="col-md-6">
+							  <p><label>身份证 :</label><span>{{gr.certificateNum}}</span></p>
+							  <p><label>邮 箱  :</label><span>{{gr.email? gr.email:'未填'}}</span></p>
+							  <p><label>Q  Q  :</label><span>{{gr.qq? gr.qq:'未填'}}</span></p>
+						</div>
+					</div>
+					<p><label>地 址 :</label><span>{{gr.address? gr.address:'未填'}}</span></p>
+				</div>
+				<div ng-show="!loanInfo.assurer">
+					<p class="ks-heading">担保人信息:</p>
+					<strong>无担保人</strong>
+				</div>
+			</div>
+		</div>
+		<div class="ks-divider"></div>
+		<div class="row">
+			<div class="col-md-12">
+				<p class="ks-heading">通知:</p>
+				<ul class="list-inline">
+				  <li><span>短信通知:{{loanInfo.isSmsRemind? '是':'否'}}</span></li>
+				  <li><span>邮件通知:{{loanInfo.isEmailRemind? '是':'否'}}</span></li>
+				</ul>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+<div class="ks-panel panel panel-primary" ng-show="loanInfo.actived">
+	<div class="panel-heading">入账信息</div>
+	<div class="panel-body">
+
+	<div ng-repeat="payment in loanInfo.payments">
+	<label>入账时间：{{payment.outDate || payment.payDate.iso | date:'yyyy-MM-dd'}}</label>
+	  <ui-include src="'/angular/manage/common/partial/payment.html'"></ui-include>
+	</div>
+</div>
+</div>
+<div class="ks-panel panel panel-primary" ng-show="loanInfo.actived">
+	<div class="panel-heading">还款信息</div>
+	<div class="panel-body">
+		<table class="table ">
+			<thead>
+				<tr>
+					<th>期数</th>
+					<th>还款金额(元)</th>
+					<th>还款日期</th>
+					<th>状态</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="p in loanInfo.paybacks" ng-class="{warning:(p.status == 1),success:(p.status == 3)}">
+					<td>{{p.order}}</td>
+					<td>{{p.payMoney | number:2}}</td>
+					<td>{{p.payDate | date:"yyyy-MM-dd" }}</td>
+					<td ng-show="p.status === 1" class="text-info">正在还</td>
+					<td ng-show="p.status === 2" >未还</td>
+					<td ng-show="p.status === 3"class="text-success">已还</td>
+					<td ng-show="p.status === 4">已关闭</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="ks-panel panel panel-default">
+	<div class="panel-heading">其他材料</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">放款人附件</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<strong ng-show="br.attachments.length == 0">无</strong>
+							<li class="list-group-item" ng-repeat="a in br.attachments" >
+								<a href="{{a.url}}" target="_blank">
+									{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6" ng-show="loanInfo.assurer">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">担保人附件</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<strong ng-show="gr.attachments.length == 0">无</strong>
+							<li class="list-group-item" ng-repeat="a in gr.attachments" >
+								<a href="{{a.url}}" target="_blank">
+									{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
+								</a>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

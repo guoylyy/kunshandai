@@ -339,6 +339,68 @@ define(['app','underscore'],function(app,_){
 						}
 					}
 				})
+				.state('bloan',{
+					url:'/bloan',
+					templateUrl: "/angular/manage/common/partial/layout_simple.html",
+					abstract:true
+
+				})
+				.state('bloan.detail',{
+					url:'?id',
+					views:{
+						'nav':{
+							templateUrl: "/angular/manage/nav/nav.html",
+							controller: "NavController",
+							resolve:resolveNavObjects()
+						},
+						'':{
+							templateUrl:"/angular/borrow/common/partial/bcontract.html",
+							resolve:{
+								loan:function(BLoanService,$stateParams){
+									return BLoanService.getLoan($stateParams.id).then(function(data){
+										return data;
+									})
+								},
+								paybacks:function(BLoanService,$stateParams){
+									return BLoanService.getPaybacks($stateParams.id).then(function(data){
+										return data;
+									})
+								},
+								payments:function(BLoanService,$stateParams){
+									return BLoanService.getPayments($stateParams.id).then(function(data){
+										return data;
+									})
+								},
+								attachments:function($q,BLoanService,ContactService,$stateParams){
+									var attachments = {};
+
+									var defferrd = $q.defer();
+
+									BLoanService.getLoan($stateParams.id).then(function(loanData){
+
+										ContactService.getAttachments(loanData.loaner.id).then(function(attachdata){
+											attachments.br = attachdata;
+
+										}).then(function(){
+											if(loanData.assurer && loanData.assurer.id){
+
+												ContactService.getAttachments(loanData.assurer.id).then(function(attachdata){
+													attachments.gr = attachdata;
+													defferrd.resolve(attachments);
+												});
+											}else{
+												defferrd.resolve(attachments);
+											}
+										})
+									})
+
+									return defferrd.promise;
+								}
+							},
+							controller:'BContractController'
+						}
+					}
+				})
 				.state('project',{
 					url:'/project',
 					views:{
@@ -569,7 +631,7 @@ define(['app','underscore'],function(app,_){
 		    })
 		 	 .state('bproject.createFinal',{
 		    	url:"/create?ref#projectDetail",
-		    	templateUrl: "/angular/manage/common/contract/contract.html",
+		    	templateUrl: "/angular/borrow/common/partial/bcontract.html",
 		    	controller: "BLoanDetailCtrl"
 		    })
 		 	 // 调整项目
@@ -588,7 +650,7 @@ define(['app','underscore'],function(app,_){
 		    })
 		    .state('bproject.modifyFinal',{
 		    	url:"/:id/modify#final",
-		    	templateUrl: "/angular/manage/common/contract/contract.html",
+		    	templateUrl: "/angular/borrow/common/partial/bcontract.html",
 		    	resolve:resolveSelectItems(),
 		    	controller: "ModifyBLoanFinalCtrl"
 		    })

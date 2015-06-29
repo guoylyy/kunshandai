@@ -1,0 +1,54 @@
+<form name="loanForm" ng-submit="loanForm.$valid && activeModalFinish(loan.id)">
+<div class="modal-header">
+  <h4 class="modal-title">放款详情</h4>
+</div>
+<div class="modal-body">
+<div class="ks-panel">
+  <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
+  <div class="ks-divider"></div>
+
+  <div ng-repeat="payment in payments" ng-init="loan.preLoanData.finishPayedMoney = loan.preLoanData.finishPayedMoney || 0">
+   <ui-include src="'/angular/borrow/common/partial/inBill.html'"></ui-include>
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <div class="form-group has-warning">
+        <label class="control-label">*入账日期</label>
+        <div class="input-group">
+          <input type="text" class="form-control"datepicker-popup="{{calendar.format}}"  ng-model="loanData.outDate" is-open="calendar.opened"  close-text="关闭" name="outDate" required/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-warning" ng-click="openCld($event)" ><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </div>
+        <div ng-show="loanForm.$submitted || loanForm.outDate.$touched">
+          <div class="text-danger" ng-show="loanForm.outDate.$error.required">请填写放款日期</div>
+          <div class="text-danger" ng-show="loanForm.outDate.$error.date">请填写正确的日期格式</div>
+        </div>
+      </div>
+    </div>
+     <div class="col-md-4">
+      <div class="form-group has-warning">
+        <label class="control-label">本次入账（元）</label>
+        <div class="input-group has-danger">
+          <!-- <number-input input-value="loanInfo.amount" input-name="amout"  placeholder="贷款金额" name="amout" numberInput ng-model="loanInfo.amount" ng-pattern="/\d+/" required/> -->
+          <input type="text" class="form-control" placeholder="融资金额" name="amount" float-number-input ng-model="loanData.amount"
+          ng-init="loanData.amount = payment.shouldOutMoney" required>
+          <span class="input-group-addon">元</span>
+        </div>
+        <div ng-show="loanForm.$submitted || loanForm.amount.$touched">
+          <div class="text-danger" ng-show="loanForm.amount.$error.required">请填写入账金额</div>
+        </div>
+        <div ng-init="total = payment.shouldOutMoney">
+          <div class="text-danger" ng-show="loanData.amount < total ">小于计算的入账金额</div>
+          <div class="text-warning" ng-show="loanData.amount > total ">大于计算的入账金额</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-warning" ng-click="activeModalCancel()">取消入账</button>
+  <button type="submit" class="btn btn-success" ng-disabled="status.loaning">入账完成</button>
+</div>
+</form>

@@ -123,22 +123,22 @@ define(['app'],function(app){
 				}
 			}).then(function(){
 
-				if($scope.loanInfo.loanType === 'fcdy'
-					|| $scope.loanInfo.loanType === 'mfdy'
-					|| $scope.loanInfo.loanType === 'qcdy'
-					|| $scope.loanInfo.loanType === 'mcdy'){
+				// if($scope.loanInfo.loanType === 'fcdy'
+				// 	|| $scope.loanInfo.loanType === 'mfdy'
+				// 	|| $scope.loanInfo.loanType === 'qcdy'
+				// 	|| $scope.loanInfo.loanType === 'mcdy'){
 
-					var pawnDeferred = $q.defer();
-					PawnService.create($scope.pawn).then(function(pawnData){
-						contract.loanPawnId	= pawnData.objectId;
-						$scope.pawn = _.extend($scope.pawn,pawnData.data);
-						pawnDeferred.resolve();
-					})
-					return pawnDeferred.promise
-				}else{
+				// 	var pawnDeferred = $q.defer();
+				// 	PawnService.create($scope.pawn).then(function(pawnData){
+				// 		contract.loanPawnId	= pawnData.objectId;
+				// 		$scope.pawn = _.extend($scope.pawn,pawnData.data);
+				// 		pawnDeferred.resolve();
+				// 	})
+				// 	return pawnDeferred.promise
+				// }else{
 					contract.loanPawnId = null;
-					return;
-				}
+				// 	return;
+				// }
 			}).then(function(){
 				var createLoanDeferred = $q.defer();
 				// 生成合同
@@ -150,7 +150,7 @@ define(['app'],function(app){
 				});
 				return createLoanDeferred.promise;
 			}).then(function(){
-				$state.go('project.createFinal',{ref:$stateParams.ref});
+				$state.go('bproject.createFinal',{ref:$stateParams.ref});
 			}).catch(function(){
 				$scope.status.loanCreating = false;
 				SweetAlert.error("新建放款失败", "服务器开了点小差", "error");
@@ -159,7 +159,7 @@ define(['app'],function(app){
 		//确定放款
 		activeLoan = function(){
 			var activeModal = $modal.open({
-				templateUrl: '/angular/manage/common/active/activeLoanModal.html',
+				templateUrl: '/angular/borrow/common/partial/activeBLoanModal.html',
 				controller:'ActiveLoanModalCtrl',
 				size:'lg',
 				resolve:{

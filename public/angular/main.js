@@ -84,6 +84,7 @@ require([
 		 'manage/common/active/ActiveLoanModalCtrl',
 		 'manage/common/contract/ContractController',
 		 'manage/common/helper/LoanHelper',
+		 'manage/common/services/ModalsService',
 
 		 'manage/nav/NavController',
 
@@ -102,7 +103,7 @@ require([
 		 'manage/contact/ContactModalCtrl',
 
 		 'borrow/index/BIndexController',
-	   'borrow/bloan/controllers/BLoanCtrls',
+	     'borrow/bloan/controllers/BLoanCtrls',
 		 'borrow/bloan/helpers/BLoanHelper',
 		 'borrow/bloan/services/BLoanService',
 

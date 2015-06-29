@@ -5,8 +5,8 @@ define(['app',"underscore"],function(app,_) {
 
 	return {
 		LoanFormCtrl: app.controller('LoanFormCtrl',
-			["$scope","$q","LoanService",'DictService','$state','loanTypes','repayTypes','SweetAlert','loan',
-			function($scope,$q,LoanService,DictService,$state,loanTypes,repayTypes,SweetAlert,loan){
+			["$scope","$q","LoanService",'DictService','$state','loanTypes','repayTypes','SweetAlert','loan','ModalsService',
+			function($scope,$q,LoanService,DictService,$state,loanTypes,repayTypes,SweetAlert,loan, ModalsService){
 
 			//下拉选择类型
 			$scope.repayTypes	= repayTypes;
@@ -16,6 +16,7 @@ define(['app',"underscore"],function(app,_) {
 			//日历相关
 			$scope.calendar		= {};
 			$scope.format 		= 'yyyy-MM-dd';
+
 
 			//获取原有loan 或从本地获取新的loan Model
 			$scope.loanInfo     = LoanService.getLocal();
@@ -132,6 +133,10 @@ define(['app',"underscore"],function(app,_) {
 			    $event.preventDefault();
 			    $event.stopPropagation();
 			    $scope.calendar[opened] = true;
+			}
+
+			$scope.payWayHelp = function(){
+				ModalsService.payWayQuestion();
 			}
 
 		}]),

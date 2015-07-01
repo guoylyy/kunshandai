@@ -19,6 +19,10 @@ var payBackTypes = {
 	'partial':{
 		value: 'partial',
 		text: '部分还款'
+	},
+	'overflow':{
+		value: 'overflow',
+		text: '溢价'
 	}
 };
 

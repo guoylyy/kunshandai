@@ -28,7 +28,7 @@
         <td>{{payBill.interestsMoney | number:2}}</td>
         <td>{{row3 = row2 + payBill.interestsMoney| number:2}}</td>
       </tr>
-      <tr class="warning">
+      <tr class="warning" ng-show="payBill.payBackMoney > 0">
         <th scope="row">本期已还（元）</th>
         <td>{{payBill.payBackMoney | number:2}}</td>
         <td></td>

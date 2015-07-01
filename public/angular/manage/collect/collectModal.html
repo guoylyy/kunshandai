@@ -194,20 +194,44 @@
               <div class="panel-body">
                  <div class="row">
                    <div class="col-md-9">
-                     <label class="radio-inline" ng-repeat="ptype in payBackTypes"
+                     <!-- <label class="radio-inline" ng-repeat="ptype in payBackTypes"
                         ng-show="(ptype.value!='normal' && loan.payStatus.value!=='overdue') || (loan.payStatus.value==='overdue' && ptype.value=='next')">
                         <input type="radio" ng-model="payData.payType"  ng-value="ptype.value"
                         name="payBackType" ng-required="!payData.payType && payBackIds.length == 1">{{ptype.text}}
-                     </label>
+                     </label> -->
+                     <label class="radio-inline">
+                        <input type="radio" ng-model="payData.payType"  value="next" name="payBackType" ng-required="!payData.payType">滚入下期
+                      </label>
+                     <!-- 多收 -->
+                     <span ng-show="total.income > payBill.sum">
+                        <label class="radio-inline">
+                          <input type="radio" ng-model="payData.payType"  value="overflow" name="payBackType" ng-required="!payData.payType">溢价处理
+                        </label>
+                      </span>
+                     <!-- 少收 -->
+                      <span ng-show="total.income < payBill.sum">
+                        <label class="radio-inline">
+                          <input type="radio" ng-model="payData.payType"  value="partial" name="payBackType" ng-required="!payData.payType">部分还款
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" ng-model="payData.payType"  value="favour" name="payBackType" ng-required="!payData.payType">优惠处理
+                        </label>
+                     </span>
                      <div ng-show="payForm.$submitted || payForm.payBackType.$touched">
                        <div class="text-danger" ng-show="payForm.payBackType.$error.required">请填写收款类型</div>
                      </div>
                     </div>
                     <div class="col-md-3">
                       <div ng-show="payData.payType == 'favour'">
-                        优惠：<ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元
+                        优惠减免：<ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元
                       </div>
-                      <div ng-show="payData.payType == 'next'">
+                      <div ng-show="payData.payType == 'overflow'">
+                        溢价处理：<ins  class="text-warning">{{payData.offsetMoney}}</ins> 元
+                      </div>
+                      <div ng-show="payData.payType == 'next' && payData.offsetMoney > 0">
+                        下期少还：<ins  class="text-warning">{{payData.offsetMoney}}</ins> 元
+                      </div>
+                      <div ng-show="payData.payType == 'next' && payData.offsetMoney < 0">
                         下期多还：<ins  class="text-warning">{{-payData.offsetMoney}}</ins> 元
                       </div>
                       <div ng-show="payData.payType == 'partial'">
@@ -222,7 +246,7 @@
   </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-info" ng-click="back()">返回选择</button>
-  <button type="button" class="btn btn-default" ng-click="resetPayData()" >重置账单金额</button>
+  <button type="button" class="btn btn-warning pull-left" ng-click="resetPayData()" >重置输入</button>
   <button type="submit" class="btn btn-success" ng-disabled="payForm.$invalid">完成收款</button>
 </div>
 </div>
@@ -480,25 +504,43 @@
 
           </div>
         </div>
-        <fieldset class="panel panel-success"  ng-show="completeData.favour > 0 && billGenerated" >
+        <fieldset class="panel panel-success"  ng-show="completeData.offsetMoney!=0 && billGenerated" >
            <div class="panel-heading">结清类型</div>
              <div class="panel-body">
                 <div class="row">
                   <div class="col-md-9">
-                    <label class="radio-inline" ng-repeat="ptype in payBackTypes" ng-show="ptype.value!='normal' && ptype.value!='next'">
+                    <!-- <label class="radio-inline" ng-repeat="ptype in payBackTypes" ng-show="ptype.value!='normal' && ptype.value!='next'">
                        <input type="radio" ng-model="completeData.payType"  ng-value="ptype.value"
                        name="payBackType" ng-required="!completeData.payType">{{ptype.text}}
+                    </label> -->
+                    
+                    <!-- 多收 -->
+                    <label class="radio-inline" ng-show="completeData.offsetMoney > 0">
+                      <input type="radio" ng-model="completeData.payType"  value="overflow" name="payBackType" ng-required="!completeData.payType">溢价处理
                     </label>
+
+                    <!-- 少收 -->
+                    <div ng-show="completeData.offsetMoney < 0">
+                    <label class="radio-inline">
+                      <input type="radio" ng-model="completeData.payType"  value="partial" name="payBackType" ng-required="!completeData.payType">部分结清
+                    </label>
+                     <label class="radio-inline" ng-show="completeData.offsetMoney < 0">
+                      <input type="radio" ng-model="completeData.payType"  value="favour" name="payBackType" ng-required="!completeData.payType">优惠处理
+                    </label>
+                    </div>
                     <div ng-show="completeForm.$submitted || completeForm.payBackType.$touched">
                       <div class="text-danger" ng-show="completeForm.payBackType.$error.required">请填写收款类型</div>
                     </div>
                    </div>
                    <div class="col-md-3">
                      <div ng-show="completeData.payType == 'favour'">
-                       优惠：<ins  class="text-warning">{{completeData.favour}}</ins> 元
+                       优惠减免：<ins  class="text-warning">{{-completeData.offsetMoney}}</ins> 元
                      </div>
                      <div ng-show="completeData.payType == 'partial'">
-                       下次结清：<ins  class="text-warning">{{completeData.favour}}</ins> 元
+                       下次结清：<ins  class="text-warning">{{-completeData.offsetMoney}}</ins> 元
+                     </div>
+                     <div ng-show="completeData.payType == 'overflow'">
+                       溢价处理：<ins  class="text-warning">{{completeData.offsetMoney}}</ins> 元
                      </div>
                    </div>
                 </div>
@@ -506,7 +548,7 @@
        </fieldset>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="resetCompleteData()" >重置账单金额</button>
+    <button type="button" class="btn btn-warning pull-left" ng-click="resetCompleteData()" >重置输入</button>
     <button type="submit" class="btn btn-success" ng-disabled="!billGenerated">完成结清</button>
   </div>
 </div>

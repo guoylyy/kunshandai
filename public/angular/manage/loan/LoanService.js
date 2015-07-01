@@ -69,8 +69,14 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 
 				_.each(data,function(ele,index){
 					moment.locale('zh-cn');
+					moment.relativeTimeThreshold('s', 60);
+				  	moment.relativeTimeThreshold('m', 60);
+				  	moment.relativeTimeThreshold('h', 24);
+				  	moment.relativeTimeThreshold('d', 30);
+				  	moment.relativeTimeThreshold('M', 12);
 					var payDate = data[index]['payDate'] || data[index]['currPayDate']
-					data[index]['nowToPayDate'] = moment(payDate).fromNow();
+					data[index]['nowToPayDate'] = moment(new Date(payDate)).add(1, 'day').fromNow();
+					
 				})
 				return data;
 			},

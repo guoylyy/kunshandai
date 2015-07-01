@@ -64,9 +64,9 @@ define(['app','underscore','moment'],function(app,_,moment) {
 
 				$scope.completeData.sum = $scope.total.income-$scope.total.outcome;
 
-				$scope.completeData.favour = parseFloat(($scope.completedBill.sum - $scope.completeData.sum).toFixed(2));
+				$scope.completeData.offsetMoney = parseFloat(($scope.completeData.sum - $scope.completedBill.sum).toFixed(2));
 
-				if($scope.completeData.favour >= 0){
+				if($scope.completeData.offsetMoney >= 0){
 					$scope.completeData.payType = 'normal';
 				}else{
 					$scope.completeData.payType = '';
@@ -89,6 +89,8 @@ define(['app','underscore','moment'],function(app,_,moment) {
 						$scope.payData.payType = '';
 					}
 					$scope.payData.offsetMoney = $scope.total.income - $scope.payBill.sum;
+				}else{
+					$scope.payData.payType = 'normal';
 				}
 			}
 		})

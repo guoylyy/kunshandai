@@ -5,15 +5,15 @@ exports.pageSize = 10
 //财务统计状态科目
 var fiscalStatusTypes = {
 	'payed': {
-		value: 0,
+		value: 'payed',
 		text: '已兑付'
 	},
 	'unPayed':{
-		value: 1,
+		value: 'unPayed',
 		text: '未兑付'
 	},
 	'all':{
-		value: 2,
+		value: 'all',
 		text: '所有'
 	}
 };
@@ -55,6 +55,10 @@ var fiscalTypes = {
 	'favourMoney':{
 		value: 8,
 		text: '坏账'
+	},
+	'all':{
+		value: 9,
+		text: '所有'
 	}
 };
 

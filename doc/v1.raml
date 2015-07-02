@@ -1566,6 +1566,91 @@ traits:
                     "code": 200
                   }
 
+
+/fiscal:
+  description: 财务统计接口
+  /loan:
+    get:
+      description: | 
+        获取借款财务统计信息
+      queryParameters:
+        startDate:
+          type: date
+          example: | 
+            2015-05-01
+        endDate:
+          type: date
+          example: |
+            2015-05-31
+        fiscalType:
+          description: mconfig -> fiscalTypes
+          type: string
+          example: |
+            [0,2,3,4]
+        status:
+          description: mconfig -> fiscalStatusTypes
+          type: string
+          example: |
+            "all"
+        loan:
+          description: 目标项目，不传代表所有
+          type: string
+          example: |
+            "fdsfsadfas"
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "income": 100,
+                  "outcome": null,
+                  "description": "",
+                  "summary": "本金",
+                  "remain": 100000
+                }
+  /borrow:
+    get:
+      description: | 
+        获取借款财务统计信息
+      queryParameters:
+        startDate:
+          type: date
+          example: | 
+            2015-05-01
+        endDate:
+          type: date
+          example: |
+            2015-05-31
+        fiscalType:
+          description: mconfig -> fiscalTypes
+          type: string
+          example: |
+            [0,2,3,4]
+        status:
+          description: mconfig -> fiscalStatusTypes
+          type: string
+          example: |
+            "all"
+        loan:
+          description: 目标项目，不传代表所有
+          type: string
+          example: |
+            "fdsfsadfas"
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "income": 100,
+                  "outcome": null,
+                  "description": "",
+                  "summary": "本金",
+                  "remain": 100000
+                }
+
+
 /contact:
   post:
     description: |

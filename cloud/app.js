@@ -909,7 +909,7 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
                     pb.set('status', mconfig.loanPayBackStatus.paying.value);
                     if(payType == mconfig.payBackTypes.next.value){
                       pb.set('payedMoney', offsetMoney); //滚入下期金额
-                      pb.set('payBackMoney', offsetMoney); //滚入下期金额
+                      pb.set('payBackMoney',offsetMoney); //滚入下期金额
                     }
                     pb.save().then(function(npb) {
                       loan.save().then(function(rLoan) {
@@ -1229,8 +1229,9 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
                 list[i].set('status', mconfig.loanPayBackStatus.completed.value);//非部分结清,项目未完成
               }
               list[i].set('payBackMoney', list[i].get('payBackMoney') + req.body.payBackData.sum);
+              list[i].set('offsetMoney', req.body.payBackData.offsetMoney);
             } else {
-              list[i].set('status', mconfig.loanPayBackStatus.closed.value);
+              list[i].set('status', mconfig.loanPayBackStatus.completed.value);
               list[i].set('payBackMoney', 0);
             }
             list[i].set('payBackDate', new Date(req.body.payBackDate));

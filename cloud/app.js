@@ -1345,9 +1345,61 @@ function classficStatictics(res, query, baseMap, key) {
   财务接口
 */
 
+/*
+  贷款财务统计
+ */
+app.get(config.baseUrl + '/fiscal/loan', function(req,res){
+  var u = check_login(res);
+  var startsWith = (new moment(req.query.startDate)).startOf('day'); //统计开始日期
+  var endsWith = (new moment(req.query.endDate)).endOf('day'); //统计结束日期
+  var status = req.query.status;
+  var staticticsType = 9;
+  var items = [];
+  if(req.query.loan){
+    //某一贷款项目统计
+    if(staticticsType == mconfig.fiscalTypes.all.value){
+      var loanQuery = new AV.Query('Loan');
+      loanQuery.equalTo('owner', u);
+      loanQuery.notEqualTo('status', mconfig.loanStatus.draft.value);
+      loanQuery.equalTo('objectId',req.query.loan);
+      var payBackQuery = new AV.Query('LoanPayBack');
+      payBackQuery.matchesQuery('loan', loanQuery);
+      payBackQuery.find().then(function(pbs){
+        for (var i = 0; i < pbs.length; i++) {
+          items = items.concat(calPayBacks(pbs[i],'张三001'));
+        };
+        mutil.renderData(res, items);
+      });
+    }
+  }
+});
 
 
+function calPayBacks(pb, projectName){
+  var items = [];
+  if(pb.get('status') == mconfig.loanPayBackStatus.completed.value){
+    items.push(concretItem(projectName, pb.get('payBackDate'), '本金', pb.get('payMoney') - pb.get('interestsMoney'), 0));
+    items.push(concretItem(projectName, pb.get('payBackDate'), '利息', pb.get('interestsMoney'), 0));
+  }
+  return items;
+};
+//构建一个财务条目
+function concretItem(projectName, date, summary, income, outcome){
+  return {
+    'project': projectName,
+    'date': date,
+    'summary' : summary,
+    'income': income,
+    'outcome': outcome,
+    'remain': 0
+  };
+}
+/*
+  借款财务统计
+ */
+app.get(config.baseUrl + '/fiscal/borrow', function(req,res){
 
+});
 
 /*
   End of 财务接口

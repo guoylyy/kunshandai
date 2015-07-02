@@ -89,6 +89,7 @@ define(['app','underscore','moment'],function(app,_,moment) {
 						$scope.payData.payType = '';
 					}
 					$scope.payData.offsetMoney = $scope.total.income - $scope.payBill.sum;
+
 				}else{
 					$scope.payData.payType = 'normal';
 				}
@@ -117,16 +118,16 @@ define(['app','underscore','moment'],function(app,_,moment) {
 						$scope.payBill.sum = $scope.payBill.payMoney + $scope.payBill.overdueMoney
 																	+ $scope.payBill.interestsMoney - $scope.payBill.payBackMoney;
 						$scope.payData = _.extend({},result);
+
 						//减去上期已还
 						if($scope.payData.payBackMoney != 0){
 
-							$scope.payData.payMoney +=  $scope.payData.interestsMoney
-																					+ $scope.payData.overdueMoney;
+							$scope.payData.payMoney +=  $scope.payData.interestsMoney + $scope.payData.overdueMoney;
 							$scope.payData.interestsMoney = 0;
 							$scope.payData.overdueMoney = 0;
 							$scope.payData.payMoney	-=	$scope.payData.payBackMoney
 						}
-
+						
 						$scope.billGenerated = true;
 
 					});
@@ -224,6 +225,14 @@ define(['app','underscore','moment'],function(app,_,moment) {
 
 		$scope.resetPayData = function(){
 			$scope.payData = _.extend({},	$scope.payBill);
+			//减去上期已还
+			if($scope.payData.payBackMoney != 0){
+
+				$scope.payData.payMoney +=  $scope.payData.interestsMoney + $scope.payData.overdueMoney;
+				$scope.payData.interestsMoney = 0;
+				$scope.payData.overdueMoney = 0;
+				$scope.payData.payMoney	-=	$scope.payData.payBackMoney
+			}
 		}
 
 		$scope.completeLoan = function(){

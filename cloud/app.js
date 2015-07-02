@@ -129,6 +129,9 @@ app.get(config.baseUrl + '/account/logout', function(req, res) {
   mutil.renderSuccess(res);
 });
 
+/**
+ * 登录接口
+ */
 app.post(config.baseUrl + '/account/login', function(req, res) {
   var username = req.body.mobilePhoneNumber;
   var password = req.body.password;
@@ -145,12 +148,16 @@ app.post(config.baseUrl + '/account/login', function(req, res) {
   });
 });
 
-//如果用户已登录，返回用户信息
+/**
+ * [判断用户是不是已登录]
+ */
 app.get(config.baseUrl + '/account/isLogin', function(req, res) {
   account.isLogin() ? res.json(account.isLogin()) : mutil.renderResult(res, false, 210);
 });
 
-//注册
+/**
+ * [用户注册接口]
+ */
 app.post(config.baseUrl + '/account/register', function(req, res) {
   if (account.isLogin()) {
     AV.User.logOut();
@@ -168,6 +175,9 @@ app.post(config.baseUrl + '/account/register', function(req, res) {
   });
 });
 
+/*
+  判断用户资料是否填全
+ */
 app.put(config.baseUrl + '/account/verify', function(req, res){
   var u = check_login(res);
   //判断是不是用户的资料都全了
@@ -183,7 +193,9 @@ app.put(config.baseUrl + '/account/verify', function(req, res){
   });
 });
 
-//发送手机验证码
+/*
+  发送手机验证码
+ */
 app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function(req, res) {
   var u = check_login(res);
   var mobilePhoneNumber = u.get('mobilePhoneNumber');
@@ -194,10 +206,11 @@ app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function(req, res)
   });
 });
 
-//验证用户手机收到的验证码
+/*
+  验证用户收到的手机码 
+ */
 app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function(req, res) {
   var code = req.body.code;
-  //console.log(code);
   AV.User.verifyMobilePhone(code).then(function() {
     mutil.renderSuccess(res);
   }, function(error) {
@@ -205,7 +218,9 @@ app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function(req, 
   });
 });
 
-//发送验证邮件
+/*
+  邮箱验证接口
+ */
 app.get(config.baseUrl + '/account/requestEmailVerify', function(req, res) {
   var email = req.query.email;
   AV.User.requestEmailVerfiy(email).then(function() {
@@ -215,12 +230,17 @@ app.get(config.baseUrl + '/account/requestEmailVerify', function(req, res) {
   });
 });
 
-//获取当前用户的 profile
+/*
+  获取当前用户的 profile
+ */
 app.get(config.baseUrl + '/account/profile', function(req, res) {
   var u = check_login(res);
   mutil.renderData(res, u);
 });
-//更新当前用户的 profile
+
+/*
+  更新用户 profile
+ */
 app.put(config.baseUrl + '/account/profile', function(req, res) {
   var u = check_login(res);
   var infoObject = req.body.infoObject; //基础数据类
@@ -232,10 +252,11 @@ app.put(config.baseUrl + '/account/profile', function(req, res) {
   });
 });
 
-//更新用户头像
+/*
+  更新用户头像
+ */
 app.put(config.baseUrl + '/account/profile/icon', function(req, res) {
   var u = check_login(res);
-  //获取header id
   var attachment = AV.Object.createWithoutData('_File', req.body.icon_id);
   u.set('icon', attachment);
   u.save().then(function(rc) {
@@ -245,6 +266,9 @@ app.put(config.baseUrl + '/account/profile/icon', function(req, res) {
   });
 });
 
+/*
+  获取用户相关身份证文件
+ */
 app.get(config.baseUrl + '/account/profile/attachments', function(req, res) {
   var u = check_login(res);
   u.relation('attachments').query().find(function(alist) {
@@ -254,6 +278,9 @@ app.get(config.baseUrl + '/account/profile/attachments', function(req, res) {
   });
 });
 
+/*
+  上传用户身份文件
+ */
 app.post(config.baseUrl + '/account/profile/attachments', function(req, res) {
   var u = check_login(res);
   var attachment = AV.Object.createWithoutData('_File', req.body.attid);
@@ -264,6 +291,10 @@ app.post(config.baseUrl + '/account/profile/attachments', function(req, res) {
     mutil.renderError(res, error);
   });
 });
+
+/*
+  删除用户文件
+ */
 app.delete(config.baseUrl + '/account/profile/attachments', function(req, res) {
   var u = check_login(res);
   var attachment = AV.Object.createWithoutData('_File', req.body.attid);
@@ -275,7 +306,9 @@ app.delete(config.baseUrl + '/account/profile/attachments', function(req, res) {
   });
 });
 
-//通过原密码修改密码
+/*
+  通过原密码修改密码
+ */
 app.put(config.baseUrl + '/account/profile/resetPassword', function(req, res){
   var u = check_login(res);
   u.updatePassword(req.body.oldPassword, req.body.newPassword,{
@@ -335,7 +368,6 @@ app.get(config.baseUrl + '/borrow/search', function(req, res){
 app.get(config.baseUrl + '/loan/search', function(req, res) {
   searchProject(req, res, PRJ_TYPE.LOAN);
 });
-
 function searchProject(req, res, clazz){
   var u = check_login(res);
   var query = new AV.Query('Loan');
@@ -365,7 +397,9 @@ function searchProject(req, res, clazz){
     });
   }
 };
-
+/*
+  获取一个贷款项目详情
+ */
 app.get(config.baseUrl + '/loan/:id', function(req, res) {
   var u = check_login(res);
   var query = new AV.Query('Loan');
@@ -385,7 +419,9 @@ app.get(config.baseUrl + '/loan/:id', function(req, res) {
     mutil.renderError(res, error);
   });
 });
-
+/*
+  删除一个贷款项目
+ */
 app.delete(config.baseUrl + '/loan/:id', function(req, res) {
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
@@ -451,7 +487,9 @@ app.put(config.baseUrl + '/loan/:id', function(req, res) {
   });
 });
 
-//查询放款记录
+/*
+  查询放款记录
+ */
 app.get(config.baseUrl + '/loan/:id/payments', function(req, res) {
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
@@ -477,7 +515,9 @@ app.get(config.baseUrl + '/loan/:id/payments', function(req, res) {
   });
 });
 
-//查询还款记录
+/*
+  查询还款记录
+ */
 app.get(config.baseUrl + '/loan/:id/paybacks', function(req, res) {
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
@@ -503,7 +543,9 @@ app.get(config.baseUrl + '/loan/:id/paybacks', function(req, res) {
   });
 });
 
-//新建一个贷款项目
+/*
+  新建一个贷款项目
+ */
 app.post(config.baseUrl + '/loan/create_loan', function(req, res) {
   var u = check_login(res);
   var loan = mloan.createBasicLoan(req.body, u);
@@ -515,7 +557,9 @@ app.post(config.baseUrl + '/loan/create_loan', function(req, res) {
   });
 });
 
-//新建一个融资项目
+/*
+  新建一个融资项目
+ */
 app.post(config.baseUrl + '/borrow/create', function(req, res){
   createProject(req, res, PRJ_TYPE.BORROW);
 });
@@ -531,7 +575,9 @@ function createProject(req, res, clazz){
   });
 };
 
-//生成项目时候初次记录生成放款
+/*
+  生成项目时候初次记录生成放款
+ */
 app.post(config.baseUrl + '/loan/generate_bill', function(req, res) {
   var u = check_login(res);
   var loanId = req.body.loanId;
@@ -614,7 +660,9 @@ function generateLoanRecord(floan, res) {
     });
 };
 
-//确认放款，进入还款阶段
+/*
+  确认放款，一个项目生成
+ */
 app.post(config.baseUrl + '/loan/assure_bill', function(req, res) {
   var u = check_login(res);
   var loanId = req.body.loanId;
@@ -674,7 +722,6 @@ app.post(config.baseUrl + '/loan/assure_bill', function(req, res) {
 
 /*******************************************
  * 项目查询相关接口
- * 已完成:
  *   1. 分页列出所有项目（不包括草稿项目)
  *   2. 分页列出草稿项目
  *******************************************/
@@ -682,7 +729,9 @@ app.get(config.baseUrl + '/borrow/list/:listType/:pn', function(req,res){
   listProject(req, res, PRJ_TYPE.BORROW);
 });
 
-//列出贷款项目
+/*
+  分类列出贷款项目
+ */
 app.get(config.baseUrl + '/loan/list/:listType/:pn', function(req, res) {
   listProject(req, res, PRJ_TYPE.LOAN);
 });
@@ -737,13 +786,16 @@ function listProject(req, res, clazz){
   listLoan(res, query, pageNumber, skipDraft);
 };
 
-
+/*
+  列出项目当前还款任务
+ */
 app.get(config.baseUrl + '/borrow/payBack/list/:pn', function(req, res){
   listPackBacks(req, res, PRJ_TYPE.BORROW);
 });
 
-
-//目前列出还款金额是以当日为节点计算需要还款的金额
+/*
+  目前列出还款金额是以当日为节点计算需要还款的金额
+ */
 app.get(config.baseUrl + '/loan/payBack/list/:pn', function(req, res) {
   listPackBacks(req, res, PRJ_TYPE.LOAN);
 });
@@ -800,7 +852,10 @@ function listPackBacks(req, res, clazz){
   });
 };
 
-//还款:不能还最后一期
+/*
+  还款
+    @注明: 不能还最后一期
+ */
 app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
   //acl
   var u = check_login(u);
@@ -823,10 +878,15 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
           p.set('payBackMoney', p.get('payBackMoney') +req.body.payBackMoney);
           p.set('payBackDate', new Date(req.body.payBackDate));
           p.set('description', mconfig.payBackTypes[payType].text + ' '+ offsetMoney + ' 元');
+          if(payType == mconfig.payBackTypes.overflow.value){ //加入溢价金额
+            p.set('overflowMoney', offsetMoney);
+          }
+          if(payType == mconfig.payBackTypes.favour.value){ //加入优惠金额
+            p.set('favourMoney', offsetMoney);
+          }
           if(payType != mconfig.payBackTypes.partial.value){
             p.set('status', mconfig.loanPayBackStatus.completed.value);
           }
-
           p.save().then(function(np) {
             //设置总收款
             loan.set('payedMoney', loan.get('payedMoney') + req.body.payBackMoney);
@@ -849,6 +909,7 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
                     pb.set('status', mconfig.loanPayBackStatus.paying.value);
                     if(payType == mconfig.payBackTypes.next.value){
                       pb.set('payedMoney', offsetMoney); //滚入下期金额
+                      pb.set('payBackMoney', offsetMoney); //滚入下期金额
                     }
                     pb.save().then(function(npb) {
                       loan.save().then(function(rLoan) {
@@ -881,10 +942,8 @@ app.post(config.baseUrl + '/loan/payBack/:id', function(req, res) {
 
 
 /**
- * 合并还款账单获取,注：合并还款不能多还或者少还
- * @param  {[type]} req    [description]
- * @param  {[type]} res){               var u [description]
- * @return {[type]}        [description]
+ * 合并还款账单获取
+ *   @注：合并还款不能多还或者少还
  */
 app.post(config.baseUrl + '/loan/:id/mergePayBack/bill', function(req, res) {
   var u = check_login(res);
@@ -1014,7 +1073,9 @@ app.post(config.baseUrl + '/loan/:id/mergePayBack', function(req, res) {
   });
 });
 
-//计算还款金额: 每次应还的钱
+/*
+  计算还款每次应还的钱
+ */
 app.get(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
   //var payDate = req.body.payDate;
   //根据还款时间计算应还金额
@@ -1038,7 +1099,9 @@ app.get(config.baseUrl + '/loan/payBack/:id/bill', function(req, res) {
   });
 });
 
-//结清账单生成，计算结清需要付钱的钱
+/*
+  结清账单生成，计算结清需要付钱的钱
+ */
 app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res) {
   //接受项目id，获取结清账单
   var u = check_login(res);
@@ -1127,7 +1190,9 @@ app.get(config.baseUrl + '/loan/payBack/:loanId/finish/bill', function(req, res)
   });
 });
 
-//结清项目
+/*
+  结清项目
+ */
 app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
   var u = check_login(res);
   var payType = req.body.payType; //结清的类型
@@ -1187,7 +1252,9 @@ app.get(config.baseUrl + '/borrow/statictics/outcome', function(req, res){
   staticOutcome(req, res, PRJ_TYPE.BORROW);
 });
 
-//统计放款金额
+/*
+  统计放款金额
+ */
 app.get(config.baseUrl + '/loan/statictics/outcome', function(req, res) {
   staticOutcome(req, res, PRJ_TYPE.LOAN);
 });
@@ -1219,7 +1286,9 @@ app.get(config.baseUrl + '/borrow/statictics/income', function(req, res){
   staticIncome(req, res, PRJ_TYPE.BORROW);
 });
 
-//统计收到的还款金额
+/*
+  统计收到的还款金额
+ */
 app.get(config.baseUrl + '/loan/statictics/income', function(req, res) {
   staticIncome(req, res, PRJ_TYPE.LOAN);
 });
@@ -1268,8 +1337,20 @@ function classficStatictics(res, query, baseMap, key) {
       return mutil.renderData(res, baseMap);
     });
   }
-  /**统计接口
-   ***************/
+/* End of 统计接口
+******************************************/
+
+/*****************************************
+  财务接口
+*/
+
+
+
+
+
+/*
+  End of 财务接口
+*****************************************/
 
 /*****************************************
  * 联系人相关接口
@@ -1287,7 +1368,9 @@ app.post(config.baseUrl + '/contact', function(req, res) {
   });
 });
 
-/*更新联系人*/
+/*
+  更新联系人
+*/
 app.put(config.baseUrl + '/contact/:id', function(req, res) {
   var u = check_login(res);
   var contact = AV.Object.createWithoutData('Contact', req.params.id);
@@ -1310,7 +1393,9 @@ app.put(config.baseUrl + '/contact/:id', function(req, res) {
   });
 });
 
-//删除一个联系人
+/*
+  删除一个联系人
+ */
 app.delete(config.baseUrl + '/contact/:id', function(req, res) {
   var u = check_login(res);
   var contact = AV.Object.createWithoutData('Contact', req.params.id);
@@ -1356,7 +1441,9 @@ app.delete(config.baseUrl + '/contact/:id', function(req, res) {
   });
 });
 
-
+/*
+  获取一个联系人
+ */
 app.get(config.baseUrl + '/contact/:id', function(req, res) {
   var u = check_login(res);
   var query = new AV.Query('Contact');
@@ -1379,7 +1466,9 @@ app.get(config.baseUrl + '/contact/:id', function(req, res) {
   });
 });
 
-//如果身份证或者驾驶证存在，就返回该用户的联系人
+/*
+  如果身份证或者驾驶证存在，就返回该用户的联系人
+ */
 app.get(config.baseUrl + '/contact/certificate/:certificateNum', function(req, res) {
   var u = check_login(res);
   var certificateNum = req.params.certificateNum;
@@ -1403,7 +1492,9 @@ app.get(config.baseUrl + '/contact/certificate/:certificateNum', function(req, r
   });
 });
 
-//获取一个用户所有联系人
+/*
+  获取一个用户所有联系人
+ */
 app.get(config.baseUrl + '/contact/list/all', function(req, res) {
   var u = check_login(res);
   var query = new AV.Query('Contact');
@@ -1438,7 +1529,9 @@ function renderContactList(res, query) {
     }
   });
 }
-
+/*
+  分页列出联系人
+ */
 app.get(config.baseUrl + '/contact/list/page/:pn', function(req, res) {
   var u = check_login(res);
   var pageNumber = req.params.pn;
@@ -1472,7 +1565,9 @@ app.get(config.baseUrl + '/contact/list/page/:pn', function(req, res) {
   });
 });
 
-//获取联系人附件
+/*
+  获取联系人附件
+ */
 app.get(config.baseUrl + '/contact/:id/attachments', function(req, res) {
   var u = check_login(res);
   var contact = AV.Object.createWithoutData('Contact', req.params.id);
@@ -1530,7 +1625,9 @@ app.get(config.baseUrl + '/dict/:key', function(req, res) {
   mutil.renderData(res, mconfig.convertDictToList(key));
 });
 
-//上传文件
+/*
+  上传文件
+ */
 app.post(config.baseUrl + '/attachment', function(req, res) {
   var fType = req.body.fileType;
   if (!fType) {
@@ -1626,6 +1723,7 @@ function concretePayBack(lpb, loan, overdueMoney) {
   result['overdueMoney'] = overdueMoney; //违约金
   result['interestsMoney'] = lpb.get('interestsMoney'); //利息
   result['payBackMoney'] = lpb.get('payBackMoney');
+  result['payedMoney'] = lpb.get('payedMoney');
   return result;
 };
 
@@ -1636,7 +1734,6 @@ function listLoan(res, query, pageNumber, skipDraft) {
 
   query.count().then(function(count) {
     resultsMap['totalNum'] = count;
-    //console.log(count);
     resultsMap['pageSize'] = mconfig.pageSize;
   }).then(function() {
     if (pageNumber > resultsMap.totalPageNum) {

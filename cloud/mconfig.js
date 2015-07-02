@@ -2,6 +2,61 @@
  * 这个类是一些字典表等静态的配置信息
  */
 exports.pageSize = 10
+//财务统计状态科目
+var fiscalStatusTypes = {
+	'payed': {
+		value: 0,
+		text: '已兑付'
+	},
+	'unPayed':{
+		value: 1,
+		text: '未兑付'
+	},
+	'all':{
+		value: 2,
+		text: '所有'
+	}
+};
+
+//财务统计科目
+var fiscalTypes = {
+	'basicMoney':{
+		value: 0,
+		text: '本金'
+	},
+	'intersets':{
+		value: 1,
+		text: '利息'
+	},
+	'overdueMoney':{
+		value: 2,
+		text: '违约金'
+	},
+	'serviceCost':{
+		value: 3,
+		text: '服务费'
+	},
+	'assureCost':{
+		value: 4,
+		text: '保证金'
+	},
+	'keepCost':{
+		value: 5,
+		text: '暂收'
+	},
+	'otherCost':{
+		value: 6,
+		text: '其他费用'
+	},
+	'overflowMoney':{
+		value: 7,
+		text: '溢价'
+	},
+	'favourMoney':{
+		value: 8,
+		text: '坏账'
+	}
+};
 
 var payBackTypes = {
 	'normal':{
@@ -214,6 +269,10 @@ function convertDictToList(key){
 		return getKeyValueList(payBackTypes);
 	}else if(key=='verifyStatus'){
 		return getKeyValueList(verifyStatus);
+	}else if(key=='fiscalTypes'){
+		return getKeyValueList(fiscalTypes);
+	}else if(key=='fiscalStatusTypes'){
+		return getKeyValueList(fiscalStatusTypes);
 	}
 	return null;
 }
@@ -234,6 +293,10 @@ function getConfigMapByValue(key, value){
 		obj = payBackTypes;
 	}else if(key=='verifyStatus'){
 		obj = verifyStatus;
+	}else if(key=='fiscalTypes'){
+		obj = fiscalTypes;
+	}else if(key=='fiscalStatusTypes'){
+		obj = fiscalStatusTypes;
 	}
 	if(!obj){
 		return null;
@@ -266,6 +329,8 @@ function getSumMap(obj){
 	return obj;
 }
 
+exports.fiscalStatusTypes = fiscalStatusTypes;
+exports.fiscalTypes = fiscalTypes; 
 exports.interestCalTypes = interestCalTypes;
 exports.getSumMap = getSumMap;
 exports.payBackTypes = payBackTypes;

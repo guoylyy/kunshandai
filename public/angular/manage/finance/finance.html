@@ -60,24 +60,18 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="loan in loans | orderBy:'serialNumber'">
-				<td> <a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
-				<td>{{loan.amount | number:2}}</td>
-				<td>{{loan.payWay.text}}</td>
-				<td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>
-				<td>{{loan.payDate | date: "yyyy-MM-dd"}}</td>
-				<td>{{loan.payMoney + loan.interestsMoney | number:2}}</td>
-        <td ng-show="('manage.collectDone' | isState)">{{loan.payBackDate | date: "yyyy-MM-dd"}}</td>
-				<td ng-show="('manage.collectDone' | isState)">{{loan.payBackMoney | number:2}}</td>
-				<td ng-show="('manage.collectPending' | isState)">{{loan.nowToPayDate}}</td>
+			<tr ng-repeat="finance in finances">
+				<td>{{finance.project}}</td>
+				<td>{{finance.date | date: 'yyyy-MM-dd hh:mm:ss'}}</td>
+				<td>{{finance.summary}}</td>
+				<td>{{finance.income}}</td>
+				<td>{{finance.outcome}}</td>
+				<td>{{finance.remain}}</td>
 				<td>
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
 						<ul class="dropdown-menu"  role="menu">
-							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle"> 收款</a></li>
-							<li><a role="menuitem"  ng-click="complete(loan.loanObjectId)">结清</a></li>
-							<li ><a role="menuitem" href="/project/{{loan.loanObjectId}}/modify" target="_blank">调整</a></li>
-							<li ><a role="menuitem" href="/project/create?ref={{loan.loanObjectId}}" target="_blank">新签</a></li>
+							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle">添加至聚焦</a></li>
 						</ul>
 					</div>
 				</td>

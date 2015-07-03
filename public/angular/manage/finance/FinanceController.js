@@ -1,6 +1,6 @@
 define(['app','underscore'],function(app,_) {
-	return app.controller('FinanceController', ['$scope','$state','$stateParams','DictService','financeRanges','fiscalTypes','fiscalStatusTypes',
-		function($scope,$state,$stateParams,DictService,financeRanges,fiscalTypes,fiscalStatusTypes){
+	return app.controller('FinanceController', ['$scope','FinanceService', '$state','$stateParams','DictService','financeRanges','fiscalTypes','fiscalStatusTypes',
+		function($scope,FinanceService, $state,$stateParams,DictService,financeRanges,fiscalTypes,fiscalStatusTypes){
 		
 
 		$scope.currentPage 	= $stateParams.page || 1;
@@ -20,6 +20,7 @@ define(['app','underscore'],function(app,_) {
 		initTime();
 		initSummaries();
 		initCashes();
+		initData();
 
 		function initTime() {
 			var startTime = '', endTime = '';
@@ -60,8 +61,15 @@ define(['app','underscore'],function(app,_) {
 				var index = _.findIndex(fiscalStatusTypes,{value:element});
 				$scope.condition.cashes[index] = element;
 			})
-		}
+		};
 
+		function initData() {
+			FinanceService.get().then(function(data){
+				$scope.finances = data;
+			},function(){
+				$scope.finances = [];
+			});
+		}
 
 		$scope.conditionSearch = function (){
 			var summaries = $scope.condition.summaries;

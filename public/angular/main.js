@@ -103,6 +103,7 @@ require([
 		 'manage/contact/ContactModalCtrl',
 
 		 'manage/finance/FinanceController',
+		 'manage/finance/FinanceService',
 
 		 'borrow/index/BIndexController',
 	     'borrow/bloan/controllers/BLoanCtrls',

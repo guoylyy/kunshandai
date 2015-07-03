@@ -97,6 +97,12 @@ app.get('/manage', function(req, res) {
 app.get('/manage/*', function(req, res) {
   res.render('manage.ejs');
 });
+app.get('/contact', function(req, res) {
+  res.render('manage.ejs');
+});
+app.get('/contact/*', function(req, res) {
+  res.render('manage.ejs');
+});
 app.get('/account/*', function(req, res) {
   res.render('manage.ejs');
 });

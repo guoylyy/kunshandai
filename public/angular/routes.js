@@ -784,12 +784,24 @@ define(['app','underscore'],function(app,_){
 				templateUrl:"/angular/credit/pawn/pawn.html"
 			})
 			.state('contact',{
-		    	url:"/contact?page",
-		    	views:{
-		    		'':{
-						templateUrl:"/angular/credit/common/partial/layout.html"
+				abstract:true,
+				url:'/contact',
+				views:{
+					'':{
+						templateUrl:"/angular/manage/common/partial/layout.html"
 					},
-		    	},
+					'nav@contact': {
+						templateUrl: "/angular/manage/nav/nav.html",
+						controller: "NavController",
+						resolve:resolveNavObjects()
+					},
+					'menu@contact': {
+						templateUrl:"/angular/contact/partials/menu.html"
+					}
+				}
+		    })
+		    .state('contact.index',{
+		    	url:"?page",
     			templateUrl: "/angular/manage/contact/contact.html",
     			resolve:{
 						contacts:function(ContactService, $stateParams){
@@ -800,6 +812,19 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "ContactController"
 		    })
+		    .state('contact.search',{
+		    	url:"/search?type&keyword",
+    			templateUrl: "/angular/manage/contact/contact.html",
+    			resolve:{
+						contacts:function(ContactService, $stateParams){
+		    			return ContactService.search($stateParams.type,$stateParams.keyword).then(function(data){
+			    			return data;
+			    		})
+		    		}
+    			},
+    			controller: "ContactController"
+		    })
+
 	}]);
 
 });

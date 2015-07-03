@@ -8,7 +8,7 @@
 	<div class=" col-md-3" ng-controller="ActiveBLoanCtrl">
 		<a ui-sref="manage.normalProjects"><button class="btn btn-default ks-right">返回项目列表</button></a>
 		<button class="btn btn-warning ks-right" ng-click="activeLoan()" ng-show="!loanInfo.actived">立即入账</button>
-		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">{{loanInfo.status.value == 1?'正在还款':'已完成'}}</button>
+		<button class="btn btn-info ks-right" ng-show="loanInfo.actived" ng-disabled="true">{{loanInfo.status.value == 2?'已完成':'正在还款'}}</button>
 	</div>
 
 </div>

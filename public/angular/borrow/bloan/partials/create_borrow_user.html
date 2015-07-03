@@ -60,14 +60,20 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="form-group">
-								<label>银行卡开户行</label>
-								<input type="text" class="form-control" placeholder="银行卡开户行" ng-model="br.bankCardName" name="bbankCardName">
+								<label>*银行卡开户行</label>
+								<input type="text" class="form-control" placeholder="银行卡开户行" ng-model="br.bankCardName" name="bbankCardName" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bbankCardName.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bbankCardName.$error.required">请填写银行卡开户行名称</div>
+								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>银行卡号码</label>
-								<input type="text" class="form-control" placeholder="银行卡号码" ng-model="br.bankCardNumber" name="bbankCardNumber">
+								<label>*银行卡号码</label>
+								<input type="text" class="form-control" placeholder="银行卡号码" ng-model="br.bankCardNumber" name="bbankCardNumber" required>
+								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bbankCardNumber.$touched">
+									<div class="text-danger" ng-show="moreInfoForm.bbankCardNumber.$error.required">请填写银行卡号码</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -186,13 +192,13 @@
 				<ul class="list-inline">
 					 <li>
 						<label class="checkbox-inline">
-			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" > 还款短信提醒
+			                 <input type="checkbox" ng-model="loanInfo.isSmsRemind" > 短信提醒我还款
 			             </label>
 			             <span class="label label-info" ng-click="viewMsgTemplate()" style="cursor:pointer;">查看模板</span>
 					</li>
 					<li>
 						<label class="checkbox-inline">
-			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >还款邮件提醒
+			                 <input type="checkbox" ng-model="loanInfo.isEmailRemind" >邮件提醒我还款
 			             </label>
 					</li>
 

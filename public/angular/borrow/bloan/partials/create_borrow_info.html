@@ -15,7 +15,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*贷款类型</label>
-								<select ng-init="loanInfo.loanType = loanInfo.loanType.value || loanInfo.loanType || loanTypes[0].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
+								<select ng-init="loanInfo.loanType = loanInfo.loanType.value || loanInfo.loanType || loanTypes[4].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
 								<div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
 									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写逾期违约金</div>
 								</div>
@@ -116,12 +116,12 @@
 
 
 					</div>
-					<div class="row">
+					<div class="row" ng-show="false">
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>*履约保证金</label>
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="履约保证金" number-input name="assureCost" ng-model="loanInfo.assureCost" required>
+									<input type="text" class="form-control" placeholder="履约保证金" number-input name="assureCost" ng-init="loanInfo.assureCost = 0" ng-model="loanInfo.assureCost" required>
 									<span class="input-group-addon">元</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.assureCost.$touched">
@@ -133,7 +133,7 @@
 							<div class="form-group">
 								<label>*服务费</label>
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="服务费" number-input name="serviceCost" ng-model="loanInfo.serviceCost" required>
+									<input type="text" class="form-control" placeholder="服务费" number-input name="serviceCost" ng-init="loanInfo.serviceCost = 0" ng-model="loanInfo.serviceCost" required>
 									<span class="input-group-addon">元</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.serviceCost.$touched">
@@ -165,12 +165,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row" ng-show="false">
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*暂收金额</label>
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="暂收金额" number-input name="keepCost" ng-model="loanInfo.keepCost" required>
+									<input type="text" class="form-control" placeholder="暂收金额" number-input name="keepCost" ng-init="loanInfo.keepCost = 0" ng-model="loanInfo.keepCost" required>
 									<span class="input-group-addon">元</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.keepCost.$touched">

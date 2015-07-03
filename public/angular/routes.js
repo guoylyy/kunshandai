@@ -277,6 +277,22 @@ define(['app','underscore'],function(app,_){
     			},
     			controller: "ContactController"
 		    })
+		    .state('manage.finance',{
+				url: "/finance?startTime&endTime&summaries&cashes",
+				templateUrl: "/angular/manage/finance/finance.html",
+				controller: "FinanceController",
+				resolve:{
+					financeRanges:function(DictService) {
+						return DictService.get('financeRanges');
+					},
+					fiscalTypes:function(DictService) {
+						return  DictService.get('fiscalTypes');
+					},
+					fiscalStatusTypes: function(DictService) {
+						return DictService.get('fiscalStatusTypes');
+					}
+				}
+			})
 				.state('loan',{
 					url:'/loan',
 					templateUrl: "/angular/manage/common/partial/layout_simple.html",
@@ -767,9 +783,23 @@ define(['app','underscore'],function(app,_){
 				url:"/pawn",
 				templateUrl:"/angular/credit/pawn/pawn.html"
 			})
-			.state('finance',{
-				url: "/finance"
-			})
+			.state('contact',{
+		    	url:"/contact?page",
+		    	views:{
+		    		'':{
+						templateUrl:"/angular/credit/common/partial/layout.html"
+					},
+		    	},
+    			templateUrl: "/angular/manage/contact/contact.html",
+    			resolve:{
+						contacts:function(ContactService, $stateParams){
+		    			return ContactService.getByPage($stateParams.page || 1).then(function(data){
+    						return data;
+    					});
+		    		}
+    			},
+    			controller: "ContactController"
+		    })
 	}]);
 
 });

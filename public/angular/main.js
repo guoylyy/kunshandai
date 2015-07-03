@@ -102,6 +102,8 @@ require([
 		 'manage/contact/ContactController',
 		 'manage/contact/ContactModalCtrl',
 
+		 'manage/finance/FinanceController',
+
 		 'borrow/index/BIndexController',
 	     'borrow/bloan/controllers/BLoanCtrls',
 		 'borrow/bloan/helpers/BLoanHelper',

@@ -1,4 +1,4 @@
-define(['../app'],function(app){
+define(['../app','moment'],function(app,moment){
 
 	return app.factory('DictService', ['$http','$q','ApiURL',function($http,$q,ApiURL){
 
@@ -49,12 +49,46 @@ define(['../app'],function(app){
 				}
 			]
 
+		};
+
+		var financeRangeValues = function() {
+			return [
+				{
+					startTime:null, //new Date("1970-01-01").getTime(),
+					endTime: null,//new Date("2070-01-01").getTime(),
+					text:'所有'
+				},
+				{
+					startTime: new Date(moment().startOf('day')).getTime(),
+					endTime: new Date(moment().endOf('day')).getTime(),
+					text:'本日'
+				},
+				{
+					startTime: new Date(moment().startOf('week')).getTime(),
+					endTime: new Date(moment().endOf('week')).getTime(),
+					text:'本周'
+				},
+				{
+					startTime: new Date(moment().startOf('month')).getTime(),
+					endTime: new Date(moment().endOf('month')).getTime(),
+					text:'本月'
+				},
+				{
+					startTime: new Date(moment().startOf('year')).getTime(),
+					endTime: new Date(moment().endOf('year')).getTime(),
+					text:'本年'
+				}
+			]
+
 		}
 
 		return {
 			get : function (key){
 				if(key === 'timeRanges'){
 					return timeRangeValues();
+				}
+				if(key === 'financeRanges'){
+					return financeRangeValues();
 				}
 				if(keys[key]){
 					return keys[key];

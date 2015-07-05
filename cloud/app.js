@@ -1355,6 +1355,18 @@ function classficStatictics(res, query, baseMap, key) {
   贷款财务统计
  */
 app.get(config.baseUrl + '/fiscal/loan', function(req,res){
+  fiscalStatictics(req, res, PRJ_TYPE.LOAN);
+});
+
+/*
+  借款财务统计
+ */
+app.get(config.baseUrl + '/fiscal/borrow', function(req,res){
+  fiscalStatictics(req, res, PRJ_TYPE.BORROW);
+});
+
+
+function fiscalStatictics(req, res, clazz){
   var u = check_login(res);
   var startsWith = (new moment(req.query.startDate)).startOf('day'); //统计开始日期
   var endsWith = (new moment(req.query.endDate)).endOf('day'); //统计结束日期
@@ -1362,13 +1374,20 @@ app.get(config.baseUrl + '/fiscal/loan', function(req,res){
   var staticticsType = req.query.fiscalType || [0,1];        //过滤统计项目
   var items = []; //存储最后的财务列表
   var loanIds = req.query.loan || [];
+  if(typeof(loanIds) == 'string'){
+    loanIds = [loanIds];
+  }
+  if(typeof(staticticsType) == 'string'){
+    staticticsType = [staticticsType];
+  }
 
   //某一贷款项目统计
   var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('projectClass', clazz);
   loanQuery.equalTo('owner', u);
   loanQuery.notEqualTo('status', mconfig.loanStatus.draft.value);
-  if(req.query.loan){
-    loanQuery.equalTo('objectId',req.query.loan);
+  if(loanIds.length > 0){
+    loanQuery.containedIn('objectId',loanIds);
   }
   //还款条件过滤
   var payBackQuery = new AV.Query('LoanPayBack'); 
@@ -1401,7 +1420,7 @@ app.get(config.baseUrl + '/fiscal/loan', function(req,res){
       mutil.renderData(res, items);
     });
   });
-});
+};
 
 //过滤兑付情况
 function filterIsPayed(items, status){
@@ -1509,12 +1528,6 @@ function concretItem(projectName, id, date, summary, income, outcome, isPayed){
     'isPayed': isPayed
   };
 }
-/*
-  借款财务统计
- */
-app.get(config.baseUrl + '/fiscal/borrow', function(req,res){
-
-});
 
 /*
   End of 财务接口

@@ -14,12 +14,14 @@ require.config({
 		uiBootstrap:'../lib/angular-bootstrap/ui-bootstrap-tpls',
 		uiRouter:'../lib/angular-ui-router/release/angular-ui-router',
 		uiUtils:'../lib/angular-ui-utils/ui-utils',
+		uiSelect:'../lib/angular-ui-select/dist/select',
 		i18nZh:'../lib/i18n/angular-locale_zh-cn',
 		'highcharts-ng': '../lib/highcharts-ng/dist/highcharts-ng',
 		angularLoadingBar:'../lib/angular-loading-bar/build/loading-bar',
 		angularFileUpload:'../lib/ng-file-upload/angular-file-upload',
 		angularSweetAlert:'../lib/angular-sweetalert/SweetAlert',
 		angularBusy:'../lib/angular-busy/dist/angular-busy',
+		angualrSanitize:'../lib/angular-sanitize/angular-sanitize',
 		text:'../lib/requirejs-text/text',
 		moment:'../lib/moment/moment',
 		moment_zh_cn:'../lib/moment/locale/zh-cn'
@@ -32,6 +34,9 @@ require.config({
 		'uiRouter':{
 			deps:['angular']
 
+		},
+		'uiSelect': {
+			deps:['angular']
 		},
 		'uiBootstrap':{
 			deps:['angular']
@@ -55,6 +60,9 @@ require.config({
 			deps:['angular']
 		},
 		'angularBusy':{
+			deps:['angular']
+		},
+		'angualrSanitize':{
 			deps:['angular']
 		},
 		'highcharts-ng':{
@@ -116,6 +124,7 @@ require([
 		 'common/directive/numberInput',
 		 'common/directive/floatNumberInput',
 		 'common/filter/cDisplay',
+		 'common/filter/selectFilter',
 
 		 'borrow/repay/RepayController',
 		 'borrow/bproject/BProjectController',

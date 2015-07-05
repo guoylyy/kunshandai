@@ -42,12 +42,25 @@
 					<li style="margin-top:-5px;"><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li>
 				</ul>
 			</div>
-
+			<div class="ks-condition" style="padding-top:10px;">
+				<ul class="ks-list-unstyled">
+					<li style="padding-top:10px;">项目聚焦:</li>
+					<li>
+						<ui-select multiple ng-model="condition.projects" theme="select2" style="width: 650px;">
+					    	<ui-select-match placeholder="选择聚焦项目">{{$item.project}}</ui-select-match>
+					    	<ui-select-choices repeat="finance.project as finance in finances | propsFilter: {project: $select.search}">
+					      		<div ng-bind-html="finance.project | highlight: $select.search"></div>
+					    	</ui-select-choices>
+					 	</ui-select>
+					 </li>
+					 <li ><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li>
+				</ul>
+			</div>
 		</div>
 	</div>
 </div>
 <div class="ks-panel">
-	<table class="table table-striped">
+	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
 				<th>项目编号</th>
@@ -56,7 +69,6 @@
 				<th>收入</th>
 				<th>支出</th>
 				<th>剩余</th>
-				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,14 +79,6 @@
 				<td>{{finance.income}}</td>
 				<td>{{finance.outcome}}</td>
 				<td>{{finance.remain}}</td>
-				<td>
-					<div class="dropdown" dropdown>
-						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>
-						<ul class="dropdown-menu"  role="menu">
-							<li><a role="menuitem" ng-click="collect(loan.loanObjectId)" ng-show="loan.payCurrCircle != loan.payTotalCircle">添加至聚焦</a></li>
-						</ul>
-					</div>
-				</td>
 			</tr>
 
 			</tr>

@@ -3,7 +3,7 @@
  */
 'use strict';
 
-define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angularFileUpload','angularSweetAlert', 'highcharts-ng','angularBusy'],function(angular){
+define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angularFileUpload','angularSweetAlert', 'highcharts-ng','angularBusy','uiSelect','angualrSanitize'],function(angular){
 	var changeUrl = function(evt){
 		if(window.location.pathname == '/login'
 			|| window.location.pathname == '/signup'
@@ -16,7 +16,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 			return;
 		}
 	}
-	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','ui.utils','angularFileUpload','oitozero.ngSweetAlert','highcharts-ng','cgBusy'])
+	return angular.module('app',['ui.router','ui.bootstrap','angular-loading-bar','ui.utils','angularFileUpload','oitozero.ngSweetAlert','highcharts-ng','cgBusy','ui.select','ngSanitize'])
 	.config(['$httpProvider',function($httpProvider) {
 		$httpProvider.interceptors.push('sessionAuth');
 		$httpProvider.interceptors.push('responseErr');

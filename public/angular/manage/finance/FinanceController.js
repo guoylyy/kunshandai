@@ -9,11 +9,11 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.calendar 	= {};
 
-		$scope.condition 	= {summaries:[],cashes:[]};
+		$scope.condition 	= {summaries:[],cashes:[],projects:[]};
 		
 		$scope.timeRanges = financeRanges;
 
-		$scope.fiscalTypes = fiscalTypes.slice(0,fiscalTypes.length - 1);
+		$scope.fiscalTypes = fiscalTypes.slice(0,fiscalTypes.length);
 
 		$scope.fiscalStatusTypes = fiscalStatusTypes.slice(0,fiscalStatusTypes.length - 1);
 

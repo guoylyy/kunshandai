@@ -98,7 +98,7 @@ define(['app','underscore'],function(app,_) {
 			var summaries = $stateParams.summaries || [0,1,2,3,4,5,6,7,8];
 			var cashes = $stateParams.cashes
 			if(!$stateParams.cashes || $stateParams.cashes.length == 2){
-				var cashes = ['all'];	
+				cashes = ['all'];	
 			}
 			
 			var projects = $stateParams.projects;

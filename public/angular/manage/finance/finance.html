@@ -73,7 +73,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="finance in finances | orderBy:'-date' ">
+			<tr ng-repeat="finance in finances | orderBy:'date' " ng-class="{warning:!finance.isPayed}">
 				<td>{{finance.project}}</td>
 				<td>{{finance.date | date: 'yyyy-MM-dd hh:mm'}}</td>
 				<td>{{finance.summary}}</td>

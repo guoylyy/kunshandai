@@ -432,13 +432,16 @@ define(['app',"underscore"],function(app,_) {
 				}
 				LoanHelper.config($scope);
 
-				var completeLoanPromise = LoanHelper.completeLoan($scope.loanInfo.objectId);
 
-				completeLoanPromise.then(function(finishBill){
-					LoanHelper.createLoan(finishBill);
-				},function(){
-					SweetAlert.error("结清失败","服务器开小差了");
-				})
+				// var completeLoanPromise = LoanHelper.completeLoan($scope.loanInfo.objectId);
+
+				// completeLoanPromise.then(function(finishBill){
+				// 	LoanHelper.createLoan(finishBill);
+				// },function(){
+				// 	SweetAlert.error("结清失败","服务器开小差了");
+				// })
+				// 
+				LoanHelper.modifyLoan();
 			}
 		}]),
 		CompleteLoanCtrl: app.controller('CompleteLoanCtrl', ['$scope','LoanService','$modal','DictService',

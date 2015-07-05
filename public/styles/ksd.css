@@ -278,7 +278,11 @@ dl dt,dl dd{
 	margin-bottom: 0px;
 }
 
-
+@media (min-width:992px) {
+    .modal-xl .modal-lg {
+        width: 1200px
+    }
+}
 /*TODO add to less*/
 .nav-stacked > li.active > a{
 	margin-left: -2px;

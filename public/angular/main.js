@@ -90,6 +90,7 @@ require([
 		 'manage/common/upload/UploadController',
 		 'manage/common/upload/UploadService',
 		 'manage/common/active/ActiveLoanModalCtrl',
+		 'manage/common/modify/ModifyLoanModalController',
 		 'manage/common/contract/ContractController',
 		 'manage/common/helper/LoanHelper',
 		 'manage/common/services/ModalsService',

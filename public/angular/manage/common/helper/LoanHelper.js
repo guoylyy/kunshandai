@@ -155,9 +155,9 @@ define(['app'],function(app){
 				$scope.status.loanCreating = false;
 				SweetAlert.error("新建放款失败", "服务器开了点小差", "error");
 			})
-		},
+		};
 		//确定放款
-		activeLoan = function(){
+		var activeLoan = function(){
 			var activeModal = $modal.open({
 				templateUrl: '/angular/manage/common/active/activeLoanModal.html',
 				controller:'ActiveLoanModalCtrl',
@@ -197,12 +197,23 @@ define(['app'],function(app){
 			})
 		};
 
-		return {
+		var modifyLoan = function() {
+
+			var activeModal = $modal.open({
+				templateUrl: '/angular/manage/common/modify/modifyLoanModal.html',
+				controller:'ModifyLoanModalController',
+				windowClass:'modal-xl',
+				size:'lg'
+			});
+		}
+
+ 		return {
 			config:function(scope){
 				$scope = scope;
 			},
 			completeLoan:completeLoan,
 			createLoan:createLoan,
+			modifyLoan:modifyLoan,
 			activeLoan:activeLoan
 		}
 	}])

@@ -1368,12 +1368,18 @@ app.get(config.baseUrl + '/fiscal/borrow', function(req,res){
 
 function fiscalStatictics(req, res, clazz){
   var u = check_login(res);
-  var startsWith = (new moment(req.query.startDate)).startOf('day'); //统计开始日期
-  var endsWith = (new moment(req.query.endDate)).endOf('day'); //统计结束日期
-  var status = 'all'; //req.query.status;            //过滤是否兑付
+  var isDateFilter = true;
+  if(!req.query.startDate || !req.query.endDate){
+    isDateFilter = false;
+  }else{
+    var startsWith = (new moment(req.query.startDate)).startOf('day').toDate(); //统计开始日期
+    var endsWith = (new moment(req.query.endDate)).endOf('day').toDate(); //统计结束日期
+  }
+  var status = req.query.status;            //过滤是否兑付
   var staticticsType = req.query.fiscalType || [0,1];        //过滤统计项目
   var items = []; //存储最后的财务列表
   var loanIds = req.query.loan || [];
+  
   if(typeof(loanIds) == 'string'){
     loanIds = [loanIds];
   }
@@ -1393,17 +1399,18 @@ function fiscalStatictics(req, res, clazz){
   var payBackQuery = new AV.Query('LoanPayBack'); 
   payBackQuery.matchesQuery('loan', loanQuery);
   payBackQuery.include('loan');
-  //payBackQuery.greaterThanOrEqualTo('payBackDate', startsWith);
-  //payBackQuery.lessThanOrEqualTo('payBackDate', endsWith);
-
-  //放款条件过滤
   var recordQuery = new AV.Query('LoanRecord');
-  //recordQuery.greaterThanOrEqualTo('payDate', startsWith);
-  //recordQuery.lessThanOrEqualTo('payDate', endsWith);
   recordQuery.matchesQuery('loan',loanQuery);
   recordQuery.include('loan');
+  if(isDateFilter){
+    payBackQuery.greaterThanOrEqualTo('payBackDate', startsWith);
+    payBackQuery.lessThanOrEqualTo('payBackDate', endsWith);
+    recordQuery.greaterThanOrEqualTo('payDate', startsWith);
+    recordQuery.lessThanOrEqualTo('payDate', endsWith);
+  }
 
   payBackQuery.find().then(function(pbs){
+    console.log(pbs.length);
     for (var i = 0; i < pbs.length; i++) {
       items = items.concat(calPayBacks(pbs[i]));
     };

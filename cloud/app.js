@@ -432,7 +432,6 @@ app.delete(config.baseUrl + '/loan/:id', function(req, res) {
   var u = check_login(res);
   var loan = AV.Object.createWithoutData('Loan', req.params.id);
   loan.fetch().then(function(l) {
-    //console.log(u);
     if (!l.id) {
       mutil.renderError(res, {
         code: 404,
@@ -445,8 +444,11 @@ app.delete(config.baseUrl + '/loan/:id', function(req, res) {
       });
     } else {
       if (u.id == l.get('owner').id) {
-        //delete
-        AV.Object.destroyAll([l]).then(function() {
+        var deleteList = [l];
+        deleteList.push(l.get('pawn'));
+        l.relation('loanRecords').query().destroyAll();
+        l.relation('loanPayBacks').query().destroyAll();
+        AV.Object.destroyAll(deleteList).then(function() {
           mutil.renderSuccess(res);
         }, function(error) {
           mutil.renderError(res, error);
@@ -1376,7 +1378,7 @@ function fiscalStatictics(req, res, clazz){
     var endsWith = (new moment(req.query.endDate)).endOf('day').toDate(); //统计结束日期
   }
   var status = req.query.status;            //过滤是否兑付
-  var staticticsType = req.query.fiscalType || [0,1];        //过滤统计项目
+  var staticticsType = req.query.staticticsType || [];        //过滤统计项目
   var items = []; //存储最后的财务列表
   var loanIds = req.query.loan || [];
   
@@ -1456,7 +1458,7 @@ function filterByStaticticsType(items, types){
     return nItems;
   }
   var allTypes = _.pluck(_.values(mconfig.fiscalTypes),'value');
-  var needFilterTypes = _.filter(allTypes, function(num){ return !_.contains(types, num);});
+  var needFilterTypes = _.filter(allTypes, function(num){ return !_.contains(types, num+'');});
   for (var i = 0; i < items.length; i++) {
     var item = items[i];
     if(!_.contains(needFilterTypes, item.summary_id)){
@@ -1471,7 +1473,12 @@ function calFiscalRemain(items){
   if(items.length == 0 || !items){
     return [];
   }
-  items = _.sortBy(items, 'date');
+  //items = _.sortBy(items, 'date');
+  items.sort(function(a,b){
+    var c = new Date(a.date);
+    var d = new Date(b.date);
+    return c-d;
+  });
   items[0].remain = items[0].income - items[0].outcome; //初始收支
   var pre = items[0];
   for (var i = 1; i < items.length; i++) {
@@ -1479,6 +1486,7 @@ function calFiscalRemain(items){
     items[i].remain = pre.remain + income;
     pre = items[i];
   };
+
   return items;
 }
 
@@ -1491,6 +1499,7 @@ function calRecord(po){
   var isPayed = true;
   if(po.get('isPayed')){
     items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.basicMoney, 0, po.get('baseMoney'), isPayed));
+    items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.interests, Math.abs(po.get('interestsMoney')) , 0, isPayed));
     items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.keepCost, Math.abs(po.get('keepCost')), 0, isPayed));
     items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.otherCost,  Math.abs(po.get('otherCost')), 0, isPayed));
     items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.assureCost,  Math.abs(po.get('assureCost')), 0, isPayed));

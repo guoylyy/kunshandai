@@ -95,6 +95,10 @@ function generateLoanPayBack(loan, payMoney, interestsMoney, payDate, status, or
     loanPayBack.set('interestsMoney', interestsMoney);
     loanPayBack.set('status', status);
     loanPayBack.set('order',order);
+    loanPayBack.set('payedMoney', 0);
+    loanPayBack.set('offsetMoney', 0);
+    loanPayBack.set('payBackMoney', 0);
+    loanPayBack.set('overflowMoney', 0);
     loanPayBack.set('loan', loan);
     return loanPayBack;
 };

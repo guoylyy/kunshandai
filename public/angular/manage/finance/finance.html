@@ -29,9 +29,10 @@
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>摘要:</li>
-					<li ng-repeat="fiscalType in fiscalTypes"><input type="checkbox" name="fiscalTypeGroup" ng-true-value="{{fiscalType.value}}" ng-model="condition.summaries[$index]"> {{fiscalType.text}}</li>
+					<li ng-repeat="fiscalType in fiscalTypes"><input type="checkbox" name="fiscalTypeGroup" ng-true-value="{{fiscalType.value}}" ng-model="condition.summaries[$index]" > {{fiscalType.text}}</li>
 					<li style="margin-top:-5px;"><button class="btn btn-default btn-xs" type="button" ng-click="allSummaries()">所有</button></li>
 					<li style="margin-top:-5px;"><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li>
+					
 				</ul>
 			</div>
 			<div class="ks-condition" style="padding-top:10px;">
@@ -47,9 +48,9 @@
 					<li style="padding-top:10px;">项目聚焦:</li>
 					<li>
 						<ui-select multiple ng-model="condition.projects" theme="select2" style="width: 650px;">
-					    	<ui-select-match placeholder="选择聚焦项目">{{$item.project}}</ui-select-match>
-					    	<ui-select-choices repeat="finance.project as finance in finances | propsFilter: {project: $select.search}">
-					      		<div ng-bind-html="finance.project | highlight: $select.search"></div>
+					    	<ui-select-match placeholder="选择聚焦项目">{{$item.numberWithName}}</ui-select-match>
+					    	<ui-select-choices repeat="loan.id as loan in loans " refresh="refreshLoans($select.search)">
+					      		<div ng-bind-html="loan.numberWithName | highlight: $select.search"></div>
 					    	</ui-select-choices>
 					 	</ui-select>
 					 </li>

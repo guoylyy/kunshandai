@@ -1,4 +1,4 @@
-define(['app'],function(app){
+define(['app','moment'],function(app,moment){
 	return app.factory('FinanceService', ['$http','$q','ApiURL','$log',
 		function($http, $q, ApiURL, $log){
 		
@@ -6,10 +6,23 @@ define(['app'],function(app){
 
 		FinanceService  = {
 			
-			get: function(id){
+			get: function(id,startTime,endTime,summeries,cashes){
 
 				var deferred = $q.defer();
-				var params = {loan:'559401f4e4b0d84d2c0dbb0c'};
+				if(startTime){
+					startTime = new Date(parseInt(startTime));
+				}
+				if(endTime){
+					endTime = new Date(parseInt(endTime));
+				}
+				var params = {
+					loan:id,
+					startDate:startTime,
+					endDate:endTime,
+					staticticsType:summeries,
+					status:cashes
+				};
+
 				$http.get(
 					ApiURL + financeUrl + '/loan',
 					{params:params}

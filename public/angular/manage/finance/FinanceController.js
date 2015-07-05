@@ -1,6 +1,6 @@
 define(['app','underscore'],function(app,_) {
-	return app.controller('FinanceController', ['$scope','FinanceService', '$state','$stateParams','DictService','financeRanges','fiscalTypes','fiscalStatusTypes',
-		function($scope,FinanceService, $state,$stateParams,DictService,financeRanges,fiscalTypes,fiscalStatusTypes){
+	return app.controller('FinanceController', ['$scope','FinanceService','LoanService' ,'$state','$stateParams','DictService','financeRanges','fiscalTypes','fiscalStatusTypes',
+		function($scope,FinanceService, LoanService, $state,$stateParams,DictService,financeRanges,fiscalTypes,fiscalStatusTypes){
 		
 
 		$scope.currentPage 	= $stateParams.page || 1;
@@ -17,10 +17,15 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.fiscalStatusTypes = fiscalStatusTypes.slice(0,fiscalStatusTypes.length - 1);
 
+		$scope.loans = [];
+
 		initTime();
 		initSummaries();
 		initCashes();
+		initProjects();
 		initData();
+
+		var allSummaries;
 
 		function initTime() {
 			var startTime = '', endTime = '';
@@ -34,8 +39,10 @@ define(['app','underscore'],function(app,_) {
 
 		function initSummaries() {
 			var summaries = [];
-
-			if(!_.isArray($stateParams.summaries)){
+			if(!$stateParams.summaries){
+				allSummaries();
+			}
+			if($stateParams.summaries&&!_.isArray($stateParams.summaries)){
 				summaries.push($stateParams.summaries);
 			}else{
 				summaries = $stateParams.summaries;
@@ -50,8 +57,10 @@ define(['app','underscore'],function(app,_) {
 
 		function initCashes(){
 			var cashes = [];
-
-			if(!_.isArray($stateParams.cashes)){
+			if(!$stateParams.cashes){
+				allCashes();
+			}
+			if($stateParams.cashes&&!_.isArray($stateParams.cashes)){
 				cashes.push($stateParams.cashes);
 			}else{
 				cashes = $stateParams.cashes;
@@ -63,8 +72,44 @@ define(['app','underscore'],function(app,_) {
 			})
 		};
 
+		function initProjects(){
+			var projects = [];
+			if($stateParams.projects&&!_.isArray($stateParams.projects)){
+				projects.push($stateParams.projects);
+			}else{
+				projects = $stateParams.projects;
+			}
+
+			 projects;
+
+			_.each(projects, function(element,index){
+				LoanService.getLoan(projects[index]).then(function(data){
+					$scope.loans.push(data);
+					$scope.condition.projects = _.compact(projects);
+				},function(){
+					projects[index] = '';
+				})
+			})
+		}
+
 		function initData() {
-			FinanceService.get().then(function(data){
+			var startTime = $stateParams.startTime;
+			var endTime = $stateParams.endTime;
+			var summaries = $stateParams.summaries || [0,1,2,3,4,5,6,7,8];
+			var cashes = $stateParams.cashes
+			if(!$stateParams.cashes || $stateParams.cashes.length == 2){
+				var cashes = ['all'];	
+			}
+			
+			var projects = $stateParams.projects;
+
+			FinanceService.get(
+				projects,
+				startTime,
+				endTime,
+				summaries,
+				cashes
+			).then(function(data){
 				$scope.finances = data;
 			},function(){
 				$scope.finances = [];
@@ -72,12 +117,20 @@ define(['app','underscore'],function(app,_) {
 		}
 
 		$scope.conditionSearch = function (){
-			var summaries = $scope.condition.summaries;
+			var summaries = [];
+			_.each($scope.condition.summaries,function(e){
+				if(e >= 0){
+					summaries.push(e);
+				}
+			})
 			var cashes = _.compact($scope.condition.cashes);
-			$state.go($state.current, {page:$scope.currentPage,summaries:summaries,cashes:cashes}, {reload: true});
+			var projects = $scope.condition.projects;
+			$state.go($state.current, {page:$scope.currentPage,summaries:summaries,cashes:cashes,projects:projects}, {reload: true});
 		}
 
-		$scope.allSummaries = function () {
+		$scope.allSummaries = allSummaries;
+
+		function allSummaries() {
 			if($scope.condition.summaries.length === $scope.fiscalTypes.length){
 				$scope.condition.summaries = [];
 			}else{
@@ -87,7 +140,9 @@ define(['app','underscore'],function(app,_) {
 			}
 		}
 
-		$scope.allCashes = function () {
+		$scope.allCashes = allCashes;
+
+		function allCashes() {
 			if(_.compact($scope.condition.cashes).length === $scope.fiscalStatusTypes.length){
 				$scope.condition.cashes = [];
 			}else{
@@ -128,6 +183,19 @@ define(['app','underscore'],function(app,_) {
 				startTime:(new Date($scope.condition.startTime)).getTime(),
 				endTime:(new Date($scope.condition.endTime)).getTime()
 			});
+		}
+
+		$scope.refreshLoans = function (loan) {
+			if(!loan){
+				return;
+			}
+			LoanService.search('id',loan).then(function (data) {
+				_.each(data.values,function(element,index){
+					if(_.indexOf($scope.condition.projects, element.id) <  0){
+						$scope.loans.push(element);
+					}
+				});
+			})
 		}
 
 	}])

@@ -278,7 +278,7 @@ define(['app','underscore'],function(app,_){
     			controller: "ContactController"
 		    })
 		    .state('manage.finance',{
-				url: "/finance?startTime&endTime&summaries&cashes",
+				url: "/finance?startTime&endTime&summaries&cashes&projects",
 				templateUrl: "/angular/manage/finance/finance.html",
 				controller: "FinanceController",
 				resolve:{

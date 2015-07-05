@@ -175,7 +175,7 @@ define(['app','underscore','moment'],function(app,_,moment) {
 		$scope.openCld = function($event){
 
 			$event.preventDefault();
-    	$event.stopPropagation();
+    		$event.stopPropagation();
 			$scope.calendar.opened = true;
 		}
 

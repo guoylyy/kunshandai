@@ -197,13 +197,22 @@ define(['app'],function(app){
 			})
 		};
 
-		var modifyLoan = function() {
+		var modifyLoan = function(loanId) {
 
 			var activeModal = $modal.open({
 				templateUrl: '/angular/manage/common/modify/modifyLoanModal.html',
 				controller:'ModifyLoanModalController',
 				windowClass:'modal-xl',
-				size:'lg'
+				size:'lg',
+				resolve:{
+					loan:function(){
+						return LoanService.getLoan(loanId);
+					},
+					interestCalTypes:function(){
+						return DictService.get('interestCalTypes');
+					}
+
+				}
 			});
 		}
 

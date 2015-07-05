@@ -19,6 +19,8 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.loans = [];
 
+		$scope.selected= {loans:[]};
+
 		initTime();
 		initSummaries();
 		initCashes();
@@ -90,6 +92,8 @@ define(['app','underscore'],function(app,_) {
 					projects[index] = '';
 				})
 			})
+
+			$scope.selected.loans = $scope.loans;
 		}
 
 		function initData() {
@@ -103,7 +107,7 @@ define(['app','underscore'],function(app,_) {
 			
 			var projects = $stateParams.projects;
 
-			FinanceService.get(
+			$scope.financesPromise = FinanceService.get(
 				projects,
 				startTime,
 				endTime,
@@ -189,12 +193,16 @@ define(['app','underscore'],function(app,_) {
 			if(!loan){
 				return;
 			}
-			LoanService.search('id',loan).then(function (data) {
+			var selectedLoans = [];
+			$scope.loansPromise = LoanService.search('id',loan).then(function (data) {
+				
+				$scope.loans = [];
 				_.each(data.values,function(element,index){
 					if(_.indexOf($scope.condition.projects, element.id) <  0){
 						$scope.loans.push(element);
 					}
 				});
+				$scope.loans  = _.union($scope.loans,$scope.selected.loans);
 			})
 		}
 

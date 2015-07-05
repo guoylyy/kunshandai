@@ -90,6 +90,7 @@ var loanPayBackFactory = {
 function generateLoanPayBack(loan, payMoney, interestsMoney, payDate, status, order){
     var loanPayBack = new AV.Object('LoanPayBack');
     loanPayBack.set('payDate', payDate);
+    loanPayBack.set('payBackDate', payDate);
     loanPayBack.set('payMoney', payMoney);
     loanPayBack.set('interestsMoney', interestsMoney);
     loanPayBack.set('status', status);

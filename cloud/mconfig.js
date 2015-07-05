@@ -24,7 +24,7 @@ var fiscalTypes = {
 		value: 0,
 		text: '本金'
 	},
-	'intersets':{
+	'interests':{
 		value: 1,
 		text: '利息'
 	},
@@ -38,7 +38,7 @@ var fiscalTypes = {
 	},
 	'assureCost':{
 		value: 4,
-		text: '保证金'
+		text: '履约保证金'
 	},
 	'keepCost':{
 		value: 5,
@@ -55,10 +55,6 @@ var fiscalTypes = {
 	'favourMoney':{
 		value: 8,
 		text: '坏账'
-	},
-	'all':{
-		value: 9,
-		text: '所有'
 	}
 };
 

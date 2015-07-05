@@ -1355,52 +1355,72 @@ function classficStatictics(res, query, baseMap, key) {
   贷款财务统计
  */
 app.get(config.baseUrl + '/fiscal/loan', function(req,res){
+  fiscalStatictics(req, res, PRJ_TYPE.LOAN);
+});
+
+/*
+  借款财务统计
+ */
+app.get(config.baseUrl + '/fiscal/borrow', function(req,res){
+  fiscalStatictics(req, res, PRJ_TYPE.BORROW);
+});
+
+
+function fiscalStatictics(req, res, clazz){
   var u = check_login(res);
   var startsWith = (new moment(req.query.startDate)).startOf('day'); //统计开始日期
   var endsWith = (new moment(req.query.endDate)).endOf('day'); //统计结束日期
-  var status = 'all';//req.query.status; //过滤是否兑付
-  var staticticsType = [1,2];        //过滤统计项目
+  var status = 'all'; //req.query.status;            //过滤是否兑付
+  var staticticsType = req.query.fiscalType || [0,1];        //过滤统计项目
   var items = []; //存储最后的财务列表
-  if(req.query.loan){
-    //某一贷款项目统计
-    var loanQuery = new AV.Query('Loan');
-    loanQuery.equalTo('owner', u);
-    loanQuery.notEqualTo('status', mconfig.loanStatus.draft.value);
-    loanQuery.equalTo('objectId',req.query.loan);
-    
-    //还款条件过滤
-    var payBackQuery = new AV.Query('LoanPayBack'); 
-    payBackQuery.matchesQuery('loan', loanQuery);
-    payBackQuery.include('loan');
-    //payBackQuery.greaterThanOrEqualTo('payBackDate', startsWith);
-    //payBackQuery.lessThanOrEqualTo('payBackDate', endsWith);
-
-    //放款条件过滤
-    var recordQuery = new AV.Query('LoanRecord');
-    //recordQuery.greaterThanOrEqualTo('payDate', startsWith);
-    //recordQuery.lessThanOrEqualTo('payDate', endsWith);
-    recordQuery.matchesQuery('loan',loanQuery);
-    recordQuery.include('loan');
-
-    payBackQuery.find().then(function(pbs){
-      for (var i = 0; i < pbs.length; i++) {
-        items = items.concat(calPayBacks(pbs[i]));
-      };
-      recordQuery.find().then(function(rs){
-        for (var i = 0; i < rs.length; i++) {
-          items = items.concat(calRecord(rs[i]));
-        };
-        //过滤是否兑付
-        items = filterIsPayed(items, status);
-        //过滤统计科目 
-        items = filterByStaticticsType(items, staticticsType);
-        items = calFiscalRemain(items);
-
-        mutil.renderData(res, items);
-      });
-    });
+  var loanIds = req.query.loan || [];
+  if(typeof(loanIds) == 'string'){
+    loanIds = [loanIds];
   }
-});
+  if(typeof(staticticsType) == 'string'){
+    staticticsType = [staticticsType];
+  }
+
+  //某一贷款项目统计
+  var loanQuery = new AV.Query('Loan');
+  loanQuery.equalTo('projectClass', clazz);
+  loanQuery.equalTo('owner', u);
+  loanQuery.notEqualTo('status', mconfig.loanStatus.draft.value);
+  if(loanIds.length > 0){
+    loanQuery.containedIn('objectId',loanIds);
+  }
+  //还款条件过滤
+  var payBackQuery = new AV.Query('LoanPayBack'); 
+  payBackQuery.matchesQuery('loan', loanQuery);
+  payBackQuery.include('loan');
+  //payBackQuery.greaterThanOrEqualTo('payBackDate', startsWith);
+  //payBackQuery.lessThanOrEqualTo('payBackDate', endsWith);
+
+  //放款条件过滤
+  var recordQuery = new AV.Query('LoanRecord');
+  //recordQuery.greaterThanOrEqualTo('payDate', startsWith);
+  //recordQuery.lessThanOrEqualTo('payDate', endsWith);
+  recordQuery.matchesQuery('loan',loanQuery);
+  recordQuery.include('loan');
+
+  payBackQuery.find().then(function(pbs){
+    for (var i = 0; i < pbs.length; i++) {
+      items = items.concat(calPayBacks(pbs[i]));
+    };
+    recordQuery.find().then(function(rs){
+      for (var i = 0; i < rs.length; i++) {
+        items = items.concat(calRecord(rs[i]));
+      };
+      //过滤是否兑付
+      items = filterIsPayed(items, status);
+      //过滤统计科目 
+      items = filterByStaticticsType(items, staticticsType);
+      items = calFiscalRemain(items);
+
+      mutil.renderData(res, items);
+    });
+  });
+};
 
 //过滤兑付情况
 function filterIsPayed(items, status){
@@ -1460,41 +1480,44 @@ function calFiscalRemain(items){
 function calRecord(po){
   var items = [];
   var projectName = po.get('loan').get('numberWithName');
+  var id = po.get('loan').id;
   var isPayed = true;
   if(po.get('isPayed')){
-    items.push(concretItem(projectName, po.get('payDate'), mconfig.fiscalTypes.basicMoney, 0, po.get('baseMoney'), isPayed));
-    items.push(concretItem(projectName, po.get('payDate'), mconfig.fiscalTypes.keepCost, Math.abs(po.get('keepCost')), 0, isPayed));
-    items.push(concretItem(projectName, po.get('payDate'), mconfig.fiscalTypes.otherCost,  Math.abs(po.get('otherCost')), 0, isPayed));
-    items.push(concretItem(projectName, po.get('payDate'), mconfig.fiscalTypes.assureCost,  Math.abs(po.get('assureCost')), 0, isPayed));
-    items.push(concretItem(projectName, po.get('payDate'), mconfig.fiscalTypes.serviceCost,  Math.abs(po.get('serviceCost')), 0, isPayed));
+    items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.basicMoney, 0, po.get('baseMoney'), isPayed));
+    items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.keepCost, Math.abs(po.get('keepCost')), 0, isPayed));
+    items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.otherCost,  Math.abs(po.get('otherCost')), 0, isPayed));
+    items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.assureCost,  Math.abs(po.get('assureCost')), 0, isPayed));
+    items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes.serviceCost,  Math.abs(po.get('serviceCost')), 0, isPayed));
   }
   return items;
-}
+};
 
 //计算收款情况
 function calPayBacks(pb){
   var projectName = pb.get('loan').get('numberWithName');
+  var id = pb.get('loan').id;
   var items = [];
   var isPayed = false; //是否已兑付
   if(pb.get('status') == mconfig.loanPayBackStatus.completed.value){
     isPayed = true;
-    items.push(concretItem(projectName, pb.get('payBackDate'), mconfig.fiscalTypes.basicMoney , pb.get('payMoney') - pb.get('interestsMoney'), 0, isPayed));
-    items.push(concretItem(projectName, pb.get('payBackDate'), mconfig.fiscalTypes.interests, pb.get('interestsMoney'), 0, isPayed));
+    items.push(concretItem(projectName, id, pb.get('payBackDate'), mconfig.fiscalTypes.basicMoney , pb.get('payMoney') - pb.get('interestsMoney'), 0, isPayed));
+    items.push(concretItem(projectName, id, pb.get('payBackDate'), mconfig.fiscalTypes.interests, pb.get('interestsMoney'), 0, isPayed));
   }else if(pb.get('status') != mconfig.loanPayBackStatus.closed.value){
     //未兑付的
     isPayed = false;
-    items.push(concretItem(projectName, pb.get('payDate'), mconfig.fiscalTypes.basicMoney, pb.get('payMoney') - pb.get('interestsMoney'), 0, isPayed));
-    items.push(concretItem(projectName, pb.get('payDate'), mconfig.fiscalTypes.interests, pb.get('interestsMoney'), 0, isPayed));
+    items.push(concretItem(projectName, id, pb.get('payDate'), mconfig.fiscalTypes.basicMoney, pb.get('payMoney') - pb.get('interestsMoney'), 0, isPayed));
+    items.push(concretItem(projectName, id,pb.get('payDate'), mconfig.fiscalTypes.interests, pb.get('interestsMoney'), 0, isPayed));
   }
   return items;
 };
 //构建一个财务条目
-function concretItem(projectName, date, summary, income, outcome, isPayed){
+function concretItem(projectName, id, date, summary, income, outcome, isPayed){
   income = income || 0;
   outcome = outcome || 0;
   isPayed = isPayed || false;
 
   return {
+    'project_id':id,
     'project': projectName,
     'date': date,
     'summary' : summary.text,
@@ -1505,12 +1528,6 @@ function concretItem(projectName, date, summary, income, outcome, isPayed){
     'isPayed': isPayed
   };
 }
-/*
-  借款财务统计
- */
-app.get(config.baseUrl + '/fiscal/borrow', function(req,res){
-
-});
 
 /*
   End of 财务接口

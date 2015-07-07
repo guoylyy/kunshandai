@@ -89,8 +89,8 @@ var loanPayBackFactory = {
 };
 function generateLoanPayBack(loan, payMoney, interestsMoney, payDate, status, order){
     var loanPayBack = new AV.Object('LoanPayBack');
-    loanPayBack.set('payDate', payDate);
-    loanPayBack.set('payBackDate', payDate);
+    loanPayBack.set('payDate', new Date(payDate));
+    loanPayBack.set('payBackDate', new Date(payDate));
     loanPayBack.set('payMoney', payMoney);
     loanPayBack.set('interestsMoney', interestsMoney);
     loanPayBack.set('status', status);
@@ -99,6 +99,8 @@ function generateLoanPayBack(loan, payMoney, interestsMoney, payDate, status, or
     loanPayBack.set('offsetMoney', 0);
     loanPayBack.set('payBackMoney', 0);
     loanPayBack.set('overflowMoney', 0);
+    loanPayBack.set('favourMoney',0);
+    loanPayBack.set('description',' ');
     loanPayBack.set('loan', loan);
     return loanPayBack;
 };

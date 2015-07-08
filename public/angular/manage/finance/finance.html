@@ -73,19 +73,17 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="finance in finances | orderBy:'date' " ng-class="{warning:!finance.isPayed}">
+			<tr ng-repeat="finance in finances" ng-class="{warning:!finance.isPayed}">
 				<td>{{finance.project}}</td>
-				<td>{{finance.date | date: 'yyyy-MM-dd hh:mm'}}</td>
+				<td>{{finance.date | date: 'yyyy-MM-dd'}}</td>
 				<td>{{finance.summary}}</td>
 				<td>{{finance.income | number:2}}</td>
 				<td>{{finance.outcome | number:2}}</td>
 				<td>{{finance.remain | number:2}}</td>
 			</tr>
-
-			</tr>
 		</tbody>
 	</table>
 </div>
-<div class="ks-panel">
+<!-- <div class="ks-panel">
 	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
-</div>
+</div> -->

@@ -213,7 +213,7 @@ app.get(config.baseUrl + '/account/requestMobilePhoneVerify', function(req, res)
 });
 
 /*
-  验证用户收到的手机码 
+  验证用户收到的手机码
  */
 app.post(config.baseUrl + '/account/verifyUserMobilePhoneNumber', function(req, res) {
   var code = req.body.code;
@@ -756,7 +756,7 @@ function listProject(req, res, clazz){
   query.ascending('currPayDate');
   if (req.query.loanType) {
     query.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
-    
+
   }
   var skipDraft  = true;
   if (req.params.listType == 'draft') {
@@ -1392,7 +1392,7 @@ function fiscalStatictics(req, res, clazz){
   var staticticsType = req.query.staticticsType || [];        //过滤统计项目
   var items = []; //存储最后的财务列表
   var loanIds = req.query.loan || [];
-  
+
   if(typeof(loanIds) == 'string'){
     loanIds = [loanIds];
   }
@@ -1409,7 +1409,7 @@ function fiscalStatictics(req, res, clazz){
     loanQuery.containedIn('objectId',loanIds);
   }
   //还款条件过滤
-  var payBackQuery = new AV.Query('LoanPayBack'); 
+  var payBackQuery = new AV.Query('LoanPayBack');
   payBackQuery.matchesQuery('loan', loanQuery);
   payBackQuery.include('loan');
   var recordQuery = new AV.Query('LoanRecord');
@@ -1433,7 +1433,7 @@ function fiscalStatictics(req, res, clazz){
       };
       //过滤是否兑付
       items = filterIsPayed(items, status);
-      //过滤统计科目 
+      //过滤统计科目
       items = filterByStaticticsType(items, staticticsType);
       items = calFiscalRemain(items);
       //items.reverse();
@@ -1504,7 +1504,7 @@ function calFiscalRemain(items){
   return items;
 }
 
-//计算放款情况 
+//计算放款情况
 //放款成功的都是已兑付情况
 function calRecord(po){
   var items = [];

@@ -241,7 +241,7 @@ function calBillSum(bill){
     var income = bill.income;
     var outcome = bill.outcome;
     var sum = (income.amount + income.overdueMoney + income.interest) -
-                (outcome.assureCost + outcome.keepCost + outcome.interest 
+                (outcome.assureCost + outcome.keepCost + outcome.interest
                     + outcome.payedMoney);
     if(bill.income.overdueBreach != undefined){
         sum += bill.income.overdueBreach;
@@ -273,13 +273,13 @@ function convertParameters(loan, params){
     var currentDate = params.currDate;
     var currentStep = params.currentStep;
     var currentStepDate = params.currentStepDate;
-    
+
     var map = {};
     var stepStartDate = preStepDate(currentStepDate);
     var startDate = new moment(loan.startDate); //合同开始日期
     var currDate = new moment(currentDate);  //当前日期
     var endDate = new moment(loan.endDate);    //合同结束日期
-    
+
     mlog.dlog('开始日期    '+ startDate.format('YYYY-MM-DD'));
     mlog.dlog('周期开始日期 ' + stepStartDate.format('YYYY-MM-DD'));
     mlog.dlog('还款日期    '+ currDate.format('YYYY-MM-DD'));
@@ -376,7 +376,7 @@ loanPayBackFactory.finishBillParmsCal.debx = function(loanObj, data){
     mlog.dlog(map);
     if(map.od <= 0){
         switch(data.interestCalType){
-            case mconfig.interestCalTypes.dayInterest.value:                
+            case mconfig.interestCalTypes.dayInterest.value:
                 rc.income['interest'] = map.P * map.i * (map.N - map.j + 1) * map.k * map.Tsx;
                 break;
             case mconfig.interestCalTypes.monthInterest.value:
@@ -471,7 +471,7 @@ loanPayBackFactory.finishBillParmsCal.zqmxhb = function(loanObj, data){
     return rc;
 };
 loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
-    
+
     var rc = fillBasicMap(loanObj);
     var map = convertParameters(loanObj.attributes, data);
     rc.income.overdueMoney = map.P * map.ov * map.od;
@@ -593,7 +593,7 @@ function updateLoan(loan, reqBody){
 //获取正常还款时间
 function getNormalFirstPayDate(loan){
     var loanType = loan.get('loanType');
-    
+
 }
 
 //贷款抵押物

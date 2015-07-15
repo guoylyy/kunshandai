@@ -56,11 +56,11 @@ define(['app','underscore'],function(app,_){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['合同公证','律师公证','预售登录','他项权证','网签','押产证'],
+					items:['合同公证','律师公证','他项权证','网签','押产证'],
 					order:0
 				},
 				houseCertificate:{
-					text:'房产证号',
+					text:'房权号证',
 					value:[],
 					characters:['房产证','字第','号'],
 					order:1
@@ -87,7 +87,7 @@ define(['app','underscore'],function(app,_){
 					order:5
 				},
 				zone:{
-					text:'小区',
+					text:'小区楼号',
 					value:'',
 					order:6
 				},

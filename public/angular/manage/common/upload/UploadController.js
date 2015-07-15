@@ -9,6 +9,15 @@ define(['app','underscore'],function(app,_){
 
 		$scope.attchTypes = UploadService.getAttachmentTypes();
 
+		typeInit();
+
+		function typeInit() {
+			
+			if(type === '抵押物'){
+				$scope.attchTypes = [{value:'other',text:"其他"}];
+				$scope.attachmentType = 'other';
+			}
+		}
 		// $scope.fileStatus = UploadService.getFileStatus();
 
 		$scope.finish= function () {

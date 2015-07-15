@@ -32,7 +32,7 @@
 					<li ng-repeat="fiscalType in fiscalTypes"><input type="checkbox" name="fiscalTypeGroup" ng-true-value="{{fiscalType.value}}" ng-model="condition.summaries[$index]" > {{fiscalType.text}}</li>
 					<li style="margin-top:-5px;"><button class="btn btn-default btn-xs" type="button" ng-click="allSummaries()">所有</button></li>
 					<!-- <li style="margin-top:-5px;"><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li> -->
-					
+
 				</ul>
 			</div>
 			<div class="ks-condition" style="padding-top:10px;">
@@ -73,7 +73,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="finance in finances" ng-class="{warning:!finance.isPayed}">
+			<tr ng-repeat="finance in finances | orderBy:'order'" ng-class="{warning:!finance.isPayed}">
 				<td>{{finance.project}}</td>
 				<td>{{finance.date | date: 'yyyy-MM-dd'}}</td>
 				<td>{{finance.summary}}</td>

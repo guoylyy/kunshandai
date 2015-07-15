@@ -32,7 +32,7 @@
               </td>
               <td>{{payback.order}}</td>
               <td>{{payback.payMoney | number:2}}</td>
-              <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+              <td>{{payback.payDate.iso | date:"yyyy-MM-dd"}}</td>
               <td ng-show="payback.status === 1" class="text-info">正在还</td>
               <td ng-show="payback.status === 2" >未还</td>
               <td ng-show="payback.status === 3"class="text-success">已还</td>
@@ -82,7 +82,7 @@
         <tr ng-repeat="selectedPayback in selectedPaybacks" >
           <td>{{selectedPayback.order}}</td>
           <td>{{selectedPayback.payMoney | number:2}}</td>
-          <td>{{selectedPayback.payDate | date:"yyyy-MM-dd"}}</td>
+          <td>{{selectedPayback.payDate.iso | date:"yyyy-MM-dd"}}</td>
           <td ng-show="selectedPayback.status === 1" class="text-info">正在还</td>
           <td ng-show="selectedPayback.status === 2" >未还</td>
           <td ng-show="selectedPayback.status === 3"class="text-success">已还</td>
@@ -278,7 +278,7 @@
         <tr ng-repeat="payback in paybacks">
           <td>{{payback.order}}</td>
           <td>{{payback.payMoney | number:2}}</td>
-          <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+          <td>{{payback.payDate.iso | date:"yyyy-MM-dd"}}</td>
           <td ng-show="payback.status === 1" class="text-info">正在还</td>
           <td ng-show="payback.status === 2" >未还</td>
           <td ng-show="payback.status === 3" class="text-success">已还</td>
@@ -513,7 +513,7 @@
                        <input type="radio" ng-model="completeData.payType"  ng-value="ptype.value"
                        name="payBackType" ng-required="!completeData.payType">{{ptype.text}}
                     </label> -->
-                    
+
                     <!-- 多收 -->
                     <label class="radio-inline" ng-show="completeData.offsetMoney > 0">
                       <input type="radio" ng-model="completeData.payType"  value="overflow" name="payBackType" ng-required="!completeData.payType">溢价处理

@@ -324,6 +324,7 @@ define(['app',"underscore"],function(app,_) {
 						}else if(type === 'pawn'){
 							delete($scope.pawn.attachments[index]);
 							$scope.pawn.attachments = _.compact($scope.pawn.attachments);
+							$scope.$apply();
 						}
 		        	}
 

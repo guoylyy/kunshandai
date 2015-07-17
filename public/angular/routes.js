@@ -547,22 +547,22 @@ define(['app','underscore'],function(app,_){
 				*Borrow 模块路由
 				*/
 				.state('borrow',{
-          url:"/borrow",
-          abstract:true,
-          views:{
-						'':{
-							templateUrl:"/angular/borrow/common/partial/layout.html"
-						},
-						'nav@borrow': {
-							templateUrl: "/angular/manage/nav/nav.html",
-							controller: "NavController",
-							resolve:resolveNavObjects()
-						},
-						'menu@borrow': {
-							templateUrl:"/angular/borrow/common/partial/menu.html"
-						}
-					}
-        })
+		          url:"/borrow",
+		          abstract:true,
+		          views:{
+								'':{
+									templateUrl:"/angular/borrow/common/partial/layout.html"
+								},
+								'nav@borrow': {
+									templateUrl: "/angular/manage/nav/nav.html",
+									controller: "NavController",
+									resolve:resolveNavObjects()
+								},
+								'menu@borrow': {
+									templateUrl:"/angular/borrow/common/partial/menu.html"
+								}
+							}
+		        })
 				.state('borrow.index',{
 		    	url:"?startDate&endDate",
     			templateUrl:  "/angular/borrow/index/index.html",
@@ -755,6 +755,22 @@ define(['app','underscore'],function(app,_){
 					},
 					controller: "BProjectController"
 		    })
+		    .state('borrow.finance',{
+				url: "/finance?startTime&endTime&summaries&cashes&projects",
+				templateUrl: "/angular/borrow/finance/finance.html",
+				controller: "BFinanceController",
+				resolve:{
+					financeRanges:function(DictService) {
+						return DictService.get('financeRanges');
+					},
+					fiscalTypes:function(DictService) {
+						return  DictService.get('fiscalTypes');
+					},
+					fiscalStatusTypes: function(DictService) {
+						return DictService.get('fiscalStatusTypes');
+					}
+				}
+			})
 			.state('credit',{
 				abstract:true,
 				url:"/credit",

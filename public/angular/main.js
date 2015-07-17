@@ -119,6 +119,8 @@ require([
 		 'borrow/bloan/helpers/BLoanHelper',
 		 'borrow/bloan/services/BLoanService',
 		 'borrow/bloan/controllers/BContractController',
+		 'borrow/finance/BFinanceController',
+		 'borrow/finance/BFinanceService',
 
 		 'common/interceptors/responseErr',
 		 'common/interceptors/sessionAuth',

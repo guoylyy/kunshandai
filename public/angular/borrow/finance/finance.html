@@ -1,0 +1,91 @@
+ <div class="ks-dividing">
+	<h4>借款财务</h4>
+</div>
+<div class="ks-panel">
+	<div class="panel panel-default">
+		<div class="panel-heading">筛选条件</div>
+
+		<div class="panel-body" cg-busy="loansPromise">
+			<div class="ks-condition">
+				<div class="row">
+					<div class="col-md-6">
+						<ul class="ks-list-unstyled">
+							<li>时间范围:</li>
+							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startTime:timeRange.startTime,endTime:timeRange.endTime})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+						</ul>
+					</div>
+					<div class="col-md-pull-1 col-md-3">
+						<div class="input-group" style="padding-left:10px;">
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedstart" close-text="关闭" name="startDate" ng-click="open($event,'openedstart')" ng-model="condition.startTime"/>
+							<span class="input-group-addon">-</span>
+							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedend" close-text="关闭" name="endDate" ng-click="open($event,'openedend')" ng-model="condition.endTime"/>
+							<span class="input-group-btn">
+								<button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ks-condition">
+				<ul class="ks-list-unstyled">
+					<li>摘要:</li>
+					<li ng-repeat="fiscalType in fiscalTypes"><input type="checkbox" name="fiscalTypeGroup" ng-true-value="{{fiscalType.value}}" ng-model="condition.summaries[$index]" > {{fiscalType.text}}</li>
+					<li style="margin-top:-5px;"><button class="btn btn-default btn-xs" type="button" ng-click="allSummaries()">所有</button></li>
+					<!-- <li style="margin-top:-5px;"><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li> -->
+
+				</ul>
+			</div>
+			<div class="ks-condition" style="padding-top:10px;">
+				<ul class="ks-list-unstyled">
+					<li>兑付情况:</li>
+					<li ng-repeat="fiscalStatusType in fiscalStatusTypes"><input type="checkbox" name="fiscalStatusTypeGroup" ng-true-value="'{{fiscalStatusType.value}}'"ng-model="condition.cashes[$index]"> {{fiscalStatusType.text}}</li>
+					<li style="margin-top:-5px;"><button class="btn btn-default btn-xs" type="button" ng-click="allCashes()">所有</button></li>
+					<!-- <li style="margin-top:-5px;"><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li> -->
+				</ul>
+			</div>
+			<div class="ks-condition" style="padding-top:10px;">
+				<ul class="ks-list-unstyled">
+					<li style="padding-top:10px;">项目聚焦:</li>
+					<li>
+						<ui-select multiple ng-model="condition.projects" theme="select2" style="width: 650px;" >
+					    	<ui-select-match placeholder="输入项目编号，添加聚焦项目">{{$item.numberWithName}}</ui-select-match>
+					    	<ui-select-choices repeat="loan.id as loan in loans " refresh="refreshLoans($select.search)">
+					      		<div ng-bind-html="loan.numberWithName | highlight: $select.search"></div>
+					    	</ui-select-choices>
+					 	</ui-select>
+					 </li>
+					 <li ><button class="btn btn-primary btn-xs" type="button" ng-click="conditionSearch()">确定</button></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="ks-panel">
+	<table class="table table-striped table-bordered" cg-busy="financesPromise">
+		<thead>
+			<tr>
+				<th>项目编号</th>
+				<th>记账时间</th>
+        		<th>摘要</th>
+				<th>收入</th>
+				<th>支出</th>
+				<th>剩余</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="finance in finances | orderBy:'order'" ng-class="{warning:!finance.isPayed}">
+				<td>{{finance.project}}</td>
+				<td>{{finance.date | date: 'yyyy-MM-dd'}}</td>
+				<td>{{finance.summary }}</td>
+				<td ng-show="finance.outcome > 0">{{finance.outcome | number:2}}</td>
+				<td ng-show="finance.outcome == 0"></td>
+				<td ng-show="finance.income > 0">{{ finance.income| number:2}}</td>
+				<td ng-show="finance.income == 0"></td>
+				<td>{{finance.remain | number:2}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- <div class="ks-panel">
+	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
+</div> -->

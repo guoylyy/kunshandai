@@ -14,7 +14,7 @@
     <div>结束时间: {{loan.endDate | date:"yyyy-MM-dd"}}</div>
   </div>
   <div class="col-md-3">
-    <div>利率（%/月）: {{loan.interests * 100 | number:2}}</div>
+    <div>利率（%/月）: {{loan.interests * 100 | number:3}}</div>
     <div>逾期违约金率（‰/天）: {{loan.overdueCostPercent* 1000 | number:2}}</div>
   </div>
 </div>

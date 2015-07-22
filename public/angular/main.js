@@ -126,6 +126,7 @@ require([
 		 'common/interceptors/sessionAuth',
 		 'common/directive/numberInput',
 		 'common/directive/floatNumberInput',
+		 'common/directive/threeFloatNumberInput',
 		 'common/filter/cDisplay',
 		 'common/filter/selectFilter',
 

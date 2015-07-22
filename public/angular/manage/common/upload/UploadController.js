@@ -14,7 +14,11 @@ define(['app','underscore'],function(app,_){
 		function typeInit() {
 			
 			if(type === '抵押物'){
-				$scope.attchTypes = [{value:'other',text:"其他"}];
+				
+				$scope.attchTypes = [{value:'inspection',text:"现场考察"},
+									 {value:'certification',text:"证件"},
+									 {value:'other',text:"其他"}];
+
 				$scope.attachmentType = 'other';
 			}
 		}

@@ -7,7 +7,7 @@ define(['app','underscore'],function(app,_){
 				pawnType:{
 					text:"抵押方式",
 					value:[],
-					items:['合同公证','律师见证','他项权证','过户','装GPS','押车','押产证'],
+					items:['合同公证','律师见证','过户','装GPS','押车','押产证'],
 					order:0
 				},
 				carNum:{

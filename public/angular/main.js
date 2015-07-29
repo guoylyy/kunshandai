@@ -130,6 +130,7 @@ require([
 		 'common/directive/fixedHead',
 		 'common/filter/cDisplay',
 		 'common/filter/selectFilter',
+		 'common/filter/dateFilter',
 
 		 'borrow/repay/RepayController',
 		 'borrow/bproject/BProjectController',

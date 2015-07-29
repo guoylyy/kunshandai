@@ -458,7 +458,9 @@ app.delete(config.baseUrl + '/loan/:id', function(req, res) {
     } else {
       if (u.id == l.get('owner').id) {
         var deleteList = [l];
-        deleteList.push(l.get('pawn'));
+        // if(l.get('pawn')){
+        //   deleteList.push(l.get('pawn'));
+        // }
         l.relation('loanRecords').query().destroyAll();
         l.relation('loanPayBacks').query().destroyAll();
         AV.Object.destroyAll(deleteList).then(function() {

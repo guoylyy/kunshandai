@@ -124,9 +124,9 @@ loanPayBackFactory.payBackInit.debx = function(loanObj, loan){
         if(d > endDate){
             d = endDate; //控制还款日期不能超过项目结束日日期
         }
-        if(i > 1){
-            d.subtract(1, 'days');
-        }
+        // if(i > 1){
+        //     d.subtract(1, 'days');
+        // }
         d = d.format();
         if(i > 1){
             status = mconfig.loanPayBackStatus.toPaying.value;
@@ -174,9 +174,6 @@ loanPayBackFactory.payBackInit.zqmxhb = function(loanObj, loan){
     for (var i = 1; i <= loan.payTotalCircle; i++) {
         var status = mconfig.loanPayBackStatus.paying.value;
         var d = moment(loan.firstPayDate).add(loan.payCircle*(i-1), 'month');
-        if(i > 1){
-            d.subtract(1, 'days');
-        }
         if(d > endDate){
             d = endDate; //控制还款日期不能超过项目结束日日期
         }
@@ -275,7 +272,7 @@ function convertParameters(loan, params){
     var currentStepDate = params.currentStepDate;
 
     var map = {};
-    var stepStartDate = preStepDate(currentStepDate);
+    var stepStartDate = preStepDate(currentStepDate, params.interestCalType);
     var startDate = new moment(loan.startDate); //合同开始日期
     var currDate = new moment(currentDate);  //当前日期
     var endDate = new moment(loan.endDate);    //合同结束日期
@@ -286,7 +283,7 @@ function convertParameters(loan, params){
     mlog.dlog('合同结束日期 '+ endDate.format('YYYY-MM-DD'));
 
     map['totalDay'] = endDate.diff(startDate,'days');
-    map['unPayedDay'] = endDate.diff(currDate, 'days');
+    map['unPayedDay'] = Math.round(endDate.diff(currDate, 'days', true));
     map['unPayedTotalDay'] = endDate.diff(stepStartDate, 'days') + 1;
     map['payedMonth'] = currDate.diff(startDate, 'months') + 1;
     map['unPayedMonth'] = endDate.diff(currDate, 'months');
@@ -323,9 +320,19 @@ function calDateInWhichStep(loan,currDate){
         step = 1;
     }else{
         for (var i = 0; i < loan.payTotalCircle; i++) {
-            var offs = offset.add(payCircle * i, 'months');
+            var offs;
+            if(i>0){
+                offs = offset.add(payCircle, 'months');
+            }else{
+                offs = offset;
+            }
+            mlog.dlog('当前:' + mdate.format('YYYY-MM-DD'));
+            mlog.dlog('开始:' + start.format('YYYY-MM-DD'));
+            mlog.dlog('参考:' + offs.format('YYYY-MM-DD'));
+            mlog.dlog('offset: ' + i);
             if(mdate.isAfter(start) && mdate.isBefore(offs)){
                 step = (i+1);
+                mlog.dlog('命中期数:' + step);
                 break;
             }
         };
@@ -336,9 +343,12 @@ function calDateInWhichStep(loan,currDate){
     return step;
 }
 
-function preStepDate(currentStepDate){
+function preStepDate(currentStepDate, calType){
     var m = new moment(currentStepDate);
-    m.add(1, 'days');
+    if(calType == mconfig.interestCalTypes.monthInterest.value){
+    }else{
+        m.add(1, 'days');
+    }
     return m;
 }
 
@@ -352,6 +362,7 @@ loanPayBackFactory.finishBillParmsCal.xxhb = function(loanObj, data){
         switch(data.interestCalType){
             case mconfig.interestCalTypes.dayInterest.value:
                 rc.outcome['interest'] = map.P * map.i * map.T * (1 - map.Tx);
+                console.log(rc.outcome['interest']);
                 break;
             case mconfig.interestCalTypes.monthInterest.value:
                 rc.outcome['interest'] = map.P * map.i * (map.T - map.n);
@@ -489,7 +500,7 @@ loanPayBackFactory.finishBillParmsCal.dqhbfx = function(loanObj, data){
             case mconfig.interestCalTypes.circleInterest.value:
                 rc.income['interest'] = map.P * map.i * map.T; //只有一期，所以当期不用退了
                 break;
-            case mconfig.interestCalTypes.allInterest.values:
+            case mconfig.interestCalTypes.allInterest.value:
                 rc.income['interest'] = map.P * map.T * map.i;
                 break;
             default:

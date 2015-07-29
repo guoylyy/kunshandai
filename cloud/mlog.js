@@ -3,7 +3,7 @@
 var util=require('util');
 
 var open=!__production;
-var debug=true;
+var debug=false;
 
 function startWith(s,prefix,f){
   if(s.indexOf(prefix)==0){

@@ -219,6 +219,11 @@ body{
 	margin-left: -20px;
 	background:url(../images/f_logo.png);
 }
+.ks-fixed-head{
+	position: fixed;
+	top: 35px;
+}
+
 
 /*modify bootstrap*/
 dl dt,dl dd{

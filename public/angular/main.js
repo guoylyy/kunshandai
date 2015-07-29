@@ -127,6 +127,7 @@ require([
 		 'common/directive/numberInput',
 		 'common/directive/floatNumberInput',
 		 'common/directive/threeFloatNumberInput',
+		 'common/directive/fixedHead',
 		 'common/filter/cDisplay',
 		 'common/filter/selectFilter',
 

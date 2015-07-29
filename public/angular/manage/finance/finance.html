@@ -63,25 +63,25 @@
 <div class="ks-panel">
 	<table class="table table-striped table-bordered" cg-busy="financesPromise">
 		<thead>
-			<tr>
-				<th>项目编号</th>
-				<th>记账时间</th>
-        		<th>摘要</th>
-				<th>收入</th>
-				<th>支出</th>
-				<th>盈亏</th>
+			<tr ks-fixed-head>
+				<th width="157">项目编号</th>
+				<th width="144">记账时间</th>
+        		<th width="120">摘要</th>
+				<th width="141">收入</th>
+				<th width="141">支出</th>
+				<th width="141">盈亏</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="finance in finances | orderBy:'order'" ng-class="{warning:!finance.isPayed}" ng-if="(finance.income + finance.outcome) > 0">
-				<td>{{finance.project}}</td>
-				<td>{{finance.date | date: 'yyyy-MM-dd'}}</td>
-				<td>{{finance.summary }}</td>
-				<td ng-show="finance.income > 0">{{ finance.income| number:2}}</td>
-				<td ng-show="finance.income == 0"></td>
-				<td ng-show="finance.outcome > 0">{{finance.outcome | number:2}}</td>
-				<td ng-show="finance.outcome == 0"></td>
-				<td>{{finance.remain | number:2}}</td>
+				<td width="157">{{finance.project}}</td>
+				<td width="144">{{finance.date | date: 'yyyy-MM-dd'}}</td>
+				<td width="120"> {{finance.summary }}</td>
+				<td width="141" ng-show="finance.income > 0">{{ finance.income| number:2}}</td>
+				<td width="141" ng-show="finance.income == 0"></td>
+				<td width="141" ng-show="finance.outcome > 0">{{finance.outcome | number:2}}</td>
+				<td width="141" ng-show="finance.outcome == 0"></td>
+				<td width="141">{{finance.remain | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>

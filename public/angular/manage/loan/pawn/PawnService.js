@@ -62,7 +62,7 @@ define(['app','underscore'],function(app,_){
 				houseCertificate:{
 					text:'房权号证',
 					value:[],
-					characters:['房产证','字第','号'],
+					characters:['房权证','字第','号'],
 					order:1
 				},
 				landCertificate:{

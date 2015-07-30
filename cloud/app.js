@@ -169,6 +169,8 @@ app.post(config.baseUrl + '/account/register', function(req, res) {
   if (account.isLogin()) {
     AV.User.logOut();
   }
+  //禁止注册
+  mutil.renderError(res,{'message':'forbidden', 'code':510});
   var mobilePhoneNumber = req.body.mobilePhoneNumber;
   var password = req.body.password;
   var user = new AV.User();

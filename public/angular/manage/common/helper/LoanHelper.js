@@ -126,7 +126,8 @@ define(['app'],function(app){
 				if($scope.loanInfo.loanType === 'fcdy'
 					|| $scope.loanInfo.loanType === 'mfdy'
 					|| $scope.loanInfo.loanType === 'qcdy'
-					|| $scope.loanInfo.loanType === 'mcdy'){
+					|| $scope.loanInfo.loanType === 'mcdy'
+					|| $scope.loanInfo.loanType === 'qtdy'){
 
 					var pawnDeferred = $q.defer();
 					PawnService.create($scope.pawn).then(function(pawnData){

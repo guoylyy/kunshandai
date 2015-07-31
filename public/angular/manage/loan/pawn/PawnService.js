@@ -107,8 +107,21 @@ define(['app','underscore'],function(app,_){
 					order:9
 				}
 
+			},
+
+			other = {
+				memo:{
+					text:'抵押备注',
+					value:'',
+					order:0
+				}
 			};
 		var pawnTypeTransform = function(data){
+			
+			if(!data.pawnType){
+				return data;
+			}
+
 			var i = 0;
 			var pawnTypeValue  = [];
 			for(i = 0;i < data.pawnType.items.length;i++){
@@ -153,6 +166,8 @@ define(['app','underscore'],function(app,_){
 					return house;
 				}else if(type === 'qcdy' || type === 'mcdy'){
 					return car;
+				}else if(type === 'qtdy'){
+					return other;
 				}else{
 					return '';
 				}

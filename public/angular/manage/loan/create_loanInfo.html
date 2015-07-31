@@ -161,7 +161,7 @@
 		<ui-include src="'/angular/manage/contact/grInfo.html'"></ui-include>
 	</div>
 	
-	<div ng-init="pType = loanInfo.loanType " ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy'">
+	<div ng-init="pType = loanInfo.loanType " ng-show="pType === 'fcdy' || pType === 'mfdy' || pType === 'qcdy' || pType === 'mcdy' || pType === 'qtdy'">
 		<div class="ks-dividing">
 			<h4>抵押物</h4>
 		</div>
@@ -176,6 +176,10 @@
 					<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
 						<!-- <div ng-include="template.carUrl"></div> -->
 						<ui-include src="'/angular/manage/loan/pawn/car_pawn.html'"></ui-include>
+					</div>
+					<div class="panel-body" ng-if="pType === 'qtdy'">
+						<!-- <div ng-include="template.carUrl"></div> -->
+						<ui-include src="'/angular/manage/loan/pawn/other_pawn.html'"></ui-include>
 					</div>
 				</div>
 			</div>

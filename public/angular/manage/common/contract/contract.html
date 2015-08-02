@@ -169,14 +169,14 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos | orderBy:'order' " >
-								<label ng-if="pawnInfo.text === '房产证号' || pawnInfo.text === '土地证号'">
+								<label ng-if="pawnInfo.text === '房产证' || pawnInfo.text === '房权号证' || pawnInfo.text === '土地证' ||  pawnInfo.text === '土地证号' " >
 									<strong>{{pawnInfo.text}}: </strong>
 									<ins>{{pawnInfo.value[0]}}</ins> {{pawnInfo.characters[0]}} <ins>{{pawnInfo.value[1]}}</ins> {{pawnInfo.characters[1]}} <ins>{{pawnInfo.value[2]}}</ins> {{pawnInfo.characters[2]}}
 								</label>
 								<label ng-if="pawnInfo.text === '抵押方式'">
 									<strong>{{pawnInfo.text}}: </strong> <ins ng-repeat="i in pawnInfo.value"> {{i}}{{' '}}</ins>
 								</label>
-								<label ng-if="pawnInfo.text !== '抵押方式' && pawnInfo.text !== '房产证号' && pawnInfo.text !== '土地证号'">
+								<label ng-if="pawnInfo.text !== '抵押方式' && pawnInfo.text !== '房产证' && pawnInfo.text !== '房权号证' && pawnInfo.text !== '土地证' && pawnInfo.text !== '土地证号'">
 									<strong>{{pawnInfo.text}}: </strong> <ins>{{pawnInfo.value || '无'}}</ins>
 								</label>
 							</div>

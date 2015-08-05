@@ -64,7 +64,10 @@ app.get('/', function(req, res) {
   res.redirect('/home');
 });
 app.get('/home', function(req, res) {
-  res.redirect('/manage');
+  res.redirect('/home/loan');
+});
+app.get('/home/loan', function(req, res) {
+  res.render('manage.ejs');
 });
 app.get('/index', function(req, res) {
   res.render('guest_layout.ejs');

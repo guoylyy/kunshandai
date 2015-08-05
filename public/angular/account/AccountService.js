@@ -25,6 +25,8 @@ define(['app','underscore'],function(app,_){
 						var  expiresDate = new Date();
 						expiresDate.setDate(expiresDate.getDate() + 7);
 						resUser.expires = expiresDate;
+ 						var b = new Base64();  
+						resUser.password = b.encode(resUser.password); 
 						$window.localStorage['userInfo'] = JSON.stringify(_.pick(resUser,'mobilePhoneNumber','password','expires'));
 					}
 					//设置登录状态

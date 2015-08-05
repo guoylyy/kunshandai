@@ -100,10 +100,25 @@ define(['app','underscore'],function(app,_){
 			//acount module routes
 			.state('home',{
 				url:"/home",
-		    	controller:function(){
-					document.location.reload(true);
+				abstract:true,
+				views:{
+					'':{
+						templateUrl:"/angular/home/partials/layout.html"
+					},
+					'nav@home': {
+						templateUrl: "/angular/home/partials/nav.html",
+						controller: "NavController",
+						resolve:resolveNavObjects()
+					}
 				}
 			})
+			.state('home.loan',{
+				url:"/loan"
+			})
+			.state('home.borrow',{
+				url:"/borrow"
+			})
+			
 		    .state('login', {
 		    	url: "/login",
 		    	templateUrl: "angular/account/login/login.html",

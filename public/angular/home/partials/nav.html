@@ -1,4 +1,4 @@
-<header class="navbar navbar-static-top ks-m-nav navbar-fixed-top" >
+<header class="navbar navbar-static-top ks-m-nav navbar-fixed-top nav-home">
 	<div class="container">
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
@@ -38,3 +38,24 @@
     </div>
 	</div>
 </header>
+<div class="ks-m-header ks-home-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm--offset-2 col-md-offset-2 col-sm-2 col-md-2 home-nav-item">
+        <a ui-sref="home.loan" ui-sref-active="active">我的贷款</a>
+      </div>
+      <div class="col-sm-2 col-md-2 home-nav-item">
+        <a ui-sref="home.borrow" ui-sref-active="active">我的借款</a>
+      </div>
+      <div class="col-sm-1 col-md-1" style="margin-left: -4%;">
+        <a ui-sref="account.setting.avatar"><img src="{{user.avatar.url}}" alt="..." class="img-responsive img-circle"></a>
+      </div>
+      <div class="col-sm-2 col-md-2 home-nav-item" style="margin-left: 3.5%;">
+        <a href="/manage">贷款管理</a>
+      </div>
+      <div class="col-sm-2 col-md-2 home-nav-item">
+        <a href="/borrow">借款管理</a>
+      </div>
+    </div>
+  </div>
+</div>

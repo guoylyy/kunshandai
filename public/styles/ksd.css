@@ -63,6 +63,23 @@ body{
 .ks-m-header{
 	padding-top: 60px;
 }
+.ks-home-header{
+	height: 155px;
+	background: #1e1b29;
+}
+.ks-home-header .home-nav-item a{
+	font-size: 20px;
+	color: #666;
+	line-height: 3.5;
+	text-decoration: none;
+}
+.ks-home-header .home-nav-item a:hover{
+	color: #ffffff;
+	text-decoration: none;
+}
+.ks-home-header .home-nav-item .active{
+	color: #5bc0de;
+}
 .ks-logo{
 	width: 207px;
 	height: 65px;

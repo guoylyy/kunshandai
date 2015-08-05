@@ -6,6 +6,8 @@ define(['app'],function(app){
 
           $scope.user.profile = profile.infoObject;
 
+          $scope.user.avatar  = profile.icon || {url:'/images/avatar.jpeg'};
+
           $scope.logout = function(){
             $scope.err = null;
             AccountService.logout().then(function(res){

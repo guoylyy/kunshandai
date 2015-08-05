@@ -60,6 +60,8 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 
 				//记住状态期限内则重新登录，否则跳到登录页面
 				if(now < userInfo.expires){
+					var b = new Base64();  
+        			userInfo.password = b.decode(userInfo.password);
 					AccountService.login(userInfo).then(function(){
 						document.location.reload(true);
 					},function(){

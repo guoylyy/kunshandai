@@ -9,6 +9,7 @@ window.onload = function(){
       //IE 6, IE7, IE8
       if(navigator.userAgent.indexOf("MSIE 6.0")>0 
       	|| navigator.userAgent.indexOf("MSIE 7.0")>0 
+      	|| navigator.userAgent.indexOf("MSIE 8.0")>0 
       	|| (navigator.userAgent.indexOf("MSIE 9.0")>0 && !window.innerWidth)){   
         
         linkToBrowserDownload();   

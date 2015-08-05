@@ -4,5 +4,5 @@ define(['app'],function(app){
 		$scope.projects = projects;
 
 
-	}])
+	}]);
 })

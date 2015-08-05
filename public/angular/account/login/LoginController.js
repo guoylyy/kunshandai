@@ -27,5 +27,6 @@ define(['app','../AccountService'],function(app) {
 					);
 
 				};
+
 	}]);
 });

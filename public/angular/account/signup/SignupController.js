@@ -26,12 +26,7 @@ define(['app','underscore'],function(app,_) {
 
 					AccountService.signup(_.omit($scope.account,'passwordConfirmation'))
 					.then(function(res){
-						// if(res.code === -1){
-						// 	$scope.err = "请填写手机号";
-						// 	return;
-						// }else if(res.code === 1){
-						// 	$scope.err = "发送验证码失败,稍后再试";
-						// }
+
 						//验证码60s倒计时
 						$scope.isCodeSending  = true;
 						$interval(function(){

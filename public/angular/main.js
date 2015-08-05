@@ -84,6 +84,8 @@ require([
 		 'account/retrieve_password/RetrievePasswordController',
 		 'account/setting/AccountSettingCtrl',
 
+		 'home/HomeController',
+
 		 'manage/index/IndexController',
 
 		 'manage/DictService',

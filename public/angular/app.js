@@ -32,8 +32,7 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
     	$rootScope.$on('$locationChangeStart', function(evt) {
       	// Halt state change from even starting
       	// Perform custom logic
-      	//
-
+      	
 		var userInfo 	= $window.localStorage['userInfo'];
 		var loginStatus = $window.localStorage['loginStatus'];
 		if(userInfo){
@@ -87,65 +86,6 @@ define(['angular','uiRouter','uiBootstrap','angularLoadingBar','uiUtils','angula
 				return;
 			}
 		}
-    // //自动登录情况或 不自动登录情况下用户已登录
-		// if(loginStatus.logined || userInfo){
-		//     //session过期
-		// 	if(now > loginStatus.sessionExpires){
-		// 		loginStatus.logined = false;
-		// 		$window.localStorage['loginStatus'] = JSON.stringify(loginStatus);
-		// 		//记住登录状态
-		// 		if(userInfo){
-		// 			//记住状态期限内
-		// 			if(now < userInfo.expires){
-		// 				AccountService.login(userInfo).then(function(){
-		// 					// $urlRouter.sync();
-		// 					document.location.reload(true);
-		// 				},function(){
-		// 					console.log("自动登录失败");
-		// 				});
-		//
-		// 			}else{
-		//
-		// 				evt.preventDefault();
-		// 				window.location = '/login';
-		// 				return;
-		// 			}
-		//
-		// 		}else{
-		// 			evt.preventDefault();
-		// 			window.location = '/login';
-		// 		}
-		//
-		// 	}else{
-		// 		if(window.location.pathname == '/login'
-		// 			|| window.location.pathname == '/signup'
-		// 			|| window.location.pathname == '/retrieve_password'){
-		//
-		// 			evt.preventDefault();
-		// 			window.location = '/manage';
-		// 			return;
-		// 		}else{
-		// 			// $urlRouter.sync();
-		// 			return;
-		// 		}
-		//
-		// 	}
-		// }else{
-		//
-		// 	if(window.location.pathname == '/login'
-		// 		|| window.location.pathname == '/signup'
-		// 		|| window.location.pathname == '/help'
-		// 		|| window.location.pathname == '/retrieve_password'){
-		// 		// $urlRouter.sync();
-		// 	}else{
-		// 		// $state.go('login');
-		// 		evt.preventDefault();
-		// 		window.location = '/login';
-		// 		// $location.path('/login');
-		//
-		// 		return;
-		// 	}
-		// }
 
     	})
     })

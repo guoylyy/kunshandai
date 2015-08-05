@@ -113,7 +113,13 @@ define(['app','underscore'],function(app,_){
 				}
 			})
 			.state('home.loan',{
-				url:"/loan"
+				url:"/loan",
+				resolve:{
+					projects: function(LoanService){
+						
+					}
+				},
+				controller:'HomeController'
 			})
 			.state('home.borrow',{
 				url:"/borrow"

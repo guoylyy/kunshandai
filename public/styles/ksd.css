@@ -175,6 +175,29 @@ body{
 	min-width: 60px;
 	left: -12px;
 }
+.ks-home-table {
+	border-left-color: transparent !important;
+    border-right-color: transparent !important;
+}
+.ks-home-table td{
+	padding-top: 20px !important;;
+}
+.ks-home-table .week{
+	font-weight: bold;
+	font-size: 16px;
+}
+.ks-home-table .fa{
+	margin-top: 12px;
+}
+.ks-home-table button{
+	margin-top: 7px;
+}
+.ks-home-table a,.ks-home-table h4{
+	padding-top: 7px;
+}
+.ks-home-table tr:hover{
+	background-color: rgb(245, 245, 245);
+}
 .ks-account{
 	margin-top: -17px;
 	background: url(../images/sh_bg.jpg) no-repeat center center fixed;

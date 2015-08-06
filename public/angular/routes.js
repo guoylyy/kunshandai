@@ -115,10 +115,17 @@ define(['app','underscore'],function(app,_){
 			.state('home.loan',{
 				url:"/loan",
 				resolve:{
-					projects: function(LoanService){
-						
+					projects: function($stateParams,DictService,LoanService){
+						var homeTimeRanges = DictService.get('homeRanges');
+						var startDate = new Date(homeTimeRanges[0].startDate);
+						var endDate = new Date(homeTimeRanges[0].endDate);
+						// var startDate;
+						// var endDate;
+						$stateParams.page = $stateParams.page || 1;
+						return LoanService.getUnpayedList($stateParams.page,startDate,endDate);
 					}
 				},
+				templateUrl:'/angular/home/partials/loan.html',
 				controller:'HomeController'
 			})
 			.state('home.borrow',{
@@ -165,9 +172,7 @@ define(['app','underscore'],function(app,_){
     				incomeStatistics: function(LoanService, $stateParams, $filter){
     					if(!$stateParams.startDate || !$stateParams.endDate) {
     						var currDate = new Date();
-    						$stateParams.startDate = new Date(currDate.getFullYear(),
-    																		  currDate.getMonth(),
-    																		  1).getTime();
+    						$stateParams.startDate = new Date(currDate.getFullYear(),currDate.getMonth(),1).getTime();
     						$stateParams.endDate = currDate.getTime();
     					}
               var startDate = $filter('date')(new Date(parseInt($stateParams.startDate)), 'yyyy-MM-dd');

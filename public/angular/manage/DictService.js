@@ -80,7 +80,16 @@ define(['../app','moment'],function(app,moment){
 				}
 			]
 
-		}
+		};
+
+		var homeTimeRangeValues = function() {
+			return [
+				{
+					startDate: new Date(moment().day(-9)).getTime(),
+					endDate: new Date(moment().day(+9)).getTime()
+				}
+			]
+		};
 
 		return {
 			get : function (key){
@@ -89,6 +98,9 @@ define(['../app','moment'],function(app,moment){
 				}
 				if(key === 'financeRanges'){
 					return financeRangeValues();
+				}
+				if(key === 'homeRanges'){
+					return homeTimeRangeValues();
 				}
 				if(keys[key]){
 					return keys[key];

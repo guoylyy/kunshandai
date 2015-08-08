@@ -412,7 +412,7 @@ function searchProject(req, res, clazz) {
     query.startsWith('numberWithName', key);
     listLoan(res, query, 1, true);
   } else if (type == 'id') {
-    query.startsWith('numberWithName', key);
+    query.equalTo('serialNumber', parseInt(key));
     listLoan(res, query, 1, true);
   } else {
     mutil.renderError(res, {
@@ -1295,6 +1295,11 @@ app.post(config.baseUrl + '/loan/payBack/:id/finish', function(req, res) {
               if (payType == mconfig.payBackTypes.favour.value) { //加入优惠金额
                 list[i].set('favourMoney', offsetMoney);
               }
+              var overdueBreach =  req.body.payBackData.income.overdueBreach;
+              console.log(overdueBreach);
+              if(overdueBreach!= undefined && overdueBreach!=null){
+                list[i].set('overdueBreach', overdueBreach);
+              }
             } else {
               list[i].set('status', mconfig.loanPayBackStatus.completed
                 .value);
@@ -1583,6 +1588,7 @@ function calRecord(po, listCompletedItems) {
       .assureCost, Math.abs(po.get('assureCost')), 0, isPayed));
     items.push(concretItem(projectName, id, po.get('payDate'), mconfig.fiscalTypes
       .serviceCost, Math.abs(po.get('serviceCost')), 0, isPayed));
+    
   }
   if (listCompletedItems) {
     items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
@@ -1590,11 +1596,7 @@ function calRecord(po, listCompletedItems) {
     items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
       .keepCost, 0, Math.abs(po.get('keepCost')), isPayed));
     items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
-      .otherCost, 0, Math.abs(po.get('otherCost')), isPayed));
-    items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
       .assureCost, 0, Math.abs(po.get('assureCost')), isPayed));
-    items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
-      .serviceCost, 0, Math.abs(po.get('serviceCost')), isPayed));
   }
   return items;
 };
@@ -1621,6 +1623,10 @@ function calPayBacks(pb) {
     if (pb.get('favourMoney') != 0) {
       items.push(concretItem(projectName, id, pb.get('payBackDate'), mconfig.fiscalTypes
         .favourMoney, 0, pb.get('favourMoney'), isPayed, order));
+    }
+    if(pb.get('overdueBreach') != 0){
+      items.push(concretItem(projectName, id, pb.get('payBackDate'), mconfig.fiscalTypes
+        .overdueBreach, pb.get('overdueBreach'), 0, isPayed));
     }
   } else if (pb.get('status') != mconfig.loanPayBackStatus.closed.value) {
     //未兑付的

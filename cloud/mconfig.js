@@ -55,6 +55,10 @@ var fiscalTypes = {
 	'favourMoney':{
 		value: 8,
 		text: '坏账'
+	},
+	'overdueBreach':{
+		value: 9,
+		text: '提前结清违约金'
 	}
 };
 

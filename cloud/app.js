@@ -843,9 +843,9 @@ function listPackBacks(req, res, clazz) {
     loanQuery.equalTo('loanType', req.query.loanType); //贷款抵押类型过滤
   var query = new AV.Query('LoanPayBack');
   if (req.query.startDate)
-    query.greaterThanOrEqualTo('payDate', req.query.startDate);
+    query.greaterThanOrEqualTo('payDate', new Date(req.query.startDate));
   if (req.query.endDate)
-    query.lessThanOrEqualTo('payDate', req.query.endDate);
+    query.lessThanOrEqualTo('payDate', new Date(req.query.endDate));
   query.equalTo('status', parseInt(req.query.status)); //贷款状态过滤
   query.include(['loan.loaner']);
   query.matchesQuery('loan', loanQuery);

@@ -143,6 +143,10 @@ body{
 	float: left;
 	margin-right: 1.5em;
 }
+.ks-condition .ks-list-unstyled.ks-sm li{
+	float: left;
+	margin-right: 1em;
+}
 .ks-condition .ks-list-unstyled li a{
 	text-decoration: none;
 }

@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="ks-condition">
-				<ul class="ks-list-unstyled">
+				<ul class="ks-list-unstyled ks-sm">
 					<li>摘要:</li>
 					<li ng-repeat="fiscalType in fiscalTypes"><input type="checkbox" name="fiscalTypeGroup" ng-true-value="{{fiscalType.value}}" ng-model="condition.summaries[$index]" > {{fiscalType.text}}</li>
 					<li style="margin-top:-5px;"><button class="btn btn-default btn-xs" type="button" ng-click="allSummaries()">所有</button></li>

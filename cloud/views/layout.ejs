@@ -5,7 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>昆山贷款网 - 贷款专家</title>
 	<% include head%>
-	<body ng-class="{'ks-borrow':('borrow' | includedByState) || ('bloan' | includedByState)}">
+	<body ng-class="{'ks-borrow':('borrow' | includedByState) 
+					|| ('bloan' | includedByState) 
+					|| ('bproject' | includedByState) 
+					|| ('home.borrow' | isState)}">
+					
 			<%- body%>
 	</body>
 </html>

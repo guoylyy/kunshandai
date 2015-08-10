@@ -652,7 +652,7 @@ define(['app','underscore'],function(app,_){
 							resolve:resolveNavObjects()
 						},
 						'':{
-							templateUrl:'/angular/manage/common/partial/layout_simple.html'
+							templateUrl:'/angular/borrow/common/partial/b_layout_simple.html'
 						},
 						'wizard@bproject':{
 							templateUrl:'/angular/borrow/common/partial/wizard.html'

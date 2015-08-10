@@ -121,6 +121,7 @@ require([
 		 'borrow/bloan/helpers/BLoanHelper',
 		 'borrow/bloan/services/BLoanService',
 		 'borrow/bloan/controllers/BContractController',
+		 'borrow/bloan/controllers/DraftBLoanCtrl',
 		 'borrow/finance/BFinanceController',
 		 'borrow/finance/BFinanceService',
 

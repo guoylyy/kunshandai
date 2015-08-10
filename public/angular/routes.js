@@ -631,7 +631,7 @@ define(['app','underscore'],function(app,_){
 				  controller: 'BIndexController'
 
 		    })
-				.state('borrow.draft',{
+			.state('borrow.draft',{
 		    	url:"/draft?page",
     			templateUrl: "/angular/borrow/bloan/partials/draft.html",
     			resolve:{
@@ -641,7 +641,7 @@ define(['app','underscore'],function(app,_){
     					});
     				}
     			},
-    			controller: "DraftLoanCtrl"
+    			controller: "DraftBLoanCtrl"
 		    })
 				.state('bproject',{
 					url:'/bproject',

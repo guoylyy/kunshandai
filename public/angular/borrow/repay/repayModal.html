@@ -8,7 +8,7 @@
       <h4 class="modal-title">还款</h4>
     </div>
     <div class="modal-body">
-      <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+      <ui-include src="'/angular/borrow/common/partial/bproject_info.html'"></ui-include>
       <div class="ks-panel">
         <table class="table table-striped">
           <thead>
@@ -32,7 +32,7 @@
               </td>
               <td>{{payback.order}}</td>
               <td>{{payback.payMoney | number:2}}</td>
-              <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+              <td>{{payback.payDate.iso | date:"yyyy-MM-dd"}}</td>
               <td ng-show="payback.status === 1" class="text-info">正在还</td>
               <td ng-show="payback.status === 2" >未还</td>
               <td ng-show="payback.status === 3"class="text-success">已还</td>
@@ -67,7 +67,7 @@
     <h4 class="modal-title">还款</h4>
   </div>
   <div class="modal-body">
-  <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+  <ui-include src="'/angular/borrow/common/partial/bproject_info.html'"></ui-include>
   <div class="ks-panel" >
     <table class="table table-striped">
       <thead>
@@ -82,7 +82,7 @@
         <tr ng-repeat="selectedPayback in selectedPaybacks" >
           <td>{{selectedPayback.order}}</td>
           <td>{{selectedPayback.payMoney | number:2}}</td>
-          <td>{{selectedPayback.payDate | date:"yyyy-MM-dd"}}</td>
+          <td>{{selectedPayback.payDate.iso | date:"yyyy-MM-dd"}}</td>
           <td ng-show="selectedPayback.status === 1" class="text-info">正在还</td>
           <td ng-show="selectedPayback.status === 2" >未还</td>
           <td ng-show="selectedPayback.status === 3"class="text-success">已还</td>
@@ -238,7 +238,7 @@
     <h4 class="modal-title">结清</h4>
   </div>
   <div class="modal-body">
-    <ui-include src="'/angular/manage/collect/template/project_info.html'"></ui-include>
+    <ui-include src="'/angular/borrow/common/partial/bproject_info.html'"></ui-include>
   <div class="ks-divider"></div>
   <div class="ks-panel" >
     <table class="table table-striped">
@@ -254,7 +254,7 @@
         <tr ng-repeat="payback in paybacks">
           <td>{{payback.order}}</td>
           <td>{{payback.payMoney | number:2}}</td>
-          <td>{{payback.payDate | date:"yyyy-MM-dd"}}</td>
+          <td>{{payback.payDate.iso | date:"yyyy-MM-dd"}}</td>
           <td ng-show="payback.status === 1" class="text-info">正在还</td>
           <td ng-show="payback.status === 2" >未还</td>
           <td ng-show="payback.status === 3" class="text-success">已还</td>
@@ -314,7 +314,7 @@
             <div class="ks-divider"></div>
             <h4>支出：</h4>
             <div class="ks-divider"></div>
-            <div class="row" ng-show="loan.payWay.value === 'debx'">
+            <!-- <div class="row" ng-show="loan.payWay.value === 'debx'">
                  <div class="col-md-3">
                    <div class="form-group">
                      <label class="control-label">*提前结清违约金（元）</label>
@@ -332,7 +332,7 @@
                      </div>
                    </div>
                  </div>
-            </div>
+            </div> -->
            <div class="row">
                 <div class="col-md-3">
                   <div class="form-group">

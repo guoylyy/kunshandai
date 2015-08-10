@@ -1,10 +1,10 @@
 <form name="loanForm" ng-submit="loanForm.$valid && activeModalFinish(loan.id)">
 <div class="modal-header">
-  <h4 class="modal-title">放款详情</h4>
+  <h4 class="modal-title">入账详情</h4>
 </div>
 <div class="modal-body">
 <div class="ks-panel">
-  <h4><a class="text-info" href="/loan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
+  <h4><a class="text-info" href="/bloan?id={{loan.id}}" target="_blank">项目编号: {{loan.numberWithName}}</a></h4>
   <div class="ks-divider"></div>
 
   <div ng-repeat="payment in payments" ng-init="loan.preLoanData.finishPayedMoney = loan.preLoanData.finishPayedMoney || 0">

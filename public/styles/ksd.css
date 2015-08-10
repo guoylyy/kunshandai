@@ -367,6 +367,9 @@ dl dt,dl dd{
 .ks-borrow .ks-panel table thead tr {
     background: #e6eeee;
 }
+.ks-borrow .modal-header{
+	background-color: #0175BE;
+}
 .ui-show{
 	display: block;
 }

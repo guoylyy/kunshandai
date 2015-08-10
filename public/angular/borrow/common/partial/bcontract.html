@@ -1,5 +1,5 @@
 <div class="ks-dividing">
-	<h4>项目详情</h4>
+	<h4>融资项目详情</h4>
 </div>
 <div class="row">
 	<div class="col-md-9">
@@ -69,7 +69,7 @@
 		<div class="ks-divider"></div>
 		<div class="row">
 			<div class="col-md-6">
-				<p class="ks-heading">放款人信息:</p>
+				<p class="ks-heading">投资人信息:</p>
 				<div class="row">
 					<div class="col-md-4">
 						  <p><label>姓 名 :</label><span>{{br.name}}</span></p>
@@ -149,7 +149,7 @@
 				<tr ng-repeat="p in loanInfo.paybacks" ng-class="{warning:(p.status == 1),success:(p.status == 3)}">
 					<td>{{p.order}}</td>
 					<td>{{p.payMoney | number:2}}</td>
-					<td>{{p.payDate | date:"yyyy-MM-dd" }}</td>
+					<td>{{p.payDate.iso | date:"yyyy-MM-dd" }}</td>
 					<td ng-show="p.status === 1" class="text-info">正在还</td>
 					<td ng-show="p.status === 2" >未还</td>
 					<td ng-show="p.status === 3"class="text-success">已还</td>

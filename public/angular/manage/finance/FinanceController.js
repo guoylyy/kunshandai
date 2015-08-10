@@ -194,7 +194,7 @@ define(['app','underscore'],function(app,_) {
 				return;
 			}
 			var selectedLoans = [];
-			$scope.loansPromise = LoanService.search('id',loan).then(function (data) {
+			$scope.loansPromise = LoanService.search('name',loan).then(function (data) {
 				
 				$scope.loans = [];
 				_.each(data.values,function(element,index){

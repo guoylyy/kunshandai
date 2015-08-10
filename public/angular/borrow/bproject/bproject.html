@@ -1,19 +1,19 @@
 <div class="ks-dividing">
-	<h4 ng-show="('borrow.normalProjects' | isState)">借款项目检视->正常项目</h4>
-	<h4 ng-show="('borrow.overdueProjects' | isState)">借款项目检视->逾期项目</h4>
-	<h4 ng-show="('borrow.badbillProjects' | isState)">借款项目检视->坏账项目</h4>
-	<h4 ng-show="('borrow.completedProjects' | isState)">借款项目检视->结清项目</h4>
-	<h4 ng-show="('borrow.allProjects' | isState)">借款项目检视->所有项目</h4>
-	<h4 ng-show="('borrow.searchProjects' | isState)">借款项目检视->搜索</h4>
+	<h4 ng-show="('borrow.normalProjects' | isState)">融资检视->正常融资</h4>
+	<h4 ng-show="('borrow.overdueProjects' | isState)">融资检视->逾期融资</h4>
+	<h4 ng-show="('borrow.badbillProjects' | isState)">融资检视->坏账项目</h4>
+	<h4 ng-show="('borrow.completedProjects' | isState)">融资检视->结清融资</h4>
+	<h4 ng-show="('borrow.allProjects' | isState)">融资检视->所有融资</h4>
+	<h4 ng-show="('borrow.searchProjects' | isState)">融资检视->搜索</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
 		<div class="btn-group btn-group-middle" >
-			<button type="button" class="btn btn-default" ui-sref="borrow.normalProjects" ui-sref-active="active">正常项目</button>
-			<button type="button" class="btn btn-default" ui-sref="borrow.overdueProjects" ui-sref-active="active">逾期项目</button>
-			<button type="button" class="btn btn-default" ui-sref="borrow.badbillProjects" ui-sref-active="active">坏账项目</button>
-			<button type="button" class="btn btn-default" ui-sref="borrow.completedProjects" ui-sref-active="active">结清项目</button>
-			<button type="button" class="btn btn-default" ui-sref="borrow.allProjects" ui-sref-active="active">所有项目</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.normalProjects" ui-sref-active="active">正常融资</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.overdueProjects" ui-sref-active="active">逾期融资</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.badbillProjects" ui-sref-active="active">坏账融资</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.completedProjects" ui-sref-active="active">结清融资</button>
+			<button type="button" class="btn btn-default" ui-sref="borrow.allProjects" ui-sref-active="active">所有融资</button>
 		</div>
 	</div>
 	<div class="col-md-6">
@@ -27,7 +27,7 @@
 			</div>
 			<input type="text" class="form-control" aria-label="Text input with dropdown button" ng-model="search.keyword">
 			<span class="input-group-btn">
-				<button class="btn btn-primary" type="button" ng-click="startSearch()">搜索</button>
+				<button class="btn btn-second" type="button" ng-click="startSearch()">搜索</button>
 			</span>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 					<div class="col-md-9">
 						<ul class="ks-list-unstyled">
 							<li>截止时间:</li>
-							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+							<li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-success">{{timeRange.text}}</a></li>
 						</ul>
 					</div>
 					<div class="col-md-pull-1 col-md-3">
@@ -50,7 +50,7 @@
 							<span class="input-group-addon">-</span>
 							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedend" close-text="关闭" name="endDate" ng-click="open($event,'openedend')" ng-model="condition.endDate"/>
 							<span class="input-group-btn">
-								<button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+								<button class="btn btn-second btn-xs" type="button" ng-click="customTime()">确定</button>
 							</span>
 						</div>
 					</div>
@@ -70,7 +70,7 @@
 							<span class="input-group-addon">-</span>
 							<input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedendTimeE" close-text="关闭" name="endTimeRE" ng-click="open($event,'openedendTimeE')" ng-model="condition.endTimeRE"/>
 							<span class="input-group-btn">
-								<button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+								<button class="btn btn-second btn-xs" type="button" ng-click="customTime()">确定</button>
 							</span>
 						</div>
 					</div>
@@ -79,7 +79,7 @@
 			<div class="ks-condition">
 				<ul class="ks-list-unstyled">
 					<li>贷款类型:</li>
-					<li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-warning">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
+					<li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-success">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
 					<li ng-repeat="loanType in loanTypes"><a ui-sref="{{currentState.name}}({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
 				</ul>
 			</div>
@@ -107,7 +107,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
-				<td><a href="/bloan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
+				<td><a href="/bloan?id={{loan.id}}" target="_blank" class="text-second">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
 				<td>{{loan.amount | number:2}}</td>
 				<td ng-show="('borrow.normalProjects' | isState) || ('borrow.overdueProjects' | isState)">{{loan.currPayStep}}/{{loan.payTotalCircle}}</td>
 				<td ng-show="('borrow.normalProjects' | isState) || ('borrow.overdueProjects' | isState) || ('borrow.badbillProjects' | isState)">{{loan.currPayDate | date:"yyyy-MM-dd"}}</td>

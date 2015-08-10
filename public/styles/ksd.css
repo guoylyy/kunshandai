@@ -85,6 +85,11 @@ body{
 	height: 65px;
 	background-image: url(../images/logo.png);
 }
+.ks-logo-borrow{
+	width: 300px;
+	height: 65px;
+	background-image: url(../images/logo_borrow.png);
+}
 .ks-logo-info{
 	margin-top: 22px;
 	width: 214px;
@@ -109,6 +114,9 @@ body{
 	margin-bottom: 15px;
 	color: rgb(107, 35, 71);
 	border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.ks-borrow .ks-dividing, .ks-borrow .ks-divider{
+	color: #0175be;
 }
 .ks-heading{
 	font-weight: bold;
@@ -169,7 +177,7 @@ body{
 	border:1px solid #ddd;
 }
 .ks-panel table thead tr{
-	background: #e7e7e7;
+	background: #f0e8e8;
 }
 .ks-panel .dropdown-menu{
 	min-width: 60px;
@@ -335,6 +343,30 @@ dl dt,dl dd{
 	background: #fafafa;
 	color: #f5a022;
 }
+.ks-borrow .nav-stacked > li.active > a{
+	margin-left: -2px;
+	border-left: 2px solid #1e82d9;
+	background: #fafafa;
+	color: #52b5f3;
+}
+.ks-borrow .nav-stacked > li > a:hover,.nav-stacked > li > a:focus{
+	border-left: 2px solid #1e82d9;
+}
+.ks-borrow .navbar-nav .active a{
+	background: #fafafa;
+	color: #52b5f3;
+}
+.ks-borrow .navbar-nav a:hover{
+	color: #52b5f3  ;
+}
+
+.ks-borrow .nav .open > a, .ks-borrow .nav a:hover, .ks-borrow .nav a:hover{
+	color: #52b5f3  ;
+}
+
+.ks-borrow .ks-panel table thead tr {
+    background: #e6eeee;
+}
 .ui-show{
 	display: block;
 }
@@ -349,3 +381,9 @@ dl dt,dl dd{
 	font-size: 23px;
 	padding: 0px 5px 0px 5px;
 }
+.ks-borrow  .ks-hlight-text{
+	color: #0175be;
+	font-size: 23px;
+	padding: 0px 5px 0px 5px;
+}
+

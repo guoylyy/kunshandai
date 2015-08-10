@@ -1,12 +1,12 @@
 <div class="ks-dividing">
-  <h4>借款总览</h4>
+  <h4>融资总览</h4>
 </div>
 
 
 <div class="ks-panel" >
   <div class="well well-reset" style="margin-bottom: 15px;">
     <form class="form-inline">
-      <label>您的账户借款总览&nbsp;&nbsp;</label>
+      <label>您的账户融资总览&nbsp;&nbsp;</label>
       <div class="input-group">
         <input type="text" class="form-control" datepicker-popup="yyyy-MM-dd" ng-model="startDate" is-open="calendar.openedstart" ng-required="true" close-text="关闭" name="startDate"/>
         <span class="input-group-btn">
@@ -25,7 +25,7 @@
         </span>
       </div>
       <label>&nbsp;</label>
-      <button type="button" class="btn btn-primary" ng-click="startRefresh()">确定</button>
+      <button type="button" class="btn btn-second" ng-click="startRefresh()">确定</button>
     </form>
     <!--
     <div class="btn-group">
@@ -41,7 +41,7 @@
     -->
   </div>
 
-  <div class="ks-panel">
+ <!--  <div class="ks-panel">
   <div class="panel panel-default">
     <div class="panel-heading">项目统计</div>
     <div class="panel-body">
@@ -94,9 +94,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
   <div class="panel panel-default">
-    <div class="panel-heading">借款资金统计</div>
+    <div class="panel-heading">融资资金统计</div>
     <div class="panel-body">
       <div class="row">
         <div class="col-md-12">
@@ -112,7 +112,7 @@
             <span class="ks-hlight-text">{{endDate.getMonth()+1}}</span>
             月
             <span class="ks-hlight-text">{{endDate.getDate()}}</span>
-            日共新增借款
+            日共新增融资
             <span class="ks-hlight-text">{{outcomeStatistics.count}}</span>
             项，共计
             <span class="ks-hlight-text">{{outcomeStatistics.sum | number:2}}</span>

@@ -13,7 +13,8 @@ window.onload = function(){
       	|| (navigator.userAgent.indexOf("MSIE 9.0")>0 && !window.innerWidth)){   
         
         linkToBrowserDownload();   
-      }   
+      }
+
       
     }   
 

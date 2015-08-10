@@ -1333,6 +1333,12 @@ mark,
 a.text-primary:hover {
   color: #45162e;
 }
+.text-second {
+  color: #0175be;
+}
+a.text-second:hover {
+  color: #01568b;
+}
 .text-success {
   color: #43ac6a;
 }
@@ -1363,6 +1369,13 @@ a.text-danger:hover {
 }
 a.bg-primary:hover {
   background-color: #45162e;
+}
+.bg-second {
+  color: #fff;
+  background-color: #0175be;
+}
+a.bg-second:hover {
+  background-color: #01568b;
 }
 .bg-success {
   background-color: #dff0d8;
@@ -3068,6 +3081,51 @@ fieldset[disabled] .btn-default.active {
   color: #e7e7e7;
   background-color: #333333;
 }
+.btn-second {
+  color: #ffffff;
+  background-color: #0175be;
+  border-color: #0165a5;
+}
+.btn-second:hover,
+.btn-second:focus,
+.btn-second.focus,
+.btn-second:active,
+.btn-second.active,
+.open > .dropdown-toggle.btn-second {
+  color: #ffffff;
+  background-color: #01568b;
+  border-color: #014068;
+}
+.btn-second:active,
+.btn-second.active,
+.open > .dropdown-toggle.btn-second {
+  background-image: none;
+}
+.btn-second.disabled,
+.btn-second[disabled],
+fieldset[disabled] .btn-second,
+.btn-second.disabled:hover,
+.btn-second[disabled]:hover,
+fieldset[disabled] .btn-second:hover,
+.btn-second.disabled:focus,
+.btn-second[disabled]:focus,
+fieldset[disabled] .btn-second:focus,
+.btn-second.disabled.focus,
+.btn-second[disabled].focus,
+fieldset[disabled] .btn-second.focus,
+.btn-second.disabled:active,
+.btn-second[disabled]:active,
+fieldset[disabled] .btn-second:active,
+.btn-second.disabled.active,
+.btn-second[disabled].active,
+fieldset[disabled] .btn-second.active {
+  background-color: #0175be;
+  border-color: #0165a5;
+}
+.btn-second .badge {
+  color: #0175be;
+  background-color: #ffffff;
+}
 .btn-primary {
   color: #ffffff;
   background-color: #6b2347;
@@ -4638,6 +4696,14 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   background-color: #6b2347;
   border-color: #dddddd;
   cursor: default;
+}
+.ks-borrow .pagination > .active > a,
+.ks-borrow .pagination > .active > span,
+.ks-borrow .pagination > .active > a:hover,
+.ks-borrow .pagination > .active > span:hover,
+.ks-borrow .pagination > .active > a:focus,
+.ks-borrow .pagination > .active > span:focus {
+  background-color: #0175be;
 }
 .pagination > .disabled > span,
 .pagination > .disabled > span:hover,

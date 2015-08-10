@@ -140,13 +140,13 @@ define(['app',"underscore"],function(app,_) {
 
 			//项目信息
 			$scope.loanInfo = BLoanService.getLocal();
-			//借款人
+			//融资人
 			$scope.br 		= ContactService.getLoaner();
 			//担保人
 			$scope.gr 		= ContactService.getAssurer();
 			/**
-			 * 初始化借款人、担保人
-			 * 若是来自原有的贷款项目，则从服务器获取借款人和担保人的信息
+			 * 初始化融资人、担保人
+			 * 若是来自原有的贷款项目，则从服务器获取融资人和担保人的信息
 			 * 若是无引用新建贷款项目，从本地获取Model
 			 */
 
@@ -286,7 +286,7 @@ define(['app',"underscore"],function(app,_) {
 				});
 				modalInstance.result.then(function (fileList) {
 
-			    if(type === '借款人'){
+			    if(type === '融资人'){
 						$scope.br.attachments 	= _.union($scope.br.attachments,fileList);
 					}else if(type === '担保人'){
 						$scope.gr.attachments 	= _.union($scope.gr.attachments,fileList);
@@ -358,7 +358,7 @@ define(['app',"underscore"],function(app,_) {
 
 			//项目信息
 			$scope.loanInfo = BLoanService.getLocal();
-			//借款人
+			//融资人
 			$scope.br 		= ContactService.getLoaner();
 			//担保人
 			$scope.gr 		= ContactService.getAssurer();
@@ -394,7 +394,7 @@ define(['app',"underscore"],function(app,_) {
 
 			//项目信息
 			$scope.loanInfo = BLoanService.getLocal();
-			//借款人
+			//融资人
 			$scope.br 		= ContactService.getLoaner();
 			//担保人
 			$scope.gr 		= ContactService.getAssurer();

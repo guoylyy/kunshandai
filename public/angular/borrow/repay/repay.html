@@ -20,7 +20,7 @@
          <div class="col-md-9">
            <ul class="ks-list-unstyled">
              <li>还款时间:</li>
-             <li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-warning">{{timeRange.text}}</a></li>
+             <li ng-repeat="timeRange in timeRanges" ><a ui-sref="{{currentState.name}}({startDate:timeRange.startDate,endDate:timeRange.endDate})" ui-sref-active="label label-success">{{timeRange.text}}</a></li>
            </ul>
          </div>
          <div class="col-md-pull-1 col-md-3">
@@ -29,7 +29,7 @@
              <span class="input-group-addon">-</span>
              <input type="text" class="form-control" datepicker-popup="{{format}}" is-open="calendar.openedend" close-text="关闭" name="endDate" ng-click="open($event,'openedend')" ng-model="condition.endDate"/>
              <span class="input-group-btn">
-               <button class="btn btn-primary btn-xs" type="button" ng-click="customTime()">确定</button>
+               <button class="btn btn-second btn-xs" type="button" ng-click="customTime()">确定</button>
              </span>
            </div>
          </div>
@@ -38,8 +38,8 @@
      <div class="ks-condition">
        <ul class="ks-list-unstyled">
          <li>贷款类型:</li>
-         <li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-warning">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
-         <li ng-repeat="loanType in loanTypes"><a ui-sref="{{currentState.name}}({loanType:loanType.value})" ui-sref-active="label label-warning">{{loanType.text}}</a></li>
+         <li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-success">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
+         <li ng-repeat="loanType in loanTypes"><a ui-sref="{{currentState.name}}({loanType:loanType.value})" ui-sref-active="label label-success">{{loanType.text}}</a></li>
        </ul>
      </div>
    </div>
@@ -63,7 +63,7 @@
    </thead>
    <tbody>
      <tr ng-repeat="loan in loans | orderBy:'serialNumber'">
-       <td> <a class="text-primary" href="/bloan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
+       <td> <a class="text-second" href="/bloan?id={{loan.loanObjectId}}" target="_blank">{{loan.loaner.name}}{{loan.serialNumber}}</a></td>
        <td>{{loan.amount | number:2}}</td>
        <td>{{loan.payWay.text}}</td>
        <td>{{loan.payCurrCircle}}/{{loan.payTotalCircle}}</td>

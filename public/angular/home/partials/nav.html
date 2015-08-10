@@ -9,7 +9,7 @@
 					<a  href="/manage">贷款经理</a>
         </li>
 				<li ng-class="{active:('borrow' | includedByState)}">
-					<a  href="/borrow">借款经理</a>
+					<a  href="/borrow">融资经理</a>
         </li>
 				<!-- <li ng-class="{active:('credit' | includedByState)}">
 					<a  href="/credit">信用查询</a>
@@ -45,7 +45,7 @@
         <a ui-sref="home.loan" ui-sref-active="active">我的贷款</a>
       </div>
       <div class="col-sm-2 col-md-2 home-nav-item">
-        <a ui-sref="home.borrow" ui-sref-active="active">我的借款</a>
+        <a ui-sref="home.borrow" ui-sref-active="active">我的融资</a>
       </div>
       <div class="col-sm-1 col-md-1" style="margin-left: -4%;">
         <a ui-sref="account.setting.avatar"><img src="{{user.avatar.url}}" alt="..." class="img-responsive img-circle"></a>
@@ -54,7 +54,7 @@
         <a href="/manage">贷款管理</a>
       </div>
       <div class="col-sm-2 col-md-2 home-nav-item">
-        <a href="/borrow">借款管理</a>
+        <a href="/borrow">融资管理</a>
       </div>
     </div>
   </div>

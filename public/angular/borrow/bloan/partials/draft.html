@@ -1,5 +1,5 @@
 <div class="ks-dividing">
-	<h4 ng-show="('borrow.draft' | isState)">借款管理->待入账项目</h4>
+	<h4 ng-show="('borrow.draft' | isState)">融资管理->待入账项目</h4>
 </div>
 <div class="row">
 	<div class="col-md-6">
@@ -13,7 +13,7 @@
 		<thead>
 			<tr>
 				<th>项目编号</th>
-				<th>放款人</th>
+				<th>投资人</th>
 				<th>贷款金额（元）</th>
 				<th>创建时间</th>
 				<th>贷款类型</th>
@@ -23,7 +23,7 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="loan in loans | orderBy:'createdAt'">
-				<td><a href="/bloan?id={{loan.id}}" target="_blank" class="text-primary">{{loan.numberWithName}}</a></td>
+				<td><a href="/bloan?id={{loan.id}}" target="_blank" class="text-second">{{loan.numberWithName}}</a></td>
 				<td>{{loan.loaner.name}}</td>
 				<td>{{loan.amount | number:2}}</td>
 				<td>{{loan.createdAt | date:"yyyy-MM-dd" }}</td>

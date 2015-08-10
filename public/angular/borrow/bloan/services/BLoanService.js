@@ -20,7 +20,7 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				assureCost:'',						//number
 				serviceCost:'',						//number
 				overdueCostPercent:'',		//number
-				overdueBreachPercent:'', 	//number
+				overdueBreachPercent:0, 	//number
 				otherCost:'',							//number
 				otherCostDesc:'',
 				keepCost:'',							//number

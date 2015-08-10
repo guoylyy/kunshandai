@@ -70,7 +70,7 @@ define(['app'],function(app){
 
 				contract.loanId 	= data.id;
 
-			//新建借款人客户或更新客户
+			//新建融资人客户或更新客户
 			}).then(function(){
 				var loanDeferred = $q.defer();
 				//更新

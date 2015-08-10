@@ -15,7 +15,7 @@
 @gray-lighter:           lighten(@gray-base, 97.5%); // #eee
 
 @brand-primary:         #6b2347;   //#008cba;
-@brand-second:			#008cba;
+@brand-second:			#0175be;   //#00755E;
 @brand-success:         #43ac6a;
 @brand-info:            #5bc0de;
 @brand-warning:         #E99002;
@@ -35,6 +35,8 @@
 @link-color:            rgba(0, 0, 0, 0.7); //@brand-primary;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      #f5a022; //darken(@link-color, 15%);
+
+@link-hover-second-color: #52b5f3;
 //** Link hover decoration.
 @link-hover-decoration: underline;
 
@@ -148,6 +150,10 @@
 @btn-default-color:              @gray-dark;
 @btn-default-bg:                 #e7e7e7;
 @btn-default-border:             #ddd;
+
+@btn-second-color:               #fff;
+@btn-second-bg:                  @brand-second;
+@btn-second-border:              darken(@brand-second, 5%);
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
@@ -454,6 +460,8 @@
 @pagination-active-color:              #fff;
 @pagination-active-bg:                 @brand-primary;
 @pagination-active-border:             transparent;
+
+@pagination-second-active-bg:          @brand-second;
 
 @pagination-disabled-color:            @gray-light;
 @pagination-disabled-bg:               #fff;

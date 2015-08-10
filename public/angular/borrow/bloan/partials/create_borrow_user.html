@@ -2,17 +2,17 @@
 <!-- <pre>{{moreInfoForm.$error | json}}</pre> -->
 	<div class="container-fluid">
 	<div class="ks-dividing">
-		<h4>放款人</h4>
+		<h4>投资人</h4>
 	</div>
 	<div class="row">
 		<div class="col-md-8">
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">放款人信息
+				<div class="panel-heading">投资人信息
 					<!-- <span><a class="text-info ks-right small" ng-init="brSelect=false" ng-click="brSelect=!brSelect">从客户中选择</a></span> -->
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						 <alert type="warning" close="closed = true" ng-show="!closed && br.objectId && !status.loanCreating" >{{'您已从客户中选择借款人，此处修改将更新到联系人信息，若新建客户请重置'}}</alert>
+						 <alert type="warning" close="closed = true" ng-show="!closed && br.objectId && !status.loanCreating" >{{'您已从客户中选择融资人，此处修改将更新到联系人信息，若新建客户请重置'}}</alert>
 					</div>
 					<div class="row">
 						<div class="col-md-4">
@@ -20,8 +20,8 @@
 								<label class="control-label">*姓名</label>;
 								<input type="text" class="form-control" placeholder="姓名" ng-model="br.name" name="bname" ng-pattern="/^([\u4e00-\u9fa5]+|([a-zA-Z]+\s?)+)$/" required>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bname.$touched">
-									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填放款人姓名</div>
-									<div class="text-danger" ng-show="moreInfoForm.bname.$error.pattern">请填正确的放款人姓名</div>
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.required">请填投资人姓名</div>
+									<div class="text-danger" ng-show="moreInfoForm.bname.$error.pattern">请填正确的投资人姓名</div>
 								</div>
 							</div>
 						</div>
@@ -30,19 +30,18 @@
 								<label class="control-label">*身份证</label>
 								<input type="text" class="form-control" placeholder="身份证" ng-model="br.certificateNum" name="bid" ng-pattern="/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/" ng-blur="checkContactUnique('br')" ui-validate="{uniqueId:'unique.br'}" ui-validate-watch="'unique.br'" required>
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bid.$touched">
-									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填放款人身份证</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填投资人身份证</div>
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.pattern">请填写正确的身份证号</div>
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.uniqueId">已存在相同身份证的客户</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-2">
+						<!-- <div class="col-md-2">
 							<div class="form-group">
 								<label class="control-label">*担保人</label><br>
-								<!-- <a ng-init="br.hasGr = (br.hasGr || loanInfo.assurer)"ng-click="br.hasGr=!br.hasGr" class=" text-warning">{{br.hasGr?'有担保人':'无担保人'}}</a> -->
+								
 								<ul class="list-inline">
 									 <li>
-										<!-- <label class="btn btn-xs btn-default" ng-model="pawn.pawnType.value[$index]" btn-checkbox ng-repeat="i in pawn.pawnType.items"  >{{i}}</label> -->
 										<label class="radio-inline">
 							                 <input type="radio" ng-model="br.hasGr" ng-value="false" name="hasGr" required>无
 							             </label>
@@ -55,7 +54,7 @@
 									<div class="text-danger" ng-show="moreInfoForm.hasGr.$error.required">请选择一项</div>
 								</div>
 							</div>
-						</div>
+						</div> -->
 					</div>
 					<div class="row">
 						<div class="col-md-4">
@@ -141,7 +140,7 @@
 			</script>
 			</script>
 			<div class="ks-panel panel panel-default" >
-				<div class="panel-heading">从客户中选择放款人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
+				<div class="panel-heading">从客户中选择投资人<i ng-show="loadingContacts" class="glyphicon glyphicon-refresh"></i></div>
 				<div class="panel-body">
 					<div class="input-group">
 						<div class="input-group-btn" dropdown>
@@ -162,7 +161,7 @@
 
 			<!-- <div class="ks-panel panel panel-default">
 				<div class="panel-heading">放款人附件
-					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('借款人')" style="margin-top:-5px;">上传</button>
+					<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('融资人')" style="margin-top:-5px;">上传</button>
 				</div>
 				<div class="panel-body">
 					<ul class="list-group">

@@ -105,6 +105,9 @@ mark,
 .text-primary {
   .text-emphasis-variant(@brand-primary);
 }
+.text-second {
+  .text-emphasis-variant(@brand-second);
+}
 .text-success {
   .text-emphasis-variant(@state-success-text);
 }
@@ -126,6 +129,13 @@ mark,
   // automatically.
   color: #fff;
   .bg-variant(@brand-primary);
+}
+
+.bg-second {
+  // Given the contrast here, this is the only class to have its color inverted
+  // automatically.
+  color: #fff;
+  .bg-variant(@brand-second);
 }
 .bg-success {
   .bg-variant(@state-success-bg);

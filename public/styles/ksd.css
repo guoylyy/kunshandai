@@ -287,7 +287,7 @@ dl dt,dl dd{
 	color: #f5a022;
 }
 .nav-stacked li span{
-	margin-left: 110px;
+	margin-left: 50%;
 }
 .modal-header{
 	background-color: #6b2347;
@@ -298,7 +298,7 @@ dl dt,dl dd{
 	font-weight: bold;
 }
 .nav-stacked{
-	margin-right: -60px;
+	/*margin-right: -60px;*/
 	font-size: 14px;
 }
 .nav-stacked li{
@@ -320,7 +320,8 @@ dl dt,dl dd{
 }
 .nav-stacked .dropdown-menu-right{
 	/*right: -160px;*/
-	left: 223px;
+	/*left: 223px;*/
+	left: 100%;
 }
 .nav-stacked .dropdown-menu{
 	top: -0px;

@@ -115,21 +115,76 @@ define(['app','underscore'],function(app,_){
 			.state('home.loan',{
 				url:"/loan",
 				resolve:{
-					projects: function($stateParams,DictService,LoanService){
+					preProjects:function($stateParams,DictService,LoanService){
 						var homeTimeRanges = DictService.get('homeRanges');
 						var startDate = new Date(homeTimeRanges[0].startDate);
 						var endDate = new Date(homeTimeRanges[0].endDate);
-						// var startDate;
-						// var endDate;
+						// // var startDate;
+						// // var endDate;
 						$stateParams.page = $stateParams.page || 1;
 						return LoanService.getUnpayedList($stateParams.page,startDate,endDate);
+					},
+					projects: function($stateParams,DictService,LoanService){
+						var homeTimeRanges = DictService.get('homeRanges');
+						var startDate = new Date(homeTimeRanges[1].startDate);
+						var endDate = new Date(homeTimeRanges[1].endDate);
+						// // var startDate;
+						// // var endDate;
+						$stateParams.page = $stateParams.page || 1;
+						return LoanService.getUnpayedList($stateParams.page,startDate,endDate);
+					},
+					laterProjects: function($stateParams,DictService,LoanService){
+						var homeTimeRanges = DictService.get('homeRanges');
+						var startDate = new Date(homeTimeRanges[2].startDate);
+						var endDate = new Date(homeTimeRanges[2].endDate);
+						// // var startDate;
+						// // var endDate;
+						$stateParams.page = $stateParams.page || 1;
+						return LoanService.getUnpayedList($stateParams.page,startDate,endDate);
+					},
+					timeRanges: function(DictService) {
+						return DictService.get('homeRanges');
 					}
 				},
 				templateUrl:'/angular/home/partials/loan.html',
 				controller:'HomeController'
 			})
 			.state('home.borrow',{
-				url:"/borrow"
+				url:"/borrow",
+				resolve:{
+					preProjects:function($stateParams,DictService,BLoanService){
+						var homeTimeRanges = DictService.get('homeRanges');
+						var startDate = new Date(homeTimeRanges[0].startDate);
+						var endDate = new Date(homeTimeRanges[0].endDate);
+						// // var startDate;
+						// // var endDate;
+						$stateParams.page = $stateParams.page || 1;
+						return BLoanService.getUnpayedList($stateParams.page,startDate,endDate);
+					},
+					projects: function($stateParams,DictService,BLoanService){
+						var homeTimeRanges = DictService.get('homeRanges');
+						var startDate = new Date(homeTimeRanges[1].startDate);
+						var endDate = new Date(homeTimeRanges[1].endDate);
+						// // var startDate;
+						// // var endDate;
+						$stateParams.page = $stateParams.page || 1;
+						return BLoanService.getUnpayedList($stateParams.page,startDate,endDate);
+					},
+					laterProjects: function($stateParams,DictService,BLoanService){
+						var homeTimeRanges = DictService.get('homeRanges');
+						var startDate = new Date(homeTimeRanges[2].startDate);
+						var endDate = new Date(homeTimeRanges[2].endDate);
+						// // var startDate;
+						// // var endDate;
+						$stateParams.page = $stateParams.page || 1;
+						return BLoanService.getUnpayedList($stateParams.page,startDate,endDate);
+					},
+					timeRanges: function(DictService) {
+						return DictService.get('homeRanges');
+					}
+				},
+				templateUrl:'/angular/home/partials/borrow.html',
+				controller:'HomeController'
 			})
 			
 		    .state('login', {

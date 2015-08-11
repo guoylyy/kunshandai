@@ -1,20 +1,99 @@
- <div >
- 	<div class="row">
- 		<div class="col-md-3">
- 			<h3>我的贷款
- 				<span class="glyphicon glyphicon-question-sign" aria-hidden="true" tooltip="显示以今天为准前后9天的待收款项目"
-          			tooltip-placement="top"
-          			tooltip-trigger="mouseenter"></span>
-          	</h3>
+ <div class="ks-home-main"  du-scroll-container>
+ 	<div class="ks-home-section" id="pre">
+ 		<div >
+ 			<div class="row">
+ 				<div class="col-md-12">
+ 					<h4>
+ 						<strong>{{timeRangeValues[0].start | date:"yyyy年MM月dd日"}} - {{timeRangeValues[0].end | date:"yyyy年MM月dd日"}}</strong>
+ 					</h4>
+ 				</div>
+ 			</div>
  		</div>
- 		<div class="col-md-offset-7 col-md-2" style="padding-top:30px;"><a ui-sref="manage.collectPending" class="text-info">查看所有待收款项目</a></div>
- 	</div>
-	
+ 		<div class="well" ng-show="preProjects.length == 0" style="margin-top:20px;"><h4>该时间段没有需要收款的项目</h4></div>
+ 		<div style="margin-top:20px;" ng-show="preProjects.length > 0">
+ 			<div class="ks-panel">
+ 				<table class="table ks-home-table">
+				<tbody>
+					<tr ng-repeat="loan in preProjects | orderBy:'serialNumber'">
+						<td>
+							<p class="week">{{loan.week}}</p>
+							<p>{{loan.payDate | date: "MM-dd"}}</p>
+						</td>
+						<td>
+							<i class="fa fa-camera-retro fa-2x"></i>
+						</td>
+						<td> 
+							<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
+								<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
+							</a>
+						</td>
+						<td>
+							<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
+						</td>
+						<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
+						<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
-<div class="well" ng-show="projects.length == 0" style="margin-top:20px;"><h4>近期没有需要收款的项目</h4></div>
+<!-- 今日 -->
+<div class="ks-home-section" id="cur">
+<div >
+	<div class="row">
+		<div class="col-md-12">
+			<h4>
+				<strong>{{timeRangeValues[1].start | date:"yyyy年MM月dd日"}} - {{timeRangeValues[1].end | date:"yyyy年MM月dd日"}}</strong>
+			</h4>
+		</div>
+	</div>
+</div>
+<div class="well" ng-show="projects.length == 0" style="margin-top:20px;"><h4>今日没有需要收款的项目</h4></div>
 <div style="margin-top:20px;" ng-show="projects.length > 0">
-<div class="ks-panel">
-	<table class="table ks-home-table">
+	<div class="ks-panel">
+		<table class="table ks-home-table">
+			<tbody>
+				<tr ng-repeat="loan in projects | orderBy:'serialNumber'">
+					<td>
+						<p class="week">{{loan.week}}</p>
+						<p>{{loan.payDate | date: "MM-dd"}}</p>
+					</td>
+					<td>
+						<i class="fa fa-camera-retro fa-2x"></i>
+					</td>
+					<td> 
+						<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
+							<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
+						</a>
+					</td>
+					<td>
+						<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
+					</td>
+					<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
+					<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
+
+<!-- 未来9日 -->
+<div class="ks-home-section" id="late">
+<div >
+	<div class="row">
+		<div class="col-md-12">
+			<h4>
+				<strong>{{timeRangeValues[2].start | date:"yyyy年MM月dd日"}} - {{timeRangeValues[2].end | date:"yyyy年MM月dd日"}}</strong>
+			</h4>
+		</div>
+	</div>
+</div>
+<div class="well" ng-show="lateProjects.length == 0" style="margin-top:20px;"><h4>该时间段没有需要收款的项目</h4></div>
+<div style="margin-top:20px;" ng-show="lateProjects.length > 0">
+	<div class="ks-panel">
+		<table class="table ks-home-table">
 		<!-- <thead>
 			<tr>
 				<th>项目编号</th>
@@ -24,33 +103,48 @@
 				<th>操作</th>
 			</tr>
 		</thead> -->
-		<tbody>
-			<tr ng-repeat="loan in projects | orderBy:'serialNumber'">
-				<td>
-					<p class="week">{{loan.week}}</p>
-					<p>{{loan.payDate | date: "MM-dd"}}</p>
-				</td>
-				<td>
-					<i class="fa fa-camera-retro fa-2x"></i>
-				</td>
-				<td> 
-					<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
-						<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
-					</a>
-				</td>
-				<td>
-					<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
-				</td>
-				<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
-				<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
-			</tr>
+			<tbody>
+				<tr ng-repeat="loan in lateProjects | orderBy:'serialNumber'">
+					<td>
+						<p class="week">{{loan.week}}</p>
+						<p>{{loan.payDate | date: "MM-dd"}}</p>
+					</td>
+					<td>
+						<i class="fa fa-camera-retro fa-2x"></i>
+					</td>
+					<td> 
+						<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
+							<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
+						</a>
+					</td>
+					<td>
+						<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
+					</td>
+					<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
+					<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
+				</tr>
 
-			</tr>
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
 </div>
 
-<div class="ks-panel ks-right">
-	<pagination total-items="totalLoans" ng-model="currentPage" ng-change="pageChanged()" previous-text="上一页" next-text="下一页"></pagination>
-</div>
+<div class="ks-home-siderbar">
+	<a href="#pre" du-smooth-scroll >
+		<div class="siderbar-item" du-scrollspy="pre">
+			<div class="item-text">过去9天</div>
+		</div>
+	</a>
+	<a href="#cur" du-smooth-scroll>
+		<div class="siderbar-item" du-scrollspy="cur">
+			<div class="item-text">今 天</div>
+		</div>
+	</a>
+	<a href="#late" du-smooth-scroll>
+		<div class="siderbar-item" du-scrollspy="late">
+			<div class="item-text">未来9天</div>
+		</div>
+	</a>
 </div>

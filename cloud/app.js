@@ -69,6 +69,9 @@ app.get('/home', function(req, res) {
 app.get('/home/loan', function(req, res) {
   res.render('manage.ejs');
 });
+app.get('/home/borrow', function(req, res) {
+  res.render('manage.ejs');
+});
 app.get('/index', function(req, res) {
   res.render('guest_layout.ejs');
 });

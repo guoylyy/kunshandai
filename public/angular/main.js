@@ -24,7 +24,8 @@ require.config({
 		angualrSanitize:'../lib/angular-sanitize/angular-sanitize',
 		text:'../lib/requirejs-text/text',
 		moment:'../lib/moment/moment',
-		moment_zh_cn:'../lib/moment/locale/zh-cn'
+		moment_zh_cn:'../lib/moment/locale/zh-cn',
+		duScroll:'../lib/angular-scroll/angular-scroll'
 
 	},
 	shim:{
@@ -66,6 +67,9 @@ require.config({
 			deps:['angular']
 		},
 		'highcharts-ng':{
+			deps:['angular']
+		},
+		'duScroll':{
 			deps:['angular']
 		}
 

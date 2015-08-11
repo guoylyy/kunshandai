@@ -85,8 +85,16 @@ define(['../app','moment'],function(app,moment){
 		var homeTimeRangeValues = function() {
 			return [
 				{
-					startDate: new Date(moment().day(-9)).getTime(),
-					endDate: new Date(moment().day(+9)).getTime()
+					startDate: new Date(moment().subtract(9, 'days')).getTime(),
+					endDate: new Date(moment().subtract(1, 'days')).getTime()
+				},
+				{
+					startDate: new Date(moment().startOf('day')).getTime(),
+					endDate: new Date(moment().endOf('day')).getTime()
+				},
+				{
+					startDate: new Date(moment().add(1, 'days')).getTime(),
+					endDate: new Date(moment().add(9, 'days')).getTime()
 				}
 			]
 		};

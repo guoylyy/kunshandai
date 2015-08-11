@@ -1,6 +1,6 @@
 define(['app','underscore'],function(app,_) {
-	return app.controller('BFinanceController', ['$scope','BFinanceService','LoanService' ,'$state','$stateParams','DictService','financeRanges','fiscalTypes','fiscalStatusTypes',
-		function($scope,BFinanceService, LoanService, $state,$stateParams,DictService,financeRanges,fiscalTypes,fiscalStatusTypes){
+	return app.controller('BFinanceController', ['$scope','BFinanceService','BLoanService' ,'$state','$stateParams','DictService','financeRanges','fiscalTypes','fiscalStatusTypes',
+		function($scope,BFinanceService, BLoanService, $state,$stateParams,DictService,financeRanges,fiscalTypes,fiscalStatusTypes){
 		
 
 		$scope.currentPage 	= $stateParams.page || 1;
@@ -85,7 +85,7 @@ define(['app','underscore'],function(app,_) {
 			 projects;
 
 			_.each(projects, function(element,index){
-				LoanService.getLoan(projects[index]).then(function(data){
+				BLoanService.getLoan(projects[index]).then(function(data){
 					$scope.loans.push(data);
 					$scope.condition.projects = _.compact(projects);
 				},function(){
@@ -194,7 +194,7 @@ define(['app','underscore'],function(app,_) {
 				return;
 			}
 			var selectedLoans = [];
-			$scope.loansPromise = LoanService.search('name',loan).then(function (data) {
+			$scope.loansPromise = BLoanService.search('name',loan).then(function (data) {
 				
 				$scope.loans = [];
 				_.each(data.values,function(element,index){

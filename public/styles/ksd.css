@@ -10,7 +10,7 @@ input{
 .ks-clear{
 	clear: both;
 }
-a,a:hover{
+a,a:hover,a:focus{
 	text-decoration: none;
 }
 a{
@@ -69,7 +69,7 @@ body{
 	position: fixed;
     width: 100%;
     z-index: 1000;
-    min-width: 786;
+    min-width: 786px;
 }
 .ks-home-header .home-nav-item a{
 	font-size: 20px;
@@ -84,12 +84,21 @@ body{
 .ks-home-header .home-nav-item .active{
 	color: #5bc0de;
 }
+
 .ks-home-main{
 	margin-top: 180px;
 }
 .ks-home-section{
 	min-height: 600px;
 	/*margin-top: 180px;*/
+}
+.ks-home-section .col-md-12{
+	background-color: rgba(107,35,71,0.1);
+	border-left: 4px solid rgba(107,35,71,1);
+}
+.ks-borrow .ks-home-section .col-md-12{
+	background-color: rgba(1,117,190,0.1);
+	border-left: 4px solid rgba(1,117,190,1);
 }
 .ks-home-siderbar {
 	height: 100%;
@@ -264,15 +273,15 @@ a .siderbar-item.active .item-text{
 	font-weight: bold;
 	font-size: 16px;
 }
-.ks-home-table td > .fa{
+.ks-home-table td span > .fa{
 	/*margin-top: 12px;*/
-	line-height: 1.5;
+	line-height: 1.8;
 }
 .ks-home-table button{
 	margin-top: 7px;
 }
 .ks-home-table a,.ks-home-table h4{
-	/*padding-top: 7px;*/
+	padding-top: 7px;
 }
 .ks-home-table tr:hover{
 	background-color: rgb(245, 245, 245);

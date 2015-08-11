@@ -35,9 +35,11 @@ define(['app','underscore','moment'],function(app,_,moment){
 			
 			_.each($scope.projects,function(project,index){
 				$scope.projects[index].week = moment($scope.projects[index].payDate).format("dddd");
+				// $scope.projects[index].fromNow =  moment(new Date($scope.projects[index].payDate)).fromNow();
 			})
 			_.each($scope.preProjects,function(project,index){
 				$scope.preProjects[index].week = moment($scope.preProjects[index].payDate).format("dddd");
+				// $scope.preProjects[index].fromNow =  moment(new Date($scope.preProjects[index].payDate)).fromNow();
 			})
 			_.each($scope.lateProjects,function(project,index){
 				$scope.lateProjects[index].week = moment($scope.lateProjects[index].payDate).format("dddd");

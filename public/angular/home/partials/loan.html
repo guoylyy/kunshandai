@@ -1,4 +1,5 @@
  <div class="ks-home-main"  du-scroll-container>
+ 	<!-- 过去9天 -->
  	<div class="ks-home-section" id="pre">
  		<div >
  			<div class="row">
@@ -20,8 +21,9 @@
 							<p>{{loan.payDate | date: "MM-dd"}}</p>
 						</td>
 						<td>
-							<i class="fa fa-camera-retro fa-2x"></i>
+							<p class="week">{{loan.fromNow}}</p>
 						</td>
+						 <td ng-include="'/angular/home/partials/typeIcon.html'"></td>
 						<td> 
 							<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
 								<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
@@ -59,9 +61,7 @@
 						<p class="week">{{loan.week}}</p>
 						<p>{{loan.payDate | date: "MM-dd"}}</p>
 					</td>
-					<td>
-						<i class="fa fa-camera-retro fa-2x"></i>
-					</td>
+					<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
 					<td> 
 						<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
 							<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
@@ -78,7 +78,6 @@
 	</div>
 </div>
 </div>
-
 <!-- 未来9日 -->
 <div class="ks-home-section" id="late">
 <div >
@@ -110,8 +109,9 @@
 						<p>{{loan.payDate | date: "MM-dd"}}</p>
 					</td>
 					<td>
-						<i class="fa fa-camera-retro fa-2x"></i>
+						<p>{{loan.fromNow}}</p>
 					</td>
+					<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
 					<td> 
 						<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
 							<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>

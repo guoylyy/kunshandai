@@ -18,7 +18,7 @@ define(['app','../AccountService'],function(app) {
 					$scope.logining = true;
 
 					AccountService.login($scope.account,$scope.account.rememberMe).then(function(res){
-							window.location = '/manage';
+							window.location = '/home';
 						},
 						function(err){
 							$scope.err = err;

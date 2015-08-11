@@ -48,7 +48,7 @@ define(['app','underscore'],function(app,_) {
 						AccountService.login(_.omit($scope.account,'passwordConfirmation'))
 						.then(
 							function(){
-								window.location = '/manage';
+								window.location = '/home';
 						},
 							function(err){
 								$scope.err = err;

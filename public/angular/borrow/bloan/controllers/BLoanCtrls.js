@@ -31,6 +31,10 @@ define(['app',"underscore"],function(app,_) {
 					}
 				}
 
+				$scope.loanTypes = _.reject($scope.loanTypes,function(loanType) {
+					return loanType.value == 'mfdy' || loanType.value == 'mcdy';
+				})
+
 			}
 
 			init();

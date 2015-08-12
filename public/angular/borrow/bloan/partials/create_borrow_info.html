@@ -15,7 +15,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>*贷款类型</label>
-								<select ng-init="loanInfo.loanType = loanInfo.loanType.value || loanInfo.loanType || loanTypes[4].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
+								<select ng-init="loanInfo.loanType = loanInfo.loanType.value || loanInfo.loanType || loanTypes[2].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
 								<div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
 									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写逾期违约金</div>
 								</div>

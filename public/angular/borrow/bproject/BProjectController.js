@@ -57,7 +57,7 @@ define(['app'],function(app) {
       		$scope.changeSearchType = function(type){
       			if(type === 'id'){
       				$scope.search.type.value = 'id';
-      				$scope.search.type.text = '项目号';
+      				$scope.search.type.text = '融资单号';
       			}else{
       				$scope.search.type.value = 'name';
       				$scope.search.type.text = '放款人';
@@ -65,10 +65,10 @@ define(['app'],function(app) {
       		}
 
       		$scope.startSearch = function(){
-            if(_.isEmpty($scope.search.keyword)){
-      				return;
-      			}
-            $state.go(
+                              if(_.isEmpty($scope.search.keyword)){
+                        				return;
+                        			}
+                              $state.go(
       				"borrow.searchProjects",
       				{keyword:$scope.search.keyword,type:$scope.search.type.value},
       				{reload: true});

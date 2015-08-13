@@ -123,22 +123,21 @@ define(['app'],function(app){
 				}
 			}).then(function(){
 
-				// if($scope.loanInfo.loanType === 'fcdy'
-				// 	|| $scope.loanInfo.loanType === 'mfdy'
-				// 	|| $scope.loanInfo.loanType === 'qcdy'
-				// 	|| $scope.loanInfo.loanType === 'mcdy'){
+				if($scope.loanInfo.loanType === 'fcdy'
+					|| $scope.loanInfo.loanType === 'qcdy'
+					|| $scope.loanInfo.loanType === 'qtdy'){
 
-				// 	var pawnDeferred = $q.defer();
-				// 	PawnService.create($scope.pawn).then(function(pawnData){
-				// 		contract.loanPawnId	= pawnData.objectId;
-				// 		$scope.pawn = _.extend($scope.pawn,pawnData.data);
-				// 		pawnDeferred.resolve();
-				// 	})
-				// 	return pawnDeferred.promise
-				// }else{
+					var pawnDeferred = $q.defer();
+					PawnService.create($scope.pawn).then(function(pawnData){
+						contract.loanPawnId	= pawnData.objectId;
+						$scope.pawn = _.extend($scope.pawn,pawnData.data);
+						pawnDeferred.resolve();
+					})
+					return pawnDeferred.promise
+				}else{
 					contract.loanPawnId = null;
-				// 	return;
-				// }
+					return;
+				}
 			}).then(function(){
 				var createLoanDeferred = $q.defer();
 				// 生成合同

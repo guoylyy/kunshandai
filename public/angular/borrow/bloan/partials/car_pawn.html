@@ -1,0 +1,21 @@
+<div class="row">
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label">{{pawn.carNum.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pawn.carNum.text}}" ng-model="pawn.carNum.value" name="carNum" required>
+			<!-- <div ng-show="moreInfoForm.$submitted || moreInfoForm.carNum.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.carNum.$error.required">请填{{pawn.carNum.text}}</div>
+			</div> -->
+		</div>
+	</div>
+
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label">{{pawn.brand.text}}</label>
+			<input type="text" class="form-control" placeholder="{{pawn.brand.text}}" ng-model="pawn.brand.value" name="brand" >
+			<!-- <div ng-show="moreInfoForm.$submitted || moreInfoForm.brand.$touched">
+				<div class="text-danger" ng-show="moreInfoForm.brand.$error.required">请填{{pawn.brand.text}}</div>
+			</div> -->
+		</div>
+	</div>
+</div>

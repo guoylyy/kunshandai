@@ -27,8 +27,8 @@ define(['app','underscore','moment','moment_zh_cn'],function(app,_,moment){
 				keepCostDesc:'',
 				payWay:'',
 				firstPayDate:'',
-				isEmailRemind:false,
-				isSmsRemind:false,
+				isEmailRemind:true,
+				isSmsRemind:true,
 				paybacks:[]
 			},
 

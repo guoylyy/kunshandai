@@ -3,7 +3,7 @@
 </div>
 <div class="row">
 	<div class="col-md-9">
-		<h4>项目编号: {{loanInfo.numberWithName}}</h4>
+		<h4>融资单号: {{loanInfo.numberWithName}}</h4>
 	</div>
 	<div class=" col-md-3" ng-controller="ActiveBLoanCtrl">
 		<a ui-sref="borrow.normalProjects"><button class="btn btn-default ks-right">返回项目列表</button></a>
@@ -18,8 +18,8 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>贷款类型</th>
-					<th>贷款金额（元）</th>
+					<th>融资抵押类型</th>
+					<th>融资金额（元）</th>
 					<th>开始日期</th>
 					<th>截止日期</th>
 					<th>还款类型</th>
@@ -159,7 +159,42 @@
 		</table>
 	</div>
 </div>
-
+<div class="ks-panel panel panel-default"  ng-show="loanInfo.pawn && loanInfo.pawn.objectId">
+	<div class="panel-heading">抵押物材料</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物信息</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos | orderBy:'order' " ng-show="pawnInfo.text !== '抵押方式' && pawnInfo.text !== '房产证' && pawnInfo.text !== '房权号证' && pawnInfo.text !== '土地证' && pawnInfo.text !== '土地证号' && pawnInfo.value">
+								<label >
+									<strong>{{pawnInfo.text}}: </strong> <ins>{{pawnInfo.value || '无'}}</ins>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">融资手续</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<strong ng-show="pawn.attachments.length == 0">无</strong>
+							<li class="list-group-item" ng-repeat="a in pawn.attachments" >
+								<a href="{{a.url}}" target="_blank">
+									{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <!-- <div class="ks-panel panel panel-default">
 	<div class="panel-heading">其他材料</div>
 	<div class="panel-body">

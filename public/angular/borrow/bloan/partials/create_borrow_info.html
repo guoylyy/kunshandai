@@ -3,7 +3,7 @@
 		<div class="col-md-6">
 
 			<div class="ks-panel panel panel-default">
-				<div class="panel-heading">贷款信息
+				<div class="panel-heading">融资信息
 					<button type="button" class="btn btn-xs btn-warning ks-right" ng-click="resetLoanForm()" style="margin-top:-5px;"
 					tooltip="将清空所有数据（除贷款类型、还款类型）"
           tooltip-placement="top"
@@ -14,10 +14,10 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>*贷款类型</label>
+								<label>*融资抵押类型</label>
 								<select ng-init="loanInfo.loanType = loanInfo.loanType.value || loanInfo.loanType || loanTypes[2].value" class="form-control" ng-model="loanInfo.loanType" ng-options="loanType.value as loanType.text for loanType in loanTypes" required name="loanType"></select>
 								<div ng-show="loanForm.$submitted || loanForm.loanType.$touched">
-									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写逾期违约金</div>
+									<div class="text-danger" ng-show="loanForm.loanType.$error.required">请填写融资抵押类型</div>
 								</div>
 							</div>
 						</div>
@@ -25,26 +25,26 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>*贷款金额</label>
+								<label>*融资金额</label>
 								<div class="input-group">
 
 									<input type="text" class="form-control" placeholder="贷款金额" name="amount" float-number-input ng-model="loanInfo.amount"  required >
 									<span class="input-group-addon">元</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.amount.$touched">
-									<div class="text-danger" ng-show="loanForm.amount.$error.required">请填写贷款金额</div>
+									<div class="text-danger" ng-show="loanForm.amount.$error.required">请填写融资金额</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>*贷款期限</label>
+								<label>*融资期限</label>
 								<div class="input-group">
 									<input type="text" class="form-control" placeholder="贷款期限" number-input name="spanMonth" ng-model="loanInfo.spanMonth" required>
 									<span class="input-group-addon">月</span>
 								</div>
 								<div ng-show="loanForm.$submitted || loanForm.spanMonth.$touched">
-									<div class="text-danger" ng-show="loanForm.spanMonth.$error.required">请填写贷款金额</div>
+									<div class="text-danger" ng-show="loanForm.spanMonth.$error.required">请填写融资期限</div>
 								</div>
 							</div>
 						</div>

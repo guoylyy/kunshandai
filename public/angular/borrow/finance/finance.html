@@ -64,16 +64,16 @@
 	<table class="table table-striped table-bordered" cg-busy="financesPromise">
 		<thead>
 			<tr ks-fixed-head>
-				<th width="154">项目编号</th>
-				<th width="142">记账时间</th>
-        		<th width="137">摘要</th>
-				<th width="139">收入</th>
-				<th width="125">支出</th>
-				<th width="148">盈亏</th>
+				<th width="158">项目编号</th>
+				<th width="145">记账时间</th>
+        		<th width="118">摘要</th>
+				<th width="143">收入</th>
+				<th width="129">支出</th>
+				<th width="152">盈亏</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="finance in finances | orderBy:'order'" ng-class="{warning:!finance.isPayed}">
+			<tr ng-repeat="finance in finances | orderBy:'order'" ng-class="{warning:!finance.isPayed}" ng-if="(finance.income + finance.outcome) > 0">
 				<td>{{finance.project}}</td>
 				<td>{{finance.date | date: 'yyyy-MM-dd'}}</td>
 				<td>{{finance.summary }}</td>

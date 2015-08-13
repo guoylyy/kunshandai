@@ -21,6 +21,7 @@ define(['app','underscore'],function(app,_) {
 
 		$scope.selected= {loans:[]};
 
+		initType();
 		initTime();
 		initSummaries();
 		initCashes();
@@ -28,6 +29,16 @@ define(['app','underscore'],function(app,_) {
 		initData();
 
 		var allSummaries;
+
+		function initType() {
+			
+			$scope.fiscalTypes = _.reject($scope.fiscalTypes,function(fiscalType) {
+         		 return fiscalType.value == 3//'serviceCost' 
+         		 || fiscalType.value == 4//'assureCost'
+         		 || fiscalType.value == 5//'keepCost'
+         		 || fiscalType.value == 9;//'overdueBreach';
+        	});
+		}
 
 		function initTime() {
 			var startTime = '', endTime = '';

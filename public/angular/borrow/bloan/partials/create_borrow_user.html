@@ -12,7 +12,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						 <alert type="danger" close="closed = true" ng-show="!closed && br.objectId && !status.loanCreating" >{{'您已从客户中选择融资人，此处修改将更新到联系人信息，若新建客户请重置'}}</alert>
+						 <alert type="danger" close="closed = true" ng-show="!closed && br.objectId && !status.loanCreating" >{{'您已从客户中选择投资人，此处修改将更新到联系人信息，若新建客户请重置'}}</alert>
 					</div>
 					<div class="row">
 						<div class="col-md-4">
@@ -32,7 +32,7 @@
 								<div ng-show="moreInfoForm.$submitted || moreInfoForm.bid.$touched">
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.required">请填投资人身份证</div>
 									<div class="text-danger" ng-show="moreInfoForm.bid.$error.pattern">请填写正确的身份证号</div>
-									<div class="text-danger" ng-show="moreInfoForm.bid.$error.uniqueId">已存在相同身份证的客户</div>
+									<div class="text-danger" ng-show="moreInfoForm.bid.$error.uniqueId">已存在相同身份证的投资人</div>
 								</div>
 							</div>
 						</div>
@@ -176,12 +176,51 @@
 			</div> -->
 		</div>
 	</div>
-	<div  collapse="!br.hasGr">
-		<ui-include src="'/angular/manage/contact/grInfo.html'"></ui-include>
+	<div ng-init="pType = loanInfo.loanType " ng-show="pType === 'fcdy'  || pType === 'qcdy' || pType === 'qtdy'">
+		<div class="ks-dividing">
+			<h4>抵押物</h4>
+		</div>
+		<div class="row" >
+			<div class="col-md-8">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物信息</div>
+					<div class="panel-body" ng-if="pType === 'fcdy' || pType === 'mfdy'">
+						<!-- <div ng-include="template.houseUrl"></div> -->
+						<ui-include src="'/angular/borrow/bloan/partials/house_pawn.html'"></ui-include>
+					</div>
+					<div class="panel-body" ng-if="pType === 'qcdy' || pType === 'mcdy'">
+						<!-- <div ng-include="template.carUrl"></div> -->
+						<ui-include src="'/angular/borrow/bloan/partials/car_pawn.html'"></ui-include>
+					</div>
+					<div class="panel-body" ng-if="pType === 'qtdy'">
+						<!-- <div ng-include="template.carUrl"></div> -->
+						<ui-include src="'/angular/manage/loan/pawn/other_pawn.html'"></ui-include>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">融资手续
+						<button type="button" class="btn btn-xs btn-info ks-right" ng-click="uploadAttachment('抵押物')" style="margin-top:-5px;">上传</button>
+
+					</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<li class="list-group-item" ng-show="pawn.attachments" ng-repeat="a in pawn.attachments">
+								<a class="glyphicon glyphicon-remove text-danger ks-right "  ng-click="removeAttach('pawn',$index)"></a>
+								<a href="{{a.url}}" target="_blank">
+									{{a.attachmentType | cDisplay:"fileTypes"}} | {{a.name}}  | {{a.size / 1000000 | number:2}}M
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 
-	<div class="ks-divider"></div>
+<!-- 	<div class="ks-divider"></div>
 	<div>
 		<div class="ks-dividing">
 			<h4>通知</h4>
@@ -204,7 +243,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<div class="ks-divider"></div>
 
 	<ui-include src="'/angular/borrow/bloan/partials/ctrls.html'"></ui-include>

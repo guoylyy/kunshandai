@@ -37,7 +37,7 @@
      </div>
      <div class="ks-condition">
        <ul class="ks-list-unstyled">
-         <li>贷款类型:</li>
+         <li>融资抵押类型:</li>
          <li><a  ui-sref="{{currentState.name}}({loanType:''})" ui-sref-active="label label-success">所有<!-- <span class="glyphicon glyphicon-remove"></span> --></a></li>
          <li ng-repeat="loanType in loanTypes"><a ui-sref="{{currentState.name}}({loanType:loanType.value})" ui-sref-active="label label-success">{{loanType.text}}</a></li>
        </ul>
@@ -49,8 +49,8 @@
  <table class="table table-striped">
    <thead>
      <tr>
-       <th>项目编号</th>
-       <th>贷款金额</th>
+       <th>融资单号</th>
+       <th>融资金额</th>
        <th>还款类型</th>
        <th>当前/总期</th>
        <th>应还日期</th>

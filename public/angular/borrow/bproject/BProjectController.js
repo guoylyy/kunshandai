@@ -23,6 +23,10 @@ define(['app'],function(app) {
       				endDate = new Date(parseInt($stateParams.endDate));
       			}
       			$scope.condition = {startDate:startDate,endDate:endDate};
+
+                        $scope.loanTypes = _.reject($scope.loanTypes,function(loanType) {
+                            return loanType.value == 'mfdy' || loanType.value == 'mcdy';
+                        });
       		}
 
       		init();

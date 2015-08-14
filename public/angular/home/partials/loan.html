@@ -17,7 +17,7 @@
 				<tbody>
 					<tr ng-repeat="loan in preProjects | orderBy:'serialNumber'">
 						<td>
-							<p class="week">{{loan.week}}</p>
+							<p class="week" >{{loan.week}}</p>
 							<p>{{loan.payDate | date: "MM-dd"}}</p>
 						</td>
 						<td>
@@ -30,7 +30,7 @@
 							</a>
 						</td>
 						<td>
-							<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
+							<h4 class="text-success"><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
 						</td>
 						<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
 						<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
@@ -68,7 +68,7 @@
 						</a>
 					</td>
 					<td>
-						<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
+						<h4 class="text-success"><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
 					</td>
 					<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
 					<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
@@ -118,7 +118,7 @@
 						</a>
 					</td>
 					<td>
-						<h4><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
+						<h4 class="text-success"><i class="fa fa-jpy"></i>&nbsp; {{loan.payMoney + loan.interestsMoney | number:2}}</h4>
 					</td>
 					<td ng-show="loan.payCurrCircle != loan.payTotalCircle"><button class="btn btn-default btn-sm" ng-click="collect(loan.loanObjectId)">收款</button></td>
 					<td ng-show="loan.payCurrCircle == loan.payTotalCircle"><button class="btn btn-default btn-sm btn-success" ng-click="complete(loan.loanObjectId)">结清</button></td>
@@ -134,7 +134,7 @@
 <div class="ks-home-siderbar">
 	<a href="#pre" du-smooth-scroll >
 		<div class="siderbar-item" du-scrollspy="pre">
-			<div class="item-text">过去9天</div>
+			<div class="item-text">︽ 过去9天</div>
 		</div>
 	</a>
 	<a href="#cur" du-smooth-scroll>
@@ -144,7 +144,7 @@
 	</a>
 	<a href="#late" du-smooth-scroll>
 		<div class="siderbar-item" du-scrollspy="late">
-			<div class="item-text">未来9天</div>
+			<div class="item-text">未来9天 ︾</div>
 		</div>
 	</a>
 </div>

@@ -117,7 +117,7 @@ body{
     right: 100px;
     top: 250px;
     background: #6b2347;
-    z-index: 1999;
+    /*z-index: 1999;*/
     font-weight: bold;
     border: 1px solid #6b2347;
 }
@@ -352,6 +352,16 @@ a .siderbar-item.active .item-text{
 	bottom:0px;
 	width: 100%;
 	min-height: 218px;
+	padding: 30px 0px 0px 20px;
+	background:#1b1c1d;
+	color: #ffffff;
+	z-index: 1000;
+}
+.ks-footer-sm{
+	position: relative;
+	bottom:0px;
+	width: 100%;
+	min-height: 100px;
 	padding: 30px 0px 0px 20px;
 	background:#1b1c1d;
 	color: #ffffff;

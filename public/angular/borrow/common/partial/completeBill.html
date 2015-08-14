@@ -27,18 +27,18 @@
         <td>{{completedBill.outcome.interest | number:2}}</td>
         <td>{{row3 = row2 + completedBill.outcome.interest - completedBill.income.interest| number:2}}</td>
       </tr>
-      <tr>
+      <!-- <tr>
         <th scope="row">履约保证金（元）</th>
         <td></td>
         <td>{{completedBill.outcome.assureCost | number:2}}</td>
         <td>{{row4 = row3 + completedBill.outcome.assureCost | number:2}}</td>
-      </tr>
-      <tr>
+      </tr> -->
+     <!--  <tr>
         <th scope="row">暂存金额（元）</th>
         <td></td>
         <td>{{completedBill.outcome.keepCost  | number:2}}</td>
         <td>{{row5 = row4 + completedBill.outcome.keepCost| number:2}}</td>
-      </tr>
+      </tr> -->
       <tr ng-show="completedBill.outcome.payedMoney > 0">
         <th scope="row">已结清金额（元）
           <span class="badge"
@@ -50,7 +50,7 @@
         </th>
         <td></td>
         <td>{{completedBill.outcome.payedMoney  | number:2}}</td>
-        <td>{{row6 = row5 + completedBill.outcome.payedMoney| number:2}}</td>
+        <td>{{row4 = row3 + completedBill.outcome.payedMoney| number:2}}</td>
       </tr>
       <tr ng-show="completedBill.outcome.favourMoney > 0">
         <th scope="row">优惠（元）
@@ -63,9 +63,9 @@
        </th>
         <td></td>
         <td>{{completedBill.outcome.favourMoney  | number:2}}</td>
-        <td>{{row7 = row6 + completedBill.outcome.favourMoney| number:2}}</td>
+        <td>{{row5 = row4 + completedBill.outcome.favourMoney| number:2}}</td>
       </tr>
-      <tr ng-show="loan.payWay === 'debx'">
+    <!--   <tr ng-show="loan.payWay === 'debx'">
         <th scope="row" >提前结清违约金（元）
           <span class="badge"
                   tooltip="等额本息贷款特有"
@@ -77,12 +77,12 @@
         <td>{{completedBill.income.overdueBreach  | number:2}}</td>
         <td></td>
         <td>{{row8 = row7 - completedBill.income.overdueBreach| number:2}}</td>
-      </tr>
+      </tr> -->
       <tr>
         <th scope="row">结清金额（元）</th>
         <td></td>
         <td></td>
-        <td>{{row8 | number:2}}</td>
+        <td>{{row5 | number:2}}</td>
       </tr>
     </tbody>
   </table>

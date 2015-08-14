@@ -101,17 +101,27 @@ body{
 	border-left: 4px solid rgba(1,117,190,1);
 }
 .ks-home-siderbar {
-	height: 100%;
+	/*height: 100%;
 	position: fixed;
 	width: 40px;
 	right: 0px;
 	bottom: 0px;
-	/*padding-top: 20%;*/
+	padding-top: 20%;
 	padding-top: 230px;
 	background: #6b2347;
 	z-index: 1999;
-	font-weight: bold;
+	font-weight: bold;*/
+	height: 308px;
+    position: fixed;
+    width: 40px;
+    right: 100px;
+    top: 280px;
+    background: #6b2347;
+    z-index: 1999;
+    font-weight: bold;
+    border: 1px solid #6b2347;
 }
+
 
 .ks-home-siderbar .siderbar-item{
 	border-top: 1px solid rgba(255,255,255,0.5);
@@ -146,6 +156,7 @@ a .siderbar-item.active .item-text{
 
 .ks-borrow .ks-home-siderbar{
 	background: #0175BE;
+	border: 1px solid #0175BE;
 }
 .ks-borrow a .siderbar-item:hover .item-text{
 	color: #f5a022;

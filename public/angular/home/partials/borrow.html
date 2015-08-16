@@ -53,7 +53,7 @@
 		<table class="table ks-home-table">
 			<tbody>
 				<tr ng-repeat="loan in projects | orderBy:'serialNumber'">
-					<td>
+					<td class="text-warning">
 						<p class="week">{{loan.week}}</p>
 						<p>{{loan.payDate | date: "MM-dd"}}</p>
 					</td>

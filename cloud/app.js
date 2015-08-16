@@ -2030,6 +2030,7 @@ function concretePayBack(lpb, loan, overdueMoney) {
     'payWay'));
   result['loanNumberWithName'] = loan.get('numberWithName');
   result['payObjectId'] = lpb.id;
+  result['loanType'] = mconfig.getConfigMapByValue('loanTypes', loan.get('loanType'));
   result['serialNumber'] = loan.get('serialNumber');
   result['payTotalCircle'] = loan.get('payTotalCircle');
   result['payCurrCircle'] = lpb.get('order');

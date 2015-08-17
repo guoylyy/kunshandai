@@ -24,8 +24,7 @@
 					<th>截止日期</th>
 					<th>还款类型</th>
 					<th>首次还款日期</th>
-					<th>还款周期（月/次）</th>
-					<th>还款总次数（次）</th>
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -36,32 +35,34 @@
 					<td>{{loanInfo.endDate | date:"yyyy-MM-dd"}}</td>
 					<td>{{loanInfo.payWay | cDisplay:"payBackWays"}}</td>
 					<td>{{loanInfo.firstPayDate | date:"yyyy-MM-dd"}}</td>
-					<td>{{loanInfo.payCircle}}</td>
-					<td>{{loanInfo.payTotalCircle}}</td>
 				</tr>
 			</tbody>
 		</table>
 		<table class="table table-striped">
 			<thead>
 				<tr>
+					<th>还款周期（月/次）</th>
+					<th>还款总次数（次）</th>
 					<th>利率（%/月）</th>
-					<th>履约保证金（元）</th>
-					<th>服务费（元）</th>
+					<!-- <th>履约保证金（元）</th> -->
+					<!-- <th>服务费（元）</th> -->
 					<th>逾期违约金率（‰/天）</th>
 					<th>其他费用（元）</th>
-					<th>暂收金额（元）</th>
+					<!-- <th>暂收金额（元）</th> -->
 				</tr>
 			</thead>
 			<tbody>
 
 
 				<tr>
+					<td>{{loanInfo.payCircle}}</td>
+					<td>{{loanInfo.payTotalCircle}}</td>
 					<td>{{loanInfo.interests*100 | number:3}}</td>
-					<td>{{loanInfo.assureCost | number:2}}</td>
-					<td>{{loanInfo.serviceCost | number:2}}</td>
+					<!-- <td>{{loanInfo.assureCost | number:2}}</td> -->
+					<!-- <td>{{loanInfo.serviceCost | number:2}}</td> -->
 					<td>{{loanInfo.overdueCostPercent*1000 | number:2}}</td>
 					<td>{{loanInfo.otherCost | number:2}}</td>
-					<td>{{loanInfo.keepCost | number:2}}</td>
+					<!-- <td>{{loanInfo.keepCost | number:2}}</td> -->
 				</tr>
 
 			</tbody>
@@ -129,7 +130,7 @@
 
 	<div ng-repeat="payment in loanInfo.payments">
 	<label>入账时间：{{payment.outDate || payment.payDate.iso | date:'yyyy-MM-dd'}}</label>
-	  <ui-include src="'/angular/manage/common/partial/payment.html'"></ui-include>
+	  <ui-include src="'/angular/borrow/common/partial/inBill.html'"></ui-include>
 	</div>
 </div>
 </div>

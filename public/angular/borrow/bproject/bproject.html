@@ -118,7 +118,7 @@
 				<td ng-show="('borrow.completedProjects' | isState) ">{{loan.finishDate | date:'yyyy-MM-dd'}}</td>
 				<td ng-show="('borrow.overdueProjects' | isState) ||('borrow.badbillProjects' | isState) ">{{loan.nowToPayDate}}</td>
 				<td ng-show="('borrow.allProjects' | isState)">{{loan.payedMoney  | number:2}}</td>
-				<td>{{loan.payStatus.text}}</td>
+				<td>{{loan.payStatus.text[0]}}{{loan.payStatus.text[1]}}融资</td>
 				<td >
 					<div class="dropdown" dropdown>
 						<a class="glyphicon glyphicon-triangle-bottom" dropdown-toggle></a>

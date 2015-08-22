@@ -81,7 +81,7 @@
 				<td ng-show="finance.outcome == 0"></td>
 				<td ng-show="finance.income > 0">{{ finance.income| number:2}}</td>
 				<td ng-show="finance.income == 0"></td>
-				<td>{{finance.remain | number:2}}</td>
+				<td>{{-finance.remain | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>

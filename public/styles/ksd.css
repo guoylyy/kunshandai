@@ -355,7 +355,7 @@ a .siderbar-item.active .item-text{
 	padding: 30px 0px 0px 20px;
 	background:#1b1c1d;
 	color: #ffffff;
-	z-index: 1000;
+	z-index: 1;
 }
 .ks-footer-sm{
 	position: relative;

@@ -1,5 +1,5 @@
 define(['app','underscore'],function(app,_){
-	return app.controller('BContractController', function($scope,loan,paybacks,payments,attachments,BLoanService,PawnService){
+	return app.controller('BContractController', function($scope,loan,paybacks,payments,attachments,BLoanService,PawnService,ContactService){
 		
 		$scope.loanInfo 			= _.extend(BLoanService.getLocal(),loan);
 		
@@ -11,6 +11,14 @@ define(['app','underscore'],function(app,_){
 
 		$scope.pawn = {};
 
+		addBankInfo();
+
+		function addBankInfo(){
+			ContactService.get(loan.loaner.id).then(function(data){
+				loan.loaner = data;
+				$scope.br = _.extend({attachments:attachments.br},loan.loaner);
+			});
+		}
 
 		$scope.$watch("loanInfo",function(){
 			if($scope.loanInfo && $scope.loanInfo.pawn){
@@ -24,9 +32,10 @@ define(['app','underscore'],function(app,_){
 			}
 		});
 
-		$scope.br = _.extend({attachments:attachments.br},loan.loaner)
+		
 
-		$scope.gr = _.extend({attachments:attachments.gr},loan.assurer)
+		// $scope.gr = _.extend({attachments:attachments.gr},loan.assurer)
+
 
 	})
 })

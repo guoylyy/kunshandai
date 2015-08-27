@@ -261,7 +261,11 @@ define(['app',"underscore"],function(app,_) {
 
 			$scope.$watch('selected.br',function(){
 				if(typeof $scope.selected.br === 'object'){
-					$scope.br = _.extend($scope.br,$scope.selected.br);
+					
+					ContactService.get($scope.selected.br.id).then(function(data){
+						$scope.br = _.extend($scope.br,data);
+					});
+					
 					ContactService.getAttachments($scope.br.objectId).then(function(data){
 						$scope.br.attachments = data;
 					});

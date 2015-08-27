@@ -91,20 +91,20 @@ define(['app','underscore'],function(app,_){
 					value:'',
 					order:6
 				},
-				buildingNum:{
-					text:'楼号',
-					value:'',
-					order:7
-				},
-				roomNum:{
-					text:'室号',
-					value:'',
-					order:8
-				},
+				// buildingNum:{
+				// 	text:'楼号',
+				// 	value:'',
+				// 	order:7
+				// },
+				// roomNum:{
+				// 	text:'室号',
+				// 	value:'',
+				// 	order:8
+				// },
 				price:{
 					text:'评估价格（万元）',
 					value:'',
-					order:9
+					order:7
 				}
 
 			},

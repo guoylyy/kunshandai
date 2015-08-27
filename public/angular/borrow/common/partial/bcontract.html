@@ -87,28 +87,6 @@
 				</div>
 				<p><label>地 址 :</label><span>{{br.address? br.address:'未填'}}</span></p>
 			</div>
-			<!-- <div class="col-md-6">
-				<div ng-show="loanInfo.assurer">
-					<p class="ks-heading">担保人信息:</p>
-					<div class="row">
-						<div class="col-md-4">
-							  <p><label>姓 名 :</label><span>{{gr.name}}</span></p>
-							  <p><label>电 话 :</label><span>{{gr.mobilePhoneNumber? gr.mobilePhoneNumber:'未填'}}</span></p>
-							  <p><label>微 信 :</label><span>{{gr.wechat? gr.wechat:'未填'}}</span></p>
-						</div>
-						<div class="col-md-6">
-							  <p><label>身份证 :</label><span>{{gr.certificateNum}}</span></p>
-							  <p><label>邮 箱  :</label><span>{{gr.email? gr.email:'未填'}}</span></p>
-							  <p><label>Q  Q  :</label><span>{{gr.qq? gr.qq:'未填'}}</span></p>
-						</div>
-					</div>
-					<p><label>地 址 :</label><span>{{gr.address? gr.address:'未填'}}</span></p>
-				</div>
-				<div ng-show="!loanInfo.assurer">
-					<p class="ks-heading">担保人信息:</p>
-					<strong>无担保人</strong>
-				</div>
-			</div> -->
 		</div>
 		<div class="ks-divider"></div>
 		<div class="row">
@@ -169,6 +147,50 @@
 					<div class="panel-heading">抵押物信息</div>
 					<div class="panel-body">
 						<div class="row">
+							<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos | orderBy:'order' " >
+								<!-- <label ng-if="pawnInfo.text === '房产证' || pawnInfo.text === '房权号证' || pawnInfo.text === '土地证' ||  pawnInfo.text === '土地证号' " >
+									<strong>{{pawnInfo.text}}: </strong>
+									<ins>{{pawnInfo.value[0]}}</ins> {{pawnInfo.characters[0]}} <ins>{{pawnInfo.value[1]}}</ins> {{pawnInfo.characters[1]}} <ins>{{pawnInfo.value[2]}}</ins> {{pawnInfo.characters[2]}}
+								</label> -->
+								<label ng-if="pawnInfo.text === '抵押方式'">
+									<strong>融资手续: </strong> <ins ng-repeat="i in pawnInfo.value"> {{i}}{{' '}}</ins>
+								</label>
+
+								<label ng-if="pawnInfo.text !== '抵押方式' && pawnInfo.text !== '房产证' && pawnInfo.text !== '房权号证' && pawnInfo.text !== '土地证' && pawnInfo.text !== '土地证号' && pawnInfo.value">
+									<strong>{{pawnInfo.text}}: </strong> <ins>{{pawnInfo.value || '无'}}</ins>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">附件</div>
+					<div class="panel-body">
+						<ul class="list-group">
+							<strong ng-show="pawn.attachments.length == 0">无</strong>
+							<li class="list-group-item" ng-repeat="a in pawn.attachments" >
+								<a href="{{a.url}}" target="_blank">
+									{{(a.attachmentType || a.metaData.fileType) | cDisplay:"fileTypes"}} | {{a.name}}  | {{ (a.size || a.metaData.size) / 1000000 | number:2}}M
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <div class="ks-panel panel panel-default"  ng-show="loanInfo.pawn && loanInfo.pawn.objectId">
+	<div class="panel-heading">抵押物材料</div>
+	<div class="panel-body">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="ks-panel panel panel-default">
+					<div class="panel-heading">抵押物信息</div>
+					<div class="panel-body">
+						<div class="row">
 							<div class="col-md-6" ng-repeat="pawnInfo in pawnInfos | orderBy:'order' " ng-show="pawnInfo.text !== '抵押方式' && pawnInfo.text !== '房产证' && pawnInfo.text !== '房权号证' && pawnInfo.text !== '土地证' && pawnInfo.text !== '土地证号' && pawnInfo.value">
 								<label >
 									<strong>{{pawnInfo.text}}: </strong> <ins>{{pawnInfo.value || '无'}}</ins>
@@ -195,7 +217,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- <div class="ks-panel panel panel-default">
 	<div class="panel-heading">其他材料</div>
 	<div class="panel-body">

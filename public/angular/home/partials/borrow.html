@@ -19,7 +19,9 @@
 							<p class="week">{{loan.week}}</p>
 							<p>{{loan.payDate | date: "MM-dd"}}</p>
 						</td>
-						<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
+						<td>
+							<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
+						</td>
 						<td> 
 							<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
 								<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
@@ -57,7 +59,9 @@
 						<p class="week">{{loan.week}}</p>
 						<p>{{loan.payDate | date: "MM-dd"}}</p>
 					</td>
-					<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
+					<td>
+						<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
+					</td>
 					<td> 
 						<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
 							<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>
@@ -96,7 +100,9 @@
 						<p class="week">{{loan.week}}</p>
 						<p>{{loan.payDate | date: "MM-dd"}}</p>
 					</td>
-					<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
+					<td>
+						<ui-include src="'/angular/home/partials/typeIcon.html'"></ui-include>
+					</td>
 					<td> 
 						<a class="text-primary" href="/loan?id={{loan.loanObjectId}}" target="_blank">
 							<h4>{{loan.loaner.name}}{{loan.serialNumber}}</h4>

@@ -94,8 +94,9 @@ define(['app',"underscore"],function(app,_) {
 						$scope.loanInfo.payCircle = $scope.loanInfo.spanMonth;
 						$scope.loanInfo.payTotalCircle = 1;
 					}else{
-						$scope.loanInfo.payCircle = 1;
-						$scope.loanInfo.payTotalCircle = $scope.loanInfo.spanMonth;
+						payTotalCircleChange();
+						// $scope.loanInfo.payCircle = 1;
+						// $scope.loanInfo.payTotalCircle = $scope.loanInfo.spanMonth;
 					}
 				}else{
 					$scope.loanInfo.payCircle = '';

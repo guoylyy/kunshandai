@@ -74,14 +74,14 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="finance in finances | orderBy:'order'" ng-class="{warning:!finance.isPayed}" ng-if="(finance.income + finance.outcome) > 0">
-				<td width="157">{{finance.project}}</td>
+				<td width="156">{{finance.project}}</td>
 				<td width="144">{{finance.date | date: 'yyyy-MM-dd'}}</td>
 				<td width="120"> {{finance.summary }}</td>
 				<td width="141" ng-show="finance.income > 0">{{ finance.income| number:2}}</td>
 				<td width="141" ng-show="finance.income == 0"></td>
-				<td width="141" ng-show="finance.outcome > 0">{{finance.outcome | number:2}}</td>
-				<td width="141" ng-show="finance.outcome == 0"></td>
-				<td width="141">{{finance.remain | number:2}}</td>
+				<td width="142" ng-show="finance.outcome > 0">{{finance.outcome | number:2}}</td>
+				<td width="142" ng-show="finance.outcome == 0"></td>
+				<td width="142">{{finance.remain | number:2}}</td>
 			</tr>
 		</tbody>
 	</table>

@@ -16,6 +16,8 @@ define(['app','underscore'],function(app,_){
 			qq:'',
 			wechat:'',
 			address:'',
+			bankCardName:'',
+			bankCardNumber:'',
 			sendSmsOrNot: false,
 			attachments:[]	
 		}, 

@@ -803,10 +803,18 @@ function listProject(req, res, clazz) {
     if (req.params.listType == mconfig.loanListTypes.normal.value) {
       query.greaterThanOrEqualTo('currPayDate', now1month);
     } else if (req.params.listType == mconfig.loanListTypes.overdue.value) {
-      query.greaterThanOrEqualTo('currPayDate', now3month);
-      query.lessThan('currPayDate', now1month);
+      if(clazz == PRJ_TYPE.BORROW){
+        query.lessThan('currPayDate', now1month);
+      }else{
+        query.greaterThanOrEqualTo('currPayDate', now3month);
+        query.lessThan('currPayDate', now1month);
+      }
     } else if (req.params.listType == mconfig.loanListTypes.badbill.value) {
-      query.lessThan('currPayDate', now3month);
+      if(clazz == PRJ_TYPE.BORROW){ //融资不存在坏账，直接逾期处理
+        query.lessThan('currPayDate', now1month); 
+      }else{
+        query.lessThan('currPayDate', now3month);
+      }
     } else if (req.params.listType == mconfig.loanListTypes.all.value) {
       if (req.query.startDate != undefined) {
         query.greaterThanOrEqualTo('endDate', new Date(req.query.startDate));
@@ -816,7 +824,7 @@ function listProject(req, res, clazz) {
       }
     }
   };
-  listLoan(res, query, pageNumber, skipDraft);
+  listLoan(res, query, pageNumber, skipDraft, clazz);
 };
 
 /*
@@ -1489,7 +1497,7 @@ function fiscalStatictics(req, res, clazz) {
             endsWith)) {
           listCompletedItems = false;
         }
-        items = items.concat(calRecord(rs[i], listCompletedItems));
+        items = items.concat(calRecord(rs[i], listCompletedItems, status));
       };
       //过滤是否兑付
       items = filterIsPayed(items, status);
@@ -1572,7 +1580,7 @@ function calFiscalRemain(items) {
 
 //计算放款情况
 //放款成功的都是已兑付情况
-function calRecord(po, listCompletedItems) {
+function calRecord(po, listCompletedItems, status) {
   var items = [];
   var projectName = po.get('loan').get('numberWithName');
   var loan = po.get('loan');
@@ -1593,7 +1601,7 @@ function calRecord(po, listCompletedItems) {
       .serviceCost, Math.abs(po.get('serviceCost')), 0, isPayed));
     
   }
-  if (listCompletedItems) {
+  if (listCompletedItems && po.get('isPayed') && status != mconfig.fiscalStatusTypes.payed.value) {
     items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
       .interests, 0, Math.abs(po.get('interestsMoney')), isPayed));
     items.push(concretItem(projectName, id, loan.get('endDate'), mconfig.fiscalTypes
@@ -2047,7 +2055,7 @@ function concretePayBack(lpb, loan, overdueMoney) {
 };
 
 //需要根据最近的还款周期列出项目，这个需要反向生成
-function listLoan(res, query, pageNumber, skipDraft) {
+function listLoan(res, query, pageNumber, skipDraft, clazz) {
   var totalPageNum = 1;
   var resultsMap = {};
 
@@ -2070,7 +2078,7 @@ function listLoan(res, query, pageNumber, skipDraft) {
               resultsMap['totalNum'] = resultsMap['totalNum'] - 1;
               continue; //过滤掉草稿项目
             }
-            rlist.push(transformLoan(results[i]));
+            rlist.push(transformLoan(results[i],clazz));
           };
           totalPageNum = parseInt(resultsMap['totalNum'] / mconfig.pageSize) +
             1;
@@ -2087,7 +2095,7 @@ function listLoan(res, query, pageNumber, skipDraft) {
   });
 };
 
-function transformLoan(l) {
+function transformLoan(l, clazz) {
   if (l == undefined) {
     return {};
   }
@@ -2120,7 +2128,11 @@ function transformLoan(l) {
       payStatus = mconfig.loanListTypes.overdue;
     } else if (currDate < now3month) {
       //坏账
-      payStatus = mconfig.loanListTypes.badbill;
+      if(clazz == PRJ_TYPE.BORROW){
+        payStatus = mconfig.loanListTypes.overdue; 
+      }else{
+        payStatus = mconfig.loanListTypes.badbill;  
+      }
     } else {
       //console.log(currDate);
     }
@@ -2206,8 +2218,8 @@ function transformContact(c) {
 };
 
 function formatTime(t) {
-  var date = moment(t).format('YYYY-MM-DD HH:mm:ss');
-  return date;
+  //var date = moment(t).format('YYYY-MM-DD HH:mm:ss');
+  return t;
 };
 
 //todo: set fileType
